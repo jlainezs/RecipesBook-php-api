@@ -2,8 +2,8 @@
 
 namespace App\Shared\Presentation\Http\Controller;
 
+use App\Shared\Application\Bus\QueryBus;
 use App\Shared\Application\Query\HealthCheck\HealthCheckQuery;
-use App\Shared\Infrastructure\Bus\QueryBus;
 use App\Shared\Presentation\Http\Response\HealthCheckJsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;

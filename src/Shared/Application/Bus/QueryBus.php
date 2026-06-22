@@ -1,5 +1,5 @@
 <?php
-namespace App\Shared\Infrastructure\Bus;
+namespace App\Shared\Application\Bus;
 interface QueryBus
 {
     public function ask(object $query): mixed;
