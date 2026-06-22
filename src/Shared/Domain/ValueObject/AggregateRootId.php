@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Shared\Domain;
+namespace App\Shared\Domain\ValueObject;
 
 use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
 use Symfony\Component\Uid\Ulid;
