@@ -1,5 +1,5 @@
 <?php
-namespace App\Shared\Application\Query;
+namespace App\Shared\Application\Query\HealthCheck;
 
 use App\Shared\Application\Service\HealthChecker;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;

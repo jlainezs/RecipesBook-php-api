@@ -1,5 +1,5 @@
 <?php
-namespace App\Shared\Application\Bus;
+namespace App\Shared\Infrastructure\Bus;
 
 use Symfony\Component\Messenger\Exception\ExceptionInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
