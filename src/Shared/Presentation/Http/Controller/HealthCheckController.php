@@ -4,7 +4,6 @@ namespace App\Shared\Presentation\Http\Controller;
 
 use App\Shared\Application\Bus\QueryBus;
 use App\Shared\Application\Query\HealthCheckQuery;
-use App\Shared\Application\Service\HealthChecker;
 use App\Shared\Presentation\Http\Response\HealthCheckJsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -20,7 +19,6 @@ final class HealthCheckController extends AbstractController
     #[Route('/healthcheck', name: 'api_v1_healthcheck', methods: ['GET'])]
     public function healthcheck(): JsonResponse
     {
-        // return HealthCheckJsonResponse::create($this->healthChecker->isDatabaseAlive());
         $response = $this->queryBus->ask(new HealthCheckQuery());
         return HealthCheckJsonResponse::create($response->isDatabaseAlive);
     }
