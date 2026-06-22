@@ -1,5 +1,6 @@
 <?php
 namespace App\Shared\Domain\Model;
+
 use App\Shared\Domain\Event\DomainEventInterface;
 use DateTime;
 

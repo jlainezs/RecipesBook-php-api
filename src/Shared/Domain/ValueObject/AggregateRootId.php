@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Shared\Domain\ValueObject;
 
 use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
