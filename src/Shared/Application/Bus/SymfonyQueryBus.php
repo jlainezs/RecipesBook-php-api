@@ -1,7 +1,6 @@
 <?php
 namespace App\Shared\Application\Bus;
 
-use App\Shared\Application\Bus\QueryBus;
 use Symfony\Component\Messenger\Exception\ExceptionInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
