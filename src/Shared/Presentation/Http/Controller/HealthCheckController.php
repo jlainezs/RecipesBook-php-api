@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Shared\Infrastructure\Http\Controller;
+namespace App\Shared\Presentation\Http\Controller;
 
-use App\Shared\Domain\Service\HealthChecker;
-use App\Shared\Infrastructure\Http\Response\HealthCheckJsonResponse;
+use App\Shared\Application\Service\HealthChecker;
+use App\Shared\Presentation\Http\Response\HealthCheckJsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;

@@ -2,7 +2,7 @@
 
 namespace App\Shared\Infrastructure\Persistence;
 
-use App\Shared\Domain\Service\HealthChecker;
+use App\Shared\Application\Service\HealthChecker;
 use Doctrine\DBAL\Connection;
 use Psr\Log\LoggerInterface;
 use Throwable;
