@@ -16,9 +16,10 @@ doctrine:
         mappings:
             EntityTypeXML:
                 type: xml
-                dir: '%kernel.project_dir%/src/IngredientType/Persistence/DoctrineMapping'
+                dir: '%kernel.project_dir%/src/IngredientType/Infrastructure/DoctrineMapping'
                 prefix: 'App\IngredientType\Domain\Model'
                 alias: IngredientType
+                is_bundle: false
             # App:
             #    type: attribute
             #    is_bundle: false

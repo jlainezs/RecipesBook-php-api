@@ -1,0 +1,2 @@
+GET http://localhost:8000/api/v1/ingredient-types?offset=0&limit=20
+Accept: application/json

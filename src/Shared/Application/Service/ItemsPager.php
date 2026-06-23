@@ -2,5 +2,5 @@
 namespace App\Shared\Application\Service;
 interface ItemsPager
 {
-    public function items($offset = 0, $limit = 20): array;
+    public function items(int $offset = 0, int $limit = 20): array;
 }

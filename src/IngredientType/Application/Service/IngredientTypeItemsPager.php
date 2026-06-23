@@ -1,5 +1,5 @@
 <?php
-namespace App\IngredientType\Service;
+namespace App\IngredientType\Application\Service;
 
 use App\Shared\Application\Service\ItemsPager;
 

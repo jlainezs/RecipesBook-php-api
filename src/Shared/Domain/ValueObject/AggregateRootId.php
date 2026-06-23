@@ -37,9 +37,9 @@ readonly class AggregateRootId
         return new self($newId);
     }
 
-    public function __toString(): string
+    public function toString(): string
     {
-        return (string)$this->id;
+        return $this->id->toString();
     }
 
     public function getId(): Ulid

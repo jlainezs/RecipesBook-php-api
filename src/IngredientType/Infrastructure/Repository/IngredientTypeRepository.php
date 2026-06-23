@@ -1,13 +1,12 @@
 <?php
-namespace App\IngredientType\Persistence\Repository;
+namespace App\IngredientType\Infrastructure\Repository;
 
 use App\IngredientType\Domain\Model\IngredientType;
-use App\IngredientType\Domain\Persistence\IngredientTypeRepositoryInterface;
+use App\IngredientType\Domain\Repository\IngredientTypeRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\DBAL\LockMode;
 use Doctrine\Persistence\ManagerRegistry;
 
-class IngredientTypeRepository extends ServiceEntityRepository implements IngredientTypeRepositoryInterface
+final class IngredientTypeRepository extends ServiceEntityRepository implements IngredientTypeRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -20,8 +19,13 @@ class IngredientTypeRepository extends ServiceEntityRepository implements Ingred
         $this->getEntityManager()->flush();
     }
 
-    public function find(mixed $id,  LockMode|int|null $lockMode = null, int|null $lockVersion = null): ?IngredientType
+    public function findOne(mixed $id): ?IngredientType
     {
-        return parent::find($id, $lockMode, $lockVersion);
+        return parent::find($id);
+    }
+
+    public function findAll(?int $limit = null, ?int $offset = null): array
+    {
+        return parent::findBy([], null, $limit, $offset);
     }
 }
