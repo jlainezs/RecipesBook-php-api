@@ -13,6 +13,6 @@ final readonly class IngredientTypesQueryHandler
 
     public function __invoke(IngredientTypesQuery $query): IngredientTypesQueryResponse
     {
-        return new IngredientTypesQueryResponse($this->list->Items());
+        return new IngredientTypesQueryResponse($this->list->items($query->offset, $query->limit));
     }
 }

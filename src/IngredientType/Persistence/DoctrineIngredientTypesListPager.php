@@ -1,13 +1,17 @@
 <?php
 namespace App\IngredientType\Persistence;
 
+use App\IngredientType\Domain\Persistence\IngredientTypeRepositoryInterface;
 use App\IngredientType\Service\IngredientTypeItemsPager;
 
 final class DoctrineIngredientTypesListPager implements IngredientTypeItemsPager
 {
-    public function Items(): array
+    public function __construct(private IngredientTypeRepositoryInterface $repository)
     {
-        // TODO: Implement Items() method.
-        return [];
+    }
+
+    public function items($offset = 0, $limit = 20): array
+    {
+        return $this->repository->findBy([], [], $limit, $offset);
     }
 }

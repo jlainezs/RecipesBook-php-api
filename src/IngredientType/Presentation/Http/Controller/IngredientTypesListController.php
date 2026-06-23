@@ -7,6 +7,7 @@ use App\IngredientType\Presentation\Http\Response\IngredientTypesListJsonRespons
 use App\Shared\Application\Bus\QueryBus;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/api/v1')]
@@ -17,9 +18,12 @@ final class IngredientTypesListController extends AbstractController
     }
 
     #[Route('/ingredient-types', name: 'ingredient_types_list', methods: ['GET'])]
-    public function list(): JsonResponse
+    public function list(Request $request): JsonResponse
     {
-        $response = $this->queryBus->ask(new IngredientTypesQuery());
+        $response = $this->queryBus->ask(new IngredientTypesQuery(
+            offset: $request->query->getInt('offset', 0),
+            limit: $request->query->getInt('limit', 20),
+        ));
         return IngredientTypesListJsonResponse::create($response->items);
     }
 }

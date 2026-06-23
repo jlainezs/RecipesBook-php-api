@@ -2,7 +2,9 @@
 
 namespace App\IngredientType\Application\Query\IngredientType;
 
-class IngredientTypesQueryResponse
+final readonly class IngredientTypesQueryResponse
 {
-
+    public function __construct(
+        public readonly array $items,
+    ) {}
 }
