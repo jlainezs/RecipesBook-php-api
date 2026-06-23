@@ -37,7 +37,6 @@ readonly class AggregateRootId
         return new self($newId);
     }
 
-
     public function __toString(): string
     {
         return (string)$this->id;

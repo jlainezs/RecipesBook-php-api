@@ -8,7 +8,7 @@ abstract class AggregateRoot
 {
     protected array $domainEvents;
 
-    private DateTime $createdAt {
+    public DateTime $createdAt {
         get {
             return $this->createdAt;
         }
@@ -16,7 +16,7 @@ abstract class AggregateRoot
             $this->createdAt = $value;
         }
     }
-    private DateTime $updatedAt {
+    public DateTime $updatedAt {
         get {
             return $this->updatedAt;
         }
