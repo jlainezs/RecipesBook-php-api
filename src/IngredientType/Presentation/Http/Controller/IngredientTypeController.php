@@ -22,7 +22,7 @@ final class IngredientTypeController extends AbstractController
     public function __construct(private readonly QueryBus $queryBus, private readonly CommandBus $commandBus)
     {}
 
-    #[Route('/{id}', name: 'ingredient_type_get_instance', methods: ['GET'])]
+    #[Route('/{id}', name: 'ingredient_types_get_instance', methods: ['GET'])]
     public function getInstance(Request $request):JsonResponse
     {
         $id = $request->attributes->getString('id');
@@ -46,7 +46,7 @@ final class IngredientTypeController extends AbstractController
         }
     }
 
-    #[Route('/create', name: 'ingredient_type_create', methods: ['POST'])]
+    #[Route('/create', name: 'ingredient_types_create', methods: ['POST'])]
     public function create(Request $request):JsonResponse
     {
         $name = $request->getPayload()->getString('name');
@@ -67,7 +67,7 @@ final class IngredientTypeController extends AbstractController
         }
     }
 
-    #[Route('/{id}', name: 'ingredient_type_delete', methods: ['DELETE'])]
+    #[Route('/{id}', name: 'ingredient_types_delete', methods: ['DELETE'])]
     public function delete(Request $request): JsonResponse
     {
         $id = $request->attributes->getString('id');

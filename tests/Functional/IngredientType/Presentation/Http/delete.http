@@ -1,2 +1,2 @@
-DELETE http://localhost:8000/api/v1/ingredient-types/854f5e3d-c98f-4ecb-8380-f06b3044b60d
+DELETE http://localhost:8000/api/v1/ingredient-types/3e5a97be-b52b-4413-972e-5159a3a06eda
 Accept: application/json
