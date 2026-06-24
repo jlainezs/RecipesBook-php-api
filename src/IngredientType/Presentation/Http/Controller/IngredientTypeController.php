@@ -2,11 +2,14 @@
 
 namespace App\IngredientType\Presentation\Http\Controller;
 
+use App\IngredientType\Application\Query\IngredientType\IngredientTypeInstanceQuery;
+use App\IngredientType\Domain\Exceptions\IngredientTypeNotFoundException;
 use App\Shared\Application\Bus\QueryBus;
 use App\Shared\Presentation\Http\Response\JsonErrorResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Messenger\Exception\HandlerFailedException;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/api/v1/ingredient-types')]
@@ -20,12 +23,22 @@ final class IngredientTypeController extends AbstractController
     {
         $id = $request->attributes->getString('id');
 
-        if ($id) {
-            //$response = $this->queryBus->ask(null);
-
-            return new JsonResponse(['id' => $id]);
+        try
+        {
+            $response = $this->queryBus->ask(new IngredientTypeInstanceQuery($id));
+            return new JsonResponse($response);
         }
+        catch (HandlerFailedException $t)
+        {
+            if ($t->getPrevious() instanceof IngredientTypeNotFoundException)
+            {
+                return new JsonErrorResponse(
+                    $t->getPrevious()->getMessage(),
+                    404
+                );
+            }
 
-        return new JsonErrorResponse('Invalid request', 405);
+            return new JsonErrorResponse($t->getMessage(), 500);
+        }
     }
 }

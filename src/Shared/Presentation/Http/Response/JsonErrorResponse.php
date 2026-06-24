@@ -7,6 +7,9 @@ final class JsonErrorResponse extends JsonResponse
 {
     public function __construct(string $message, int $statusCode, array $headers = [])
     {
-        parent::__construct(['error' => $message], $statusCode, $headers);
+        parent::__construct([
+            'error' => $message,
+            'status' => $statusCode,
+        ], $statusCode, $headers);
     }
 }

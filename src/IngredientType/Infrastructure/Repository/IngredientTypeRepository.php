@@ -19,7 +19,7 @@ final class IngredientTypeRepository extends ServiceEntityRepository implements 
         $this->getEntityManager()->flush();
     }
 
-    public function findOne(mixed $id): ?IngredientType
+    public function findOne(string $id): ?IngredientType
     {
         return parent::find($id);
     }

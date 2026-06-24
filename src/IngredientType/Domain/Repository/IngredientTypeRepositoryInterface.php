@@ -5,7 +5,7 @@ use App\IngredientType\Domain\Model\IngredientType;
 
 interface IngredientTypeRepositoryInterface
 {
-    public function findOne(mixed $id): ?IngredientType;
+    public function findOne(string $id): ?IngredientType;
     public function findAll(int|null $limit = null,
                            int|null $offset = null): array;
 
