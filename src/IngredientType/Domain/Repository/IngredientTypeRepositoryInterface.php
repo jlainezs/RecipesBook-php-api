@@ -10,4 +10,6 @@ interface IngredientTypeRepositoryInterface
                            int|null $offset = null): array;
 
     public function save(IngredientType $ingredientType): void;
+
+    public function delete(IngredientType $ingredientType): void;
 }

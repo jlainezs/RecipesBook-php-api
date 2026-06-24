@@ -3,6 +3,7 @@
 namespace App\IngredientType\Presentation\Http\Controller;
 
 use App\IngredientType\Application\Command\IngredientType\IngredientTypeCreateCommand;
+use App\IngredientType\Application\Command\IngredientType\IngredientTypeDeleteCommand;
 use App\IngredientType\Application\Query\IngredientType\IngredientTypeInstanceQuery;
 use App\IngredientType\Domain\Exceptions\IngredientTypeEmptyNameException;
 use App\IngredientType\Domain\Exceptions\IngredientTypeNotFoundException;
@@ -59,14 +60,28 @@ final class IngredientTypeController extends AbstractController
         catch (HandlerFailedException $t)
         {
             if ($t->getPrevious() instanceof IngredientTypeEmptyNameException) {
-                $innerError = sprintf('%s @ %s - %s', $t->getPrevious()->getMessage(), $t->getPrevious()->getFile(), $t->getPrevious()->getLine());
-
-                return new JsonErrorResponse($innerError, 400);
+                return new JsonErrorResponse($t->getPrevious()->getMessage(), 400);
             }
 
-            $innerError = sprintf('%s @ %s - %s', $t->getMessage(), $t->getFile(), $t->getLine());
+            return new JsonErrorResponse($t->getMessage(), 500);
+        }
+    }
 
-            return new JsonErrorResponse($innerError, 500);
+    #[Route('/{id}', name: 'ingredient_type_delete', methods: ['DELETE'])]
+    public function delete(Request $request): JsonResponse
+    {
+        $id = $request->attributes->getString('id');
+
+        try {
+            $this->commandBus->dispatch(new IngredientTypeDeleteCommand($id));
+
+            return new JsonResponse(null, 204);
+        } catch (HandlerFailedException $t) {
+            if ($t->getPrevious() instanceof IngredientTypeNotFoundException) {
+                return new JsonErrorResponse($t->getPrevious()->getMessage(), 404);
+            }
+
+            return new JsonErrorResponse($t->getMessage(), 500);
         }
     }
 }

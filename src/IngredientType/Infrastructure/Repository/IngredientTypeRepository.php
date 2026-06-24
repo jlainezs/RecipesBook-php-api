@@ -3,7 +3,6 @@ namespace App\IngredientType\Infrastructure\Repository;
 
 use App\IngredientType\Domain\Model\IngredientType;
 use App\IngredientType\Domain\Repository\IngredientTypeRepositoryInterface;
-use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -28,5 +27,11 @@ final class IngredientTypeRepository extends ServiceEntityRepository implements 
     public function findAll(?int $limit = null, ?int $offset = null): array
     {
         return parent::findBy([], null, $limit, $offset);
+    }
+
+    public function delete(IngredientType $ingredientType): void
+    {
+        $this->getEntityManager()->remove($ingredientType);
+        $this->getEntityManager()->flush();
     }
 }
