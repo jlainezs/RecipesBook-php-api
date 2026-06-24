@@ -7,7 +7,9 @@
             table="ingredient_type"
             repository-class="App\IngredientType\Infrastructure\Repository\IngredientTypeRepository"
         >
-        <id name="id" type="guid" column="id" length="36" />
+        <id name="id" type="aggregate_root_id" column="id">
+            <generator strategy="NONE" />
+        </id>
 
         <field name="name" column="name" />
         <field name="createdAt" type="datetime_immutable" column="created_at" />

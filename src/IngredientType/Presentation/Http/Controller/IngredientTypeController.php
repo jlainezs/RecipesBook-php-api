@@ -2,8 +2,11 @@
 
 namespace App\IngredientType\Presentation\Http\Controller;
 
+use App\IngredientType\Application\Command\IngredientType\IngredientTypeCreateCommand;
 use App\IngredientType\Application\Query\IngredientType\IngredientTypeInstanceQuery;
+use App\IngredientType\Domain\Exceptions\IngredientTypeEmptyNameException;
 use App\IngredientType\Domain\Exceptions\IngredientTypeNotFoundException;
+use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Bus\QueryBus;
 use App\Shared\Presentation\Http\Response\JsonErrorResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,7 +18,7 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/api/v1/ingredient-types')]
 final class IngredientTypeController extends AbstractController
 {
-    public function __construct(private readonly QueryBus $queryBus)
+    public function __construct(private readonly QueryBus $queryBus, private readonly CommandBus $commandBus)
     {}
 
     #[Route('/{id}', name: 'ingredient_type_get_instance', methods: ['GET'])]
@@ -39,6 +42,31 @@ final class IngredientTypeController extends AbstractController
             }
 
             return new JsonErrorResponse($t->getMessage(), 500);
+        }
+    }
+
+    #[Route('/create', name: 'ingredient_type_create', methods: ['POST'])]
+    public function create(Request $request):JsonResponse
+    {
+        $name = $request->getPayload()->getString('name');
+
+        try
+        {
+            $this->commandBus->dispatch(new IngredientTypeCreateCommand($name));
+
+            return new JsonResponse(['message' => 'Ingredient type created successfully'], 201);
+        }
+        catch (HandlerFailedException $t)
+        {
+            if ($t->getPrevious() instanceof IngredientTypeEmptyNameException) {
+                $innerError = sprintf('%s @ %s - %s', $t->getPrevious()->getMessage(), $t->getPrevious()->getFile(), $t->getPrevious()->getLine());
+
+                return new JsonErrorResponse($innerError, 400);
+            }
+
+            $innerError = sprintf('%s @ %s - %s', $t->getMessage(), $t->getFile(), $t->getLine());
+
+            return new JsonErrorResponse($innerError, 500);
         }
     }
 }

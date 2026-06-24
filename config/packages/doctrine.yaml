@@ -7,6 +7,8 @@ doctrine:
         #server_version: '16'
 
         profiling_collect_backtrace: '%kernel.debug%'
+        types:
+            aggregate_root_id: App\Shared\Infrastructure\Persistence\Doctrine\Type\AggregateRootIdType
     orm:
         validate_xml_mapping: true
         naming_strategy: doctrine.orm.naming_strategy.underscore

@@ -5,7 +5,7 @@ use App\Shared\Application\Bus\CommandBus;
 use Symfony\Component\Messenger\Exception\ExceptionInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-readonly class SymfonyCommandBus implements CommandBus
+readonly final class SymfonyCommandBus implements CommandBus
 {
     public function __construct(private MessageBusInterface $commandBus)
     {}
