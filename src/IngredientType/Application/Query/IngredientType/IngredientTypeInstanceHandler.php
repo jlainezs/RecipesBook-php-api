@@ -29,6 +29,6 @@ final readonly class IngredientTypeInstanceHandler
             ));
         }
 
-        throw new IngredientTypeNotFoundException();
+        throw new IngredientTypeNotFoundException($query->id);
     }
 }
