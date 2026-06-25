@@ -1,5 +1,4 @@
 <?php
-
 namespace App\IngredientType\Application\Command\IngredientType;
 
 use App\IngredientType\Domain\Exceptions\IngredientTypeEmptyNameException;
