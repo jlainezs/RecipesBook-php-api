@@ -1,0 +1,4 @@
+PUT http://localhost:8000/api/v1/ingredient-types/4c888da3-2927-4eaa-b236-81fb28c35f01
+Accept: application/json
+
+{"name": "Updated ingredient type name"}

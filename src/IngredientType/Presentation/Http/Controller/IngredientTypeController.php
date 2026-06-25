@@ -4,6 +4,7 @@ namespace App\IngredientType\Presentation\Http\Controller;
 
 use App\IngredientType\Application\Command\IngredientType\IngredientTypeCreateCommand;
 use App\IngredientType\Application\Command\IngredientType\IngredientTypeDeleteCommand;
+use App\IngredientType\Application\Command\IngredientType\IngredientTypeUpdateCommand;
 use App\IngredientType\Application\Query\IngredientType\IngredientTypeInstanceQuery;
 use App\IngredientType\Domain\Exceptions\IngredientTypeEmptyNameException;
 use App\IngredientType\Domain\Exceptions\IngredientTypeNotFoundException;
@@ -46,6 +47,27 @@ final class IngredientTypeController extends AbstractController
         }
     }
 
+    #[Route('/{id}', name: 'ingredient_types_update_instance', methods: ['PUT'])]
+    public function updateInstance(Request $request): JsonResponse
+    {
+        $name = $request->getPayload()->getString('name');
+        $id = $request->attributes->getString('id');
+
+        try
+        {
+            $this->commandBus->dispatch(new IngredientTypeUpdateCommand($id, $name));
+            return new JsonResponse(null, 204);
+        }
+        catch (HandlerFailedException $t)
+        {
+            if ($t->getPrevious() instanceof IngredientTypeNotFoundException) {
+                return new JsonErrorResponse($t->getPrevious()->getMessage(), 404);
+            }
+
+            return new JsonErrorResponse($t->getMessage(), 500);
+        }
+    }
+
     #[Route('/create', name: 'ingredient_types_create', methods: ['POST'])]
     public function create(Request $request):JsonResponse
     {
@@ -67,8 +89,8 @@ final class IngredientTypeController extends AbstractController
         }
     }
 
-    #[Route('/{id}', name: 'ingredient_types_delete', methods: ['DELETE'])]
-    public function delete(Request $request): JsonResponse
+    #[Route('/{id}', name: 'ingredient_types_delete_instance', methods: ['DELETE'])]
+    public function deleteInstance(Request $request): JsonResponse
     {
         $id = $request->attributes->getString('id');
 
