@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Season\Application;
+namespace App\Season\Application\Service;
 
 use App\Shared\Application\Service\ItemsPager;
 

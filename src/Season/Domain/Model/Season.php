@@ -3,6 +3,7 @@
 namespace App\Season\Domain\Model;
 
 use App\Season\Domain\Exceptions\SeasonEmptyNameException;
+use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
 use App\Shared\Domain\Model\AggregateRoot;
 use App\Shared\Domain\ValueObject\AggregateRootId;
 use DateTimeImmutable;
@@ -16,6 +17,10 @@ final class Season extends AggregateRoot
         private DateTimeImmutable        $updatedAt
     ){}
 
+    /**
+     * @throws SeasonEmptyNameException
+     * @throws EmptyIdNotAllowedException
+     */
     public static function create(string $name): self
     {
         if (empty(trim($name))) {

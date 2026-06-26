@@ -2,7 +2,7 @@
 
 namespace App\Season\Application\Query\Season;
 
-use App\IngredientType\Domain\Exceptions\IngredientTypeNotFoundException;
+use App\Season\Domain\Exceptions\SeasonNotFoundException;
 use App\Season\Domain\Repository\SeasonRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
@@ -13,7 +13,7 @@ final readonly class SeasonInstanceHandler
     {}
 
     /**
-     * @throws IngredientTypeNotFoundException
+     * @throws SeasonNotFoundException
      */
     public function __invoke(SeasonInstanceQuery $query):SeasonInstanceResponse
     {
@@ -29,6 +29,6 @@ final readonly class SeasonInstanceHandler
             ));
         }
 
-        throw new IngredientTypeNotFoundException($query->id);
+        throw new SeasonNotFoundException($query->id);
     }
 }
