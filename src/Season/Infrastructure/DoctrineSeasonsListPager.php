@@ -1,8 +1,7 @@
 <?php
-
 namespace App\Season\Infrastructure;
 
-use App\Season\Application\SeasonItemsPager;
+use App\Season\Application\Service\SeasonItemsPager;
 use App\Season\Domain\Repository\SeasonRepositoryInterface;
 
 final readonly class DoctrineSeasonsListPager implements SeasonItemsPager
