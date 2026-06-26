@@ -36,7 +36,7 @@ final class SeasonController extends AbstractController
         }
         catch (HandlerFailedException $t)
         {
-            if ($t->getPrevious() instanceof SessionNotFoundException)
+            if ($t->getPrevious() instanceof SeasonNotFoundException)
             {
                 return new JsonErrorResponse(
                     $t->getPrevious()->getMessage(),

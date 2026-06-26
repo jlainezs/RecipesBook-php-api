@@ -1,0 +1,3 @@
+# Expected 404
+GET http://localhost:8000/api/v1/seasons/1968c634-0eef-47f3-ab9d-1235112accd8
+Accept: application/json
