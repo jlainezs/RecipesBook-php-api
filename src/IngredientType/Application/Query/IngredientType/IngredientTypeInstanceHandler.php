@@ -9,7 +9,7 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 #[AsMessageHandler]
 final readonly class IngredientTypeInstanceHandler
 {
-    public function __construct(private readonly IngredientTypeRepositoryInterface $repository)
+    public function __construct(private IngredientTypeRepositoryInterface $repository)
     {}
 
     /**

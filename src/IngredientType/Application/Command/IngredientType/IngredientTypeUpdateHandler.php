@@ -8,7 +8,7 @@ use App\IngredientType\Domain\Repository\IngredientTypeRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-class IngredientTypeUpdateHandler
+readonly final class IngredientTypeUpdateHandler
 {
     public function __construct(private readonly IngredientTypeRepositoryInterface $repository)
     {}
