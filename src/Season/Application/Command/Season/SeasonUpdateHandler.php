@@ -9,12 +9,13 @@ use App\IngredientType\Domain\Repository\IngredientTypeRepositoryInterface;
 use App\Season\Domain\Exceptions\SeasonEmptyNameException;
 use App\Season\Domain\Exceptions\SeasonNotFoundException;
 use App\Season\Domain\Repository\SeasonRepositoryInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
 readonly final class SeasonUpdateHandler
 {
-    public function __construct(private readonly SeasonRepositoryInterface $repository)
+    public function __construct(private readonly SeasonRepositoryInterface $repository, private readonly LoggerInterface $logger)
     {}
 
     /**
@@ -27,9 +28,11 @@ readonly final class SeasonUpdateHandler
         {
             $season->rename($command->name);
             $this->repository->save($season);
+            $this->logger->notice(sprintf('Season "%s" updated', $command->id));
         }
         else
         {
+            $this->logger->notice(sprintf('Season "%s" not found', $command->id));
             throw new SeasonNotFoundException($command->id);
         }
     }

@@ -2,7 +2,6 @@
 
 namespace App\Season\Infrastructure\Repository;
 
-use App\IngredientType\Domain\Model\IngredientType;
 use App\Season\Domain\Model\Season;
 use App\Season\Domain\Repository\SeasonRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -12,7 +11,7 @@ class SeasonRepository extends ServiceEntityRepository implements SeasonReposito
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, IngredientType::class);
+        parent::__construct($registry, Season::class);
     }
     public function findOne(string $id): ?Season
     {
@@ -21,7 +20,7 @@ class SeasonRepository extends ServiceEntityRepository implements SeasonReposito
 
     public function findAll(?int $limit = null, ?int $offset = null): array
     {
-        return parent::findBy([], [], $limit, $offset);
+        return parent::findBy([], null, $limit, $offset);
     }
 
     public function save(Season $season): void

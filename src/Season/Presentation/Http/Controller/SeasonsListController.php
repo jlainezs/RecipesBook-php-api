@@ -21,8 +21,8 @@ final class SeasonsListController extends AbstractController
     public function list(Request $request): JsonResponse
     {
         $response = $this->queryBus->ask(new SeasonsQuery(
-            offset: $request->query->getInt('offset'),
-            limit: $request->query->getInt('limit'),
+            offset: $request->query->getInt('offset', 0),
+            limit: $request->query->getInt('limit', 20),
         ));
         return SeasonsListJsonResponse::create($response->items);
     }

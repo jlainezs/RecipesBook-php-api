@@ -21,8 +21,8 @@ final class IngredientTypesListController extends AbstractController
     public function list(Request $request): JsonResponse
     {
         $response = $this->queryBus->ask(new IngredientTypesQuery(
-            offset: $request->query->getInt('offset'),
-            limit: $request->query->getInt('limit'),
+            offset: $request->query->getInt('offset', 0),
+            limit: $request->query->getInt('limit', 20),
         ));
         return IngredientTypesListJsonResponse::create($response->items);
     }

@@ -3,14 +3,14 @@ namespace App\Season\Application\Query\Season;
 
 use App\Season\Application\Service\SeasonItemsPager;
 use App\Season\Domain\Model\Season;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
 final readonly class SeasonsQueryHandler
 {
     public function __construct(private SeasonItemsPager $list)
-    {
-    }
+    {}
 
     public function __invoke(SeasonsQuery $query): SeasonsQueryResponse
     {

@@ -1,0 +1,4 @@
+PUT http://localhost:8000/api/v1/seasons/c8666457-464d-4196-8f3b-c11125b1f33f
+Content-Type: application/json
+
+{"name": "Summer modified"}
