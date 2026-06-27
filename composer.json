@@ -19,6 +19,7 @@
         "symfony/console": "8.1.*",
         "symfony/dotenv": "8.1.*",
         "symfony/expression-language": "8.1.*",
+        "symfony/filesystem": "8.1.*",
         "symfony/flex": "^2.11",
         "symfony/framework-bundle": "8.1.*",
         "symfony/messenger": "8.1.*",
