@@ -78,7 +78,7 @@ final class SeasonController extends AbstractController
         {
             $this->commandBus->dispatch(new SeasonCreateCommand($name));
 
-            return new JsonResponse(['message' => 'Ingredient type created successfully'], 201);
+            return new JsonResponse(null, 201);
         }
         catch (HandlerFailedException $t)
         {

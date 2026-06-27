@@ -2,7 +2,7 @@
 
 namespace App\Season\Application\Query\Season;
 
-readonly class SeasonInstanceQuery
+final readonly class SeasonInstanceQuery
 {
     public function __construct(public string $id)
     {}

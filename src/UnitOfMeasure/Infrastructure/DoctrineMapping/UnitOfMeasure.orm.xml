@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                                      https://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+    <entity name="App\UnitOfMeasure\Domain\Model\UnitOfMeasure"
+            table="unit_of_measure"
+            repository-class="App\UnitOfMeasure\Infrastructure\Repository\UnitOfMeasureRepository"
+    >
+        <id name="id" type="aggregate_root_id" column="id">
+            <generator strategy="NONE" />
+        </id>
+
+        <field name="name" column="name" />
+        <field name="symbol" column="symbol" length="15" />
+        <field name="uomType" column="uom_type" type="integer" enum-type="App\UnitOfMeasure\Domain\Model\UnitOfMeasureEnum" />
+        <field name="createdAt" type="datetime_immutable" column="created_at" />
+        <field name="updatedAt" type="datetime_immutable" column="updated_at" />
+    </entity>
+</doctrine-mapping>

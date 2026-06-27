@@ -1,0 +1,5 @@
+PUT http://localhost:8000/api/v1/units-of-measure/ea888259-3062-459f-a82c-837568b90edc
+Content-Type: application/json
+Accept: application/json
+
+{"name": "gram", "symbol": "gr", "uomType": 0}

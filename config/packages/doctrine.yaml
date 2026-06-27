@@ -28,12 +28,12 @@ doctrine:
                 prefix: 'App\Season\Domain\Model'
                 alias: Season
                 is_bundle: false
-            # App:
-            #    type: attribute
-            #    is_bundle: false
-            #    dir: '%kernel.project_dir%/src/Entity'
-            #    prefix: 'App\Entity'
-            #    alias: App
+            UnitOfMeasureXML:
+                type: xml
+                dir: '%kernel.project_dir%/src/UnitOfMeasure/Infrastructure/DoctrineMapping'
+                prefix: 'App\UnitOfMeasure\Domain\Model'
+                alias: UnitOfMeasure
+                is_bundle: false
 
 when@test:
     doctrine:

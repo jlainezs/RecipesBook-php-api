@@ -1,10 +1,9 @@
 <?php
-
-namespace App\Season\Presentation\Http\Response;
+namespace App\UnitOfMeasure\Presentation\Http\Response;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-readonly final class SeasonsListJsonResponse
+readonly final class UnitsOfMeasureListJsonResponse
 {
     private function __construct()
     {}
@@ -12,7 +11,7 @@ readonly final class SeasonsListJsonResponse
     public static function create(array $items): JsonResponse
     {
         return new JsonResponse([
-            'items' => $items,
+            'items' => $items
         ]);
     }
 }
