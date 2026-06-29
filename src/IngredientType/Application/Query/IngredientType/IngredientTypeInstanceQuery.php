@@ -2,7 +2,7 @@
 
 namespace App\IngredientType\Application\Query\IngredientType;
 
-readonly class IngredientTypeInstanceQuery
+readonly final class IngredientTypeInstanceQuery
 {
     public function __construct(public string $id)
     {}
