@@ -1,0 +1,32 @@
+PUT http://localhost:8000/api/v1/ingredients/fc066bb1-22a9-47a4-981d-81f5065b461f
+Content-Type: application/json
+
+{
+    "name": "An ingredient test here but with a new name",
+    "description": "The description of this test ingredient is also changed",
+    "ingredientTypeId": "84d77bf6-43d6-4d4e-b559-3a203e750eeb"
+}
+
+###
+# Expected to fail - non existant ingredient type id
+
+PUT http://localhost:8000/api/v1/ingredients/fc066bb1-22a9-47a4-981d-81f5065b461f
+Content-Type: application/json
+
+{
+    "name": "Will fail",
+    "description": "The ingredient type does not exists",
+    "ingredientTypeId": "11111111-1111-1111-1111-111111111111"
+}
+
+###
+# Expected to fail - non existant ingredient id
+
+PUT http://localhost:8000/api/v1/ingredients/00000000-0000-0000-0000-000000000000
+Content-Type: application/json
+
+{
+    "name": "Will fail",
+    "description": "The ingredient type does not exists",
+    "ingredientTypeId": "11111111-1111-1111-1111-111111111111"
+}

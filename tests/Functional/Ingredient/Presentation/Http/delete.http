@@ -1,0 +1,13 @@
+POST http://localhost:8000/api/v1/ingredients/create
+Content-Type: application/json
+
+{
+    "name": "An ingredient do delete",
+    "description": "XXXXXXXX",
+    "ingredientTypeId": "84d77bf6-43d6-4d4e-b559-3a203e750eeb"
+}
+
+###
+
+DELETE http://localhost:8000/api/v1/ingredients/2481d2d0-08c6-4ab1-a235-a5598d3af6e6
+Accept: application/json

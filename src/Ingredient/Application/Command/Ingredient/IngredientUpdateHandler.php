@@ -21,13 +21,13 @@ readonly final class IngredientUpdateHandler
      */
     public function __invoke(IngredientUpdateCommand $command): void
     {
-        $ingredient = $this->ingredientRepository->get($command->id);
+        $ingredient = $this->ingredientRepository->findOne($command->id);
 
         if (!$ingredient) {
             throw new IngredientNotFoundException($command->id);
         }
 
-        $ingredientType = $this->ingredientTypeRepository->get($command->ingredientTypeId);
+        $ingredientType = $this->ingredientTypeRepository->findOne($command->ingredientTypeId);
 
         if ($ingredientType)
         {
