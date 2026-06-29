@@ -34,7 +34,12 @@ doctrine:
                 prefix: 'App\UnitOfMeasure\Domain\Model'
                 alias: UnitOfMeasure
                 is_bundle: false
-
+            IngredientXML:
+                type: xml
+                dir: '%kernel.project_dir%/src/Ingredient/Infrastructure/DoctrineMapping'
+                prefix: 'App\Ingredient\Domain\Model'
+                alias: Ingredient
+                is_bundle: false
 when@test:
     doctrine:
         dbal:

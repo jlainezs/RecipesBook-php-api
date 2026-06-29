@@ -1,0 +1,20 @@
+POST http://localhost:8000/api/v1/ingredients/create
+Content-Type: application/json
+
+{
+    "name": "An ingredient test here",
+    "description": "The description of this test ingredient",
+    "ingredientTypeId": "84d77bf6-43d6-4d4e-b559-3a203e750eeb"
+}
+
+###
+# Expected to fail - non existant ingredient type id
+
+POST http://localhost:8000/api/v1/ingredients/create
+Content-Type: application/json
+
+{
+    "name": "Will fail",
+    "description": "The ingredient type does not exists",
+    "ingredientTypeId": "11111111-1111-1111-1111-111111111111"
+}
