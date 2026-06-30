@@ -1,0 +1,9 @@
+# yaml-language-server: $schema=../vendor/symfony/dependency-injection/Loader/schema/services.schema.json
+# config/services_dev.yaml
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    Tools\Console\:
+        resource: '../tools/Console/*'

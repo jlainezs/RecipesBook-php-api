@@ -1,5 +1,5 @@
 <?php
-namespace App\Command;
+namespace Tools\Console;
 
 use Symfony\Component\Console\Attribute\Argument;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -10,7 +10,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
 
 #[AsCommand(
-    name: 'app:create_bc',
+    name: 'rb:create-bc',
     description: 'Create a bounded context',
     help: 'This command creates a new bounded context and creates the related directory structure.',
     usages: ['MyNewShinyBoundedContext']
