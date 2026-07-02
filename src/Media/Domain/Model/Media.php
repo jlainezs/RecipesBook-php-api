@@ -1,9 +1,9 @@
 <?php
 namespace App\Media\Domain\Model;
-use App\Media\Domain\Exceptions\MediaEmptyContentException;
+
 use App\Media\Domain\Exceptions\MediaEmptyMimeTypeException;
 use App\Media\Domain\Exceptions\MediaEmptyOwnerClassException;
-use App\Media\Domain\Exceptions\MediaEmptyUriException;
+use App\Media\Domain\Exceptions\MediaEmptyPathException;
 use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
 use App\Shared\Domain\Model\AggregateRoot;
 use App\Shared\Domain\Model\Owner;
@@ -14,11 +14,10 @@ final class Media extends AggregateRoot
 {
     private function __construct(
         private readonly AggregateRootId   $id,
-        private readonly string            $mimeType,
-        private string                     $uri,
-        private string                     $content,
-        private string                     $ownerClass,
-        private AggregateRootId            $ownerClassId,
+        private string $ownerClass,
+        private AggregateRootId $ownerClassId,
+        private string $mimeType,
+        private string $path,
         private readonly DateTimeImmutable $createdAt,
         private readonly DateTimeImmutable $updatedAt
     ){}
@@ -26,12 +25,12 @@ final class Media extends AggregateRoot
     /**
      * @throws EmptyIdNotAllowedException
      * @throws MediaEmptyMimeTypeException
-     * @throws MediaEmptyUriException
+     * @throws MediaEmptyPathException
      * @throws MediaEmptyOwnerClassException
      */
     public static function create(
         string $mimeType,
-        string $uri,
+        string $path,
         string $content,
         string $ownerClass,
         AggregateRootId $ownerId
@@ -41,8 +40,8 @@ final class Media extends AggregateRoot
             throw new MediaEmptyMimeTypeException();
         }
 
-        if (empty(trim($uri))){
-            throw new MediaEmptyUriException();
+        if (empty(trim($path))){
+            throw new MediaEmptyPathException();
         }
 
         if (empty(trim($ownerClass))) {
@@ -51,11 +50,10 @@ final class Media extends AggregateRoot
 
         return new self(
             id: AggregateRootId::generateId(),
-            mimeType: $mimeType,
-            uri: $uri,
-            content: $content,
             ownerClass: $ownerClass,
             ownerClassId: $ownerId,
+            mimeType: $mimeType,
+            path: $path,
             createdAt: new DateTimeImmutable(),
             updatedAt: new DateTimeImmutable()
         );
@@ -108,38 +106,32 @@ final class Media extends AggregateRoot
         return $this->mimeType;
     }
 
-    public function getUri(): string
+    /**
+     * @throws MediaEmptyMimeTypeException
+     */
+    public function setMimeType(string $mimeType): void
     {
-        return $this->uri;
+        if (empty(trim($mimeType))) {
+            throw new MediaEmptyMimeTypeException();
+        }
+
+        $this->mimeType = $mimeType;
+    }
+
+    public function getPath(): string
+    {
+        return $this->path;
     }
 
     /**
-     * @throws MediaEmptyUriException
+     * @throws MediaEmptyPathException
      */
-    public function setUri(string $uri): void
+    public function setPath(string $path): void
     {
-        if (empty(trim($uri))) {
-            throw new MediaEmptyUriException();
+        if (empty(trim($path))) {
+            throw new MediaEmptyPathException();
         }
 
-        $this->uri = $uri;
-    }
-
-    public function getContent(): string
-    {
-        return $this->content;
-    }
-
-    /**
-     * @throws MediaEmptyContentException
-     */
-    public function setContent(string $content): void
-    {
-        if (empty(trim($content)))
-        {
-            throw new MediaEmptyContentException();
-        }
-
-        $this->content = $content;
+        $this->path = $path;
     }
 }

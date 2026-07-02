@@ -15,7 +15,7 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 #[AsMessageHandler]
 readonly final class SeasonUpdateHandler
 {
-    public function __construct(private readonly SeasonRepositoryInterface $repository, private readonly LoggerInterface $logger)
+    public function __construct(private readonly SeasonRepositoryInterface $repository)
     {}
 
     /**
@@ -28,11 +28,9 @@ readonly final class SeasonUpdateHandler
         {
             $season->rename($command->name);
             $this->repository->save($season);
-            $this->logger->notice(sprintf('Season "%s" updated', $command->id));
         }
         else
         {
-            $this->logger->notice(sprintf('Season "%s" not found', $command->id));
             throw new SeasonNotFoundException($command->id);
         }
     }

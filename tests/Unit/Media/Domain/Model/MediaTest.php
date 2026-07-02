@@ -1,10 +1,9 @@
 <?php
 namespace App\Tests\Unit\Media\Domain\Model;
 
-use App\Media\Domain\Exceptions\MediaEmptyContentException;
 use App\Media\Domain\Exceptions\MediaEmptyMimeTypeException;
 use App\Media\Domain\Exceptions\MediaEmptyOwnerClassException;
-use App\Media\Domain\Exceptions\MediaEmptyUriException;
+use App\Media\Domain\Exceptions\MediaEmptyPathException;
 use App\Media\Domain\Model\Media;
 use App\Shared\Domain\ValueObject\AggregateRootId;
 use DateTimeImmutable;
@@ -19,7 +18,7 @@ class MediaTest extends TestCase
     {
         $media = Media::create(
             "application/json",
-            "http://example.com",
+            "/some/path/to/a_file.txt",
             "bla bla bla",
             "A class",
             new AggregateRootId(Uuid::v4()->toString())
@@ -37,7 +36,7 @@ class MediaTest extends TestCase
         $this->expectException(MediaEmptyMimeTypeException::class);
         Media::create(
             "",
-            "http://example.com",
+            "/some/path/to/a_file.txt",
             "bla bla bla",
             "A class",
             new AggregateRootId(Uuid::v4()->toString())
@@ -45,9 +44,9 @@ class MediaTest extends TestCase
     }
 
     #[Test]
-    public function throw_empty_uri(): void
+    public function throw_empty_path(): void
     {
-        $this->expectException(MediaEmptyUriException::class);
+        $this->expectException(MediaEmptyPathException::class);
         Media::create(
             "application/json',",
             "",
@@ -63,7 +62,7 @@ class MediaTest extends TestCase
         $this->expectException(MediaEmptyOwnerClassException::class);
         Media::create(
             "application/json',",
-            "http://example.com",
+            "/some/path/to/a_file.txt",
             "bla bla bla",
             "",
             new AggregateRootId(Uuid::v4()->toString())
@@ -75,14 +74,14 @@ class MediaTest extends TestCase
     {
         $first = Media::create(
             "application/json',",
-            "http://example.com",
+            "/some/path/to/a_file.txt",
             "bla bla bla",
             "AClass",
             new AggregateRootId(Uuid::v4()->toString())
         );
         $second = Media::create(
             "application/json',",
-            "http://example.com",
+            "/some/path/to/a_file.txt",
             "bla bla bla",
             "AClass",
             new AggregateRootId(Uuid::v4()->toString())
@@ -91,44 +90,17 @@ class MediaTest extends TestCase
     }
 
     #[Test]
-    public function it_setsContent_successfully(): void
+    public function throws_empty_path_when_set_blank_path():void
     {
         $media = Media::create(
             "application/json',",
-            "http://example.com",
+            "/some/path/tofile",
             "bla bla bla",
             "AClass",
             new AggregateRootId(Uuid::v4()->toString())
         );
-        $media->setContent("new content");
-        $this->assertSame("new content", $media->getContent());
-    }
-
-    #[Test]
-    public function throws_empty_content_when_set_blank_content():void
-    {
-        $media = Media::create(
-            "application/json',",
-            "http://example.com",
-            "bla bla bla",
-            "AClass",
-            new AggregateRootId(Uuid::v4()->toString())
-        );
-        $this->expectException(MediaEmptyContentException::class);
-        $media->setContent("");
-    }
-    #[Test]
-    public function throws_empty_content_when_set_blank_uri():void
-    {
-        $media = Media::create(
-            "application/json',",
-            "http://example.com",
-            "bla bla bla",
-            "AClass",
-            new AggregateRootId(Uuid::v4()->toString())
-        );
-        $this->expectException(MediaEmptyUriException::class);
-        $media->setUri("");
+        $this->expectException(MediaEmptyPathException::class);
+        $media->setPath("");
     }
 
     #[Test]
@@ -136,7 +108,7 @@ class MediaTest extends TestCase
     {
         $media = Media::create(
             "application/json',",
-            "http://example.com",
+            "/some/path/to/a_file.txt",
             "bla bla bla",
             "AClass",
             new AggregateRootId(Uuid::v4()->toString())
