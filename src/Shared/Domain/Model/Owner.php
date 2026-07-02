@@ -1,5 +1,5 @@
 <?php
-namespace App\Media\Domain\Model;
+namespace App\Shared\Domain\Model;
 
 use App\Shared\Domain\ValueObject\AggregateRootId;
 
