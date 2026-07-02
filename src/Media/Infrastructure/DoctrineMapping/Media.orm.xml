@@ -9,11 +9,10 @@
         <id name="id" type="aggregate_root_id" column="id">
             <generator strategy="NONE" />
         </id>
-        <field name="mimeType" column="mime_type" />
-        <field name="uri" column="uri" />
-        <field name="content" column="content" />
         <field name="ownerClass" column="owner_class" />
         <field name="ownerClassId" type="aggregate_root_id" column="owner_class_id" />
+        <field name="mimeType" column="mime_type" />
+        <field name="path" column="path" />
         <field name="createdAt" type="datetime_immutable" column="created_at" />
         <field name="updatedAt" type="datetime_immutable" column="updated_at" />
     </entity>
