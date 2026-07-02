@@ -1,10 +1,10 @@
 <?php
 namespace App\Tests\Unit\Media\Domain\Model;
 
-use App\Media\Domain\Exceptions\EmptyContentException;
-use App\Media\Domain\Exceptions\EmptyMimeTypeException;
-use App\Media\Domain\Exceptions\EmptyOwnerClassException;
-use App\Media\Domain\Exceptions\EmptyUriException;
+use App\Media\Domain\Exceptions\MediaEmptyContentException;
+use App\Media\Domain\Exceptions\MediaEmptyMimeTypeException;
+use App\Media\Domain\Exceptions\MediaEmptyOwnerClassException;
+use App\Media\Domain\Exceptions\MediaEmptyUriException;
 use App\Media\Domain\Model\Media;
 use App\Shared\Domain\ValueObject\AggregateRootId;
 use DateTimeImmutable;
@@ -34,7 +34,7 @@ class MediaTest extends TestCase
     #[Test]
     public function throws_empty_mime_type(): void
     {
-        $this->expectException(EmptyMimeTypeException::class);
+        $this->expectException(MediaEmptyMimeTypeException::class);
         Media::create(
             "",
             "http://example.com",
@@ -47,7 +47,7 @@ class MediaTest extends TestCase
     #[Test]
     public function throw_empty_uri(): void
     {
-        $this->expectException(EmptyUriException::class);
+        $this->expectException(MediaEmptyUriException::class);
         Media::create(
             "application/json',",
             "",
@@ -60,7 +60,7 @@ class MediaTest extends TestCase
     #[Test]
     public function throws_empty_owner_class(): void
     {
-        $this->expectException(EmptyOwnerClassException::class);
+        $this->expectException(MediaEmptyOwnerClassException::class);
         Media::create(
             "application/json',",
             "http://example.com",
@@ -114,7 +114,7 @@ class MediaTest extends TestCase
             "AClass",
             new AggregateRootId(Uuid::v4()->toString())
         );
-        $this->expectException(EmptyContentException::class);
+        $this->expectException(MediaEmptyContentException::class);
         $media->setContent("");
     }
     #[Test]
@@ -127,7 +127,7 @@ class MediaTest extends TestCase
             "AClass",
             new AggregateRootId(Uuid::v4()->toString())
         );
-        $this->expectException(EmptyUriException::class);
+        $this->expectException(MediaEmptyUriException::class);
         $media->setUri("");
     }
 
@@ -141,7 +141,7 @@ class MediaTest extends TestCase
             "AClass",
             new AggregateRootId(Uuid::v4()->toString())
         );
-        $this->expectException(EmptyOwnerClassException::class);
+        $this->expectException(MediaEmptyOwnerClassException::class);
         $media->setOwner("");
     }
 }

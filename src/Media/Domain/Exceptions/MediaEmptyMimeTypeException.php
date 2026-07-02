@@ -4,10 +4,10 @@ namespace App\Media\Domain\Exceptions;
 use Exception;
 use Throwable;
 
-final class EmptyUriException extends Exception
+final class MediaEmptyMimeTypeException extends Exception
 {
     public function __construct(?Throwable $previous = null)
     {
-        parent::__construct("Uri cannot be empty", 0, $previous);
+        parent::__construct('Media mime type cannot be empty', 0, $previous);
     }
 }

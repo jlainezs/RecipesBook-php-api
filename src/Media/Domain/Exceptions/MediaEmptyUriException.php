@@ -1,14 +1,13 @@
 <?php
-
 namespace App\Media\Domain\Exceptions;
 
 use Exception;
 use Throwable;
 
-final class InvalidOwnerIdException extends Exception
+final class MediaEmptyUriException extends Exception
 {
     public function __construct(?Throwable $previous = null)
     {
-        parent::__construct("Owner id is not an UUID value", 0, $previous);
+        parent::__construct('Media uri cannot be empty', 0, $previous);
     }
 }

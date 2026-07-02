@@ -1,9 +1,9 @@
 <?php
 namespace App\Media\Domain\Model;
-use App\Media\Domain\Exceptions\EmptyContentException;
-use App\Media\Domain\Exceptions\EmptyMimeTypeException;
-use App\Media\Domain\Exceptions\EmptyOwnerClassException;
-use App\Media\Domain\Exceptions\EmptyUriException;
+use App\Media\Domain\Exceptions\MediaEmptyContentException;
+use App\Media\Domain\Exceptions\MediaEmptyMimeTypeException;
+use App\Media\Domain\Exceptions\MediaEmptyOwnerClassException;
+use App\Media\Domain\Exceptions\MediaEmptyUriException;
 use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
 use App\Shared\Domain\Model\AggregateRoot;
 use App\Shared\Domain\ValueObject\AggregateRootId;
@@ -24,9 +24,9 @@ final class Media extends AggregateRoot
 
     /**
      * @throws EmptyIdNotAllowedException
-     * @throws EmptyMimeTypeException
-     * @throws EmptyUriException
-     * @throws EmptyOwnerClassException
+     * @throws MediaEmptyMimeTypeException
+     * @throws MediaEmptyUriException
+     * @throws MediaEmptyOwnerClassException
      */
     public static function create(
         string $mimeType,
@@ -37,15 +37,15 @@ final class Media extends AggregateRoot
     ): Media
     {
         if (empty(trim($mimeType))) {
-            throw new EmptyMimeTypeException();
+            throw new MediaEmptyMimeTypeException();
         }
 
         if (empty(trim($uri))){
-            throw new EmptyUriException();
+            throw new MediaEmptyUriException();
         }
 
         if (empty(trim($ownerClass))) {
-            throw new EmptyOwnerClassException();
+            throw new MediaEmptyOwnerClassException();
         }
 
         return new self(
@@ -83,7 +83,7 @@ final class Media extends AggregateRoot
     public function setOwner(string $owner): void
     {
         if (empty(trim($owner))) {
-            throw new EmptyOwnerClassException();
+            throw new MediaEmptyOwnerClassException();
         }
 
         $this->ownerClass = $owner;
@@ -115,7 +115,7 @@ final class Media extends AggregateRoot
     public function setUri(string $uri): void
     {
         if (empty(trim($uri))) {
-            throw new EmptyUriException();
+            throw new MediaEmptyUriException();
         }
 
         $this->uri = $uri;
@@ -127,13 +127,13 @@ final class Media extends AggregateRoot
     }
 
     /**
-     * @throws EmptyContentException
+     * @throws MediaEmptyContentException
      */
     public function setContent(string $content): void
     {
         if (empty(trim($content)))
         {
-            throw new EmptyContentException();
+            throw new MediaEmptyContentException();
         }
 
         $this->content = $content;
