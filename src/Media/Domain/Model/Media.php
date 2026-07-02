@@ -6,18 +6,19 @@ use App\Media\Domain\Exceptions\MediaEmptyOwnerClassException;
 use App\Media\Domain\Exceptions\MediaEmptyUriException;
 use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
 use App\Shared\Domain\Model\AggregateRoot;
+use App\Shared\Domain\Model\Owner;
 use App\Shared\Domain\ValueObject\AggregateRootId;
 use DateTimeImmutable;
 
 final class Media extends AggregateRoot
 {
     private function __construct(
-        private readonly AggregateRootId $id,
-        private string $mimeType,
-        private string $uri,
-        private string $content,
-        private string $ownerClass,
-        private AggregateRootId $ownerId,
+        private readonly AggregateRootId   $id,
+        private readonly string            $mimeType,
+        private string                     $uri,
+        private string                     $content,
+        private string                     $ownerClass,
+        private AggregateRootId            $ownerClassId,
         private readonly DateTimeImmutable $createdAt,
         private readonly DateTimeImmutable $updatedAt
     ){}
@@ -54,7 +55,7 @@ final class Media extends AggregateRoot
             uri: $uri,
             content: $content,
             ownerClass: $ownerClass,
-            ownerId: $ownerId,
+            ownerClassId: $ownerId,
             createdAt: new DateTimeImmutable(),
             updatedAt: new DateTimeImmutable()
         );
@@ -89,15 +90,15 @@ final class Media extends AggregateRoot
         $this->ownerClass = $owner;
     }
 
-    public function getOwnerId(): AggregateRootId
+    public function getOwnerClassId(): AggregateRootId
     {
-        return $this->ownerId;
+        return $this->ownerClassId;
     }
 
     public function getOwner(): Owner
     {
         return new Owner(
-            ownerId: $this->ownerId,
+            ownerId: $this->ownerClassId,
             ownerClass: $this->ownerClass,
         );
     }
@@ -112,6 +113,9 @@ final class Media extends AggregateRoot
         return $this->uri;
     }
 
+    /**
+     * @throws MediaEmptyUriException
+     */
     public function setUri(string $uri): void
     {
         if (empty(trim($uri))) {
