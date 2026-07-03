@@ -7,6 +7,6 @@ final readonly class IngredientsQueryResponse
         /**
          * @var IngredientDto[]
          */
-        public readonly array $items
+        public array $items
     ){}
 }
