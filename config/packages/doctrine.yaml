@@ -40,6 +40,12 @@ doctrine:
                 prefix: 'App\Ingredient\Domain\Model'
                 alias: Ingredient
                 is_bundle: false
+            MediaXML:
+                type: xml
+                dir: '%kernel.project_dir%/src/Media/Infrastructure/DoctrineMapping'
+                prefix: 'App\Media\Domain\Model'
+                alias: Media
+                is_bundle: false
 when@test:
     doctrine:
         dbal:
