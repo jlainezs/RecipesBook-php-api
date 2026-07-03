@@ -1,6 +1,7 @@
 <?php
 namespace App\Media\Domain\Model;
 
+use App\Media\Domain\Exceptions\MediaEmptyFileNameException;
 use App\Media\Domain\Exceptions\MediaEmptyMimeTypeException;
 use App\Media\Domain\Exceptions\MediaEmptyOwnerClassException;
 use App\Media\Domain\Exceptions\MediaEmptyPathException;
@@ -18,6 +19,7 @@ final class Media extends AggregateRoot
         private AggregateRootId $ownerClassId,
         private string $mimeType,
         private string $path,
+        private string $fileName,
         private readonly DateTimeImmutable $createdAt,
         private readonly DateTimeImmutable $updatedAt
     ){}
@@ -27,11 +29,12 @@ final class Media extends AggregateRoot
      * @throws MediaEmptyMimeTypeException
      * @throws MediaEmptyPathException
      * @throws MediaEmptyOwnerClassException
+     * @throws MediaEmptyFileNameException
      */
     public static function create(
         string $mimeType,
         string $path,
-        string $content,
+        string $fileName,
         string $ownerClass,
         AggregateRootId $ownerId
     ): Media
@@ -48,12 +51,17 @@ final class Media extends AggregateRoot
             throw new MediaEmptyOwnerClassException();
         }
 
+        if (empty(trim($fileName))) {
+            throw new MediaEmptyFileNameException();
+        }
+
         return new self(
             id: AggregateRootId::generateId(),
             ownerClass: $ownerClass,
             ownerClassId: $ownerId,
             mimeType: $mimeType,
             path: $path,
+            fileName: $fileName,
             createdAt: new DateTimeImmutable(),
             updatedAt: new DateTimeImmutable()
         );
@@ -79,6 +87,9 @@ final class Media extends AggregateRoot
         return $this->ownerClass;
     }
 
+    /**
+     * @throws MediaEmptyOwnerClassException
+     */
     public function setOwner(string $owner): void
     {
         if (empty(trim($owner))) {
@@ -86,6 +97,11 @@ final class Media extends AggregateRoot
         }
 
         $this->ownerClass = $owner;
+    }
+
+    public function setOwnerClassId(AggregateRootId $ownerClassId): void
+    {
+        $this->ownerClassId = $ownerClassId;
     }
 
     public function getOwnerClassId(): AggregateRootId
@@ -133,5 +149,22 @@ final class Media extends AggregateRoot
         }
 
         $this->path = $path;
+    }
+
+    public function getFileName():string
+    {
+        return $this->fileName;
+    }
+
+    /**
+     * @throws MediaEmptyFileNameException
+     */
+    public function setFileName(string $fileName): void
+    {
+        if (empty(trim($fileName))) {
+            throw new MediaEmptyFileNameException();
+        }
+
+        $this->fileName = $fileName;
     }
 }

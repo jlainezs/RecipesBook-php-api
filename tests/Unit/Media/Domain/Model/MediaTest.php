@@ -1,6 +1,7 @@
 <?php
 namespace App\Tests\Unit\Media\Domain\Model;
 
+use App\Media\Domain\Exceptions\MediaEmptyFileNameException;
 use App\Media\Domain\Exceptions\MediaEmptyMimeTypeException;
 use App\Media\Domain\Exceptions\MediaEmptyOwnerClassException;
 use App\Media\Domain\Exceptions\MediaEmptyPathException;
@@ -19,7 +20,7 @@ class MediaTest extends TestCase
         $media = Media::create(
             "application/json",
             "/some/path/to/a_file.txt",
-            "bla bla bla",
+            "filename.txt",
             "A class",
             new AggregateRootId(Uuid::v4()->toString())
         );
@@ -37,7 +38,7 @@ class MediaTest extends TestCase
         Media::create(
             "",
             "/some/path/to/a_file.txt",
-            "bla bla bla",
+            "filename.txt",
             "A class",
             new AggregateRootId(Uuid::v4()->toString())
         );
@@ -50,7 +51,7 @@ class MediaTest extends TestCase
         Media::create(
             "application/json',",
             "",
-            "bla bla bla",
+            "filename.txt",
             "A class",
             new AggregateRootId(Uuid::v4()->toString())
         );
@@ -63,7 +64,7 @@ class MediaTest extends TestCase
         Media::create(
             "application/json',",
             "/some/path/to/a_file.txt",
-            "bla bla bla",
+            "filename.txt",
             "",
             new AggregateRootId(Uuid::v4()->toString())
         );
@@ -75,14 +76,14 @@ class MediaTest extends TestCase
         $first = Media::create(
             "application/json',",
             "/some/path/to/a_file.txt",
-            "bla bla bla",
+            "filename.txt",
             "AClass",
             new AggregateRootId(Uuid::v4()->toString())
         );
         $second = Media::create(
             "application/json',",
             "/some/path/to/a_file.txt",
-            "bla bla bla",
+            "filename.txt",
             "AClass",
             new AggregateRootId(Uuid::v4()->toString())
         );
@@ -95,7 +96,7 @@ class MediaTest extends TestCase
         $media = Media::create(
             "application/json',",
             "/some/path/tofile",
-            "bla bla bla",
+            "filename.txt",
             "AClass",
             new AggregateRootId(Uuid::v4()->toString())
         );
@@ -109,11 +110,69 @@ class MediaTest extends TestCase
         $media = Media::create(
             "application/json',",
             "/some/path/to/a_file.txt",
-            "bla bla bla",
+            "filename.txt",
             "AClass",
             new AggregateRootId(Uuid::v4()->toString())
         );
         $this->expectException(MediaEmptyOwnerClassException::class);
         $media->setOwner("");
+    }
+
+    #[Test]
+    public function it_keeps_file_name()
+    {
+        $media = Media::create(
+            "application/json',",
+            "/some/path/to/a_file.txt",
+            "filename.txt",
+            "AClass",
+            new AggregateRootId(Uuid::v4()->toString())
+        );
+
+        $this->assertEquals("filename.txt", $media->getFileName());
+    }
+
+    #[Test]
+    public function throws_empty_file_name_when_using_blank_file_name():void
+    {
+        $this->expectException(MediaEmptyFileNameException::class);
+        $media = Media::create(
+            "application/json',",
+            "/some/path/to/a_file.txt",
+            "",
+            "AClass",
+            new AggregateRootId(Uuid::v4()->toString())
+        );
+    }
+
+    #[Test]
+    public function throws_empty_file_name_when_set_blank_file_name():void
+    {
+        $media = Media::create(
+            "application/json',",
+            "/some/path/to/a_file.txt",
+            "fileName.txt",
+            "AClass",
+            new AggregateRootId(Uuid::v4()->toString())
+        );
+
+        $this->expectException(MediaEmptyFileNameException::class);
+        $media->setFileName("");
+    }
+
+    #[Test]
+    public function it_sets_the_right_owner():void
+    {
+        $ownerId = new AggregateRootId(Uuid::v4()->toString());
+        $media = Media::create(
+            "application/json',",
+            "/some/path/to/a_file.txt",
+            "filename.txt",
+            "AClass",
+            $ownerId
+        );
+
+        $this->assertEquals("AClass", $media->getOwnerClass());
+        $this->assertEquals($ownerId, $media->getOwnerClassId());
     }
 }
