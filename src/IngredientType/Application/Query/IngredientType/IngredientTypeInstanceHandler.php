@@ -1,5 +1,4 @@
 <?php
-
 namespace App\IngredientType\Application\Query\IngredientType;
 
 use App\IngredientType\Domain\Exceptions\IngredientTypeNotFoundException;

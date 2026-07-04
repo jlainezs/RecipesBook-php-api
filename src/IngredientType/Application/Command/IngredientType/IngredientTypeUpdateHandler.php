@@ -1,5 +1,4 @@
 <?php
-
 namespace App\IngredientType\Application\Command\IngredientType;
 
 use App\IngredientType\Domain\Exceptions\IngredientTypeEmptyNameException;
@@ -10,7 +9,7 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 #[AsMessageHandler]
 readonly final class IngredientTypeUpdateHandler
 {
-    public function __construct(private readonly IngredientTypeRepositoryInterface $repository)
+    public function __construct(private IngredientTypeRepositoryInterface $repository)
     {}
 
     /**

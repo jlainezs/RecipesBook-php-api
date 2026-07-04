@@ -1,5 +1,4 @@
 <?php
-
 namespace App\IngredientType\Application\Query\IngredientType;
 
 final readonly class IngredientTypesQueryResponse
