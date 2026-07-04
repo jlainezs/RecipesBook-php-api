@@ -1,7 +1,19 @@
+###
+# If the id is the db
+#   http status code 200
+# otherwise
+#   http status code 404
 GET http://localhost:8000/api/v1/ingredients/fc066bb1-22a9-47a4-981d-81f5065b461f
 Accept: application/json
 
 ###
-# Expected to fail: id is not an Uuid
+# http status code 404
+GET http://localhost:8000/api/v1/ingredients/21ba13b4-b185-4882-ac6f-d147355987eb
+Accept: application/json
+
+###
+# Expected to fail
+# http status code 400
+# id is not an Uuid
 GET http://localhost:8000/api/v1/ingredients/abcde
 Accept: application/json
