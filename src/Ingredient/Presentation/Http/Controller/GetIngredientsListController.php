@@ -9,14 +9,13 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/api/v1')]
-final class IngredientsListController extends AbstractController
+final class GetIngredientsListController extends AbstractController
 {
     public function __construct(private readonly QueryBus $queryBus)
     {}
 
-    #[Route('/ingredients', name: 'ingredient_list', methods: ['GET'])]
-    public function list(Request $request): JsonResponse
+    #[Route('/api/v1/ingredients', name: 'ingredient_list', methods: ['GET'])]
+    public function __invoke(Request $request): JsonResponse
     {
         $response = $this->queryBus->ask(
             new IngredientsQuery(

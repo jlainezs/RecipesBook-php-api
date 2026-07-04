@@ -8,7 +8,7 @@ Content-Type: application/json
 }
 
 ###
-# Expected to fail - non existant ingredient type id
+# Expected to fail - invalid UID
 
 POST http://localhost:8000/api/v1/ingredients/create
 Content-Type: application/json
@@ -17,4 +17,16 @@ Content-Type: application/json
     "name": "Will fail",
     "description": "The ingredient type does not exists",
     "ingredientTypeId": "11111111-1111-1111-1111-111111111111"
+}
+
+###
+# Expected to fail - ingredientTypeId not found
+
+POST http://localhost:8000/api/v1/ingredients/create
+Content-Type: application/json
+
+{
+    "name": "Will fail",
+    "description": "The ingredient type does not exists",
+    "ingredientTypeId": "164ef693-2b9d-46de-ad7f-836201f0c2db"
 }
