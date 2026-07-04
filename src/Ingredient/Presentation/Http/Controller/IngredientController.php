@@ -7,7 +7,7 @@ use App\Ingredient\Application\Command\Ingredient\IngredientUpdateCommand;
 use App\Ingredient\Application\Query\Ingredient\IngredientInstanceQuery;
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Bus\QueryBus;
-use App\Shared\Application\Validation\ApplicationDataValidator;
+use App\Shared\Application\Service\ApplicationDataValidator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

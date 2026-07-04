@@ -6,45 +6,32 @@ use App\IngredientType\Application\Command\IngredientType\IngredientTypeCreateCo
 use App\IngredientType\Application\Command\IngredientType\IngredientTypeDeleteCommand;
 use App\IngredientType\Application\Command\IngredientType\IngredientTypeUpdateCommand;
 use App\IngredientType\Application\Query\IngredientType\IngredientTypeInstanceQuery;
-use App\IngredientType\Domain\Exceptions\IngredientTypeEmptyNameException;
-use App\IngredientType\Domain\Exceptions\IngredientTypeNotFoundException;
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Bus\QueryBus;
-use App\Shared\Presentation\Http\Response\JsonErrorResponse;
+use App\Shared\Application\Service\ApplicationDataValidator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Messenger\Exception\HandlerFailedException;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/api/v1/ingredient-types')]
 final class IngredientTypeController extends AbstractController
 {
-    public function __construct(private readonly QueryBus $queryBus, private readonly CommandBus $commandBus)
-    {}
+    public function __construct(
+        private readonly QueryBus $queryBus,
+        private readonly CommandBus $commandBus,
+        private readonly ApplicationDataValidator $validator
+    ){}
 
     #[Route('/{id}', name: 'ingredient_types_get_instance', methods: ['GET'])]
     public function getInstance(Request $request):JsonResponse
     {
         $id = $request->attributes->getString('id');
+        $query = new IngredientTypeInstanceQuery($id);
+        $this->validator->validate($query);
+        $response = $this->queryBus->ask($query);
 
-        try
-        {
-            $response = $this->queryBus->ask(new IngredientTypeInstanceQuery($id));
-            return new JsonResponse($response);
-        }
-        catch (HandlerFailedException $t)
-        {
-            if ($t->getPrevious() instanceof IngredientTypeNotFoundException)
-            {
-                return new JsonErrorResponse(
-                    $t->getPrevious()->getMessage(),
-                    404
-                );
-            }
-
-            return new JsonErrorResponse($t->getMessage(), 500);
-        }
+        return new JsonResponse($response);
     }
 
     #[Route('/{id}', name: 'ingredient_types_update_instance', methods: ['PUT'])]
@@ -52,58 +39,29 @@ final class IngredientTypeController extends AbstractController
     {
         $name = $request->getPayload()->getString('name');
         $id = $request->attributes->getString('id');
+        $cmd = new IngredientTypeUpdateCommand($id, $name);
+        $this->commandBus->dispatch($cmd);
 
-        try
-        {
-            $this->commandBus->dispatch(new IngredientTypeUpdateCommand($id, $name));
-            return new JsonResponse(null, 204);
-        }
-        catch (HandlerFailedException $t)
-        {
-            if ($t->getPrevious() instanceof IngredientTypeNotFoundException) {
-                return new JsonErrorResponse($t->getPrevious()->getMessage(), 404);
-            }
-
-            return new JsonErrorResponse($t->getMessage(), 500);
-        }
+        return new JsonResponse(null, 204);
     }
 
     #[Route('/create', name: 'ingredient_types_create', methods: ['POST'])]
     public function create(Request $request):JsonResponse
     {
         $name = $request->getPayload()->getString('name');
+        $cmd = new IngredientTypeCreateCommand($name);
+        $this->commandBus->dispatch($cmd);
 
-        try
-        {
-            $this->commandBus->dispatch(new IngredientTypeCreateCommand($name));
-
-            return new JsonResponse(['message' => 'Ingredient type created successfully'], 201);
-        }
-        catch (HandlerFailedException $t)
-        {
-            if ($t->getPrevious() instanceof IngredientTypeEmptyNameException) {
-                return new JsonErrorResponse($t->getPrevious()->getMessage(), 400);
-            }
-
-            return new JsonErrorResponse($t->getMessage(), 500);
-        }
+        return new JsonResponse(['message' => 'Ingredient type created successfully'], 201);
     }
 
     #[Route('/{id}', name: 'ingredient_types_delete_instance', methods: ['DELETE'])]
     public function deleteInstance(Request $request): JsonResponse
     {
         $id = $request->attributes->getString('id');
+        $cmd = new IngredientTypeDeleteCommand($id);
+        $this->commandBus->dispatch($cmd);
 
-        try {
-            $this->commandBus->dispatch(new IngredientTypeDeleteCommand($id));
-
-            return new JsonResponse(null, 204);
-        } catch (HandlerFailedException $t) {
-            if ($t->getPrevious() instanceof IngredientTypeNotFoundException) {
-                return new JsonErrorResponse($t->getPrevious()->getMessage(), 404);
-            }
-
-            return new JsonErrorResponse($t->getMessage(), 500);
-        }
+        return new JsonResponse(null, 204);
     }
 }
