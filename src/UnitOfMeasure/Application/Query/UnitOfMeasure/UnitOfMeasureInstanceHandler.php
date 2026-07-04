@@ -16,8 +16,7 @@ final readonly class UnitOfMeasureInstanceHandler
      */
     public function __invoke(UnitOfMeasureInstanceQuery $query): ?UnitOfMeasureInstanceResponse
     {
-        $uom = $this->repository->find($query->id);
-        if ($uom)
+        if ($uom = $this->repository->find($query->id))
         {
             return new UnitOfMeasureInstanceResponse(
                 new UnitOfMeasureDto(

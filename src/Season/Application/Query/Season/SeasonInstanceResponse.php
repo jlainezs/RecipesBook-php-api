@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Season\Application\Query\Season;
 
 final readonly class SeasonInstanceResponse

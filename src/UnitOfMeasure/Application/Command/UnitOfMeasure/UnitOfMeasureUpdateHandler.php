@@ -10,12 +10,13 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 #[AsMessageHandler]
 readonly final class UnitOfMeasureUpdateHandler
 {
-    public function __construct(private readonly UnitOfMeasureRepository $repository)
+    public function __construct(private UnitOfMeasureRepository $repository)
     {}
 
     /**
      * @throws UnitOfMeasureEmptyNameException
      * @throws UnitOfMeasureEmptySymbolException
+     * @throws UnitOfMeasureNotFoundException
      */
     public function __invoke(UnitOfMeasureUpdateCommand $command): void
     {
@@ -25,7 +26,9 @@ readonly final class UnitOfMeasureUpdateHandler
             $uom->changeSymbol($command->symbol);
             $uom->setUomType($command->unitOfMeasureEnum);
             $this->repository->save($uom);
-        } else {
+        }
+        else
+        {
             throw new UnitOfMeasureNotFoundException($command->id);
         }
     }

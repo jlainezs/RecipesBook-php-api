@@ -7,6 +7,6 @@ readonly final class UnitsOfMeasureQueryResponse
         /**
          * @var UnitOfMeasureDto[]
          */
-        public readonly array $items,
+        public array $items,
     ){}
 }

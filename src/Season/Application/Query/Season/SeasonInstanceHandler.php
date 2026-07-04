@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Season\Application\Query\Season;
 
 use App\Season\Domain\Exceptions\SeasonNotFoundException;
@@ -17,16 +16,16 @@ final readonly class SeasonInstanceHandler
      */
     public function __invoke(SeasonInstanceQuery $query):SeasonInstanceResponse
     {
-        $season = $this->repository->findOne($query->id);
-
-        if ($season)
+        if ($season = $this->repository->findOne($query->id))
         {
-            return new SeasonInstanceResponse(new SeasonDto(
-                id: $season->getId()->toString(),
-                name: $season->getName(),
-                createdAt: $season->getCreatedAt(),
-                updatedAt: $season->getUpdatedAt(),
-            ));
+            return new SeasonInstanceResponse(
+                new SeasonDto(
+                    id: $season->getId()->toString(),
+                    name: $season->getName(),
+                    createdAt: $season->getCreatedAt(),
+                    updatedAt: $season->getUpdatedAt(),
+                )
+            );
         }
 
         throw new SeasonNotFoundException($query->id);

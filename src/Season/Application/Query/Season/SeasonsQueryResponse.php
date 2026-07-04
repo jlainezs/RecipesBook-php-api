@@ -8,6 +8,6 @@ final readonly class SeasonsQueryResponse
         /**
          * @var SeasonDto[]
          */
-        public readonly array $items,
+        public array $items,
     ) {}
 }
