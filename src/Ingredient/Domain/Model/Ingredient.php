@@ -11,14 +11,29 @@ use DateTimeImmutable;
 
 final class Ingredient extends AggregateRoot
 {
+    /**
+     * @throws IngredientEmptyNameException
+     */
     private function __construct(
         private readonly AggregateRootId $id,
         private string $name,
         private ?string $description,
         private ?IngredientType $ingredientType,
-        private DateTimeImmutable $createdAt,
-        private DateTimeImmutable $updatedAt
-    ){}
+        private readonly DateTimeImmutable $createdAt,
+        private readonly DateTimeImmutable $updatedAt
+    ){
+        $this->validate();
+    }
+
+    /**
+     * @throws IngredientEmptyNameException
+     */
+    public function validate(): void
+    {
+        if (empty(trim($this->name))) {
+            throw new IngredientEmptyNameException();
+        }
+    }
 
     /**
      * @throws IngredientEmptyNameException
@@ -28,12 +43,8 @@ final class Ingredient extends AggregateRoot
         string          $name,
         ?string         $description = null,
         ?IngredientType $ingredientType = null,
-    )
+    ): Ingredient
     {
-        if (empty(trim($name))) {
-            throw new IngredientEmptyNameException();
-        }
-
         return new self(
             id: AggregateRootId::generateId(),
             name: $name,

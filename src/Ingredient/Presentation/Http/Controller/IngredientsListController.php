@@ -20,7 +20,7 @@ final class IngredientsListController extends AbstractController
     {
         $response = $this->queryBus->ask(
             new IngredientsQuery(
-                offset: $request->query->getInt('offset', 0),
+                offset: $request->query->getInt('offset'),
                 limit: $request->query->getInt('limit', 10),
             )
         );

@@ -11,8 +11,8 @@
             <generator strategy="NONE" />
         </id>
 
-        <field name="name" type="string" column="name"/>
-        <field name="description" type="string" column="description" nullable="true" />
+        <field name="name" column="name"/>
+        <field name="description" column="description" nullable="true" />
         <many-to-one field="ingredientType"
                      target-entity="App\IngredientType\Domain\Model\IngredientType"
         />

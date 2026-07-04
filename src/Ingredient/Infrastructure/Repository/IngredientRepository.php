@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Ingredient\Infrastructure\Repository;
 
 use App\Ingredient\Domain\Model\Ingredient;
