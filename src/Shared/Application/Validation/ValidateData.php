@@ -4,7 +4,6 @@ namespace App\Shared\Application\Validation;
 use App\Shared\Application\Service\ApplicationDataValidator;
 use Symfony\Component\Validator\Exception\ValidationFailedException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Throwable;
 
 final readonly class ValidateData implements ApplicationDataValidator
 {
