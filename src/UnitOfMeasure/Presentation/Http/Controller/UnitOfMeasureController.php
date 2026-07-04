@@ -3,6 +3,7 @@ namespace App\UnitOfMeasure\Presentation\Http\Controller;
 
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Bus\QueryBus;
+use App\Shared\Application\Service\ApplicationDataValidator;
 use App\Shared\Presentation\Http\Response\JsonErrorResponse;
 use App\UnitOfMeasure\Application\Command\UnitOfMeasure\UnitOfMeasureCreateCommand;
 use App\UnitOfMeasure\Application\Command\UnitOfMeasure\UnitOfMeasureDeleteCommand;
@@ -21,31 +22,21 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/api/v1/units-of-measure')]
 final class UnitOfMeasureController extends AbstractController
 {
-    public function __construct(private readonly QueryBus $queryBus, private readonly CommandBus $commandBus)
-    {}
+    public function __construct(
+        private readonly QueryBus $queryBus,
+        private readonly CommandBus $commandBus,
+        private readonly ApplicationDataValidator $validator
+    ){}
 
     #[Route('/{id}', name: 'unit_of_measure_get_instance', methods: ['GET'])]
     public function getInstance(Request $request): JsonResponse
     {
         $id = $request->attributes->getString('id');
+        $query = new UnitOfMeasureInstanceQuery($id);
+        $this->validator->validate($query);
+        $response = $this->queryBus->ask($query);
 
-        try
-        {
-            $response = $this->queryBus->ask(new UnitOfMeasureInstanceQuery($id));
-            return new JsonResponse($response);
-        }
-        catch (HandlerFailedException $t)
-        {
-            if ($t->getPrevious() instanceof UnitOfMeasureNotFoundException)
-            {
-                return new JsonErrorResponse(
-                    $t->getPrevious()->getMessage(),
-                    404
-                );
-            }
-
-            return new JsonErrorResponse($t->getMessage(), 500);
-        }
+        return new JsonResponse($response);
     }
 
     #[Route('/{id}', name: 'unit_of_measure_update', methods: ['PUT'])]
@@ -55,19 +46,10 @@ final class UnitOfMeasureController extends AbstractController
         $name = $request->getPayload()->getString('name');
         $symbol = $request->getPayload()->getString('symbol');
         $uom = UnitOfMeasureEnum::from($request->getPayload()->getInt('uomType'));
+        $cmd = new UnitOfMeasureUpdateCommand($id, $name, $symbol, $uom);
+        $this->commandBus->dispatch($cmd);
 
-        try {
-            $this->commandBus->dispatch(new UnitOfMeasureUpdateCommand($id, $name, $symbol, $uom));
-            return new JsonResponse(null, 204);
-        }
-        catch (HandlerFailedException $t)
-        {
-            if ($t->getPrevious() instanceof UnitOfMeasureNotFoundException) {
-                return new JsonErrorResponse($t->getPrevious()->getMessage(), 404);
-            }
-
-            return new JsonErrorResponse($t->getMessage(), 500);
-        }
+        return new JsonResponse(null, 204);
     }
 
     #[Route('/create', name: 'unit_of_measure_create', methods: ['POST'])]
@@ -76,44 +58,19 @@ final class UnitOfMeasureController extends AbstractController
         $name = $request->getPayload()->getString('name');
         $symbol = $request->getPayload()->getString('symbol');
         $uom = UnitOfMeasureEnum::from($request->getPayload()->getInt('uomType'));
+        $cmd = new UnitOfMeasureCreateCommand($name, $symbol, $uom);
+        $this->commandBus->dispatch($cmd);
 
-        try {
-            $this->commandBus->dispatch(new UnitOfMeasureCreateCommand($name, $symbol, $uom));
-            return new JsonResponse(null, 201);
-        }
-        catch (HandlerFailedException $t)
-        {
-            if ($t->getPrevious() instanceof UnitOfMeasureEmptyNameException)
-            {
-                return new JsonErrorResponse($t->getPrevious()->getMessage(), 400);
-            }
-
-            if ($t->getPrevious() instanceof UnitOfMeasureEmptySymbolException)
-            {
-                return new JsonErrorResponse($t->getPrevious()->getMessage(), 400);
-            }
-
-            return new JsonErrorResponse($t->getMessage(), 500);
-        }
+        return new JsonResponse(null, 201);
     }
 
     #[Route('/{id}', name: 'unit_of_measure_delete', methods: ['DELETE'])]
     function deleteInstance(Request $request): JsonResponse
     {
         $id = $request->attributes->getString('id');
+        $cmd = new UnitOfMeasureDeleteCommand($id);
+        $this->commandBus->dispatch($cmd);
 
-        try {
-            $this->commandBus->dispatch(new UnitOfMeasureDeleteCommand($id));
-            return new JsonResponse(null, 204);
-        }
-        catch (HandlerFailedException $t)
-        {
-            if ($t->getPrevious() instanceof UnitOfMeasureNotFoundException)
-            {
-                return new JsonErrorResponse($t->getPrevious()->getMessage(), 404);
-            }
-
-            return new JsonErrorResponse($t->getMessage(), 500);
-        }
+        return new JsonResponse(null, 204);
     }
 }
