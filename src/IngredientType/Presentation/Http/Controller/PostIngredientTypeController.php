@@ -25,7 +25,7 @@ final class PostIngredientTypeController extends AbstractController
         $this->validator->validate($cmd);
         $this->commandBus->dispatch($cmd);
 
-        return new JsonResponse(['message' => 'Ingredient type created successfully'], 201);
+        return new JsonResponse(null, 201);
     }
 
 }
