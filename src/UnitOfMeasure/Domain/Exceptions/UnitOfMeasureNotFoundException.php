@@ -1,10 +1,10 @@
 <?php
 namespace App\UnitOfMeasure\Domain\Exceptions;
 
-use Exception;
+use App\Shared\Domain\Exception\EntityNotFoundException;
 use Throwable;
 
-class UnitOfMeasureNotFoundException extends Exception
+class UnitOfMeasureNotFoundException extends EntityNotFoundException
 {
     public function __construct(string $requestedId = "", int $code = 0, ?Throwable $previous = null)
     {

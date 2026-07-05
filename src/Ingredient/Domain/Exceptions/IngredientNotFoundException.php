@@ -1,10 +1,10 @@
 <?php
 namespace App\Ingredient\Domain\Exceptions;
 
-use Exception;
+use App\Shared\Domain\Exception\EntityNotFoundException;
 use Throwable;
 
-final class IngredientNotFoundException extends Exception
+final class IngredientNotFoundException extends EntityNotFoundException
 {
     public function __construct(readonly string $requiredId, readonly ?Throwable $previous = null)
     {

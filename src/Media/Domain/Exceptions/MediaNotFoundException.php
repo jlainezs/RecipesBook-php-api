@@ -1,10 +1,10 @@
 <?php
 namespace App\Media\Domain\Exceptions;
 
-use Exception;
+use App\Shared\Domain\Exception\EntityNotFoundException;
 use Throwable;
 
-final class MediaNotFoundException extends Exception
+final class MediaNotFoundException extends EntityNotFoundException
 {
     public function __construct(string $requiredId, ?Throwable $exception = null)
     {

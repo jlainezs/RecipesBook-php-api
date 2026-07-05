@@ -2,7 +2,9 @@
 namespace App\Shared\Presentation\Http\EventListener;
 use App\Ingredient\Domain\Exceptions\IngredientNotFoundException;
 use App\IngredientType\Domain\Exceptions\IngredientTypeNotFoundException;
+use App\MealCourse\Domain\Exceptions\MealCourseNotFoundException;
 use App\Season\Domain\Exceptions\SeasonNotFoundException;
+use App\Shared\Domain\Exception\EntityNotFoundException;
 use App\Shared\Presentation\Http\Response\JsonErrorResponse;
 use App\UnitOfMeasure\Domain\Exceptions\UnitOfMeasureNotFoundException;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
@@ -26,10 +28,14 @@ final class ApiExceptionListener
             $exception instanceof ValidationFailedException
             => new JsonErrorResponse($exception->getMessage(), 400),
 
+            /*
             $exception instanceof IngredientNotFoundException,
                 $exception instanceof IngredientTypeNotFoundException,
                 $exception instanceof UnitOfMeasureNotFoundException,
-                $exception instanceof SeasonNotFoundException
+                $exception instanceof SeasonNotFoundException,
+                $exception instanceof MealCourseNotFoundException
+            */
+            $exception instanceof EntityNotFoundException
             => new JsonErrorResponse($exception->getMessage(), 404),
 
             default
