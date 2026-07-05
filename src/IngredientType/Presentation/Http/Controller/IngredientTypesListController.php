@@ -1,5 +1,4 @@
 <?php
-
 namespace App\IngredientType\Presentation\Http\Controller;
 
 use App\IngredientType\Application\Query\IngredientType\IngredientTypesQuery;
@@ -13,12 +12,12 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/api/v1')]
 final class IngredientTypesListController extends AbstractController
 {
-    public function __construct(private readonly QueryBus $queryBus)
-    {
-    }
+    public function __construct(
+        private readonly QueryBus $queryBus
+    ){}
 
     #[Route('/ingredient-types', name: 'ingredient_types_list', methods: ['GET'])]
-    public function list(Request $request): JsonResponse
+    public function __invoke(Request $request): JsonResponse
     {
         $response = $this->queryBus->ask(new IngredientTypesQuery(
             offset: $request->query->getInt('offset', 0),

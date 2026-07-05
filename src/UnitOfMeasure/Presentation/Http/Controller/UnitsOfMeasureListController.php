@@ -1,5 +1,4 @@
 <?php
-
 namespace App\UnitOfMeasure\Presentation\Http\Controller;
 
 use App\Shared\Application\Bus\QueryBus;
@@ -17,7 +16,7 @@ final class UnitsOfMeasureListController extends AbstractController
     {}
 
     #[Route('/units-of-measure', name: 'unit_of_measure_list', methods: ['GET'])]
-    public function list(Request $request): JsonResponse
+    public function __invoke(Request $request): JsonResponse
     {
         $response = $this->queryBus->ask(new UnitsOfMeasureQuery(
             offset: $request->query->getInt('offset', 0),
