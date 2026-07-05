@@ -6,7 +6,7 @@ use App\IngredientType\Domain\Repository\IngredientTypeRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final readonly class IngredientTypeDeleteHandler
+final readonly class IngredientTypeDeleteCommandHandler
 {
     public function __construct(private IngredientTypeRepositoryInterface $repository)
     {}

@@ -3,7 +3,7 @@
 namespace App\Tests\Unit\IngredientType\Application\Command;
 
 use App\IngredientType\Application\Command\IngredientType\IngredientTypeDeleteCommand;
-use App\IngredientType\Application\Command\IngredientType\IngredientTypeDeleteHandler;
+use App\IngredientType\Application\Command\IngredientType\IngredientTypeDeleteCommandHandler;
 use App\IngredientType\Domain\Exceptions\IngredientTypeNotFoundException;
 use App\IngredientType\Domain\Model\IngredientType;
 use App\IngredientType\Domain\Repository\IngredientTypeRepositoryInterface;
@@ -14,12 +14,12 @@ use PHPUnit\Framework\TestCase;
 class IngredientTypeDeleteHandlerTest extends TestCase
 {
     private IngredientTypeRepositoryInterface&MockObject $repository;
-    private IngredientTypeDeleteHandler $handler;
+    private IngredientTypeDeleteCommandHandler $handler;
 
     protected function setUp(): void
     {
         $this->repository = $this->createMock(IngredientTypeRepositoryInterface::class);
-        $this->handler = new IngredientTypeDeleteHandler($this->repository);
+        $this->handler = new IngredientTypeDeleteCommandHandler($this->repository);
     }
 
     #[Test]

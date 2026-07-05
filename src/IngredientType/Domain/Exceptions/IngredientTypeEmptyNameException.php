@@ -4,7 +4,7 @@ namespace App\IngredientType\Domain\Exceptions;
 use Exception;
 use Throwable;
 
-class IngredientTypeEmptyNameException extends Exception
+final class IngredientTypeEmptyNameException extends Exception
 {
     public function __construct(readonly ?Throwable $previous = null)
     {

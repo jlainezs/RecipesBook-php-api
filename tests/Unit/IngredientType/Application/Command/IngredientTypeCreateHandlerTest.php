@@ -3,7 +3,7 @@
 namespace App\Tests\Unit\IngredientType\Application\Command;
 
 use App\IngredientType\Application\Command\IngredientType\IngredientTypeCreateCommand;
-use App\IngredientType\Application\Command\IngredientType\IngredientTypeCreateHandler;
+use App\IngredientType\Application\Command\IngredientType\IngredientTypeCreateCommandHandler;
 use App\IngredientType\Domain\Exceptions\IngredientTypeEmptyNameException;
 use App\IngredientType\Domain\Model\IngredientType;
 use App\IngredientType\Domain\Repository\IngredientTypeRepositoryInterface;
@@ -14,12 +14,12 @@ use PHPUnit\Framework\TestCase;
 class IngredientTypeCreateHandlerTest extends TestCase
 {
     private IngredientTypeRepositoryInterface&MockObject $repository;
-    private IngredientTypeCreateHandler $handler;
+    private IngredientTypeCreateCommandHandler $handler;
 
     protected function setUp(): void
     {
         $this->repository = $this->createMock(IngredientTypeRepositoryInterface::class);
-        $this->handler = new IngredientTypeCreateHandler($this->repository);
+        $this->handler = new IngredientTypeCreateCommandHandler($this->repository);
     }
 
     #[Test]

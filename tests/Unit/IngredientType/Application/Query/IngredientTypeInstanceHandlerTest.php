@@ -2,7 +2,7 @@
 
 namespace App\Tests\Unit\IngredientType\Application\Query;
 
-use App\IngredientType\Application\Query\IngredientType\IngredientTypeInstanceHandler;
+use App\IngredientType\Application\Query\IngredientType\IngredientTypeInstanceQueryHandler;
 use App\IngredientType\Application\Query\IngredientType\IngredientTypeInstanceQuery;
 use App\IngredientType\Application\Query\IngredientType\IngredientTypeInstanceResponse;
 use App\IngredientType\Domain\Exceptions\IngredientTypeNotFoundException;
@@ -15,12 +15,12 @@ use PHPUnit\Framework\TestCase;
 class IngredientTypeInstanceHandlerTest extends TestCase
 {
     private IngredientTypeRepositoryInterface&MockObject $repository;
-    private IngredientTypeInstanceHandler $handler;
+    private IngredientTypeInstanceQueryHandler $handler;
 
     protected function setUp(): void
     {
         $this->repository = $this->createMock(IngredientTypeRepositoryInterface::class);
-        $this->handler = new IngredientTypeInstanceHandler($this->repository);
+        $this->handler = new IngredientTypeInstanceQueryHandler($this->repository);
     }
 
     #[Test]

@@ -8,7 +8,7 @@ use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final readonly class IngredientTypeCreateHandler
+final readonly class IngredientTypeCreateCommandHandler
 {
     public function __construct(private IngredientTypeRepositoryInterface $repository)
     {}

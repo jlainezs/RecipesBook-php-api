@@ -7,7 +7,7 @@ use App\IngredientType\Domain\Repository\IngredientTypeRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-readonly final class IngredientTypeUpdateHandler
+readonly final class IngredientTypeUpdateCommandHandler
 {
     public function __construct(private IngredientTypeRepositoryInterface $repository)
     {}

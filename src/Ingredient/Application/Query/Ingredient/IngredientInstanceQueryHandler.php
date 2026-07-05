@@ -8,7 +8,7 @@ use App\Ingredient\Infrastructure\Repository\IngredientRepository;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final readonly class IngredientInstanceHandler
+final readonly class IngredientInstanceQueryHandler
 {
     public function __construct(private IngredientRepository $repository)
     {}

@@ -5,8 +5,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 readonly final class IngredientTypeInstanceQuery
 {
-    #[Assert\Uuid]
     public function __construct(
+        #[Assert\Uuid]
         public string $id
     ){}
 }
