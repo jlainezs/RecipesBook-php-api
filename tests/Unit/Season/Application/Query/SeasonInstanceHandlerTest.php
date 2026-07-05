@@ -2,13 +2,13 @@
 
 namespace App\Tests\Unit\Season\Application\Query;
 
-use App\IngredientType\Application\Query\IngredientType\IngredientTypeInstanceHandler;
+use App\IngredientType\Application\Query\IngredientType\IngredientTypeInstanceQueryHandler;
 use App\IngredientType\Application\Query\IngredientType\IngredientTypeInstanceQuery;
 use App\IngredientType\Application\Query\IngredientType\IngredientTypeInstanceResponse;
 use App\IngredientType\Domain\Exceptions\IngredientTypeNotFoundException;
 use App\IngredientType\Domain\Model\IngredientType;
 use App\IngredientType\Domain\Repository\IngredientTypeRepositoryInterface;
-use App\Season\Application\Query\Season\SeasonInstanceHandler;
+use App\Season\Application\Query\Season\SeasonInstanceQueryHandler;
 use App\Season\Application\Query\Season\SeasonInstanceQuery;
 use App\Season\Application\Query\Season\SeasonInstanceResponse;
 use App\Season\Domain\Exceptions\SeasonNotFoundException;
@@ -21,12 +21,12 @@ use PHPUnit\Framework\TestCase;
 class SeasonInstanceHandlerTest extends TestCase
 {
     private SeasonRepositoryInterface&MockObject $repository;
-    private SeasonInstanceHandler $handler;
+    private SeasonInstanceQueryHandler $handler;
 
     protected function setUp(): void
     {
         $this->repository = $this->createMock(SeasonRepositoryInterface::class);
-        $this->handler = new SeasonInstanceHandler($this->repository);
+        $this->handler = new SeasonInstanceQueryHandler($this->repository);
     }
 
     #[Test]

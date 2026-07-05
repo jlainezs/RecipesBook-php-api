@@ -8,7 +8,7 @@ use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final readonly class SeasonCreateHandler
+final readonly class SeasonCreateCommandHandler
 {
     public function __construct(private SeasonRepositoryInterface $repository)
     {}

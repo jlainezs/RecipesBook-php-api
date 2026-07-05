@@ -9,7 +9,7 @@ use App\UnitOfMeasure\Domain\Repository\UnitOfMeasureRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final readonly class UnitOfMeasureCreateHandler
+final readonly class UnitOfMeasureCreateCommandHandler
 {
     public function __construct(private UnitOfMeasureRepositoryInterface $repository)
     {}

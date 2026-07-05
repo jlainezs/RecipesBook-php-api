@@ -2,12 +2,12 @@
 namespace App\Tests\Unit\Season\Application\Command;
 
 use App\IngredientType\Application\Command\IngredientType\IngredientTypeDeleteCommand;
-use App\IngredientType\Application\Command\IngredientType\IngredientTypeDeleteHandler;
+use App\IngredientType\Application\Command\IngredientType\IngredientTypeDeleteCommandHandler;
 use App\IngredientType\Domain\Exceptions\IngredientTypeNotFoundException;
 use App\IngredientType\Domain\Model\IngredientType;
 use App\IngredientType\Domain\Repository\IngredientTypeRepositoryInterface;
 use App\Season\Application\Command\Season\SeasonDeleteCommand;
-use App\Season\Application\Command\Season\SeasonDeleteHandler;
+use App\Season\Application\Command\Season\SeasonDeleteCommandHandler;
 use App\Season\Domain\Exceptions\SeasonNotFoundException;
 use App\Season\Domain\Model\Season;
 use App\Season\Domain\Repository\SeasonRepositoryInterface;
@@ -18,12 +18,12 @@ use PHPUnit\Framework\TestCase;
 class SeasonDeleteHandlerTest extends TestCase
 {
     private SeasonRepositoryInterface&MockObject $repository;
-    private SeasonDeleteHandler $handler;
+    private SeasonDeleteCommandHandler $handler;
 
     protected function setUp(): void
     {
         $this->repository = $this->createMock(SeasonRepositoryInterface::class);
-        $this->handler = new SeasonDeleteHandler($this->repository);
+        $this->handler = new SeasonDeleteCommandHandler($this->repository);
     }
 
     #[Test]

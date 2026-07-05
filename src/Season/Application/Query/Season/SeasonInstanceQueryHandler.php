@@ -6,7 +6,7 @@ use App\Season\Domain\Repository\SeasonRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final readonly class SeasonInstanceHandler
+final readonly class SeasonInstanceQueryHandler
 {
     public function __construct(private SeasonRepositoryInterface $repository)
     {}

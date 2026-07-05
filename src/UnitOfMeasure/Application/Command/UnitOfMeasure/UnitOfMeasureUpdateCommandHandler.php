@@ -8,7 +8,7 @@ use App\UnitOfMeasure\Infrastructure\Repository\UnitOfMeasureRepository;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-readonly final class UnitOfMeasureUpdateHandler
+readonly final class UnitOfMeasureUpdateCommandHandler
 {
     public function __construct(private UnitOfMeasureRepository $repository)
     {}

@@ -7,7 +7,7 @@ use App\Season\Domain\Repository\SeasonRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-readonly final class SeasonUpdateHandler
+readonly final class SeasonUpdateCommandHandler
 {
     public function __construct(private SeasonRepositoryInterface $repository)
     {}

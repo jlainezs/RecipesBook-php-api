@@ -6,7 +6,7 @@ use App\UnitOfMeasure\Domain\Repository\UnitOfMeasureRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final readonly class UnitOfMeasureDeleteHandler
+final readonly class UnitOfMeasureDeleteCommandHandler
 {
     public function __construct(private UnitOfMeasureRepositoryInterface $repository)
     {}

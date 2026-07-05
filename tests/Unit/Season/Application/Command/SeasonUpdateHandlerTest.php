@@ -3,7 +3,7 @@
 namespace App\Tests\Unit\Season\Application\Command;
 
 use App\Season\Application\Command\Season\SeasonUpdateCommand;
-use App\Season\Application\Command\Season\SeasonUpdateHandler;
+use App\Season\Application\Command\Season\SeasonUpdateCommandHandler;
 use App\Season\Domain\Exceptions\SeasonEmptyNameException;
 use App\Season\Domain\Exceptions\SeasonNotFoundException;
 use App\Season\Domain\Model\Season;
@@ -15,12 +15,12 @@ use PHPUnit\Framework\TestCase;
 class SeasonUpdateHandlerTest extends TestCase
 {
     private SeasonRepositoryInterface&MockObject $repository;
-    private SeasonUpdateHandler $handler;
+    private SeasonUpdateCommandHandler $handler;
 
     protected function setUp(): void
     {
         $this->repository = $this->createMock(SeasonRepositoryInterface::class);
-        $this->handler = new SeasonUpdateHandler($this->repository);
+        $this->handler = new SeasonUpdateCommandHandler($this->repository);
     }
 
     #[Test]
