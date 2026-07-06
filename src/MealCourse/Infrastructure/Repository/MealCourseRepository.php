@@ -6,7 +6,7 @@ use App\MealCourse\Domain\Repository\MealCourseRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-class MealCourseRepository extends ServiceEntityRepository implements MealCourseRepositoryInterface
+final class MealCourseRepository extends ServiceEntityRepository implements MealCourseRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {

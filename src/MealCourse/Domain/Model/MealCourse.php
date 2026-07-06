@@ -25,7 +25,7 @@ final class MealCourse extends AggregateRoot
      */
     public function validate(): void
     {
-        if (empty($this->name)) {
+        if (empty(trim($this->name))) {
             throw new MealCourseEmptyNameException();
         }
     }
