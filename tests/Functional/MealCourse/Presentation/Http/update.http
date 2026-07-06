@@ -1,0 +1,4 @@
+PUT http://localhost:8000/api/v1/meal-courses/4b6492b0-c628-4049-88de-5efe3b635676
+Accept: application/json
+
+{"name": "Desserts"}

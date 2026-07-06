@@ -11,6 +11,6 @@ final readonly class DoctrineMealCourseListPager implements MealCourseItemsPager
 
     public function items(int $offset = 0, int $limit = 20): array
     {
-        return $this->repository->findAll($offset, $limit);
+        return $this->repository->findAll($limit, $offset);
     }
 }

@@ -1,0 +1,11 @@
+POST http://localhost:8000/api/v1/meal-courses/create
+Content-Type: application/json
+
+{"name": "Starter"}
+
+###
+
+POST http://localhost:8000/api/v1/meal-courses/create
+Content-Type: application/json
+
+{"name": "Main course"}

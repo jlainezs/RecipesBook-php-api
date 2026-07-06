@@ -7,6 +7,7 @@ use App\Shared\Application\Service\ApplicationDataValidator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 
 final class PutMealCourseController extends AbstractController
 {
@@ -15,6 +16,7 @@ final class PutMealCourseController extends AbstractController
         private readonly ApplicationDataValidator $validator
     ){}
 
+    #[Route('/api/v1/meal-courses/{id}', name: 'meal_course_update', methods: ['PUT'])]
     public function __invoke(Request $request): JsonResponse
     {
         $name = $request->getPayload()->getString('name');

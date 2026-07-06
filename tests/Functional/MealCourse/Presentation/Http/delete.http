@@ -1,0 +1,2 @@
+DELETE http://localhost:8000/api/v1/meal-courses/9f28e95a-bd12-42b4-8aad-2b73d51c279a
+Accept: application/json

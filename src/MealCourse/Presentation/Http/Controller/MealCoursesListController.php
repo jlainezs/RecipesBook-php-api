@@ -19,8 +19,8 @@ final class MealCoursesListController extends AbstractController
     public function __invoke(Request $request): JsonResponse
     {
         $response = $this->queryBus->ask(new MealCoursesQuery(
-            $request->query->get('page', 0),
-            $request->query->get('limit', 20),
+            offset: $request->query->getInt('offset', 0),
+            limit: $request->query->getInt('limit', 20),
         ));
 
         return MealCoursesListJsonResponse::create($response->items);

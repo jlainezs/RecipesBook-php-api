@@ -46,6 +46,12 @@ doctrine:
                 prefix: 'App\Media\Domain\Model'
                 alias: Media
                 is_bundle: false
+            MealCourseXml:
+                type: xml
+                dir: '%kernel.project_dir%/src/MealCourse/Infrastructure/DoctrineMapping'
+                prefix: 'App\MealCourse\Domain\Model'
+                alias: MealCourse
+                is_bundle: false
 when@test:
     doctrine:
         dbal:
