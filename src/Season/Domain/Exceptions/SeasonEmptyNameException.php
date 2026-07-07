@@ -2,10 +2,10 @@
 
 namespace App\Season\Domain\Exceptions;
 
-use Exception;
+use InvalidArgumentException;
 use Throwable;
 
-final class SeasonEmptyNameException extends Exception
+final class SeasonEmptyNameException extends InvalidArgumentException
 {
     public function __construct(?Throwable $previous = null)
     {

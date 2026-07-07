@@ -2,10 +2,10 @@
 
 namespace App\Media\Domain\Exceptions;
 
-use Exception;
+use InvalidArgumentException;
 use Throwable;
 
-final class MediaInvalidOwnerIdException extends Exception
+final class MediaInvalidOwnerIdException extends InvalidArgumentException
 {
     public function __construct(?Throwable $previous = null)
     {

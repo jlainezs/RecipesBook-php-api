@@ -1,10 +1,10 @@
 <?php
 namespace App\Ingredient\Domain\Exceptions;
 
-use Exception;
+use InvalidArgumentException;
 use Throwable;
 
-final class IngredientEmptyNameException extends Exception
+final class IngredientEmptyNameException extends InvalidArgumentException
 {
     public function __construct(readonly ?Throwable $previous = null)
     {

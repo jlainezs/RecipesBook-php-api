@@ -1,8 +1,9 @@
 <?php
 namespace App\Media\Domain\Exceptions;
 
-use Exception;
-class MediaEmptyFileNameException extends Exception
+use InvalidArgumentException;
+
+class MediaEmptyFileNameException extends InvalidArgumentException
 {
     public function __construct()
     {

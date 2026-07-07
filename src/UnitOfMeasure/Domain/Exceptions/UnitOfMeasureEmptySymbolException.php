@@ -2,9 +2,9 @@
 
 namespace App\UnitOfMeasure\Domain\Exceptions;
 
-use Exception;
+use InvalidArgumentException;
 
-class UnitOfMeasureEmptySymbolException extends Exception
+class UnitOfMeasureEmptySymbolException extends InvalidArgumentException
 {
     public function __construct()
     {

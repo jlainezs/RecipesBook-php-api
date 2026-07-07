@@ -1,10 +1,10 @@
 <?php
 namespace App\Media\Domain\Exceptions;
 
-use Exception;
+use InvalidArgumentException;
 use Throwable;
 
-final class MediaEmptyPathException extends Exception
+final class MediaEmptyPathException extends InvalidArgumentException
 {
     public function __construct(?Throwable $previous = null)
     {
