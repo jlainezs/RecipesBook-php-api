@@ -8,15 +8,15 @@ readonly final class IngredientDto
 {
     public function __construct(
         #[Assert\Uuid]
-        public readonly string $id,
+        public  string $id,
 
         #[Assert\NotBlank]
-        public readonly string $name,
-        public readonly string $description,
+        public  string $name,
+        public  string $description,
 
         #[Assert\Uuid]
-        public readonly string $ingredientTypeId,
-        public readonly DateTimeImmutable $createdAt,
-        public readonly DateTimeImmutable $updatedAt
+        public  string $ingredientTypeId,
+        public  DateTimeImmutable $createdAt,
+        public  DateTimeImmutable $updatedAt
     ){}
 }
