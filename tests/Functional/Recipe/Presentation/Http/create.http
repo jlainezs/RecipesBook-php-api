@@ -1,0 +1,48 @@
+POST http://localhost:8000/api/v1/recipes/create
+Content-Type: application/json
+
+{
+    "name": "A recipe",
+    "description": "Some description",
+    "source": "Some source",
+    "rating": "4",
+    "servings": "4"
+}
+
+###
+# Should fail, 400 Bad request
+POST http://localhost:8000/api/v1/recipes/create
+Content-Type: application/json
+
+{
+    "name": "A recipe",
+    "description": "Some description",
+    "source": "Some source",
+    "rating": "xxx",
+    "servings": "4"
+}
+
+###
+# Should fail, 400 Bad request
+POST http://localhost:8000/api/v1/recipes/create
+Content-Type: application/json
+
+{
+    "name": "A recipe",
+    "description": "Some description",
+    "source": "Some source",
+    "rating": "4",
+    "servings": "xxxx"
+}
+
+###
+# Should fail, 400 Bad request (name removed)
+POST http://localhost:8000/api/v1/recipes/create
+Content-Type: application/json
+
+{
+    "description": "Some description",
+    "source": "Some source",
+    "rating": "4",
+    "servings": "3"
+}
