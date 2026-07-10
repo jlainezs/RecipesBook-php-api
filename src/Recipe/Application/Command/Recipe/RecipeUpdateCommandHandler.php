@@ -3,14 +3,14 @@ namespace App\Recipe\Application\Command\Recipe;
 
 use App\Recipe\Domain\Exceptions\RecipeInvalidServingsException;
 use App\Recipe\Domain\Exceptions\RecipeNotFoundException;
-use App\Recipe\Infrastructure\Repository\RecipeRepository;
+use App\Recipe\Domain\Repository\RecipeRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
 final readonly class RecipeUpdateCommandHandler
 {
     public function __construct(
-        private RecipeRepository $recipeRepository
+        private RecipeRepositoryInterface $repository
     ){}
 
     /**
@@ -19,14 +19,14 @@ final readonly class RecipeUpdateCommandHandler
      */
     public function __invoke(RecipeUpdateCommand $command): void
     {
-        if ($recipe = $this->recipeRepository->findOne($command->id))
+        if ($recipe = $this->repository->findOne($command->id))
         {
             $recipe->rename($command->name);
             $recipe->setDescription($command->description);
             $recipe->setSource($command->source);
             $recipe->setServings($command->servings);
             $recipe->setRating($command->rating);
-            $this->recipeRepository->save($recipe);
+            $this->repository->save($recipe);
         }
         else
         {

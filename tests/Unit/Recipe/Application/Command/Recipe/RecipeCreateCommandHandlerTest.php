@@ -9,11 +9,12 @@ use App\Recipe\Domain\Model\Recipe;
 use App\Recipe\Domain\Repository\RecipeRepositoryInterface;
 use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class RecipeCreateCommandHandlerTest extends TestCase
 {
-    private RecipeRepositoryInterface $repository;
+    private RecipeRepositoryInterface&MockObject $repository;
     private RecipeCreateCommandHandler $handler;
 
     public function setUp(): void

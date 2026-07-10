@@ -21,7 +21,7 @@ class MealCourseDeleteHandlerCommandTest extends TestCase
     }
 
     #[Test]
-    public function it_creates_and_saves_the_meal_course(): void
+    public function it_deletes_the_meal_course(): void
     {
         $mealCourse = MealCourse::create("Starter");
         $id = $mealCourse->getId()->toString();
