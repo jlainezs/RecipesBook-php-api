@@ -49,3 +49,29 @@ Content-Type: application/json
     "rating": "2",
     "servings": "14"
 }
+
+###
+# Update
+PUT http://localhost:8000/api/v1/recipes/52f21dfa-f344-42c9-afb8-31ed79379dc0
+Content-Type: application/json
+
+{
+    "id": "52f21dfa-f344-42c9-afb8-31ed79379dc0",
+    "name": "some updated name",
+    "description": "DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD",
+    "source": "Some updated source",
+    "rating": 2,
+    "servings": 5,
+    "steps": [
+        {
+            "id": "4a1bcd69-c871-4d97-8aee-3262f3c30590",
+            "description": "YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY",
+            "ordering": 1
+        },
+        {
+            "id": "c10cc649-ca68-4240-8bee-d8cbacbcee6d",
+            "description": "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ",
+            "ordering": 2
+        }
+    ]
+}

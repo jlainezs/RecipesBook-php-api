@@ -2,13 +2,11 @@
 namespace App\Recipe\Presentation\Http\Controller;
 
 use App\Recipe\Application\Command\Recipe\RecipeCreateCommand;
-use App\Recipe\Application\Query\Recipe\RecipeCreateDto;
+use App\Recipe\Application\Command\Recipe\RecipeCreateDto;
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
-use ArrayIterator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 

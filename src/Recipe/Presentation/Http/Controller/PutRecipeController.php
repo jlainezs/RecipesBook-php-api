@@ -1,12 +1,14 @@
 <?php
 namespace App\Recipe\Presentation\Http\Controller;
 
+use App\Recipe\Application\Command\Recipe\RecipeStepUpdateDto;
 use App\Recipe\Application\Command\Recipe\RecipeUpdateCommand;
+use App\Recipe\Application\Command\Recipe\RecipeUpdateDto;
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class PutRecipeController extends AbstractController
@@ -17,14 +19,26 @@ final class PutRecipeController extends AbstractController
     ){}
 
     #[Route('/api/v1/recipes/{id}', name: 'put_recipe', methods: ['PUT'])]
-    public function __invoke(Request $request): JsonResponse
+    public function __invoke(
+        #[MapRequestPayload]
+        RecipeUpdateDto $request
+    ): JsonResponse
     {
-        $id = $request->attributes->get('id');
-        $name = $request->getPayload()->getString('name');
-        $description = $request->getPayload()->getString('description');
-        $source = $request->getPayload()->getString('source');
-        $servings = $request->getPayload()->getInt('servings');
-        $rating = $request->getPayload()->getInt('rating');
+        $id = $request->id;
+        $name = $request->name;
+        $description = $request->description;
+        $source = $request->source;
+        $servings = $request->servings;
+        $rating = $request->rating;
+        $steps = [];
+
+        foreach ($request->steps as $step) {
+            $steps[] = new RecipeStepUpdateDto(
+                id: $step['id'] ?? null,
+                description: $step['description'],
+                ordering: $step['ordering']
+            );
+        }
 
         $cmd = new RecipeUpdateCommand(
             id: $id,
@@ -33,6 +47,7 @@ final class PutRecipeController extends AbstractController
             rating: $rating,
             description: $description,
             source: $source,
+            steps: $steps,
         );
         $this->validator->validate($cmd);
         $this->commandBus->dispatch($cmd);

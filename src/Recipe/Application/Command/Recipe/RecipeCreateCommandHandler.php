@@ -12,8 +12,7 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 final readonly class RecipeCreateCommandHandler
 {
     public function __construct(
-        private RecipeRepositoryInterface $repository,
-        private RecipeStepRepositoryInterface $recipeStepRepository
+        private RecipeRepositoryInterface $repository
     ){}
 
     /**
@@ -31,6 +30,5 @@ final readonly class RecipeCreateCommandHandler
             $command->steps
         );
         $this->repository->save($recipe);
-        //$this->recipeStepRepository->save($recipe, $recipe->getSteps());
     }
 }

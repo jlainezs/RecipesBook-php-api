@@ -23,11 +23,11 @@ Content-Type: application/json
     "servings": 2,
     "steps": [
         {
-            "description": "This is the first step in the recipe.",
+            "description": "XXThis is the first step in the recipe.",
             "ordering": 1
         },
         {
-            "description": "This is the second step in the recipe.",
+            "description": "YYYThis is the second step in the recipe.",
             "ordering": 2
         }
     ]

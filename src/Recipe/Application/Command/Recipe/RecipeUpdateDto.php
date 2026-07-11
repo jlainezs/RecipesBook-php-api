@@ -1,11 +1,16 @@
 <?php
-namespace App\Recipe\Application\Query\Recipe;
 
+namespace App\Recipe\Application\Command\Recipe;
+
+use DateTimeImmutable;
 use Symfony\Component\Validator\Constraints as Assert;
 
-readonly final class RecipeCreateDto
+class RecipeUpdateDto
 {
     public function __construct(
+        #[Assert\Uuid]
+        public  string $id,
+
         #[Assert\NotBlank]
         public string $name,
 
@@ -19,6 +24,7 @@ readonly final class RecipeCreateDto
         public ?string $description,
         public ?string $source,
 
-        public array $steps
+        public array $steps,
     ) {}
+
 }

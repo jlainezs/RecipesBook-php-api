@@ -162,8 +162,38 @@ final class Recipe extends AggregateRoot
         return $this->steps;
     }
 
+    /**
+     * @throws EmptyIdNotAllowedException
+     */
     public function setSteps(iterable $steps): void
     {
-        $this->steps = $steps;
+        $incomingStepsById = [];
+        foreach($steps as $step){
+            if (!empty($step->id))
+                $incomingStepsById[$step->id] = $step;
+        }
+
+        // remove or update existing steps
+        foreach($this->steps as $key => $existingStep) {
+            $stepIdStr = $existingStep->getId()->toString();
+            if (!isset($incomingStepsById[$stepIdStr])) {
+                unset($this->steps[$key]);
+            } else {
+                $data = $incomingStepsById[$stepIdStr];
+                $existingStep->setDescription($data->description);
+                $existingStep->reorder($data->ordering);
+            }
+        }
+
+        // add new steps
+        foreach($steps as $data){
+            if (empty($data->id)) {
+                $this->steps[] = RecipeStep::create(
+                    recipe: $this,
+                    ordering: $data->ordering,
+                    description: $data->description
+                );
+            }
+        }
     }
 }

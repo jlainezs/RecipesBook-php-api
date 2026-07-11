@@ -11,8 +11,7 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 final readonly class RecipeUpdateCommandHandler
 {
     public function __construct(
-        private RecipeRepositoryInterface $repository,
-        private RecipeStepRepositoryInterface $recipeStepRepository,
+        private RecipeRepositoryInterface $repository
     ){}
 
     /**
@@ -28,8 +27,8 @@ final readonly class RecipeUpdateCommandHandler
             $recipe->setSource($command->source);
             $recipe->setServings($command->servings);
             $recipe->setRating($command->rating);
+            $recipe->setSteps($command->steps);
             $this->repository->save($recipe);
-            $this->recipeStepRepository->delete($recipe->getSteps());
         }
         else
         {

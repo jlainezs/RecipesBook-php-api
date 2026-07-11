@@ -8,8 +8,7 @@ final readonly class RecipeStepDto
 {
     public function __construct(
         #[Assert\Uuid]
-        public  string $id,
-
+        public ?string $id,
         public string $description,
         public int $ordering,
         public DateTimeImmutable $createdAt,

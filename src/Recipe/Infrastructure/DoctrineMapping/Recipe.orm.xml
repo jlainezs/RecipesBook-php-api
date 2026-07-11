@@ -13,7 +13,8 @@
         <one-to-many
             field="steps"
             target-entity="App\Recipe\Domain\Model\RecipeStep"
-            mapped-by="recipe">
+            mapped-by="recipe"
+            orphan-removal="true">
             <cascade>
                 <cascade-remove />
                 <cascade-persist />

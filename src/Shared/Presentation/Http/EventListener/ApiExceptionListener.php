@@ -26,21 +26,23 @@ final class ApiExceptionListener
 
         $response = match (true) {
             $exception instanceof ValidationFailedException
-            => new JsonErrorResponse($exception->getMessage(), 400),
+                => new JsonErrorResponse(
+                    $exception->getMessage(), 400, [],
+                    $exception->getFile(),
+                    $exception->getLine()
+                ),
 
-            /*
-            $exception instanceof IngredientNotFoundException,
-                $exception instanceof IngredientTypeNotFoundException,
-                $exception instanceof UnitOfMeasureNotFoundException,
-                $exception instanceof SeasonNotFoundException,
-                $exception instanceof MealCourseNotFoundException
-            */
             $exception instanceof EntityNotFoundException
-            => new JsonErrorResponse($exception->getMessage(), 404),
+                => new JsonErrorResponse($exception->getMessage(), 404),
 
             default
-            => new JsonErrorResponse($exception->getMessage(), 500),
-        };
+                => new JsonErrorResponse(
+                    $exception->getMessage(),
+                    500, [],
+                    $exception->getFile(),
+                    $exception->getLine()
+                )
+            };
 
         $event->setResponse($response);
     }

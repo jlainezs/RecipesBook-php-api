@@ -2,12 +2,10 @@
 namespace App\Recipe\Application\Command\Recipe;
 
 use Symfony\Component\Validator\Constraints as Assert;
-final readonly class RecipeUpdateCommand
+
+readonly final class RecipeCreateDto
 {
     public function __construct(
-        #[Assert\Uuid]
-        public string $id,
-
         #[Assert\NotBlank]
         public string $name,
 
@@ -19,11 +17,8 @@ final readonly class RecipeUpdateCommand
         public int $rating,
 
         public ?string $description,
-
-        #[Assert\Length(max: 500)]
         public ?string $source,
 
-        public iterable $steps,
-
-    ){}
+        public iterable $steps
+    ) {}
 }
