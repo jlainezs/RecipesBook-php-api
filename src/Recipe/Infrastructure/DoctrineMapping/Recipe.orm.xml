@@ -10,7 +10,15 @@
         <id name="id" type="aggregate_root_id" column="id">
             <generator strategy="NONE" />
         </id>
-
+        <one-to-many
+            field="steps"
+            target-entity="App\Recipe\Domain\Model\RecipeStep"
+            mapped-by="recipe">
+            <cascade>
+                <cascade-remove />
+                <cascade-persist />
+            </cascade>
+        </one-to-many>
         <field name="name" column="name" />
         <field name="servings" column="servings" type="integer" />
         <field name="rating" column="rating" type="integer" />

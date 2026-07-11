@@ -21,6 +21,7 @@ final readonly class RecipesQueryHandler
                 rating: $recipe->rating,
                 description: $recipe->description,
                 source: $recipe->source,
+                steps: $recipe->steps,
                 createdAt: $recipe->createdAt,
                 updatedAt: $recipe->updatedAt
             ),

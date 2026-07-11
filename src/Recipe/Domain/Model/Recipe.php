@@ -6,8 +6,10 @@ use App\Recipe\Domain\Exceptions\RecipeInvalidRatingException;
 use App\Recipe\Domain\Exceptions\RecipeInvalidServingsException;
 use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
 use App\Shared\Domain\Model\AggregateRoot;
+use App\Shared\Domain\Model\HasTimeStampInterface;
 use App\Shared\Domain\ValueObject\AggregateRootId;
 use DateTimeImmutable;
+use Traversable;
 
 final class Recipe extends AggregateRoot
 {
@@ -18,6 +20,7 @@ final class Recipe extends AggregateRoot
         private int $rating,
         private ?string $description,
         private ?string $source,
+        private iterable $steps,
         private DateTimeImmutable $createdAt,
         private DateTimeImmutable $updatedAt
     ){}
@@ -32,7 +35,8 @@ final class Recipe extends AggregateRoot
         int $servings,
         int $rating,
         ?string $description = null,
-        ?string $source = null
+        ?string $source = null,
+        iterable $steps,
     ) : self
     {
         if (empty(trim($name))) {
@@ -47,16 +51,27 @@ final class Recipe extends AggregateRoot
             throw new RecipeInvalidServingsException($servings);
         }
 
-        return new self(
+        $recipe = new self(
             AggregateRootId::generateId(),
             $name,
             $servings,
             $rating,
             $description,
             $source,
+            [],
             new DateTimeImmutable(),
             new DateTimeImmutable()
         );
+
+        foreach ($steps as $step) {
+            $recipe->steps[] = RecipeStep::create(
+                recipe: $recipe,
+                ordering: $step['ordering'] ?? 0,
+                description: $step['description'] ?? ''
+            );
+        }
+
+        return $recipe;
     }
 
     public function getId(): AggregateRootId
@@ -140,5 +155,15 @@ final class Recipe extends AggregateRoot
     public function setDescription(?string $description): void
     {
         $this->description = $description;
+    }
+
+    public function getSteps(): iterable
+    {
+        return $this->steps;
+    }
+
+    public function setSteps(iterable $steps): void
+    {
+        $this->steps = $steps;
     }
 }

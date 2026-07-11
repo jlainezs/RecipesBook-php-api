@@ -18,6 +18,19 @@ final readonly class RecipeInstanceQueryHandler
     {
         if ($recipe = $this->repository->findOne($query->id))
         {
+            $mapped_steps = [];
+
+            foreach ($recipe->getSteps() as $step)
+            {
+                $mapped_steps[] = new RecipeStepDto(
+                    id: $step->getId()->toString(),
+                    description: $step->getDescription(),
+                    ordering: $step->getOrdering(),
+                    createdAt: $step->getCreatedAt(),
+                    updatedAt: $step->getUpdatedAt(),
+                );
+            }
+
             return new RecipeInstanceResponse(new RecipeDto(
                 id: $recipe->getId()->toString(),
                 name: $recipe->getName(),
@@ -25,6 +38,7 @@ final readonly class RecipeInstanceQueryHandler
                 rating: $recipe->getRating(),
                 description: $recipe->getDescription(),
                 source: $recipe->getSource(),
+                steps: $mapped_steps,
                 createdAt: $recipe->getCreatedAt(),
                 updatedAt: $recipe->getUpdatedAt()
             ));

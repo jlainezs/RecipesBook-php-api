@@ -2,11 +2,14 @@
 namespace App\Recipe\Presentation\Http\Controller;
 
 use App\Recipe\Application\Command\Recipe\RecipeCreateCommand;
+use App\Recipe\Application\Query\Recipe\RecipeCreateDto;
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
+use ArrayIterator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class PostRecipeController extends AbstractController
@@ -17,20 +20,25 @@ final class PostRecipeController extends AbstractController
     ){}
 
     #[Route('/api/v1/recipes/create', name: 'post_recipe', methods: ['POST'])]
-    public function __invoke(Request $request): JsonResponse
+    public function __invoke(
+        #[MapRequestPayload]
+        RecipeCreateDto $request
+    ): JsonResponse
     {
-        $name = $request->getPayload()->getString('name');
-        $description = $request->getPayload()->getString('description');
-        $source = $request->getPayload()->getString('source');
-        $servings = $request->getPayload()->getInt('servings');
-        $rating = $request->getPayload()->getInt('rating');
+        $name = $request->name;
+        $description = $request->description;
+        $source = $request->source;
+        $servings = $request->servings;
+        $rating = $request->rating;
+        $steps = $request->steps;
 
         $command = new RecipeCreateCommand(
             name: $name,
             servings: $servings,
             rating: $rating,
             description: $description,
-            source: $source
+            source: $source,
+            steps: $steps,
         );
         $this->validator->validate($command);
         $this->commandBus->dispatch($command);

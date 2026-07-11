@@ -1,9 +1,9 @@
 <?php
 namespace App\Recipe\Domain\Exceptions;
 
-use Exception;
+use InvalidArgumentException;
 
-class RecipeInvalidServingsException extends Exception
+class RecipeInvalidServingsException extends InvalidArgumentException
 {
     public function __construct(int $requestedServings)
     {

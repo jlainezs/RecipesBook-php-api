@@ -4,13 +4,15 @@ namespace App\Recipe\Application\Command\Recipe;
 use App\Recipe\Domain\Exceptions\RecipeInvalidServingsException;
 use App\Recipe\Domain\Exceptions\RecipeNotFoundException;
 use App\Recipe\Domain\Repository\RecipeRepositoryInterface;
+use App\Recipe\Domain\Repository\RecipeStepRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
 final readonly class RecipeUpdateCommandHandler
 {
     public function __construct(
-        private RecipeRepositoryInterface $repository
+        private RecipeRepositoryInterface $repository,
+        private RecipeStepRepositoryInterface $recipeStepRepository,
     ){}
 
     /**
@@ -27,6 +29,7 @@ final readonly class RecipeUpdateCommandHandler
             $recipe->setServings($command->servings);
             $recipe->setRating($command->rating);
             $this->repository->save($recipe);
+            $this->recipeStepRepository->delete($recipe->getSteps());
         }
         else
         {

@@ -21,7 +21,9 @@ final readonly class RecipeUpdateCommand
         public ?string $description,
 
         #[Assert\Length(max: 500)]
-        public ?string $source
+        public ?string $source,
+
+        public array $steps,
 
     ){}
 }

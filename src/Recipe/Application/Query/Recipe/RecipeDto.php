@@ -22,6 +22,8 @@ readonly final class RecipeDto
         public ?string $description,
         public ?string $source,
 
+        public array $steps,
+
         public DateTimeImmutable $createdAt,
         public DateTimeImmutable $updatedAt
     ) {}
