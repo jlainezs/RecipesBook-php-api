@@ -15,15 +15,15 @@ final readonly class RecipesQueryHandler
     {
         $itemsDto = array_map(
             fn(Recipe $recipe) => new RecipeDto(
-                id: $recipe->id,
-                name: $recipe->name,
-                servings: $recipe->servings,
-                rating: $recipe->rating,
-                description: $recipe->description,
-                source: $recipe->source,
-                steps: $recipe->steps,
-                createdAt: $recipe->createdAt,
-                updatedAt: $recipe->updatedAt
+                id: $recipe->getId()->toString(),
+                name: $recipe->getName(),
+                servings: $recipe->getServings(),
+                rating: $recipe->getRating(),
+                description: $recipe->getDescription(),
+                source: $recipe->getSource(),
+                steps: $recipe->getSteps(),
+                createdAt: $recipe->getCreatedAt(),
+                updatedAt: $recipe->getUpdatedAt()
             ),
             $this->list->items($query->offset, $query->limit)
         );
