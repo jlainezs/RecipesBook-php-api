@@ -20,7 +20,7 @@ final class Ingredient extends AggregateRoot
         private ?string $description,
         private ?IngredientType $ingredientType,
         private readonly DateTimeImmutable $createdAt,
-        private readonly DateTimeImmutable $updatedAt
+        private DateTimeImmutable $updatedAt
     ){
         $this->validate();
     }

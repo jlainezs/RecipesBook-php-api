@@ -15,7 +15,7 @@ final class MealCourse extends AggregateRoot
         private readonly AggregateRootId $id,
         private string $name,
         private readonly DateTimeImmutable $createdAt,
-        private readonly DateTimeImmutable $updatedAt
+        private DateTimeImmutable $updatedAt
     ){
         $this->validate();
     }

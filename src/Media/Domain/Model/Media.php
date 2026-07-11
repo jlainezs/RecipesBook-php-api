@@ -21,7 +21,7 @@ final class Media extends AggregateRoot
         private string $path,
         private string $fileName,
         private readonly DateTimeImmutable $createdAt,
-        private readonly DateTimeImmutable $updatedAt
+        private DateTimeImmutable $updatedAt
     ){}
 
     /**
