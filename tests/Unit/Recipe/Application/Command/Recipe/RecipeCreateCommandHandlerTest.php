@@ -28,7 +28,7 @@ class RecipeCreateCommandHandlerTest extends TestCase
      * @throws EmptyIdNotAllowedException
      */
     #[Test]
-    public function it_creates_and_saves_the_recipe(): void
+    public function it_creates_and_saves_the_recipe_without_steps(): void
     {
         $this->repository->expects($this->once())
             ->method('save')
@@ -38,10 +38,14 @@ class RecipeCreateCommandHandlerTest extends TestCase
             1,
             1,
             "description",
-            "source"
+            "source",
+            []
         ));
     }
 
+    /**
+     * @throws EmptyIdNotAllowedException
+     */
     #[Test]
     public function it_throws_and_does_not_saves_when_name_is_empty(): void
     {
@@ -53,10 +57,14 @@ class RecipeCreateCommandHandlerTest extends TestCase
             1,
             1,
             "description",
-            "source"
+            "source",
+            []
         ));
     }
 
+    /**
+     * @throws EmptyIdNotAllowedException
+     */
     #[Test]
     public function it_throws_and_does_not_saves_when_name_is_whitespace_only(): void
     {
@@ -68,7 +76,8 @@ class RecipeCreateCommandHandlerTest extends TestCase
             1,
             1,
             "description",
-            "source"
+            "source",
+            []
         ));
     }
 }

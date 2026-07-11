@@ -33,7 +33,7 @@ class RecipeUpdateCommandHandlerTest extends TestCase
     #[Test]
     public function it_should_update_recipe(): void
     {
-        $recipe = Recipe::create('a recipe', 20, 4);
+        $recipe = Recipe::create('a recipe', 20, 4, '', '', []);
         $id = $recipe->getId()->toString();
 
         $this->repository
@@ -52,7 +52,8 @@ class RecipeUpdateCommandHandlerTest extends TestCase
             5,
 
             "A description",
-            "A source"
+            "A source",
+            []
         ));
 
         $this->assertSame('modified recipe', $recipe->getName());
@@ -70,7 +71,7 @@ class RecipeUpdateCommandHandlerTest extends TestCase
     #[Test]
     public function it_throws_when_setting_empty_name(): void
     {
-        $recipe = Recipe::create('a recipe', 20, 4);
+        $recipe = Recipe::create('a recipe', 20, 4, '', '', []);
         $id = $recipe->getId()->toString();
 
         $this->repository
@@ -89,7 +90,8 @@ class RecipeUpdateCommandHandlerTest extends TestCase
             4,
             5,
             "A description",
-            "A source"
+            "A source",
+            []
         ));
     }
 
@@ -102,7 +104,7 @@ class RecipeUpdateCommandHandlerTest extends TestCase
     #[Test]
     public function it_throws_when_setting_whitespace_only__name(): void
     {
-        $recipe = Recipe::create('a recipe', 20, 4);
+        $recipe = Recipe::create('a recipe', 20, 4, '', '', []);
         $id = $recipe->getId()->toString();
 
         $this->repository
@@ -121,7 +123,8 @@ class RecipeUpdateCommandHandlerTest extends TestCase
             4,
             5,
             "A description",
-            "A source"
+            "A source",
+            []
         ));
     }
 
@@ -133,7 +136,7 @@ class RecipeUpdateCommandHandlerTest extends TestCase
     #[Test]
     public function it_throws_when_setting_invalid_upper_rating(): void
     {
-        $recipe = Recipe::create('a recipe', 20, 4);
+        $recipe = Recipe::create('a recipe', 20, 4, '', '', []);
         $id = $recipe->getId()->toString();
 
         $this->repository
@@ -152,7 +155,8 @@ class RecipeUpdateCommandHandlerTest extends TestCase
             4,
             10,
             "A description",
-            "A source"
+            "A source",
+            []
         ));
     }
 
@@ -164,7 +168,7 @@ class RecipeUpdateCommandHandlerTest extends TestCase
     #[Test]
     public function it_throws_when_setting_invalid_lower_rating(): void
     {
-        $recipe = Recipe::create('a recipe', 20, 4);
+        $recipe = Recipe::create('a recipe', 20, 4, '', '', []);
         $id = $recipe->getId()->toString();
 
         $this->repository
@@ -183,7 +187,8 @@ class RecipeUpdateCommandHandlerTest extends TestCase
             4,
             -1,
             "A description",
-            "A source"
+            "A source",
+            []
         ));
     }
 
@@ -195,7 +200,7 @@ class RecipeUpdateCommandHandlerTest extends TestCase
     #[Test]
     public function it_throws_when_setting_invalid_servings(): void
     {
-        $recipe = Recipe::create('a recipe', 20, 4);
+        $recipe = Recipe::create('a recipe', 20, 4, '', '', []);
         $id = $recipe->getId()->toString();
 
         $this->repository
@@ -214,7 +219,8 @@ class RecipeUpdateCommandHandlerTest extends TestCase
             0,
             5,
             "A description",
-            "A source"
+            "A source",
+            []
         ));
     }
 }
