@@ -1,8 +1,8 @@
 <?php
 namespace App\Tests\Unit\Recipe\Application\Command\Recipe;
 
-use App\Recipe\Application\Command\Recipe\RecipeCreateCommand;
-use App\Recipe\Application\Command\Recipe\RecipeCreateCommandHandler;
+use App\Recipe\Application\Command\RecipeCreate\RecipeCreateCommand;
+use App\Recipe\Application\Command\RecipeCreate\RecipeCreateCommandHandler;
 use App\Recipe\Domain\Exceptions\RecipeEmptyNameException;
 use App\Recipe\Domain\Exceptions\RecipeInvalidServingsException;
 use App\Recipe\Domain\Model\Recipe;

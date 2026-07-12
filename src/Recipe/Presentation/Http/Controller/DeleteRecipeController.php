@@ -1,7 +1,7 @@
 <?php
 namespace App\Recipe\Presentation\Http\Controller;
 
-use App\Recipe\Application\Command\Recipe\RecipeDeleteCommand;
+use App\Recipe\Application\Command\RecipeDelete\RecipeDeleteCommand;
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

@@ -1,5 +1,5 @@
 <?php
-namespace App\Recipe\Application\Command\Recipe;
+namespace App\Recipe\Application\Command\RecipeUpdate;
 
 use Symfony\Component\Validator\Constraints as Assert;
 

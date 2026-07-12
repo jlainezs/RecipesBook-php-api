@@ -2,8 +2,8 @@
 
 namespace App\Tests\Unit\Recipe\Application\Command\Recipe;
 
-use App\Recipe\Application\Command\Recipe\RecipeDeleteCommand;
-use App\Recipe\Application\Command\Recipe\RecipeDeleteCommandHandler;
+use App\Recipe\Application\Command\RecipeDelete\RecipeDeleteCommand;
+use App\Recipe\Application\Command\RecipeDelete\RecipeDeleteCommandHandler;
 use App\Recipe\Domain\Exceptions\RecipeNotFoundException;
 use App\Recipe\Domain\Model\Recipe;
 use App\Recipe\Domain\Repository\RecipeRepositoryInterface;

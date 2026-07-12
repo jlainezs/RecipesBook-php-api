@@ -1,10 +1,9 @@
 <?php
-namespace App\Recipe\Application\Command\Recipe;
+namespace App\Recipe\Application\Command\RecipeCreate;
 
 use App\Recipe\Domain\Exceptions\RecipeInvalidServingsException;
 use App\Recipe\Domain\Model\Recipe;
 use App\Recipe\Domain\Repository\RecipeRepositoryInterface;
-use App\Recipe\Domain\Repository\RecipeStepRepositoryInterface;
 use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 

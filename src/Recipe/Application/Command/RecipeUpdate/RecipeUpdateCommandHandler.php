@@ -1,10 +1,9 @@
 <?php
-namespace App\Recipe\Application\Command\Recipe;
+namespace App\Recipe\Application\Command\RecipeUpdate;
 
 use App\Recipe\Domain\Exceptions\RecipeInvalidServingsException;
 use App\Recipe\Domain\Exceptions\RecipeNotFoundException;
 use App\Recipe\Domain\Repository\RecipeRepositoryInterface;
-use App\Recipe\Domain\Repository\RecipeStepRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]

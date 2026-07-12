@@ -1,9 +1,9 @@
 <?php
 namespace App\Recipe\Presentation\Http\Controller;
 
-use App\Recipe\Application\Command\Recipe\RecipeStepUpdateDto;
-use App\Recipe\Application\Command\Recipe\RecipeUpdateCommand;
-use App\Recipe\Application\Command\Recipe\RecipeUpdateDto;
+use App\Recipe\Application\Command\RecipeUpdate\RecipeStepUpdateDto;
+use App\Recipe\Application\Command\RecipeUpdate\RecipeUpdateCommand;
+use App\Recipe\Application\Command\RecipeUpdate\RecipeUpdateDto;
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

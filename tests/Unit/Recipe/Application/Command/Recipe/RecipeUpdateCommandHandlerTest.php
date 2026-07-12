@@ -1,8 +1,8 @@
 <?php
 namespace App\Tests\Unit\Recipe\Application\Command\Recipe;
 
-use App\Recipe\Application\Command\Recipe\RecipeUpdateCommand;
-use App\Recipe\Application\Command\Recipe\RecipeUpdateCommandHandler;
+use App\Recipe\Application\Command\RecipeUpdate\RecipeUpdateCommand;
+use App\Recipe\Application\Command\RecipeUpdate\RecipeUpdateCommandHandler;
 use App\Recipe\Domain\Exceptions\RecipeEmptyNameException;
 use App\Recipe\Domain\Exceptions\RecipeInvalidRatingException;
 use App\Recipe\Domain\Exceptions\RecipeInvalidServingsException;
