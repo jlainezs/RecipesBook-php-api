@@ -31,6 +31,21 @@ final readonly class RecipeInstanceQueryHandler
                 );
             }
 
+            $mapped_ingredients = [];
+            foreach ($recipe->getIngredients() as $ingredient)
+            {
+                $mapped_ingredients[] = new RecipeIngredientDto(
+                    id: $ingredient->getId()->toString(),
+                    recipeId: $recipe->getId()->toString(),
+                    ingredientId: $ingredient->getIngredient()->getId()->toString(),
+                    unitOfMeasureId: $ingredient->getUnitOfMeasure()->getId()->toString(),
+                    ordering: $ingredient->getOrdering(),
+                    quantity: $ingredient->getQuantity(),
+                    createdAt: $ingredient->getCreatedAt(),
+                    updatedAt: $ingredient->getUpdatedAt()
+                );
+            }
+
             return new RecipeInstanceResponse(new RecipeDto(
                 id: $recipe->getId()->toString(),
                 name: $recipe->getName(),
@@ -39,6 +54,7 @@ final readonly class RecipeInstanceQueryHandler
                 description: $recipe->getDescription(),
                 source: $recipe->getSource(),
                 steps: $mapped_steps,
+                ingredients: $mapped_ingredients,
                 createdAt: $recipe->getCreatedAt(),
                 updatedAt: $recipe->getUpdatedAt()
             ));

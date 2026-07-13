@@ -23,6 +23,7 @@ readonly final class RecipeDto
         public ?string $source,
 
         public iterable $steps,
+        public iterable $ingredients,
 
         public DateTimeImmutable $createdAt,
         public DateTimeImmutable $updatedAt

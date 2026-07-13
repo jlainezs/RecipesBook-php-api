@@ -29,6 +29,7 @@ final class PostRecipeController extends AbstractController
         $servings = $request->servings;
         $rating = $request->rating;
         $steps = $request->steps;
+        $ingredients = $request->ingredients;
 
         $command = new RecipeCreateCommand(
             name: $name,
@@ -37,6 +38,7 @@ final class PostRecipeController extends AbstractController
             description: $description,
             source: $source,
             steps: $steps,
+            ingredients: $ingredients
         );
         $this->validator->validate($command);
         $this->commandBus->dispatch($command);

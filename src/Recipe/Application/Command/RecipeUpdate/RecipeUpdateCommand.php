@@ -26,5 +26,7 @@ final readonly class RecipeUpdateCommand
 
         public iterable $steps,
 
+        public iterable $ingredients,
+
     ){}
 }

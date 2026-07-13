@@ -21,7 +21,8 @@ final readonly class RecipeCreateCommand
         #[Assert\Length(max: 500)]
         public ?string $source,
 
-        public iterable $steps
+        public iterable $steps,
+        public iterable $ingredients,
     )
     {}
 }

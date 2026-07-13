@@ -6,7 +6,6 @@ use App\Recipe\Domain\Exceptions\RecipeInvalidRatingException;
 use App\Recipe\Domain\Exceptions\RecipeInvalidServingsException;
 use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
 use App\Shared\Domain\Model\AggregateRoot;
-use App\Shared\Domain\Model\HasTimeStampInterface;
 use App\Shared\Domain\ValueObject\AggregateRootId;
 use DateTimeImmutable;
 use Traversable;
@@ -21,6 +20,7 @@ final class Recipe extends AggregateRoot
         private ?string $description,
         private ?string $source,
         private iterable $steps,
+        private iterable $ingredients,
         private DateTimeImmutable $createdAt,
         private DateTimeImmutable $updatedAt
     ){}
@@ -37,6 +37,7 @@ final class Recipe extends AggregateRoot
         ?string $description = null,
         ?string $source = null,
         iterable $steps,
+        iterable $ingredients
     ) : self
     {
         if (empty(trim($name))) {
@@ -58,7 +59,8 @@ final class Recipe extends AggregateRoot
             $rating,
             $description,
             $source,
-            [],
+            $steps,
+            $ingredients,
             new DateTimeImmutable(),
             new DateTimeImmutable()
         );
@@ -68,6 +70,16 @@ final class Recipe extends AggregateRoot
                 recipe: $recipe,
                 ordering: $step['ordering'] ?? 0,
                 description: $step['description'] ?? ''
+            );
+        }
+
+        foreach ($ingredients as $ingredientData) {
+            $recipe->ingredients[] = RecipeIngredient::create(
+                recipe: $recipe,
+                ingredient: $ingredientData['ingredient'],
+                unitOfMeasure: $ingredientData['unitOfMeasure'],
+                quantity: $ingredientData['quantity'] ?? 0,
+                ordering: $ingredientData['ordering'] ?? 1,
             );
         }
 
@@ -187,12 +199,41 @@ final class Recipe extends AggregateRoot
 
         // add new steps
         foreach($steps as $data){
+            if (empty($data->id))
+            {
+                $this->steps[] = $data;
+            }
+        }
+    }
+
+    public function getIngredients(): iterable {
+        return $this->ingredients;
+    }
+
+    public function setIngredients(iterable $ingredients): void
+    {
+        $incomingIngredientsById = [];
+        foreach($ingredients as $ingredient){
+            if (!empty($ingredient->id))
+                $incomingIngredientsById[$ingredient->id] = $ingredient;
+        }
+
+        // remove or update existing ingredients
+        foreach($this->ingredients as $key => $existingIngredient) {
+            $ingredientIdStr = $existingIngredient->getId()->toString();
+            if (!isset($incomingIngredientsById[$ingredientIdStr])) {
+                unset($this->ingredients[$key]);
+            } else {
+                $data = $incomingIngredientsById[$ingredientIdStr];
+                $existingIngredient->setDescription($data->description);
+                $existingIngredient->reorder($data->ordering);
+            }
+        }
+
+        // add new ingredients
+        foreach($ingredients as $data){
             if (empty($data->id)) {
-                $this->steps[] = RecipeStep::create(
-                    recipe: $this,
-                    ordering: $data->ordering,
-                    description: $data->description
-                );
+                $this->ingredients[] = $data;
             }
         }
     }

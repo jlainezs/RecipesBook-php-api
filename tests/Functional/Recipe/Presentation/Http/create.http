@@ -7,7 +7,8 @@ Content-Type: application/json
     "source": "Some source with empty steps",
     "rating": 2,
     "servings": 2,
-    "steps": []
+    "steps": [],
+    "ingredients": []
 }
 
 ###
@@ -29,6 +30,14 @@ Content-Type: application/json
         {
             "description": "YYYThis is the second step in the recipe.",
             "ordering": 2
+        }
+    ],
+    "ingredients": [
+        {
+            "ingredientId": "fc066bb1-22a9-47a4-981d-81f5065b461f",
+            "unitOfMeasureId": "647bfd95-ba44-47bd-a745-2a7b4e9c055b",
+            "quantity": 1.0,
+            "ordering": 1
         }
     ]
 }

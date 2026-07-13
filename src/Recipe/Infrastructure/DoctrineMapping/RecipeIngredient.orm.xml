@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                                      https://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+    <entity name="App\Recipe\Domain\Model\RecipeIngredient"
+            repository-class="App\Recipe\Domain\Repository\RecipeIngredientRepository"
+            table="recipe_ingredient">
+        <id name="id" type="aggregate_root_id" column="id">
+            <generator strategy="NONE" />
+        </id>
+        <many-to-one
+            field="recipe"
+            target-entity="App\Recipe\Domain\Model\Recipe"
+            inversed-by="ingredients"
+        />
+        <many-to-one
+            field="ingredient"
+            target-entity="App\Ingredient\Domain\Model\Ingredient"
+        />
+        <many-to-one
+            field="unitOfMeasure"
+            target-entity="App\UnitOfMeasure\Domain\Model\UnitOfMeasure"
+        />
+        <field name="quantity" type="smallfloat" column="quantity" />
+        <field name="ordering" type="integer" column="ordering" />
+        <field name="createdAt" type="datetime_immutable" column="created_at" />
+        <field name="updatedAt" type="datetime_immutable" column="updated_at" />
+    </entity>
+</doctrine-mapping>

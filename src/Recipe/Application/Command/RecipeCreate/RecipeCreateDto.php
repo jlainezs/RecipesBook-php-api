@@ -19,6 +19,7 @@ readonly final class RecipeCreateDto
         public ?string $description,
         public ?string $source,
 
-        public iterable $steps
+        public iterable $steps,
+        public iterable $ingredients,
     ) {}
 }

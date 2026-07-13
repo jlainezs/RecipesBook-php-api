@@ -20,6 +20,16 @@
                 <cascade-persist />
             </cascade>
         </one-to-many>
+        <one-to-many
+            field="ingredients"
+            target-entity="App\Recipe\Domain\Model\RecipeIngredient"
+            mapped-by="recipe"
+            orphan-removal="true">
+            <cascade>
+                <cascade-remove />
+                <cascade-persist />
+            </cascade>
+        </one-to-many>
         <field name="name" column="name" />
         <field name="servings" column="servings" type="integer" />
         <field name="rating" column="rating" type="integer" />

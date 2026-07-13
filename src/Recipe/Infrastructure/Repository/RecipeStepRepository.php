@@ -16,7 +16,8 @@ class RecipeStepRepository extends ServiceEntityRepository implements RecipeStep
 
     public function findSteps(string $recipeId): array
     {
-        return parent::findBy(['recipeId' => $recipeId]);
+        return parent::findBy(['recipeId' => $recipeId])
+            ->orderBy('ordering', 'ASC');
     }
 
     public function save(Recipe $recipe, iterable $recipeSteps): void

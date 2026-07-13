@@ -22,6 +22,7 @@ final readonly class RecipesQueryHandler
                 description: $recipe->getDescription(),
                 source: $recipe->getSource(),
                 steps: $recipe->getSteps(),
+                ingredients: $recipe->getIngredients(),
                 createdAt: $recipe->getCreatedAt(),
                 updatedAt: $recipe->getUpdatedAt()
             ),

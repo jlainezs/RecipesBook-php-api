@@ -4,6 +4,7 @@ namespace App\Recipe\Application\Command\RecipeUpdate;
 use App\Recipe\Domain\Exceptions\RecipeInvalidServingsException;
 use App\Recipe\Domain\Exceptions\RecipeNotFoundException;
 use App\Recipe\Domain\Repository\RecipeRepositoryInterface;
+use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
@@ -16,6 +17,7 @@ final readonly class RecipeUpdateCommandHandler
     /**
      * @throws RecipeNotFoundException
      * @throws RecipeInvalidServingsException
+     * @throws EmptyIdNotAllowedException
      */
     public function __invoke(RecipeUpdateCommand $command): void
     {
@@ -27,6 +29,7 @@ final readonly class RecipeUpdateCommandHandler
             $recipe->setServings($command->servings);
             $recipe->setRating($command->rating);
             $recipe->setSteps($command->steps);
+            $recipe->setIngredients($command->ingredients);
             $this->repository->save($recipe);
         }
         else
