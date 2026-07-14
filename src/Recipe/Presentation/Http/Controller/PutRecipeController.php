@@ -1,6 +1,7 @@
 <?php
 namespace App\Recipe\Presentation\Http\Controller;
 
+use App\Recipe\Application\Command\RecipeUpdate\RecipeIngredientUpdateDto;
 use App\Recipe\Application\Command\RecipeUpdate\RecipeStepUpdateDto;
 use App\Recipe\Application\Command\RecipeUpdate\RecipeUpdateCommand;
 use App\Recipe\Application\Command\RecipeUpdate\RecipeUpdateDto;
@@ -20,23 +21,35 @@ final class PutRecipeController extends AbstractController
 
     #[Route('/api/v1/recipes/{id}', name: 'put_recipe', methods: ['PUT'])]
     public function __invoke(
+        string $id,
         #[MapRequestPayload]
         RecipeUpdateDto $request
     ): JsonResponse
     {
-        $id = $request->id;
         $name = $request->name;
         $description = $request->description;
         $source = $request->source;
         $servings = $request->servings;
         $rating = $request->rating;
         $steps = [];
+        $ingredients = [];
 
         foreach ($request->steps as $step) {
             $steps[] = new RecipeStepUpdateDto(
                 id: $step['id'] ?? null,
                 description: $step['description'],
                 ordering: $step['ordering']
+            );
+        }
+
+        foreach ($request->ingredients as $ingredient) {
+            $ingredients[] = new RecipeIngredientUpdateDto(
+                id: $ingredient['id'] ?? null,
+                recipeId: $id,
+                ingredientId: $ingredient['ingredientId'] ?? null,
+                unitOfMeasureId: $ingredient['unitOfMeasureId'] ?? null,
+                quantity: $ingredient['quantity'],
+                ordering: $ingredient['ordering']
             );
         }
 
@@ -48,6 +61,7 @@ final class PutRecipeController extends AbstractController
             description: $description,
             source: $source,
             steps: $steps,
+            ingredients: $ingredients
         );
         $this->validator->validate($cmd);
         $this->commandBus->dispatch($cmd);

@@ -51,8 +51,8 @@ Content-Type: application/json
     "name": "A recipe",
     "description": "Some description",
     "source": "Some source",
-    "rating": "xxx",
-    "servings": "4"
+    "rating": xxx,
+    "servings": 4
 }
 
 ###
@@ -64,8 +64,8 @@ Content-Type: application/json
     "name": "A recipe",
     "description": "Some description",
     "source": "Some source",
-    "rating": "4",
-    "servings": "xxxx"
+    "rating": 4,
+    "servings": xxxx
 }
 
 ###
@@ -76,6 +76,8 @@ Content-Type: application/json
 {
     "description": "Some description",
     "source": "Some source",
-    "rating": "4",
-    "servings": "3"
+    "rating": 4,
+    "servings": 3,
+    "steps": [],
+    "ingredients": []
 }

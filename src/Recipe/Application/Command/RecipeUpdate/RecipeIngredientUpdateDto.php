@@ -10,6 +10,9 @@ final readonly class RecipeIngredientUpdateDto
         public ?string $id,
 
         #[Assert\Uuid]
+        public ?string $recipeId,
+
+        #[Assert\Uuid]
         public ?string $ingredientId,
 
         #[Assert\Uuid]

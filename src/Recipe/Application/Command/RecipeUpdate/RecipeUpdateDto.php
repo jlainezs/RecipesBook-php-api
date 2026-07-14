@@ -7,9 +7,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 class RecipeUpdateDto
 {
     public function __construct(
-        #[Assert\Uuid]
-        public  string $id,
-
         #[Assert\NotBlank]
         public string $name,
 
@@ -24,6 +21,7 @@ class RecipeUpdateDto
         public ?string $source,
 
         public array $steps,
+        public array $ingredients
     ) {}
 
 }

@@ -215,7 +215,9 @@ final class Recipe extends AggregateRoot
         $incomingIngredientsById = [];
         foreach($ingredients as $ingredient){
             if (!empty($ingredient->id))
+            {
                 $incomingIngredientsById[$ingredient->id] = $ingredient;
+            }
         }
 
         // remove or update existing ingredients
@@ -225,7 +227,7 @@ final class Recipe extends AggregateRoot
                 unset($this->ingredients[$key]);
             } else {
                 $data = $incomingIngredientsById[$ingredientIdStr];
-                $existingIngredient->setDescription($data->description);
+                $existingIngredient->setQuantity($data->quantity);
                 $existingIngredient->reorder($data->ordering);
             }
         }
