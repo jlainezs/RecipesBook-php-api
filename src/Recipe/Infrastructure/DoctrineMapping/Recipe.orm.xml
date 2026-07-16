@@ -14,8 +14,7 @@
             field="steps"
             target-entity="App\Recipe\Domain\Model\RecipeStep"
             mapped-by="recipe"
-            orphan-removal="true"
-            fetch="EAGER">
+            orphan-removal="true">
             <cascade>
                 <cascade-remove />
                 <cascade-persist />
@@ -25,8 +24,7 @@
             field="ingredients"
             target-entity="App\Recipe\Domain\Model\RecipeIngredient"
             mapped-by="recipe"
-            orphan-removal="true"
-            fetch="EAGER">
+            orphan-removal="true">
             <cascade>
                 <cascade-remove />
                 <cascade-persist />
