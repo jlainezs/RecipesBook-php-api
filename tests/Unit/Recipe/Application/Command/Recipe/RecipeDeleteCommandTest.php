@@ -26,7 +26,7 @@ class RecipeDeleteCommandTest extends TestCase
     public function it_deletes_the_recipe(): void
     {
         $recipe = Recipe::create(
-            "Recipe",2,4, '', '', []
+            "Recipe",2,4, '', '', [], []
         );
         $id = $recipe->getId()->toString();
 
@@ -46,7 +46,7 @@ class RecipeDeleteCommandTest extends TestCase
     public function it_throws_when_the_recipe_is_not_found(): void
     {
         $recipe = Recipe::create(
-            "Recipe",2,4, '', '', []
+            "Recipe",2,4, '', '', [], []
         );
         $id = $recipe->getId()->toString();
 

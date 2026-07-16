@@ -1,6 +1,7 @@
 <?php
 namespace App\Tests\Unit\Recipe\Application\Command\Recipe;
 
+use App\Ingredient\Domain\Repository\IngredientRepositoryInterface;
 use App\Recipe\Application\Command\RecipeCreate\RecipeCreateCommand;
 use App\Recipe\Application\Command\RecipeCreate\RecipeCreateCommandHandler;
 use App\Recipe\Domain\Exceptions\RecipeEmptyNameException;
@@ -8,6 +9,7 @@ use App\Recipe\Domain\Exceptions\RecipeInvalidServingsException;
 use App\Recipe\Domain\Model\Recipe;
 use App\Recipe\Domain\Repository\RecipeRepositoryInterface;
 use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
+use App\UnitOfMeasure\Domain\Repository\UnitOfMeasureRepositoryInterface;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -15,12 +17,20 @@ use PHPUnit\Framework\TestCase;
 class RecipeCreateCommandHandlerTest extends TestCase
 {
     private RecipeRepositoryInterface&MockObject $repository;
+    private IngredientRepositoryInterface&MockObject $ingredientrepository;
+    private UnitOfMeasureRepositoryInterface&MockObject $unitofmeasurerepository;
     private RecipeCreateCommandHandler $handler;
 
     public function setUp(): void
     {
         $this->repository = $this->createMock(RecipeRepositoryInterface::class);
-        $this->handler = new RecipeCreateCommandHandler($this->repository);
+        $this->ingredientrepository = $this->createMock(IngredientRepositoryInterface::class);
+        $this->unitofmeasurerepository = $this->createMock(UnitOfMeasureRepositoryInterface::class);
+        $this->handler = new RecipeCreateCommandHandler(
+            $this->repository,
+            $this->ingredientrepository,
+            $this->unitofmeasurerepository
+        );
     }
 
     /**
@@ -39,6 +49,7 @@ class RecipeCreateCommandHandlerTest extends TestCase
             1,
             "description",
             "source",
+            [],
             []
         ));
     }
@@ -58,6 +69,7 @@ class RecipeCreateCommandHandlerTest extends TestCase
             1,
             "description",
             "source",
+            [],
             []
         ));
     }
@@ -77,6 +89,7 @@ class RecipeCreateCommandHandlerTest extends TestCase
             1,
             "description",
             "source",
+            [],
             []
         ));
     }
