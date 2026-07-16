@@ -6,7 +6,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 final readonly class RecipeIngredientUpdateDto
 {
     public function __construct(
-        #[Assert\Uuid]
         public ?string $id,
 
         #[Assert\Uuid]

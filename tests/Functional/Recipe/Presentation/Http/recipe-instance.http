@@ -6,6 +6,10 @@ Accept: application/json
 GET http://localhost:8000/api/v1/recipes/1d916354-4a36-48c6-bc09-e97fa1a84414
 Accept: application/json
 
+### 200, with some steps
+GET http://localhost:8000/api/v1/recipes/52f21dfa-f344-42c9-afb8-31ed79379dc0
+Accept: application/json
+
 ### Should fail, 404 Not found
 GET http://localhost:8000/api/v1/recipes/2481d2d0-08c6-4ab1-a235-a5598d3af6e6
 Accept: application/json

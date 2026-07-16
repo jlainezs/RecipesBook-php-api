@@ -34,8 +34,8 @@ final class Recipe extends AggregateRoot
         string $name,
         int $servings,
         int $rating,
-        ?string $description = null,
-        ?string $source = null,
+        ?string $description,
+        ?string $source,
         iterable $steps,
         iterable $ingredients
     ) : self
@@ -238,5 +238,24 @@ final class Recipe extends AggregateRoot
                 $this->ingredients[] = $data;
             }
         }
+    }
+
+    public function getStep(string $recipeStepId): ?RecipeStep {
+        foreach($this->getSteps() as $step) {
+            if ($step->getId()->toString() === $recipeStepId) {
+                return $step;
+            }
+        }
+        print_r("not found\n");
+        return null;
+    }
+
+    public function getIngredient(string $recipeIngredientId): ?RecipeIngredient {
+        foreach($this->getIngredients() as $ingredient) {
+            if ($ingredient->getId()->toString() === $recipeIngredientId) {
+                return $ingredient;
+            }
+        }
+        return null;
     }
 }

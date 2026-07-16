@@ -42,7 +42,8 @@ final class ApiExceptionListener
                     $exception::class . ': ' . $exception->getMessage(),
                     500, [],
                     $exception->getFile(),
-                    $exception->getLine()
+                    $exception->getLine(),
+                    $exception->getTraceAsString()
                 )
             };
 

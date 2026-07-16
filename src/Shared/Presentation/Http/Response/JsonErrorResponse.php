@@ -10,12 +10,15 @@ final class JsonErrorResponse extends JsonResponse
         int $statusCode,
         array $headers = [],
         string $file = '',
-        string $line = '')
+        string $line = '',
+        string $traceAsString = '',
+    )
     {
         parent::__construct([
             'error' => $message,
             'file' => $file,
             'line' => $line,
+            'trace' => $traceAsString,
         ], $statusCode, $headers);
     }
 }

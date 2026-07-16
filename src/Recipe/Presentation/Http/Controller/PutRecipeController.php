@@ -7,6 +7,7 @@ use App\Recipe\Application\Command\RecipeUpdate\RecipeUpdateCommand;
 use App\Recipe\Application\Command\RecipeUpdate\RecipeUpdateDto;
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
@@ -16,7 +17,8 @@ final class PutRecipeController extends AbstractController
 {
     function __construct(
         private readonly CommandBus $commandBus,
-        private readonly ApplicationDataValidator $validator
+        private readonly ApplicationDataValidator $validator,
+        private LoggerInterface $logger
     ){}
 
     #[Route('/api/v1/recipes/{id}', name: 'put_recipe', methods: ['PUT'])]
@@ -48,8 +50,8 @@ final class PutRecipeController extends AbstractController
                 recipeId: $id,
                 ingredientId: $ingredient['ingredientId'] ?? null,
                 unitOfMeasureId: $ingredient['unitOfMeasureId'] ?? null,
-                quantity: $ingredient['quantity'],
-                ordering: $ingredient['ordering']
+                ordering: $ingredient['ordering'],
+                quantity: $ingredient['quantity']
             );
         }
 
