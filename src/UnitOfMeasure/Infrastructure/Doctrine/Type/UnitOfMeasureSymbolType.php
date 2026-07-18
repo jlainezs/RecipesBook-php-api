@@ -2,6 +2,7 @@
 namespace App\UnitOfMeasure\Infrastructure\Doctrine\Type;
 
 use App\UnitOfMeasure\Domain\Exceptions\UnitOfMeasureEmptySymbolException;
+use App\UnitOfMeasure\Domain\Exceptions\UnitOfMeasureSymbolLengthException;
 use App\UnitOfMeasure\ValueObjects\UnitOfMeasureSymbol;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\StringType;
@@ -25,6 +26,9 @@ final class UnitOfMeasureSymbolType extends StringType
         return self::NAME;
     }
 
+    /**
+     * @throws UnitOfMeasureSymbolLengthException
+     */
     public function convertToPHPValue(mixed $value, AbstractPlatform $platform): UnitOfMeasureSymbol
     {
         if (($value === null) || empty(trim($value))) {
@@ -34,7 +38,7 @@ final class UnitOfMeasureSymbolType extends StringType
         return new UnitOfMeasureSymbol($value);
     }
 
-    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): string
+    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): ?string
     {
         if ($value === null) {
             return null;
