@@ -1,10 +1,10 @@
 <?php
 namespace App\Tests\Unit\Recipe\Domain\Model;
 
-use App\Recipe\Domain\Exceptions\RecipeEmptyNameException;
 use App\Recipe\Domain\Exceptions\RecipeInvalidRatingException;
 use App\Recipe\Domain\Exceptions\RecipeInvalidServingsException;
 use App\Recipe\Domain\Model\Recipe;
+use App\Shared\Domain\Exception\EmptyRequiredNameException;
 use App\Shared\Domain\ValueObject\AggregateRootId;
 use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\Test;
@@ -33,7 +33,7 @@ class RecipeTest extends TestCase
     #[Test]
     public function it_throws_on_empty_name(): void
     {
-        $this->expectException(RecipeEmptyNameException::class);
+        $this->expectException(EmptyRequiredNameException::class);
         Recipe::create('', 4, 5, '', '', [], []);
     }
 
@@ -49,7 +49,7 @@ class RecipeTest extends TestCase
     public function it_throws_on_empty_rename(): void
     {
         $recipe = Recipe::create('a recipe', 4, 5, '', '', [], []);
-        $this->expectException(RecipeEmptyNameException::class);
+        $this->expectException(EmptyRequiredNameException::class);
         $recipe->rename('');
     }
 
@@ -57,7 +57,7 @@ class RecipeTest extends TestCase
     public function it_throws_when_rename_with_space(): void
     {
         $recipe = Recipe::create('a recipe', 4, 5, '', '', [], []);
-        $this->expectException(RecipeEmptyNameException::class);
+        $this->expectException(EmptyRequiredNameException::class);
         $recipe->rename(' ');
     }
 

@@ -2,8 +2,10 @@
 namespace App\MealCourse\Domain\Model;
 
 use App\MealCourse\Domain\Exceptions\MealCourseEmptyNameException;
+use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
 use App\Shared\Domain\Model\AggregateRoot;
 use App\Shared\Domain\ValueObject\AggregateRootId;
+use App\Shared\Domain\ValueObject\RequiredName;
 use DateTimeImmutable;
 
 final class MealCourse extends AggregateRoot
@@ -13,31 +15,20 @@ final class MealCourse extends AggregateRoot
      */
     private function __construct(
         private readonly AggregateRootId $id,
-        private string $name,
+        private RequiredName $name,
         private readonly DateTimeImmutable $createdAt,
         private DateTimeImmutable $updatedAt
-    ){
-        $this->validate();
-    }
+    ){}
 
     /**
      * @throws MealCourseEmptyNameException
-     */
-    public function validate(): void
-    {
-        if (empty(trim($this->name))) {
-            throw new MealCourseEmptyNameException();
-        }
-    }
-
-    /**
-     * @throws MealCourseEmptyNameException
+     * @throws EmptyIdNotAllowedException
      */
     public static function create(string $name): self
     {
         return new self(
             AggregateRootId::generateId(),
-            $name,
+            new RequiredName($name),
             new DateTimeImmutable(),
             new DateTimeImmutable()
         );
@@ -60,7 +51,7 @@ final class MealCourse extends AggregateRoot
 
     public function getName(): string
     {
-        return $this->name;
+        return $this->name->value();
     }
 
     /**
@@ -68,11 +59,6 @@ final class MealCourse extends AggregateRoot
      */
     public function rename(string $name): void
     {
-        if (empty(trim($name)))
-        {
-            throw new MealCourseEmptyNameException();
-        }
-
-        $this->name = $name;
+        $this->name = new RequiredName($name);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Tests\Unit\MealCourse\Domain\Model;
 
 use App\MealCourse\Domain\Exceptions\MealCourseEmptyNameException;
 use App\MealCourse\Domain\Model\MealCourse;
+use App\Shared\Domain\Exception\EmptyRequiredNameException;
 use App\Shared\Domain\ValueObject\AggregateRootId;
 use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\Test;
@@ -32,14 +33,14 @@ class MealCourseTest extends TestCase
     #[Test]
     public function it_throws_on_empty_name(): void
     {
-        $this->expectException(MealCourseEmptyNameException::class);
+        $this->expectException(EmptyRequiredNameException::class);
         MealCourse::create('');
     }
 
     #[Test]
     public function it_throws_on_whitespace_name(): void
     {
-        $this->expectException(MealCourseEmptyNameException::class);
+        $this->expectException(EmptyRequiredNameException::class);
         MealCourse::create('  ');
     }
 
@@ -55,7 +56,7 @@ class MealCourseTest extends TestCase
     public function it_throws_when_rename_with_empty_name(): void
     {
         $mealCourse = MealCourse::create('Starter');
-        $this->expectException(MealCourseEmptyNameException::class);
+        $this->expectException(EmptyRequiredNameException::class);
         $mealCourse->rename('');
     }
 
@@ -63,7 +64,7 @@ class MealCourseTest extends TestCase
     public function it_throws_when_rename_with_white_space_name(): void
     {
         $mealCourse = MealCourse::create('Starter');
-        $this->expectException(MealCourseEmptyNameException::class);
+        $this->expectException(EmptyRequiredNameException::class);
         $mealCourse->rename(' ');
     }
 }

@@ -4,32 +4,30 @@ namespace App\Season\Domain\Model;
 
 use App\Season\Domain\Exceptions\SeasonEmptyNameException;
 use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
+use App\Shared\Domain\Exception\EmptyRequiredNameException;
 use App\Shared\Domain\Model\AggregateRoot;
 use App\Shared\Domain\ValueObject\AggregateRootId;
+use App\Shared\Domain\ValueObject\RequiredName;
 use DateTimeImmutable;
 
 final class Season extends AggregateRoot
 {
     private function __construct(
         private readonly AggregateRootId $id,
-        private string                   $name,
-        private DateTimeImmutable        $createdAt,
-        private DateTimeImmutable        $updatedAt
+        private RequiredName $name,
+        private DateTimeImmutable $createdAt,
+        private DateTimeImmutable $updatedAt
     ){}
 
     /**
-     * @throws SeasonEmptyNameException
+     * @throws EmptyRequiredNameException
      * @throws EmptyIdNotAllowedException
      */
     public static function create(string $name): self
     {
-        if (empty(trim($name))) {
-            throw new SeasonEmptyNameException();
-        }
-
         return new self(
             AggregateRootId::generateId(),
-            $name,
+            new RequiredName($name),
             new DateTimeImmutable(),
             new DateTimeImmutable()
         );
@@ -51,15 +49,11 @@ final class Season extends AggregateRoot
 
     public function rename(string $name): void
     {
-        if (empty(trim($name))) {
-            throw new SeasonEmptyNameException();
-        }
-
-        $this->name = $name;
+        $this->name = new RequiredName($name);
     }
 
     public function getName(): string
     {
-        return $this->name;
+        return $this->name->value();
     }
 }

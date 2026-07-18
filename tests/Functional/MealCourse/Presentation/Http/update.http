@@ -1,4 +1,4 @@
-PUT http://localhost:8000/api/v1/meal-courses/4b6492b0-c628-4049-88de-5efe3b635676
+PUT http://localhost:8000/api/v1/meal-courses/308972cf-da2b-4be7-90b7-ba437bc1a3e6
 Accept: application/json
 
-{"name": "Main course"}
+{"name": "Salad"}

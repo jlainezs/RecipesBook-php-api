@@ -30,7 +30,7 @@
                 <cascade-persist />
             </cascade>
         </one-to-many>
-        <field name="name" column="name" />
+        <field name="name" column="name" type="required_name"/>
         <field name="servings" column="servings" type="integer" />
         <field name="rating" column="rating" type="integer" />
         <field name="description" column="description" nullable="true" type="text" />

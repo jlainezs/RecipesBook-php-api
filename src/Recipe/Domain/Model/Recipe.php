@@ -7,6 +7,7 @@ use App\Recipe\Domain\Exceptions\RecipeInvalidServingsException;
 use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
 use App\Shared\Domain\Model\AggregateRoot;
 use App\Shared\Domain\ValueObject\AggregateRootId;
+use App\Shared\Domain\ValueObject\RequiredName;
 use DateTimeImmutable;
 use Traversable;
 
@@ -14,7 +15,7 @@ final class Recipe extends AggregateRoot
 {
     private function __construct(
         private readonly AggregateRootId $id,
-        private string $name,
+        private RequiredName $name,
         private int $servings,
         private int $rating,
         private ?string $description,
@@ -40,10 +41,6 @@ final class Recipe extends AggregateRoot
         iterable $ingredients
     ) : self
     {
-        if (empty(trim($name))) {
-            throw new RecipeEmptyNameException();
-        }
-
         if ($rating < 0 || $rating > 5) {
             throw new RecipeInvalidRatingException($rating);
         }
@@ -54,7 +51,7 @@ final class Recipe extends AggregateRoot
 
         $recipe = new self(
             AggregateRootId::generateId(),
-            $name,
+            new RequiredName($name),
             $servings,
             $rating,
             $description,
@@ -103,16 +100,12 @@ final class Recipe extends AggregateRoot
 
     public function getName(): string
     {
-        return $this->name;
+        return $this->name->value();
     }
 
     public function rename(string $name): void
     {
-        if (empty(trim($name))) {
-            throw new RecipeEmptyNameException();
-        }
-
-        $this->name = $name;
+        $this->name = new RequiredName($name);
     }
 
     public function getServings(): int

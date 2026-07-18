@@ -4,10 +4,10 @@ namespace App\Tests\Unit\Season\Application\Command;
 
 use App\Season\Application\Command\Season\SeasonUpdateCommand;
 use App\Season\Application\Command\Season\SeasonUpdateCommandHandler;
-use App\Season\Domain\Exceptions\SeasonEmptyNameException;
 use App\Season\Domain\Exceptions\SeasonNotFoundException;
 use App\Season\Domain\Model\Season;
 use App\Season\Domain\Repository\SeasonRepositoryInterface;
+use App\Shared\Domain\Exception\EmptyRequiredNameException;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -78,7 +78,7 @@ class SeasonUpdateHandlerTest extends TestCase
             ->expects($this->never())
             ->method('save');
 
-        $this->expectException(SeasonEmptyNameException::class);
+        $this->expectException(EmptyRequiredNameException::class);
 
         ($this->handler)(new SeasonUpdateCommand($id, ''));
     }

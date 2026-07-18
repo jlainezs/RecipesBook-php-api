@@ -11,7 +11,7 @@
             <generator strategy="NONE" />
         </id>
 
-        <field name="name" column="name" />
+        <field name="name" column="name" type="required_name"/>
         <field name="symbol" column="symbol" length="15" />
         <field name="uomType" column="uom_type" type="integer" enum-type="App\UnitOfMeasure\Domain\Model\UnitOfMeasureEnum" />
         <field name="createdAt" type="datetime_immutable" column="created_at" />

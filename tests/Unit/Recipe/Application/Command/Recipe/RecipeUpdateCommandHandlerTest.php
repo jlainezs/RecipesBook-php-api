@@ -4,13 +4,13 @@ namespace App\Tests\Unit\Recipe\Application\Command\Recipe;
 use App\Ingredient\Domain\Repository\IngredientRepositoryInterface;
 use App\Recipe\Application\Command\RecipeUpdate\RecipeUpdateCommand;
 use App\Recipe\Application\Command\RecipeUpdate\RecipeUpdateCommandHandler;
-use App\Recipe\Domain\Exceptions\RecipeEmptyNameException;
 use App\Recipe\Domain\Exceptions\RecipeInvalidRatingException;
 use App\Recipe\Domain\Exceptions\RecipeInvalidServingsException;
 use App\Recipe\Domain\Exceptions\RecipeNotFoundException;
 use App\Recipe\Domain\Model\Recipe;
 use App\Recipe\Domain\Repository\RecipeRepositoryInterface;
 use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
+use App\Shared\Domain\Exception\EmptyRequiredNameException;
 use App\UnitOfMeasure\Domain\Repository\UnitOfMeasureRepositoryInterface;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -99,7 +99,7 @@ class RecipeUpdateCommandHandlerTest extends TestCase
             ->expects($this->never())
             ->method('save');
 
-        $this->expectException(RecipeEmptyNameException::class);
+        $this->expectException(EmptyRequiredNameException::class);
         ($this->handler)(new RecipeUpdateCommand(
             $id,
             '',
@@ -133,7 +133,7 @@ class RecipeUpdateCommandHandlerTest extends TestCase
             ->expects($this->never())
             ->method('save');
 
-        $this->expectException(RecipeEmptyNameException::class);
+        $this->expectException(EmptyRequiredNameException::class);
         ($this->handler)(new RecipeUpdateCommand(
             $id,
             ' ',

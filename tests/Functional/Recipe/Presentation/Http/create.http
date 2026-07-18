@@ -2,7 +2,7 @@ POST http://localhost:8000/api/v1/recipes/create
 Content-Type: application/json
 
 {
-    "name": "A recipe with empty steps",
+    "name": "A recipe with empty steps to test its name",
     "description": "Some description with empty steps",
     "source": "Some source with empty steps",
     "rating": 2,

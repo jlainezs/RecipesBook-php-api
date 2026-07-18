@@ -11,7 +11,7 @@
             <generator strategy="NONE" />
         </id>
 
-        <field name="name" column="name"/>
+        <field name="name" column="name" type="required_name" />
         <field name="createdAt" type="datetime_immutable" column="created_at" />
         <field name="updatedAt" type="datetime_immutable" column="updated_at" />
     </entity>

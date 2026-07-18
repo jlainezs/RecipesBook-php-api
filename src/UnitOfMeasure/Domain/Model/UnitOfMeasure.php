@@ -4,6 +4,7 @@ namespace App\UnitOfMeasure\Domain\Model;
 use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
 use App\Shared\Domain\Model\AggregateRoot;
 use App\Shared\Domain\ValueObject\AggregateRootId;
+use App\Shared\Domain\ValueObject\RequiredName;
 use App\UnitOfMeasure\Domain\Exceptions\UnitOfMeasureEmptyNameException;
 use App\UnitOfMeasure\Domain\Exceptions\UnitOfMeasureEmptySymbolException;
 use DateTimeImmutable;
@@ -12,11 +13,11 @@ final class UnitOfMeasure extends AggregateRoot
 {
     private function __construct(
         private readonly AggregateRootId $id,
-        private string                   $name,
-        private string                   $symbol,
-        private UnitOfMeasureEnum        $uomType,
-        private DateTimeImmutable        $createdAt,
-        private DateTimeImmutable        $updatedAt
+        private RequiredName $name,
+        private string $symbol,
+        private UnitOfMeasureEnum $uomType,
+        private DateTimeImmutable $createdAt,
+        private DateTimeImmutable $updatedAt
     ){}
 
     /**
@@ -26,17 +27,13 @@ final class UnitOfMeasure extends AggregateRoot
      */
     public static function create(string $name, string $symbol, UnitOfMeasureEnum $unitOfMeasureType): self
     {
-        if (empty(trim($name))) {
-            throw new UnitOfMeasureEmptyNameException();
-        }
-
         if (empty(trim($symbol))) {
             throw new UnitOfMeasureEmptySymbolException();
         }
 
         return new self(
             AggregateRootId::generateId(),
-            $name,
+            new RequiredName($name),
             $symbol,
             $unitOfMeasureType,
             new DateTimeImmutable(),
@@ -64,16 +61,12 @@ final class UnitOfMeasure extends AggregateRoot
      */
     public function rename(string $name): void
     {
-        if (empty(trim($name))) {
-            throw new UnitOfMeasureEmptyNameException();
-        }
-
-        $this->name = $name;
+        $this->name = new RequiredName($name);
     }
 
     public function getName(): string
     {
-        return $this->name;
+        return $this->name->value();
     }
 
     public function getSymbol(): string
