@@ -26,13 +26,10 @@ final class UnitOfMeasure extends AggregateRoot
      * @throws EmptyIdNotAllowedException
      * @throws UnitOfMeasureEmptyNameException
      * @throws UnitOfMeasureEmptySymbolException
+     * @throws UnitOfMeasureSymbolLengthException
      */
     public static function create(string $name, string $symbol, UnitOfMeasureEnum $unitOfMeasureType): self
     {
-        if (empty(trim($symbol))) {
-            throw new UnitOfMeasureEmptySymbolException();
-        }
-
         return new self(
             AggregateRootId::generateId(),
             new RequiredName($name),
@@ -82,10 +79,6 @@ final class UnitOfMeasure extends AggregateRoot
      */
     public function changeSymbol(string $simbol): void
     {
-        if (empty(trim($simbol))) {
-            throw new UnitOfMeasureEmptySymbolException();
-        }
-
         $this->symbol = new UnitOfMeasureSymbol($simbol);
     }
 
