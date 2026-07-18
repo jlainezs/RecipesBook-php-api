@@ -1,34 +1,31 @@
 <?php
 namespace App\IngredientType\Domain\Model;
 
-use App\IngredientType\Domain\Exceptions\IngredientTypeEmptyNameException;
 use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
+use App\Shared\Domain\Exception\EmptyRequiredNameException;
 use App\Shared\Domain\Model\AggregateRoot;
 use App\Shared\Domain\ValueObject\AggregateRootId;
+use App\Shared\Domain\ValueObject\RequiredName;
 use DateTimeImmutable;
 
 final class IngredientType extends AggregateRoot
 {
     private function __construct(
         private readonly AggregateRootId $id,
-        private string $name,
+        private RequiredName $name,
         private DateTimeImmutable $createdAt,
         private DateTimeImmutable $updatedAt
     ){}
 
     /**
      * @throws EmptyIdNotAllowedException
-     * @throws IngredientTypeEmptyNameException
+     * @throws EmptyRequiredNameException
      */
     public static function create(string $name): self
     {
-        if (empty(trim($name))) {
-            throw new IngredientTypeEmptyNameException();
-        }
-
         return new self(
             AggregateRootId::generateId(),
-            $name,
+            new RequiredName($name),
             new DateTimeImmutable(),
             new DateTimeImmutable()
         );
@@ -49,16 +46,17 @@ final class IngredientType extends AggregateRoot
         return $this->updatedAt;
     }
 
+    /**
+     * @param string $name
+     * @return void
+     * @throws EmptyRequiredNameException
+     */
     public function rename(string $name): void
     {
-        if (empty(trim($name))) {
-            throw new IngredientTypeEmptyNameException();
-        }
-
-        $this->name = $name;
+        $this->name = new RequiredName($name);
     }
 
-    public function getName(): string
+    public function getName(): RequiredName
     {
         return $this->name;
     }

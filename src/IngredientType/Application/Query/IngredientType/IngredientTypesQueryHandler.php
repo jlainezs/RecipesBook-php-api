@@ -17,7 +17,7 @@ final readonly class IngredientTypesQueryHandler
         $itemsDto = array_map(
          fn(IngredientType $t) => new IngredientTypeDto(
                 $t->getId()->toString(),
-                $t->getName(),
+                $t->getName()->value(),
                 $t->getCreatedAt(),
                 $t->getUpdatedAt()
             ),

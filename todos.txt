@@ -1,0 +1,2 @@
+TODO: Rename namespace App\Shared\Domain\Exception into App\Shared\Domain\Exceptions
+TODO: Rename namespace App\Shared\Domain\ValueObject into App\Shared\Domain\ValueObjects

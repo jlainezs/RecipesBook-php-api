@@ -7,6 +7,7 @@ use App\IngredientType\Application\Command\IngredientType\IngredientTypeCreateCo
 use App\IngredientType\Domain\Exceptions\IngredientTypeEmptyNameException;
 use App\IngredientType\Domain\Model\IngredientType;
 use App\IngredientType\Domain\Repository\IngredientTypeRepositoryInterface;
+use App\Shared\Domain\Exception\EmptyRequiredNameException;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -40,7 +41,7 @@ class IngredientTypeCreateHandlerTest extends TestCase
             ->expects($this->never())
             ->method('save');
 
-        $this->expectException(IngredientTypeEmptyNameException::class);
+        $this->expectException(EmptyRequiredNameException::class);
 
         ($this->handler)(new IngredientTypeCreateCommand(''));
     }
@@ -52,7 +53,7 @@ class IngredientTypeCreateHandlerTest extends TestCase
             ->expects($this->never())
             ->method('save');
 
-        $this->expectException(IngredientTypeEmptyNameException::class);
+        $this->expectException(EmptyRequiredNameException::class);
 
         ($this->handler)(new IngredientTypeCreateCommand('   '));
     }

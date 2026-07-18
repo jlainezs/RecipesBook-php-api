@@ -4,6 +4,7 @@ namespace App\Tests\Unit\IngredientType\Domain\Model;
 
 use App\IngredientType\Domain\Exceptions\IngredientTypeEmptyNameException;
 use App\IngredientType\Domain\Model\IngredientType;
+use App\Shared\Domain\Exception\EmptyRequiredNameException;
 use App\Shared\Domain\ValueObject\AggregateRootId;
 use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\Test;
@@ -16,7 +17,7 @@ class IngredientTypeTest extends TestCase
     {
         $ingredientType = IngredientType::create('Vegetable');
 
-        $this->assertSame('Vegetable', $ingredientType->getName());
+        $this->assertSame('Vegetable', $ingredientType->getName()->value());
         $this->assertInstanceOf(AggregateRootId::class, $ingredientType->getId());
         $this->assertInstanceOf(DateTimeImmutable::class, $ingredientType->getCreatedAt());
         $this->assertInstanceOf(DateTimeImmutable::class, $ingredientType->getUpdatedAt());
@@ -34,7 +35,7 @@ class IngredientTypeTest extends TestCase
     #[Test]
     public function it_throws_on_empty_name(): void
     {
-        $this->expectException(IngredientTypeEmptyNameException::class);
+        $this->expectException(EmptyRequiredNameException::class);
 
         IngredientType::create('');
     }
@@ -42,7 +43,7 @@ class IngredientTypeTest extends TestCase
     #[Test]
     public function it_throws_on_whitespace_only_name(): void
     {
-        $this->expectException(IngredientTypeEmptyNameException::class);
+        $this->expectException(EmptyRequiredNameException::class);
 
         IngredientType::create('   ');
     }
@@ -54,7 +55,7 @@ class IngredientTypeTest extends TestCase
 
         $ingredientType->rename('Fruit');
 
-        $this->assertSame('Fruit', $ingredientType->getName());
+        $this->assertSame('Fruit', $ingredientType->getName()->value());
     }
 
     #[Test]
@@ -62,7 +63,7 @@ class IngredientTypeTest extends TestCase
     {
         $ingredientType = IngredientType::create('Vegetable');
 
-        $this->expectException(IngredientTypeEmptyNameException::class);
+        $this->expectException(EmptyRequiredNameException::class);
 
         $ingredientType->rename('');
     }
@@ -72,7 +73,7 @@ class IngredientTypeTest extends TestCase
     {
         $ingredientType = IngredientType::create('Vegetable');
 
-        $this->expectException(IngredientTypeEmptyNameException::class);
+        $this->expectException(EmptyRequiredNameException::class);
 
         $ingredientType->rename('   ');
     }

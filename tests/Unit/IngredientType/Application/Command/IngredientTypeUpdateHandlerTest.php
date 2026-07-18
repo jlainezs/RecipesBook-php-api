@@ -8,6 +8,7 @@ use App\IngredientType\Domain\Exceptions\IngredientTypeEmptyNameException;
 use App\IngredientType\Domain\Exceptions\IngredientTypeNotFoundException;
 use App\IngredientType\Domain\Model\IngredientType;
 use App\IngredientType\Domain\Repository\IngredientTypeRepositoryInterface;
+use App\Shared\Domain\Exception\EmptyRequiredNameException;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -41,7 +42,7 @@ class IngredientTypeUpdateHandlerTest extends TestCase
 
         ($this->handler)(new IngredientTypeUpdateCommand($id, 'Fruit'));
 
-        $this->assertSame('Fruit', $ingredientType->getName());
+        $this->assertSame('Fruit', $ingredientType->getName()->value());
     }
 
     #[Test]
@@ -78,7 +79,7 @@ class IngredientTypeUpdateHandlerTest extends TestCase
             ->expects($this->never())
             ->method('save');
 
-        $this->expectException(IngredientTypeEmptyNameException::class);
+        $this->expectException(EmptyRequiredNameException::class);
 
         ($this->handler)(new IngredientTypeUpdateCommand($id, ''));
     }
