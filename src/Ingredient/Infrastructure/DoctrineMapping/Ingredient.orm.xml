@@ -13,8 +13,10 @@
 
         <field name="name" column="name" type="required_name"/>
         <field name="description" column="description" nullable="true" />
-        <many-to-one field="ingredientType"
-                     target-entity="App\IngredientType\Domain\Model\IngredientType"
+        <field name="ingredientTypeReference"
+               column="ingredient_type_id"
+               type="ingredient_type_reference"
+               nullable="true"
         />
         <field name="createdAt" type="datetime_immutable" column="created_at" />
         <field name="updatedAt" type="datetime_immutable" column="updated_at" />

@@ -8,7 +8,7 @@ use Doctrine\DBAL\Types\GuidType;
 
 final class AggregateRootIdType extends GuidType
 {
-    public const NAME = 'aggregate_root_id';
+    public const string NAME = 'aggregate_root_id';
 
     public function getName(): string
     {

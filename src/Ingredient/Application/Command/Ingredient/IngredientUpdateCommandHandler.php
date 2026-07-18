@@ -2,22 +2,25 @@
 namespace App\Ingredient\Application\Command\Ingredient;
 
 use App\Ingredient\Domain\Exceptions\IngredientNotFoundException;
+use App\Ingredient\Domain\ValueObjects\IngredientTypeReference;
 use App\Ingredient\Infrastructure\Repository\IngredientRepository;
 use App\IngredientType\Domain\Exceptions\IngredientTypeNotFoundException;
 use App\IngredientType\Infrastructure\Repository\IngredientTypeRepository;
+use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
 readonly final class IngredientUpdateCommandHandler
 {
     public function __construct(
-        private readonly IngredientRepository $ingredientRepository,
-        private readonly IngredientTypeRepository $ingredientTypeRepository
+        private IngredientRepository $ingredientRepository,
+        private IngredientTypeRepository $ingredientTypeRepository
     ){}
 
     /**
      * @throws IngredientTypeNotFoundException
      * @throws IngredientNotFoundException
+     * @throws EmptyIdNotAllowedException
      */
     public function __invoke(IngredientUpdateCommand $command): void
     {
@@ -33,7 +36,7 @@ readonly final class IngredientUpdateCommandHandler
         {
             $ingredient->rename($command->name);
             $ingredient->changeDescription($command->description);
-            $ingredient->changeIngredientType($ingredientType);
+            $ingredient->changeIngredientType(new IngredientTypeReference($command->ingredientTypeId));
             $this->ingredientRepository->save($ingredient);
         }
         else

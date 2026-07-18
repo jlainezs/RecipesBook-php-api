@@ -19,7 +19,7 @@ final readonly class IngredientsQueryHandler
                 id: $ingredient->getId()->toString(),
                 name: $ingredient->getName(),
                 description: $ingredient->getDescription(),
-                ingredientTypeId: $ingredient->getIngredientType()->getId()->toString(),
+                ingredientTypeId: $ingredient->getIngredientType()->value()->toString(),
                 createdAt: $ingredient->getCreatedAt(),
                 updatedAt: $ingredient->getUpdatedAt()
             ),

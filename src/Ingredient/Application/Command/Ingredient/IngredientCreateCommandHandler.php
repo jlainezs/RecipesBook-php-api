@@ -4,6 +4,7 @@ namespace App\Ingredient\Application\Command\Ingredient;
 use App\Ingredient\Domain\Exceptions\IngredientEmptyNameException;
 use App\Ingredient\Domain\Model\Ingredient;
 use App\Ingredient\Domain\Repository\IngredientRepositoryInterface;
+use App\Ingredient\Domain\ValueObjects\IngredientTypeReference;
 use App\IngredientType\Domain\Exceptions\IngredientTypeNotFoundException;
 use App\IngredientType\Domain\Repository\IngredientTypeRepositoryInterface;
 use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
@@ -30,7 +31,11 @@ final readonly class IngredientCreateCommandHandler
             throw new IngredientTypeNotFoundException($command->ingredientTypeId);
         }
 
-        $ingredient = Ingredient::create($command->name, $command->description, $ingredientType);
+        $ingredient = Ingredient::create(
+            $command->name,
+            $command->description,
+            new IngredientTypeReference($command->ingredientTypeId)
+        );
         $this->repository->save($ingredient);
     }
 }

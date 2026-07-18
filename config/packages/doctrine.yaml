@@ -10,6 +10,7 @@ doctrine:
         types:
             aggregate_root_id: App\Shared\Infrastructure\Persistence\Doctrine\Type\AggregateRootIdType
             required_name: App\Shared\Infrastructure\Persistence\Doctrine\Type\RequiredNameType
+            ingredient_type_reference:  App\Ingredient\Infrastructure\Doctrine\Type\IngredientTypeReferenceType
     orm:
         validate_xml_mapping: true
         naming_strategy: doctrine.orm.naming_strategy.underscore
