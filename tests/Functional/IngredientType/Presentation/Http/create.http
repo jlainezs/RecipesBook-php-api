@@ -1,4 +1,4 @@
 POST http://localhost:8000/api/v1/ingredient-types/create
 Content-Type: application/json
 
-{"name": "Sample ingredient type"}
+{"name": "XXXX another sample ingredient type"}

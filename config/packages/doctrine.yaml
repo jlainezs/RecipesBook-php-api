@@ -9,7 +9,7 @@ doctrine:
         profiling_collect_backtrace: '%kernel.debug%'
         types:
             aggregate_root_id: App\Shared\Infrastructure\Persistence\Doctrine\Type\AggregateRootIdType
-            required_name: App\Shared\Infrastructure\Persistence\Doctrine\Type\RequiredName
+            required_name: App\Shared\Infrastructure\Persistence\Doctrine\Type\RequiredNameType
     orm:
         validate_xml_mapping: true
         naming_strategy: doctrine.orm.naming_strategy.underscore
