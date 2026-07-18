@@ -7,6 +7,8 @@ use App\Shared\Domain\ValueObject\AggregateRootId;
 use App\Shared\Domain\ValueObject\RequiredName;
 use App\UnitOfMeasure\Domain\Exceptions\UnitOfMeasureEmptyNameException;
 use App\UnitOfMeasure\Domain\Exceptions\UnitOfMeasureEmptySymbolException;
+use App\UnitOfMeasure\Domain\Exceptions\UnitOfMeasureSymbolLengthException;
+use App\UnitOfMeasure\ValueObjects\UnitOfMeasureSymbol;
 use DateTimeImmutable;
 
 final class UnitOfMeasure extends AggregateRoot
@@ -14,7 +16,7 @@ final class UnitOfMeasure extends AggregateRoot
     private function __construct(
         private readonly AggregateRootId $id,
         private RequiredName $name,
-        private string $symbol,
+        private UnitOfMeasureSymbol $symbol,
         private UnitOfMeasureEnum $uomType,
         private DateTimeImmutable $createdAt,
         private DateTimeImmutable $updatedAt
@@ -34,7 +36,7 @@ final class UnitOfMeasure extends AggregateRoot
         return new self(
             AggregateRootId::generateId(),
             new RequiredName($name),
-            $symbol,
+            new UnitOfMeasureSymbol($symbol),
             $unitOfMeasureType,
             new DateTimeImmutable(),
             new DateTimeImmutable()
@@ -69,13 +71,14 @@ final class UnitOfMeasure extends AggregateRoot
         return $this->name->value();
     }
 
-    public function getSymbol(): string
+    public function getSymbol(): UnitOfMeasureSymbol
     {
         return $this->symbol;
     }
 
     /**
      * @throws UnitOfMeasureEmptySymbolException
+     * @throws UnitOfMeasureSymbolLengthException
      */
     public function changeSymbol(string $simbol): void
     {
@@ -83,7 +86,7 @@ final class UnitOfMeasure extends AggregateRoot
             throw new UnitOfMeasureEmptySymbolException();
         }
 
-        $this->symbol = $simbol;
+        $this->symbol = new UnitOfMeasureSymbol($simbol);
     }
 
     public function getUomType(): UnitOfMeasureEnum

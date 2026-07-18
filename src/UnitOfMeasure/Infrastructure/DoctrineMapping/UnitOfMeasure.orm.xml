@@ -12,7 +12,7 @@
         </id>
 
         <field name="name" column="name" type="required_name"/>
-        <field name="symbol" column="symbol" length="15" />
+        <field name="symbol" column="symbol" type="unit_of_measure_symbol" />
         <field name="uomType" column="uom_type" type="integer" enum-type="App\UnitOfMeasure\Domain\Model\UnitOfMeasureEnum" />
         <field name="createdAt" type="datetime_immutable" column="created_at" />
         <field name="updatedAt" type="datetime_immutable" column="updated_at" />

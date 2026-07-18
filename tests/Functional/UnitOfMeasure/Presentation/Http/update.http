@@ -3,3 +3,19 @@ Content-Type: application/json
 Accept: application/json
 
 {"name": "gram", "symbol": "gr", "uomType": 0}
+
+###
+
+PUT http://localhost:8000/api/v1/units-of-measure/ae3174aa-386d-4cd1-82dc-2c51350c61b6
+Content-Type: application/json
+Accept: application/json
+
+{"name": "Llitre", "symbol": "ll", "uomType": 1}
+
+###
+
+PUT http://localhost:8000/api/v1/units-of-measure/ae3174aa-386d-4cd1-82dc-2c51350c61b6
+Content-Type: application/json
+Accept: application/json
+
+{"name": "Litre", "symbol": "l", "uomType": 1}

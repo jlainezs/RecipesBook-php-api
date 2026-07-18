@@ -17,7 +17,7 @@ final readonly class UnitsOfMeasureQueryHandler
             fn(UnitOfMeasure $uom) => new UnitOfMeasureDto(
                 id: $uom->getId()->toString(),
                 name: $uom->getName(),
-                symbol: $uom->getSymbol(),
+                symbol: $uom->getSymbol()->value(),
                 uomType: $uom->getUomType()->value,
                 createdAt: $uom->getCreatedAt(),
                 updatedAt: $uom->getUpdatedAt(),
