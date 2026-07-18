@@ -8,11 +8,11 @@ Content-Type: application/json
 }
 
 ###
-PUT http://localhost:8000/api/v1/ingredients/59ab1e13-529c-448d-b649-7a5c7c2ddc42
+PUT http://localhost:8000/api/v1/ingredients/dcc5836b-823d-4333-9e15-72b2cd47da18
 Content-Type: application/json
 
 {
-    "name": "Another ingredient updated.",
+    "name": "Another ingredient FFFFFFFFFFFFFFFFFFF updated.",
     "description": "The description of this test ingredient is also changed",
     "ingredientTypeId": "84d77bf6-43d6-4d4e-b559-3a203e750eeb"
 }

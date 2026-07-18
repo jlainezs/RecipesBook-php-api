@@ -4,18 +4,45 @@ namespace App\Ingredient\Application\Command\Ingredient;
 use App\Ingredient\Domain\Exceptions\IngredientNotFoundException;
 use App\Ingredient\Domain\ValueObjects\IngredientTypeReference;
 use App\Ingredient\Infrastructure\Repository\IngredientRepository;
+use App\IngredientType\Application\Query\IngredientType\FindIngredientTypeReferenceQuery;
 use App\IngredientType\Domain\Exceptions\IngredientTypeNotFoundException;
 use App\IngredientType\Infrastructure\Repository\IngredientTypeRepository;
+use App\Shared\Application\Bus\QueryBus;
 use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use Symfony\Component\Messenger\Exception\ExceptionInterface;
+use Symfony\Component\Messenger\Stamp\HandledStamp;
 
 #[AsMessageHandler]
 readonly final class IngredientUpdateCommandHandler
 {
     public function __construct(
         private IngredientRepository $ingredientRepository,
-        private IngredientTypeRepository $ingredientTypeRepository
+        private QueryBus $queryBus
     ){}
+
+
+    /**
+     * @throws IngredientTypeNotFoundException|ExceptionInterface
+     * @throws EmptyIdNotAllowedException
+     */
+    private function findIngredientTypeReference(string $ingredientTypeId): IngredientTypeReference
+    {
+        $envelope = $this->queryBus->ask(
+            new FindIngredientTypeReferenceQuery($ingredientTypeId)
+        );
+
+        /** @var HandledStamp|null $handledStamp */
+        //$handledStamp = $envelope->
+        //$foundId = $handledStamp?->getResult();
+
+        if ($envelope === null) {
+            throw new IngredientTypeNotFoundException($ingredientTypeId);
+        }
+
+        return $envelope;
+    }
+
 
     /**
      * @throws IngredientTypeNotFoundException
@@ -30,9 +57,17 @@ readonly final class IngredientUpdateCommandHandler
             throw new IngredientNotFoundException($command->id);
         }
 
-        $ingredientType = $this->ingredientTypeRepository->findOne($command->ingredientTypeId);
+        $ingredientTypeReference = null;
 
-        if ($ingredientType)
+        if ($command->ingredientTypeId !== null) {
+            $ingredientTypeReference = $this->findIngredientTypeReference($command->ingredientTypeId);
+        }
+
+        if (null === $ingredientTypeReference) {
+            throw new IngredientTypeNotFoundException($command->ingredientTypeId);
+        }
+
+        if ($ingredientTypeReference)
         {
             $ingredient->rename($command->name);
             $ingredient->changeDescription($command->description);
