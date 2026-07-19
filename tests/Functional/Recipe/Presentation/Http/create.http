@@ -51,8 +51,10 @@ Content-Type: application/json
     "name": "A recipe",
     "description": "Some description",
     "source": "Some source",
-    "rating": xxx,
-    "servings": 4
+    "rating": 0,
+    "servings": 4,
+    "ingredients": [],
+    "steps": []
 }
 
 ###

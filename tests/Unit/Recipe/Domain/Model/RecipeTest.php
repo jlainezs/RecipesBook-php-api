@@ -111,6 +111,6 @@ class RecipeTest extends TestCase
     public function rating_is_updated() {
         $recipe = Recipe::create('Recipe name', 1, 5, '', '', [], []);
         $recipe->setRating(4);
-        $this->assertEquals(4, $recipe->getRating());
+        $this->assertEquals(4, $recipe->getRating()->value());
     }
 }

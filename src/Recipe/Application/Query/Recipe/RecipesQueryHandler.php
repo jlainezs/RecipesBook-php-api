@@ -18,7 +18,7 @@ final readonly class RecipesQueryHandler
                 id: $recipe->getId()->toString(),
                 name: $recipe->getName(),
                 servings: $recipe->getServings()->value(),
-                rating: $recipe->getRating(),
+                rating: $recipe->getRating()->value(),
                 description: $recipe->getDescription(),
                 source: $recipe->getSource(),
                 steps: $recipe->getSteps(),

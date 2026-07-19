@@ -13,6 +13,7 @@ doctrine:
             ingredient_type_reference:  App\Ingredient\Infrastructure\Doctrine\Type\IngredientTypeReferenceType
             unit_of_measure_symbol: App\UnitOfMeasure\Infrastructure\Doctrine\Type\UnitOfMeasureSymbolType
             recipe_servings: App\Recipe\Infrastructure\Doctrine\Type\RecipeServingsType
+            recipe_rating: App\Recipe\Infrastructure\Doctrine\Type\RecipeRatingType
     orm:
         validate_xml_mapping: true
         naming_strategy: doctrine.orm.naming_strategy.underscore

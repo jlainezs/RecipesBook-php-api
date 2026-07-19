@@ -32,7 +32,7 @@
         </one-to-many>
         <field name="name" column="name" type="required_name"/>
         <field name="servings" column="servings" type="recipe_servings" />
-        <field name="rating" column="rating" type="integer" />
+        <field name="rating" column="rating" type="recipe_rating" />
         <field name="description" column="description" nullable="true" type="text" />
         <field name="source" column="source" nullable="true" length="500"/>
         <field name="createdAt" type="datetime_immutable" column="created_at" />

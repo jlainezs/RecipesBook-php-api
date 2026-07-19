@@ -4,6 +4,7 @@ namespace App\Recipe\Domain\Model;
 use App\Recipe\Domain\Exceptions\RecipeEmptyNameException;
 use App\Recipe\Domain\Exceptions\RecipeInvalidRatingException;
 use App\Recipe\Domain\Exceptions\RecipeInvalidServingsException;
+use App\Recipe\Domain\ValueObjects\RecipeRating;
 use App\Recipe\Domain\ValueObjects\RecipeServings;
 use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
 use App\Shared\Domain\Model\AggregateRoot;
@@ -18,7 +19,7 @@ final class Recipe extends AggregateRoot
         private readonly AggregateRootId $id,
         private RequiredName $name,
         private RecipeServings $servings,
-        private int $rating,
+        private RecipeRating $rating,
         private ?string $description,
         private ?string $source,
         private iterable $steps,
@@ -42,15 +43,11 @@ final class Recipe extends AggregateRoot
         iterable $ingredients
     ) : self
     {
-        if ($rating < 0 || $rating > 5) {
-            throw new RecipeInvalidRatingException($rating);
-        }
-
         $recipe = new self(
             AggregateRootId::generateId(),
             new RequiredName($name),
             new RecipeServings($servings),
-            $rating,
+            new RecipeRating($rating),
             $description,
             $source,
             $steps,
@@ -118,7 +115,7 @@ final class Recipe extends AggregateRoot
         $this->servings = new RecipeServings($servings);
     }
 
-    public function getRating(): int
+    public function getRating(): RecipeRating
     {
         return $this->rating;
     }
@@ -128,11 +125,7 @@ final class Recipe extends AggregateRoot
      */
     public function setRating(int $rating): void
     {
-        if ($rating < 0 || $rating > 5) {
-            throw new RecipeInvalidRatingException($rating);
-        }
-
-        $this->rating = $rating;
+        $this->rating = new RecipeRating($rating);
     }
 
     public function getSource(): string
