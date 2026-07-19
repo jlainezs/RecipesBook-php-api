@@ -78,7 +78,7 @@ class RecipeTest extends TestCase
     public function servings_is_updated() {
         $recipe = Recipe::create('Recipe Name', 4, 5, '', '', [], []);
         $recipe->setServings(5);
-        $this->assertEquals(5, $recipe->getServings());
+        $this->assertEquals(5, $recipe->getServings()->value());
     }
 
     #[Test]

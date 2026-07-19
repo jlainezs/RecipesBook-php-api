@@ -1,2 +1,4 @@
+TODO: (doing) Anything that has validation rules should be moved into a ValueObject
+TODO: (doing) Remove references from entities in diferent bounded contexts: use id's and do manipulations via bus (specific query or command).
 TODO: Rename namespace App\Shared\Domain\Exception into App\Shared\Domain\Exceptions
 TODO: Rename namespace App\Shared\Domain\ValueObject into App\Shared\Domain\ValueObjects

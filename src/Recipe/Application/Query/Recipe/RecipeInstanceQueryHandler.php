@@ -49,7 +49,7 @@ final readonly class RecipeInstanceQueryHandler
             return new RecipeInstanceResponse(new RecipeDto(
                 id: $recipe->getId()->toString(),
                 name: $recipe->getName(),
-                servings: $recipe->getServings(),
+                servings: $recipe->getServings()->value(),
                 rating: $recipe->getRating(),
                 description: $recipe->getDescription(),
                 source: $recipe->getSource(),

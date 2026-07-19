@@ -73,7 +73,7 @@ class RecipeUpdateCommandHandlerTest extends TestCase
         ));
 
         $this->assertSame('modified recipe', $recipe->getName());
-        $this->assertSame(4, $recipe->getServings());
+        $this->assertSame(4, $recipe->getServings()->value());
         $this->assertSame(5, $recipe->getRating());
         $this->assertSame("A description", $recipe->getDescription());
         $this->assertSame("A source", $recipe->getSource());

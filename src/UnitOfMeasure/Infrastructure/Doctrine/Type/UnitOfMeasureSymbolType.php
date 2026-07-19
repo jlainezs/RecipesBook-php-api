@@ -33,7 +33,7 @@ final class UnitOfMeasureSymbolType extends StringType
     {
         if (($value === null) || empty(trim($value))) {
             throw new UnitOfMeasureEmptySymbolException();
-        }
+         }
 
         return new UnitOfMeasureSymbol($value);
     }
