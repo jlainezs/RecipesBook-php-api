@@ -8,6 +8,7 @@ use App\Recipe\Domain\Exceptions\RecipeStepInvalidOrderingException;
 use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
 use App\Shared\Domain\Model\AggregateRoot;
 use App\Shared\Domain\ValueObject\AggregateRootId;
+use App\Shared\Domain\ValueObject\Ordering;
 use App\UnitOfMeasure\Domain\Model\UnitOfMeasure;
 use DateTimeImmutable;
 
@@ -19,7 +20,7 @@ final class RecipeIngredient extends AggregateRoot
         private Ingredient $ingredient,
         private UnitOfMeasure $unitOfMeasure,
         private float $quantity,
-        private int $ordering,
+        private Ordering $ordering,
         private DateTimeImmutable $createdAt,
         private DateTimeImmutable $updatedAt
     ){}
@@ -35,10 +36,6 @@ final class RecipeIngredient extends AggregateRoot
         int $ordering
     ): RecipeIngredient
     {
-        if ($ordering <= 0) {
-            throw new RecipeIngredientInvalidOrderingException();
-        }
-
         if ($quantity <= 0) {
             throw new RecipeIngredientInvalidQuantityException();
         }
@@ -49,7 +46,7 @@ final class RecipeIngredient extends AggregateRoot
             ingredient: $ingredient,
             unitOfMeasure: $unitOfMeasure,
             quantity: $quantity,
-            ordering: $ordering,
+            ordering: new Ordering($ordering),
             createdAt: new DateTimeImmutable(),
             updatedAt: new DateTimeImmutable()
         );
@@ -70,7 +67,7 @@ final class RecipeIngredient extends AggregateRoot
         return $this->updatedAt;
     }
 
-    public function getOrdering(): int
+    public function getOrdering(): Ordering
     {
         return $this->ordering;
     }
@@ -82,11 +79,7 @@ final class RecipeIngredient extends AggregateRoot
      */
     public function reorder(int $ordering): void
     {
-        if ($ordering <= 0) {
-            throw new RecipeIngredientInvalidOrderingException();
-        }
-
-        $this->ordering = $ordering;
+        $this->ordering = new Ordering($ordering);
     }
 
     public function getQuantity(): float

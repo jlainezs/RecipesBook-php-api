@@ -14,6 +14,7 @@ doctrine:
             unit_of_measure_symbol: App\UnitOfMeasure\Infrastructure\Doctrine\Type\UnitOfMeasureSymbolType
             recipe_servings: App\Recipe\Infrastructure\Doctrine\Type\RecipeServingsType
             recipe_rating: App\Recipe\Infrastructure\Doctrine\Type\RecipeRatingType
+            ordering: App\Shared\Infrastructure\Persistence\Doctrine\Type\OrderingType
     orm:
         validate_xml_mapping: true
         naming_strategy: doctrine.orm.naming_strategy.underscore

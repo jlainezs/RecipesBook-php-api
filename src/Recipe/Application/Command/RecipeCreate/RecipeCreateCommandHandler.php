@@ -8,6 +8,7 @@ use App\Recipe\Domain\Model\RecipeIngredient;
 use App\Recipe\Domain\Model\RecipeStep;
 use App\Recipe\Domain\Repository\RecipeRepositoryInterface;
 use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
+use App\Shared\Domain\ValueObject\Ordering;
 use App\UnitOfMeasure\Domain\Repository\UnitOfMeasureRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 

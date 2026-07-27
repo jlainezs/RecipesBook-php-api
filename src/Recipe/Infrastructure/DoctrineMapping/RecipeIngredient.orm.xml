@@ -23,7 +23,7 @@
             target-entity="App\UnitOfMeasure\Domain\Model\UnitOfMeasure"
         />
         <field name="quantity" type="smallfloat" column="quantity" />
-        <field name="ordering" type="integer" column="ordering" />
+        <field name="ordering" type="ordering" column="ordering" />
         <field name="createdAt" type="datetime_immutable" column="created_at" />
         <field name="updatedAt" type="datetime_immutable" column="updated_at" />
     </entity>

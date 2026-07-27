@@ -81,7 +81,7 @@ Content-Type: application/json
 }
 
 ###
-# Update
+# Update, will fail: no steps
 PUT http://localhost:8000/api/v1/recipes/d4b56772-aac4-4826-8205-6e68a590ff70
 Content-Type: application/json
 
