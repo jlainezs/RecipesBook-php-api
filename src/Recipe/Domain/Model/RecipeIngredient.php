@@ -5,6 +5,7 @@ use App\Ingredient\Domain\Model\Ingredient;
 use App\Recipe\Domain\Exceptions\RecipeIngredientInvalidOrderingException;
 use App\Recipe\Domain\Exceptions\RecipeIngredientInvalidQuantityException;
 use App\Recipe\Domain\Exceptions\RecipeStepInvalidOrderingException;
+use App\Recipe\Domain\ValueObjects\RecipeIngredientQuantity;
 use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
 use App\Shared\Domain\Exception\InvalidOrderingException;
 use App\Shared\Domain\Model\AggregateRoot;
@@ -20,7 +21,7 @@ final class RecipeIngredient extends AggregateRoot
         private Recipe $recipe,
         private Ingredient $ingredient,
         private UnitOfMeasure $unitOfMeasure,
-        private float $quantity,
+        private RecipeIngredientQuantity $quantity,
         private Ordering $ordering,
         private DateTimeImmutable $createdAt,
         private DateTimeImmutable $updatedAt
@@ -37,16 +38,12 @@ final class RecipeIngredient extends AggregateRoot
         int $ordering
     ): RecipeIngredient
     {
-        if ($quantity <= 0) {
-            throw new RecipeIngredientInvalidQuantityException();
-        }
-
         return new self(
             id: AggregateRootId::generateId(),
             recipe: $recipe,
             ingredient: $ingredient,
             unitOfMeasure: $unitOfMeasure,
-            quantity: $quantity,
+            quantity: new RecipeIngredientQuantity($quantity),
             ordering: new Ordering($ordering),
             createdAt: new DateTimeImmutable(),
             updatedAt: new DateTimeImmutable()
@@ -83,18 +80,14 @@ final class RecipeIngredient extends AggregateRoot
         $this->ordering = new Ordering($ordering);
     }
 
-    public function getQuantity(): float
+    public function getQuantity(): RecipeIngredientQuantity
     {
         return $this->quantity;
     }
 
     public function setQuantity(float $quantity): void
     {
-        if ($quantity <= 0) {
-            throw new RecipeIngredientInvalidQuantityException();
-        }
-
-        $this->quantity = $quantity;
+        $this->quantity = new RecipeIngredientQuantity($quantity);
     }
 
     public function getRecipe(): Recipe
