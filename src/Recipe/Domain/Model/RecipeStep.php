@@ -4,16 +4,19 @@ namespace App\Recipe\Domain\Model;
 use App\Recipe\Domain\Exceptions\RecipeStepEmptyDescriptionException;
 use App\Recipe\Domain\Exceptions\RecipeStepInvalidOrderingException;
 use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
+use App\Shared\Domain\Exception\InvalidOrderingException;
 use App\Shared\Domain\Model\AggregateRoot;
 use App\Shared\Domain\ValueObject\AggregateRootId;
+use App\Shared\Domain\ValueObject\Ordering;
 use DateTimeImmutable;
+use Doctrine\Common\Collections\Order;
 
 final class RecipeStep extends AggregateRoot
 {
     private function __construct(
         private readonly AggregateRootId $id,
         private Recipe $recipe,
-        private int $ordering,
+        private Ordering $ordering,
         private string $description,
         private DateTimeImmutable $createdAt,
         private DateTimeImmutable $updatedAt
@@ -29,12 +32,12 @@ final class RecipeStep extends AggregateRoot
     ): RecipeStep
     {
         return new self(
-            AggregateRootId::generateId(),
-            $recipe,
-            $ordering,
-            $description,
-            new DateTimeImmutable(),
-            new DateTimeImmutable()
+            id: AggregateRootId::generateId(),
+            recipe: $recipe,
+            ordering: new Ordering($ordering),
+            description: $description,
+            createdAt: new DateTimeImmutable(),
+            updatedAt: new DateTimeImmutable()
         );
     }
 
@@ -53,7 +56,7 @@ final class RecipeStep extends AggregateRoot
         return $this->updatedAt;
     }
 
-    public function getOrdering(): int
+    public function getOrdering(): Ordering
     {
         return $this->ordering;
     }
@@ -61,15 +64,11 @@ final class RecipeStep extends AggregateRoot
     /**
      * @param int $ordering
      * @returns void
-     * @throws RecipeStepInvalidOrderingException
+     * @throws InvalidOrderingException
      */
     public function reorder(int $ordering): void
     {
-        if ($ordering <= 0) {
-            throw new RecipeStepInvalidOrderingException();
-        }
-
-        $this->ordering = $ordering;
+        $this->ordering = new Ordering($ordering);
     }
 
     public function getDescription(): string

@@ -6,6 +6,7 @@ use App\Recipe\Domain\Exceptions\RecipeIngredientInvalidOrderingException;
 use App\Recipe\Domain\Exceptions\RecipeIngredientInvalidQuantityException;
 use App\Recipe\Domain\Exceptions\RecipeStepInvalidOrderingException;
 use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
+use App\Shared\Domain\Exception\InvalidOrderingException;
 use App\Shared\Domain\Model\AggregateRoot;
 use App\Shared\Domain\ValueObject\AggregateRootId;
 use App\Shared\Domain\ValueObject\Ordering;
@@ -75,7 +76,7 @@ final class RecipeIngredient extends AggregateRoot
     /**
      * @param int $ordering
      * @returns void
-     * @throws RecipeStepInvalidOrderingException
+     * @throws InvalidOrderingException
      */
     public function reorder(int $ordering): void
     {
