@@ -23,12 +23,13 @@ final class RecipeIngredientQuantityType extends Type
 
     public function convertToPHPValue(mixed $value, AbstractPlatform $platform): ?RecipeIngredientQuantity
     {
-        if ($value === null)
-        {
-            return null;
-        }
-
-        return new RecipeIngredientQuantity((float) $value);
+        return match(true) {
+            $value === null => null,
+            is_numeric($value) => new RecipeIngredientQuantity((float) $value),
+            default => throw new ConversionException(
+                sprintf("Got '%s' instead of '%s. Could not convert it to database value", self::class, get_debug_type($value))
+            )
+        };
     }
 
     /**
@@ -36,16 +37,13 @@ final class RecipeIngredientQuantityType extends Type
      */
     public function convertToDatabaseValue($value, AbstractPlatform $platform): ?float
     {
-        if ($value === null)
+        return match (true)
         {
-            return null;
-        }
-
-        if ($value instanceof RecipeIngredientQuantity)
-        {
-            return $value->value();
-        }
-
-        throw new ConversionException("Invalid recipe ingredient quantity type");
+            $value === null => null,
+            $value instanceof RecipeIngredientQuantity => $value->value(),
+            default => throw new ConversionException(
+                sprintf("Got '%s' instead of '%s. Could not convert it to database value", self::class, get_debug_type($value))
+            )
+        };
     }
 }

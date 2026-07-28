@@ -1,12 +1,10 @@
 <?php
 namespace App\Shared\Infrastructure\Persistence\Doctrine\Type;
 
-use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
 use App\Shared\Domain\Exception\EmptyRequiredNameException;
-use App\Shared\Domain\ValueObject\AggregateRootId;
 use App\Shared\Domain\ValueObject\RequiredName;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\GuidType;
+use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\StringType;
 
 final class RequiredNameType extends StringType
@@ -20,26 +18,28 @@ final class RequiredNameType extends StringType
 
     /**
      * @throws EmptyRequiredNameException
+     * @throws ConversionException
      */
     public function convertToPHPValue(mixed $value, AbstractPlatform $platform): RequiredName
     {
-        if ($value === null) {
-            throw new EmptyRequiredNameException();
-        }
-
-        return new RequiredName((string) $value);
+        return match (true)
+        {
+            $value === null => throw new EmptyRequiredNameException(),
+            is_string($value) => new RequiredName($value),
+            default => throw new ConversionException(
+                sprintf("Got '%s' instead of '%s. Could not convert it to database value", self::class, get_debug_type($value))
+            )
+        };
     }
 
     public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): ?string
     {
-        if ($value === null) {
-            return null;
-        }
-
-        if ($value instanceof RequiredName) {
-            return $value->value();
-        }
-
-        return (string) $value;
+        return match(true) {
+            $value === null => null,
+            $value instanceof RequiredName => $value->value(),
+            default => throw new ConversionException(
+                sprintf("Got '%s' instead of '%s. Could not convert it to database value", self::class, get_debug_type($value))
+            )
+        };
     }
 }
