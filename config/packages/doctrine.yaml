@@ -25,43 +25,43 @@ doctrine:
         mappings:
             EntityTypeXML:
                 type: xml
-                dir: '%kernel.project_dir%/src/IngredientType/Infrastructure/DoctrineMapping'
+                dir: '%kernel.project_dir%/src/IngredientType/Infrastructure/Doctrine/Mapping'
                 prefix: 'App\IngredientType\Domain\Model'
                 alias: IngredientType
                 is_bundle: false
             SeasonXML:
                 type: xml
-                dir: '%kernel.project_dir%/src/Season/Infrastructure/DoctrineMapping'
+                dir: '%kernel.project_dir%/src/Season/Infrastructure/Doctrine/Mapping'
                 prefix: 'App\Season\Domain\Model'
                 alias: Season
                 is_bundle: false
             UnitOfMeasureXML:
                 type: xml
-                dir: '%kernel.project_dir%/src/UnitOfMeasure/Infrastructure/DoctrineMapping'
+                dir: '%kernel.project_dir%/src/UnitOfMeasure/Infrastructure/Doctrine/Mapping'
                 prefix: 'App\UnitOfMeasure\Domain\Model'
                 alias: UnitOfMeasure
                 is_bundle: false
             IngredientXML:
                 type: xml
-                dir: '%kernel.project_dir%/src/Ingredient/Infrastructure/DoctrineMapping'
+                dir: '%kernel.project_dir%/src/Ingredient/Infrastructure/Doctrine/Mapping'
                 prefix: 'App\Ingredient\Domain\Model'
                 alias: Ingredient
                 is_bundle: false
             MediaXML:
                 type: xml
-                dir: '%kernel.project_dir%/src/Media/Infrastructure/DoctrineMapping'
+                dir: '%kernel.project_dir%/src/Media/Infrastructure/Doctrine/Mapping'
                 prefix: 'App\Media\Domain\Model'
                 alias: Media
                 is_bundle: false
             MealCourseXml:
                 type: xml
-                dir: '%kernel.project_dir%/src/MealCourse/Infrastructure/DoctrineMapping'
+                dir: '%kernel.project_dir%/src/MealCourse/Infrastructure/Doctrine/Mapping'
                 prefix: 'App\MealCourse\Domain\Model'
                 alias: MealCourse
                 is_bundle: false
             RecipeXml:
                 type: xml
-                dir: '%kernel.project_dir%/src/Recipe/Infrastructure/DoctrineMapping'
+                dir: '%kernel.project_dir%/src/Recipe/Infrastructure/Doctrine/Mapping'
                 prefix: 'App\Recipe\Domain\Model'
                 alias: Recipe
                 is_bundle: false
