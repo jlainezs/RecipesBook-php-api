@@ -32,10 +32,10 @@ final class RequiredNameType extends StringType
         };
     }
 
-    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): ?string
+    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): string
     {
         return match(true) {
-            $value === null => null,
+            $value === null => throw new EmptyRequiredNameException(),
             $value instanceof RequiredName => $value->value(),
             default => throw new ConversionException(
                 sprintf("Got '%s' instead of '%s. Could not convert it to database value", self::class, get_debug_type($value))

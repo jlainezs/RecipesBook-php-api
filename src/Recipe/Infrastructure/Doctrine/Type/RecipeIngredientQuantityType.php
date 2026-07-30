@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Recipe\Infrastructure\Doctrine\Type;
 
 use App\Recipe\Domain\ValueObjects\RecipeIngredientQuantity;

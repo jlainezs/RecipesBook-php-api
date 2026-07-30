@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Shared\Infrastructure\Persistence\Doctrine\Type;
 
 use App\Shared\Domain\ValueObject\Ordering;
