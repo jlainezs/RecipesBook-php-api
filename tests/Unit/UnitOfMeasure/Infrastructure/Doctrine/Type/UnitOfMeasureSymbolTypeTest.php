@@ -1,7 +1,6 @@
 <?php
 namespace App\Tests\Unit\UnitOfMeasure\Infrastructure\Doctrine\Type;
 
-use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
 use App\UnitOfMeasure\Domain\Exceptions\UnitOfMeasureEmptySymbolException;
 use App\UnitOfMeasure\Domain\Exceptions\UnitOfMeasureSymbolLengthException;
 use App\UnitOfMeasure\Infrastructure\Doctrine\Type\UnitOfMeasureSymbolType;
@@ -38,8 +37,6 @@ class UnitOfMeasureSymbolTypeTest extends TestCase
     }
 
     /**
-     * @throws EmptyIdNotAllowedException
-     * @throws ConversionException
      * @throws UnitOfMeasureSymbolLengthException
      */
     #[Test]
@@ -49,15 +46,20 @@ class UnitOfMeasureSymbolTypeTest extends TestCase
         $this->type->convertToPHPValue(null, $this->platform);
     }
 
+    /**
+     * @throws UnitOfMeasureSymbolLengthException
+     */
     #[Test]
     #[DataProvider('some_measure_units')]
     public function it_converts_some_string_to_symbol(string $symbolValue): void
     {
         $symbol = $this->type->convertToPHPValue($symbolValue, $this->platform);
-        $this->assertInstanceOf(UnitOfMeasureSymbol::class, $symbol);
         $this->assertSame($symbolValue, $symbol->value());
     }
 
+    /**
+     * @throws UnitOfMeasureSymbolLengthException
+     */
     #[Test]
     #[DataProvider('some_invalid_measure_units')]
     public function it_throw_if_convert_invalid_string_to_symbol(string $symbolValue): void
@@ -66,6 +68,9 @@ class UnitOfMeasureSymbolTypeTest extends TestCase
         $this->type->convertToPHPValue($symbolValue, $this->platform);
     }
 
+    /**
+     * @throws ConversionException
+     */
     #[Test]
     public function it_converts_to_database_null(): void
     {
