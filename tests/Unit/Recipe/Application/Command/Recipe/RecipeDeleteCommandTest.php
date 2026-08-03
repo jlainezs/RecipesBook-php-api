@@ -7,6 +7,7 @@ use App\Recipe\Application\Command\RecipeDelete\RecipeDeleteCommandHandler;
 use App\Recipe\Domain\Exceptions\RecipeNotFoundException;
 use App\Recipe\Domain\Model\Recipe;
 use App\Recipe\Domain\Repository\RecipeRepositoryInterface;
+use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -22,6 +23,10 @@ class RecipeDeleteCommandTest extends TestCase
         $this->handler = new RecipeDeleteCommandHandler($this->repository);
     }
 
+    /**
+     * @throws EmptyIdNotAllowedException
+     * @throws RecipeNotFoundException
+     */
     #[Test]
     public function it_deletes_the_recipe(): void
     {
@@ -42,6 +47,9 @@ class RecipeDeleteCommandTest extends TestCase
         ($this->handler)(new RecipeDeleteCommand($id));
     }
 
+    /**
+     * @throws EmptyIdNotAllowedException
+     */
     #[Test]
     public function it_throws_when_the_recipe_is_not_found(): void
     {
