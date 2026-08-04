@@ -17,6 +17,7 @@ doctrine:
             recipe_rating: App\Recipe\Infrastructure\Doctrine\Type\RecipeRatingType
             ordering: App\Shared\Infrastructure\Persistence\Doctrine\Type\OrderingType
             recipe_ingredient_quantity: App\Recipe\Infrastructure\Doctrine\Type\RecipeIngredientQuantityType
+            unit_of_measure_reference: App\Recipe\Infrastructure\Doctrine\Type\UnitOfMeasureReferenceType
     orm:
         validate_xml_mapping: true
         naming_strategy: doctrine.orm.naming_strategy.underscore

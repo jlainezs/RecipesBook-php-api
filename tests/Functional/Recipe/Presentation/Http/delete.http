@@ -1,5 +1,9 @@
+### Change ID. Should Work!
+DELETE http://localhost:8000/api/v1/recipes/f287e4d6-bea1-4a6b-942d-f5845b6138a2
+Accept: application/json
+
 ### Should fail, 404 Not found
-DELETE http://localhost:8000/api/v1/recipes/cabc5a22-15f8-4b8e-b22c-5581e02533a3
+DELETE http://localhost:8000/api/v1/recipes/f287e4d6-bea1-4a6b-942d-f5845b6138a2
 Accept: application/json
 
 ### Should fail, 400 Bad request

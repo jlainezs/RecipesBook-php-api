@@ -9,6 +9,7 @@ use App\Recipe\Domain\Model\RecipeIngredient;
 use App\Recipe\Domain\Model\RecipeStep;
 use App\Recipe\Domain\Repository\RecipeRepositoryInterface;
 use App\Recipe\Domain\ValueObjects\IngredientReference;
+use App\Recipe\Domain\ValueObjects\UnitOfMeasureReference;
 use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObject\AggregateRootId;
 use App\UnitOfMeasure\Domain\Exceptions\UnitOfMeasureNotFoundException;
@@ -80,13 +81,14 @@ final readonly class RecipeUpdateCommandHandler
                 }
 
                 $ingredientReference = new IngredientReference($ingredient->getId()->toString());
+                $unitOfMeasureReference = new UnitOfMeasureReference($unitOfMeasure->getId()->toString());
 
                 if (isset($recipeIngredient->id)) {
                     if ($ingredientObject = $recipe->getIngredient($recipeIngredient->id))
                     {
                         $ingredientObject->setQuantity($recipeIngredient->quantity);
                         $ingredientObject->reorder($recipeIngredient->ordering);
-                        $ingredientObject->setUnitOfMeasure($unitOfMeasure);
+                        $ingredientObject->setUnitOfMeasure($unitOfMeasureReference);
                         $ingredientObject->setIngredient($ingredientReference);
                     }
                     else
@@ -100,7 +102,7 @@ final readonly class RecipeUpdateCommandHandler
                     $ingredientObject = RecipeIngredient::create(
                         recipe: $recipe,
                         ingredient: $ingredientReference,
-                        unitOfMeasure: $unitOfMeasure,
+                        unitOfMeasure: $unitOfMeasureReference,
                         quantity: $recipeIngredient->quantity,
                         ordering: $recipeIngredient->ordering
                     );

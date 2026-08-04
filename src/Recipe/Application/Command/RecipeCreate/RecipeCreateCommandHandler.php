@@ -9,6 +9,7 @@ use App\Recipe\Domain\Model\RecipeIngredient;
 use App\Recipe\Domain\Model\RecipeStep;
 use App\Recipe\Domain\Repository\RecipeRepositoryInterface;
 use App\Recipe\Domain\ValueObjects\IngredientReference;
+use App\Recipe\Domain\ValueObjects\UnitOfMeasureReference;
 use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObject\AggregateRootId;
 use App\Shared\Domain\ValueObject\Ordering;
@@ -71,7 +72,7 @@ final readonly class RecipeCreateCommandHandler
             $ingredients[] = RecipeIngredient::create(
                 recipe: $recipe,
                 ingredient: new IngredientReference($ingredient->getId()->toString()),
-                unitOfMeasure: $unitOfMeasure,
+                unitOfMeasure: new UnitOfMeasureReference($unitOfMeasure->getId()->toString()),
                 quantity: $ingredientData['quantity'],
                 ordering: $ingredientData['ordering'],
             );

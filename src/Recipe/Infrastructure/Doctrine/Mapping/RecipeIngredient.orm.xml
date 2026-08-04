@@ -19,9 +19,10 @@
             column="ingredient_id"
             type="ingredient_reference"
         />
-        <many-to-one
-            field="unitOfMeasure"
-            target-entity="App\UnitOfMeasure\Domain\Model\UnitOfMeasure"
+        <field
+            name="unitOfMeasure"
+            column="unit_of_measure_id"
+            type="unit_of_measure_reference"
         />
         <field name="quantity" type="recipe_ingredient_quantity" column="quantity" />
         <field name="ordering" type="ordering" column="ordering" />

@@ -4,6 +4,7 @@ namespace App\Recipe\Domain\Model;
 use App\Ingredient\Domain\Model\Ingredient;
 use App\Recipe\Domain\ValueObjects\IngredientReference;
 use App\Recipe\Domain\ValueObjects\RecipeIngredientQuantity;
+use App\Recipe\Domain\ValueObjects\UnitOfMeasureReference;
 use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
 use App\Shared\Domain\Exception\InvalidOrderingException;
 use App\Shared\Domain\Model\AggregateRoot;
@@ -18,7 +19,7 @@ final class RecipeIngredient extends AggregateRoot
         private readonly AggregateRootId $id,
         private Recipe $recipe,
         private IngredientReference $ingredient,
-        private UnitOfMeasure $unitOfMeasure,
+        private UnitOfMeasureReference $unitOfMeasure,
         private RecipeIngredientQuantity $quantity,
         private Ordering $ordering,
         private DateTimeImmutable $createdAt,
@@ -31,7 +32,7 @@ final class RecipeIngredient extends AggregateRoot
     public static function create(
         Recipe $recipe,
         IngredientReference $ingredient,
-        UnitOfMeasure $unitOfMeasure,
+        UnitOfMeasureReference $unitOfMeasure,
         float $quantity,
         int $ordering
     ): RecipeIngredient
@@ -98,12 +99,12 @@ final class RecipeIngredient extends AggregateRoot
         $this->recipe = $recipe;
     }
 
-    public function getUnitOfMeasure(): UnitOfMeasure
+    public function getUnitOfMeasure(): UnitOfMeasureReference
     {
         return $this->unitOfMeasure;
     }
 
-    public function setUnitOfMeasure(UnitOfMeasure $unitOfMeasure): void
+    public function setUnitOfMeasure(UnitOfMeasureReference $unitOfMeasure): void
     {
         $this->unitOfMeasure = $unitOfMeasure;
     }

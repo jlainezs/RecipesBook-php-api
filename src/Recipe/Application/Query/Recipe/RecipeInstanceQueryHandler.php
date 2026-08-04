@@ -39,7 +39,7 @@ final readonly class RecipeInstanceQueryHandler
                     id: $ingredient->getId()->toString(),
                     recipeId: $recipe->getId()->toString(),
                     ingredientId: $ingredient->getIngredient()->value()->toString(),
-                    unitOfMeasureId: $ingredient->getUnitOfMeasure()->getId()->toString(),
+                    unitOfMeasureId: $ingredient->getUnitOfMeasure()->value()->toString(),
                     ordering: $ingredient->getOrdering()->value(),
                     quantity: $ingredient->getQuantity()->value(),
                     createdAt: $ingredient->getCreatedAt(),
