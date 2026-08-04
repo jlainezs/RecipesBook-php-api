@@ -11,6 +11,7 @@ doctrine:
             aggregate_root_id: App\Shared\Infrastructure\Persistence\Doctrine\Type\AggregateRootIdType
             required_name: App\Shared\Infrastructure\Persistence\Doctrine\Type\RequiredNameType
             ingredient_type_reference:  App\Ingredient\Infrastructure\Doctrine\Type\IngredientTypeReferenceType
+            ingredient_reference: App\Recipe\Infrastructure\Doctrine\Type\IngredientReferenceType
             unit_of_measure_symbol: App\UnitOfMeasure\Infrastructure\Doctrine\Type\UnitOfMeasureSymbolType
             recipe_servings: App\Recipe\Infrastructure\Doctrine\Type\RecipeServingsType
             recipe_rating: App\Recipe\Infrastructure\Doctrine\Type\RecipeRatingType

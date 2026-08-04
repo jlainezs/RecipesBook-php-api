@@ -1,2 +1,2 @@
-GET http://localhost:8000/api/v1/units-of-measure/16f4a5b2-cfb5-4a82-90ff-351c5f383d0e
+GET http://localhost:8000/api/v1/units-of-measure/647bfd95-ba44-47bd-a745-2a7b4e9c055b
 Accept: application/json

@@ -1,14 +1,18 @@
 <?php
 namespace App\Recipe\Application\Command\RecipeCreate;
 
+use App\Ingredient\Domain\Exceptions\IngredientNotFoundException;
 use App\Ingredient\Domain\Repository\IngredientRepositoryInterface;
 use App\Recipe\Domain\Exceptions\RecipeInvalidServingsException;
 use App\Recipe\Domain\Model\Recipe;
 use App\Recipe\Domain\Model\RecipeIngredient;
 use App\Recipe\Domain\Model\RecipeStep;
 use App\Recipe\Domain\Repository\RecipeRepositoryInterface;
+use App\Recipe\Domain\ValueObjects\IngredientReference;
 use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
+use App\Shared\Domain\ValueObject\AggregateRootId;
 use App\Shared\Domain\ValueObject\Ordering;
+use App\UnitOfMeasure\Domain\Exceptions\UnitOfMeasureNotFoundException;
 use App\UnitOfMeasure\Domain\Repository\UnitOfMeasureRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
@@ -24,6 +28,8 @@ final readonly class RecipeCreateCommandHandler
     /**
      * @throws RecipeInvalidServingsException
      * @throws EmptyIdNotAllowedException
+     * @throws IngredientNotFoundException
+     * @throws UnitOfMeasureNotFoundException
      */
     public function __invoke(RecipeCreateCommand $command): void
     {
@@ -49,11 +55,22 @@ final readonly class RecipeCreateCommandHandler
         }
 
         foreach ($command->ingredients as $ingredientData) {
-            $ingredient = $this->ingredientRepository->find($ingredientData['ingredientId']);
-            $unitOfMeasure = $this->unitOfMeasureRepository->find($ingredientData['unitOfMeasureId']);
+            $ingredientId = new AggregateRootId($ingredientData['ingredientId']);
+            $unitOfMeasureId = new AggregateRootId($ingredientData['unitOfMeasureId']);
+
+            $ingredient = $this->ingredientRepository->findOne($ingredientId);
+            if (null === $ingredient) {
+                throw new IngredientNotFoundException($ingredientId->toString());
+            }
+
+            $unitOfMeasure = $this->unitOfMeasureRepository->findOne($unitOfMeasureId);
+            if (null === $unitOfMeasure) {
+                throw new UnitOfMeasureNotFoundException($unitOfMeasureId->toString());
+            }
+
             $ingredients[] = RecipeIngredient::create(
                 recipe: $recipe,
-                ingredient: $ingredient,
+                ingredient: new IngredientReference($ingredient->getId()->toString()),
                 unitOfMeasure: $unitOfMeasure,
                 quantity: $ingredientData['quantity'],
                 ordering: $ingredientData['ordering'],

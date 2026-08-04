@@ -2,6 +2,7 @@
 
 namespace App\UnitOfMeasure\Infrastructure\Repository;
 
+use App\Shared\Domain\ValueObject\AggregateRootId;
 use App\UnitOfMeasure\Domain\Model\UnitOfMeasure;
 use App\UnitOfMeasure\Domain\Repository\UnitOfMeasureRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -14,7 +15,7 @@ class UnitOfMeasureRepository extends ServiceEntityRepository implements UnitOfM
         parent::__construct($registry, UnitOfMeasure::class);
     }
 
-    public function findOne(string $id): ?UnitOfMeasure
+    public function findOne(AggregateRootId $id): ?UnitOfMeasure
     {
         return parent::find($id);
     }

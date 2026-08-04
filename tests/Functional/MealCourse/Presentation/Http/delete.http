@@ -1,2 +1,12 @@
-DELETE http://localhost:8000/api/v1/meal-courses/308972cf-da2b-4be7-90b7-ba437bc1a3e6
+DELETE http://localhost:8000/api/v1/meal-courses/dd568330-53c6-43ae-a73d-572e42fd8a6e
+Accept: application/json
+
+###
+
+DELETE http://localhost:8000/api/v1/meal-courses/0601dc44-b0fa-4fb2-bd61-dfd5087b0ac0
+Accept: application/json
+
+###
+
+DELETE http://localhost:8000/api/v1/meal-courses/ed71989e-bc35-4c09-be49-79bf13c657b6
 Accept: application/json

@@ -1,5 +1,5 @@
 ### Should fail, 404 Not found
-DELETE http://localhost:8000/api/v1/recipes/2481d2d0-08c6-4ab1-a235-a5598d3af6e6
+DELETE http://localhost:8000/api/v1/recipes/cabc5a22-15f8-4b8e-b22c-5581e02533a3
 Accept: application/json
 
 ### Should fail, 400 Bad request

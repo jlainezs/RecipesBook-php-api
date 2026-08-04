@@ -27,7 +27,7 @@ final class IngredientTypeReferenceType extends GuidType
             $value === null => null,
             is_string($value) => new IngredientTypeReference($value),
             default => throw new ConversionException(
-                sprintf("Got '%s' instead of '%s. Could not convert it to database value", self::class, get_debug_type($value))
+                sprintf("Got '%s' instead of '%s. Could not convert it to IngredientTypeReference", self::class, get_debug_type($value))
             )
         };
     }
@@ -38,7 +38,7 @@ final class IngredientTypeReferenceType extends GuidType
             $value === null => null,
             $value instanceof IngredientTypeReference => $value->value()->toString(),
             default => throw new ConversionException(
-                sprintf("Got '%s' instead of '%s. Could not convert it to database value", self::class, get_debug_type($value))
+                sprintf("Got '%s' instead of '%s. aaaa Could not convert it to database value", self::class, get_debug_type($value))
             )
         };
     }

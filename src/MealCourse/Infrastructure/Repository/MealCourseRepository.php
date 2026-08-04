@@ -3,6 +3,7 @@ namespace App\MealCourse\Infrastructure\Repository;
 
 use App\MealCourse\Domain\Model\MealCourse;
 use App\MealCourse\Domain\Repository\MealCourseRepositoryInterface;
+use App\Shared\Domain\ValueObject\AggregateRootId;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -19,7 +20,7 @@ final class MealCourseRepository extends ServiceEntityRepository implements Meal
         $this->getEntityManager()->flush();
     }
 
-    public function findOne(string $id): ?MealCourse
+    public function findOne(AggregateRootId $id): ?MealCourse
     {
         return $this->find($id);
     }

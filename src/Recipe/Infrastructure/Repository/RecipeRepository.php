@@ -1,9 +1,9 @@
 <?php
-
 namespace App\Recipe\Infrastructure\Repository;
 
 use App\Recipe\Domain\Model\Recipe;
 use App\Recipe\Domain\Repository\RecipeRepositoryInterface;
+use App\Shared\Domain\ValueObject\AggregateRootId;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -14,7 +14,7 @@ class RecipeRepository extends ServiceEntityRepository implements RecipeReposito
         parent::__construct($registry, Recipe::class);
     }
 
-    public function findOne(string $id): ?Recipe
+    public function findOne(AggregateRootId $id): ?Recipe
     {
         return parent::find($id);
     }

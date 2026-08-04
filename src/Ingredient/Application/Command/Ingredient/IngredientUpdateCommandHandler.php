@@ -9,6 +9,7 @@ use App\IngredientType\Domain\Exceptions\IngredientTypeNotFoundException;
 use App\IngredientType\Infrastructure\Repository\IngredientTypeRepository;
 use App\Shared\Application\Bus\QueryBus;
 use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
+use App\Shared\Domain\ValueObject\AggregateRootId;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\Exception\ExceptionInterface;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
@@ -51,7 +52,7 @@ readonly final class IngredientUpdateCommandHandler
      */
     public function __invoke(IngredientUpdateCommand $command): void
     {
-        $ingredient = $this->ingredientRepository->findOne($command->id);
+        $ingredient = $this->ingredientRepository->findOne(new AggregateRootId($command->id));
 
         if (!$ingredient) {
             throw new IngredientNotFoundException($command->id);

@@ -14,9 +14,10 @@
             target-entity="App\Recipe\Domain\Model\Recipe"
             inversed-by="ingredients"
         />
-        <many-to-one
-            field="ingredient"
-            target-entity="App\Ingredient\Domain\Model\Ingredient"
+        <field
+            name="ingredient"
+            column="ingredient_id"
+            type="ingredient_reference"
         />
         <many-to-one
             field="unitOfMeasure"

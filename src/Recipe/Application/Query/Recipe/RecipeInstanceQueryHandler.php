@@ -3,6 +3,7 @@ namespace App\Recipe\Application\Query\Recipe;
 
 use App\Recipe\Domain\Exceptions\RecipeNotFoundException;
 use App\Recipe\Infrastructure\Repository\RecipeRepository;
+use App\Shared\Domain\ValueObject\AggregateRootId;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
@@ -16,7 +17,7 @@ final readonly class RecipeInstanceQueryHandler
      */
     public function __invoke(RecipeInstanceQuery $query): RecipeInstanceResponse
     {
-        if ($recipe = $this->repository->findOne($query->id))
+        if ($recipe = $this->repository->findOne(new AggregateRootId($query->id)))
         {
             $mapped_steps = [];
 
@@ -25,7 +26,7 @@ final readonly class RecipeInstanceQueryHandler
                 $mapped_steps[] = new RecipeStepDto(
                     id: $step->getId()->toString(),
                     description: $step->getDescription(),
-                    ordering: $step->getOrdering(),
+                    ordering: $step->getOrdering()->value(),
                     createdAt: $step->getCreatedAt(),
                     updatedAt: $step->getUpdatedAt(),
                 );
@@ -37,10 +38,10 @@ final readonly class RecipeInstanceQueryHandler
                 $mapped_ingredients[] = new RecipeIngredientDto(
                     id: $ingredient->getId()->toString(),
                     recipeId: $recipe->getId()->toString(),
-                    ingredientId: $ingredient->getIngredient()->getId()->toString(),
+                    ingredientId: $ingredient->getIngredient()->value()->toString(),
                     unitOfMeasureId: $ingredient->getUnitOfMeasure()->getId()->toString(),
-                    ordering: $ingredient->getOrdering(),
-                    quantity: $ingredient->getQuantity(),
+                    ordering: $ingredient->getOrdering()->value(),
+                    quantity: $ingredient->getQuantity()->value(),
                     createdAt: $ingredient->getCreatedAt(),
                     updatedAt: $ingredient->getUpdatedAt()
                 );

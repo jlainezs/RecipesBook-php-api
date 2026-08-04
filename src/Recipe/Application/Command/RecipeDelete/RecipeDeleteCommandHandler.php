@@ -3,6 +3,8 @@ namespace App\Recipe\Application\Command\RecipeDelete;
 
 use App\Recipe\Domain\Exceptions\RecipeNotFoundException;
 use App\Recipe\Domain\Repository\RecipeRepositoryInterface;
+use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
+use App\Shared\Domain\ValueObject\AggregateRootId;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
@@ -14,10 +16,11 @@ final readonly class RecipeDeleteCommandHandler
 
     /**
      * @throws RecipeNotFoundException
+     * @throws EmptyIdNotAllowedException
      */
     public function __invoke(RecipeDeleteCommand $command): void
     {
-        if ($recipe = $this->repository->findOne($command->id))
+        if ($recipe = $this->repository->findOne(new AggregateRootId($command->id)))
         {
             $this->repository->delete($recipe);
         }

@@ -1,0 +1,7 @@
+### Expected 404
+DELETE http://localhost:8000/api/v1/seasons/1968c634-0eef-47f3-ab9d-1235112accd8
+Accept: application/json
+
+### 204, Ok
+DELETE http://localhost:8000/api/v1/seasons/7a16ca1e-710d-4958-83f2-5c79992acf66
+Accept: application/json

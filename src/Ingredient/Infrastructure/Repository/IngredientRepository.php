@@ -3,6 +3,7 @@ namespace App\Ingredient\Infrastructure\Repository;
 
 use App\Ingredient\Domain\Model\Ingredient;
 use App\Ingredient\Domain\Repository\IngredientRepositoryInterface;
+use App\Shared\Domain\ValueObject\AggregateRootId;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -19,7 +20,7 @@ class IngredientRepository extends ServiceEntityRepository implements Ingredient
         $this->getEntityManager()->flush();
     }
 
-    public function findOne(string $id): ?Ingredient
+    public function findOne(AggregateRootId $id): ?Ingredient
     {
         return parent::find($id);
     }

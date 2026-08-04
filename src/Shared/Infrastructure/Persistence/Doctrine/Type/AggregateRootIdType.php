@@ -26,7 +26,7 @@ final class AggregateRootIdType extends GuidType
             $value === null => null,
             is_string($value) => new AggregateRootId($value),
             default => throw new ConversionException(
-                        sprintf("Got '%s' instead of '%s. Could not convert it to database value", self::class, get_debug_type($value))
+                        sprintf("Got '%s' instead of '%s'. Could not convert it to '%s' value", self::class, get_debug_type($value), self::class)
                     )
         };
     }
@@ -37,7 +37,7 @@ final class AggregateRootIdType extends GuidType
             $value === null => null,
             $value instanceof AggregateRootId => $value->toString(),
             default => throw new ConversionException(
-                        sprintf("Got '%s' instead of '%s. Could not convert it to database value", self::class, get_debug_type($value))
+                        sprintf("Got '%s' instead of '%s'. Could not convert it to database value", self::class, get_debug_type($value))
                     )
         };
     }

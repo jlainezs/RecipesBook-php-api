@@ -4,6 +4,8 @@ namespace App\IngredientType\Application\Command\IngredientType;
 use App\IngredientType\Domain\Exceptions\IngredientTypeEmptyNameException;
 use App\IngredientType\Domain\Exceptions\IngredientTypeNotFoundException;
 use App\IngredientType\Domain\Repository\IngredientTypeRepositoryInterface;
+use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
+use App\Shared\Domain\ValueObject\AggregateRootId;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
@@ -15,10 +17,11 @@ readonly final class IngredientTypeUpdateCommandHandler
     /**
      * @throws IngredientTypeEmptyNameException
      * @throws IngredientTypeNotFoundException
+     * @throws EmptyIdNotAllowedException
      */
     public function __invoke(IngredientTypeUpdateCommand $command): void
     {
-        if ($ingredientType = $this->repository->findOne($command->id))
+        if ($ingredientType = $this->repository->findOne(new AggregateRootId($command->id)))
         {
             $ingredientType->rename($command->name);
             $this->repository->save($ingredientType);

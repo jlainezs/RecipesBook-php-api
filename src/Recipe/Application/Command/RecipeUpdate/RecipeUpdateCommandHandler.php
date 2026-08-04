@@ -1,13 +1,17 @@
 <?php
 namespace App\Recipe\Application\Command\RecipeUpdate;
 
+use App\Ingredient\Domain\Exceptions\IngredientNotFoundException;
 use App\Ingredient\Domain\Repository\IngredientRepositoryInterface;
 use App\Recipe\Domain\Exceptions\RecipeInvalidServingsException;
 use App\Recipe\Domain\Exceptions\RecipeNotFoundException;
 use App\Recipe\Domain\Model\RecipeIngredient;
 use App\Recipe\Domain\Model\RecipeStep;
 use App\Recipe\Domain\Repository\RecipeRepositoryInterface;
+use App\Recipe\Domain\ValueObjects\IngredientReference;
 use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
+use App\Shared\Domain\ValueObject\AggregateRootId;
+use App\UnitOfMeasure\Domain\Exceptions\UnitOfMeasureNotFoundException;
 use App\UnitOfMeasure\Domain\Repository\UnitOfMeasureRepositoryInterface;
 use Exception;
 use Psr\Log\LoggerInterface;
@@ -27,11 +31,13 @@ final readonly class RecipeUpdateCommandHandler
      * @throws RecipeNotFoundException
      * @throws RecipeInvalidServingsException
      * @throws EmptyIdNotAllowedException
+     * @throws IngredientNotFoundException
+     * @throws UnitOfMeasureNotFoundException
      * @throws Exception
      */
     public function __invoke(RecipeUpdateCommand $command): void
     {
-        if ($recipe = $this->repository->findOne($command->id))
+        if ($recipe = $this->repository->findOne(new AggregateRootId($command->id)))
         {
             $steps = [];
             foreach ($command->steps as $step){
@@ -60,8 +66,20 @@ final readonly class RecipeUpdateCommandHandler
 
             $ingredients = [];
             foreach ($command->ingredients as $recipeIngredient){
-                $ingredient = $this->ingredientRepository->findOne($recipeIngredient->ingredientId);
-                $unitOfMeasure = $this->unitOfMeasureRepository->findOne($recipeIngredient->unitOfMeasureId);
+                $ingredientId = new AggregateRootId($recipeIngredient->ingredientId);
+                $unitOfMeasureId = new AggregateRootId($recipeIngredient->unitOfMeasureId);
+
+                $ingredient = $this->ingredientRepository->findOne($ingredientId);
+                if (null === $ingredient) {
+                    throw new IngredientNotFoundException($ingredientId->toString());
+                }
+
+                $unitOfMeasure = $this->unitOfMeasureRepository->findOne($unitOfMeasureId);
+                if (null === $unitOfMeasure) {
+                    throw new UnitOfMeasureNotFoundException($unitOfMeasureId->toString());
+                }
+
+                $ingredientReference = new IngredientReference($ingredient->getId()->toString());
 
                 if (isset($recipeIngredient->id)) {
                     if ($ingredientObject = $recipe->getIngredient($recipeIngredient->id))
@@ -69,7 +87,7 @@ final readonly class RecipeUpdateCommandHandler
                         $ingredientObject->setQuantity($recipeIngredient->quantity);
                         $ingredientObject->reorder($recipeIngredient->ordering);
                         $ingredientObject->setUnitOfMeasure($unitOfMeasure);
-                        $ingredientObject->setIngredient($ingredient);
+                        $ingredientObject->setIngredient($ingredientReference);
                     }
                     else
                     {
@@ -80,11 +98,11 @@ final readonly class RecipeUpdateCommandHandler
                     }
                 } else {
                     $ingredientObject = RecipeIngredient::create(
-                        $recipe,
-                        $ingredient,
-                        $unitOfMeasure,
-                        $recipeIngredient->quantity,
-                        $recipeIngredient->ordering
+                        recipe: $recipe,
+                        ingredient: $ingredientReference,
+                        unitOfMeasure: $unitOfMeasure,
+                        quantity: $recipeIngredient->quantity,
+                        ordering: $recipeIngredient->ordering
                     );
                 }
                 $ingredients[] = $ingredientObject;

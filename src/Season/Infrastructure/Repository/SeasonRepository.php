@@ -4,6 +4,7 @@ namespace App\Season\Infrastructure\Repository;
 
 use App\Season\Domain\Model\Season;
 use App\Season\Domain\Repository\SeasonRepositoryInterface;
+use App\Shared\Domain\ValueObject\AggregateRootId;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -13,7 +14,7 @@ class SeasonRepository extends ServiceEntityRepository implements SeasonReposito
     {
         parent::__construct($registry, Season::class);
     }
-    public function findOne(string $id): ?Season
+    public function findOne(AggregateRootId $id): ?Season
     {
         return parent::find($id);
     }

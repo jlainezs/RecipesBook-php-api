@@ -1,6 +1,8 @@
 <?php
 namespace App\UnitOfMeasure\Application\Command\UnitOfMeasure;
 
+use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
+use App\Shared\Domain\ValueObject\AggregateRootId;
 use App\UnitOfMeasure\Domain\Exceptions\UnitOfMeasureEmptyNameException;
 use App\UnitOfMeasure\Domain\Exceptions\UnitOfMeasureEmptySymbolException;
 use App\UnitOfMeasure\Domain\Exceptions\UnitOfMeasureNotFoundException;
@@ -17,10 +19,11 @@ readonly final class UnitOfMeasureUpdateCommandHandler
      * @throws UnitOfMeasureEmptyNameException
      * @throws UnitOfMeasureEmptySymbolException
      * @throws UnitOfMeasureNotFoundException
+     * @throws EmptyIdNotAllowedException
      */
     public function __invoke(UnitOfMeasureUpdateCommand $command): void
     {
-        if ($uom = $this->repository->findOne($command->id))
+        if ($uom = $this->repository->findOne(new AggregateRootId($command->id)))
         {
             $uom->rename($command->name);
             $uom->changeSymbol($command->symbol);

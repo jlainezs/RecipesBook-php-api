@@ -3,6 +3,8 @@ namespace App\IngredientType\Application\Query\IngredientType;
 
 use App\IngredientType\Domain\Exceptions\IngredientTypeNotFoundException;
 use App\IngredientType\Domain\Repository\IngredientTypeRepositoryInterface;
+use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
+use App\Shared\Domain\ValueObject\AggregateRootId;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
@@ -13,10 +15,11 @@ final readonly class IngredientTypeInstanceQueryHandler
 
     /**
      * @throws IngredientTypeNotFoundException
+     * @throws EmptyIdNotAllowedException
      */
     public function __invoke(IngredientTypeInstanceQuery $query):IngredientTypeInstanceResponse
     {
-        $ingredientType = $this->repository->findOne($query->id);
+        $ingredientType = $this->repository->findOne(new AggregateRootId($query->id));
 
         if ($ingredientType)
         {

@@ -18,7 +18,7 @@ final class JsonErrorResponse extends JsonResponse
             'error' => $message,
             'file' => $file,
             'line' => $line,
-            'trace' => $traceAsString,
+            'trace' => explode("\n", $traceAsString),
         ], $statusCode, $headers);
     }
 }

@@ -1,2 +1,2 @@
-DELETE http://localhost:8000/api/v1/units-of-measure/16f4a5b2-cfb5-4a82-90ff-351c5f383d0e
+DELETE http://localhost:8000/api/v1/units-of-measure/0d0fd04f-ff95-4657-b48b-63eb197775d3
 Accept: application/json
