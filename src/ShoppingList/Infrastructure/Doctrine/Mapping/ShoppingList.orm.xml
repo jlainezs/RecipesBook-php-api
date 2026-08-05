@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                                      https://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+    <entity name="App\ShoppingList\Domain\Model\ShoppingList"
+            table="shopping_list"
+            repository-class="App\ShoppingList\Infrastructure\Repository\ShoppingListRepository"
+    >
+        <id name="id" type="aggregate_root_id" column="id">
+            <generator strategy="NONE" />
+        </id>
+
+        <field name="name" column="name" type="required_name" />
+        <field name="scheduledFor" type="datetime_immutable" column="scheduled_for" nullable="true"/>
+        <field name="createdAt" type="datetime_immutable" column="created_at" />
+        <field name="updatedAt" type="datetime_immutable" column="updated_at" />
+    </entity>
+</doctrine-mapping>

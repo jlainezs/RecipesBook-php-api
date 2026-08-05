@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Season\Infrastructure\Repository;
 
 use App\Season\Domain\Model\Season;

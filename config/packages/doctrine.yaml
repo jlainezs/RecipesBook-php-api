@@ -67,6 +67,12 @@ doctrine:
                 prefix: 'App\Recipe\Domain\Model'
                 alias: Recipe
                 is_bundle: false
+            ShoppingListXml:
+                type: xml
+                dir: '%kernel.project_dir%/src/ShoppingList/Infrastructure/Doctrine/Mapping'
+                prefix: 'App\ShoppingList\Domain\Model'
+                alias: ShoppingList
+                is_bundle: false
 when@test:
     doctrine:
         dbal:
