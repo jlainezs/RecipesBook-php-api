@@ -30,6 +30,7 @@ class IngredientTypeInstanceHandlerTest extends TestCase
         $id = $ingredientType->getId()->toString();
 
         $this->repository
+            ->expects($this->once())
             ->method('findOne')
             ->with($id)
             ->willReturn($ingredientType);
@@ -48,6 +49,7 @@ class IngredientTypeInstanceHandlerTest extends TestCase
         $id = '3fa85f64-5717-4562-b3fc-2c963f66afa6';
 
         $this->repository
+            ->expects($this->once())
             ->method('findOne')
             ->with($id)
             ->willReturn(null);

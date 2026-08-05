@@ -28,6 +28,7 @@ class MealCourseUpdateCommandHandlerTest extends TestCase
         $id = $mealCourse->getId()->toString();
 
         $this->repository
+            ->expects($this->once())
             ->method('findOne')
             ->with($id)
             ->willReturn($mealCourse);

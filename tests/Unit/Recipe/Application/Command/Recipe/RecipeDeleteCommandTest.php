@@ -36,6 +36,7 @@ class RecipeDeleteCommandTest extends TestCase
         $id = $recipe->getId()->toString();
 
         $this->repository
+            ->expects($this->once())
             ->method("findOne")
             ->with($id)
             ->willReturn($recipe);
@@ -59,6 +60,7 @@ class RecipeDeleteCommandTest extends TestCase
         $id = $recipe->getId()->toString();
 
         $this->repository
+            ->expects($this->once())
             ->method("findOne")
             ->with($id)
             ->willReturn(null);

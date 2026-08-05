@@ -31,6 +31,7 @@ class IngredientTypesQueryHandlerTest extends TestCase
         $fruit = IngredientType::create('Fruit');
 
         $this->pager
+            ->expects($this->once())
             ->method('items')
             ->with(0, 20)
             ->willReturn([$vegetable, $fruit]);

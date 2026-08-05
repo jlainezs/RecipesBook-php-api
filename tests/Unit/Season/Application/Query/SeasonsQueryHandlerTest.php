@@ -31,6 +31,7 @@ class SeasonsQueryHandlerTest extends TestCase
         $winter = Season::create('Winter');
 
         $this->pager
+            ->expects($this->once())
             ->method('items')
             ->with(0, 20)
             ->willReturn([$summer, $winter]);

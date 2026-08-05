@@ -54,6 +54,7 @@ class RecipeUpdateCommandHandlerTest extends TestCase
         $id = $recipe->getId()->toString();
 
         $this->repository
+            ->expects($this->once())
             ->method('findOne')
             ->with($id)
             ->willReturn($recipe);
@@ -93,6 +94,7 @@ class RecipeUpdateCommandHandlerTest extends TestCase
         $id = $recipe->getId()->toString();
 
         $this->repository
+            ->expects($this->once())
             ->method('findOne')
             ->with($id)
             ->willReturn($recipe);
@@ -127,6 +129,7 @@ class RecipeUpdateCommandHandlerTest extends TestCase
         $id = $recipe->getId()->toString();
 
         $this->repository
+            ->expects($this->once())
             ->method('findOne')
             ->with($id)
             ->willReturn($recipe);
@@ -160,6 +163,7 @@ class RecipeUpdateCommandHandlerTest extends TestCase
         $id = $recipe->getId()->toString();
 
         $this->repository
+            ->expects($this->once())
             ->method('findOne')
             ->with($id)
             ->willReturn($recipe);
@@ -193,6 +197,7 @@ class RecipeUpdateCommandHandlerTest extends TestCase
         $id = $recipe->getId()->toString();
 
         $this->repository
+            ->expects($this->once())
             ->method('findOne')
             ->with($id)
             ->willReturn($recipe);
@@ -226,6 +231,7 @@ class RecipeUpdateCommandHandlerTest extends TestCase
         $id = $recipe->getId()->toString();
 
         $this->repository
+            ->expects($this->once())
             ->method('findOne')
             ->with($id)
             ->willReturn($recipe);

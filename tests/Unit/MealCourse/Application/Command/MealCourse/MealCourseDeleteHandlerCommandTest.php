@@ -27,6 +27,7 @@ class MealCourseDeleteHandlerCommandTest extends TestCase
         $id = $mealCourse->getId()->toString();
 
         $this->repository
+            ->expects($this->once())
             ->method("findOne")
             ->with($id)
             ->willReturn($mealCourse);
@@ -46,6 +47,7 @@ class MealCourseDeleteHandlerCommandTest extends TestCase
         $id = $mealCourse->getId()->toString();
 
         $this->repository
+            ->expects($this->once())
             ->method("findOne")
             ->with($id)
             ->willReturn(null);

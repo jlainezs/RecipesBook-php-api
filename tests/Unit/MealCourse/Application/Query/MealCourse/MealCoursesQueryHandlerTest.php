@@ -30,6 +30,7 @@ class MealCoursesQueryHandlerTest extends TestCase
         $main = MealCourse::create('Main');
 
         $this->pager
+            ->expects($this->once())
             ->method('items')
             ->with(0, 20)
             ->willReturn([$starter, $main]);
