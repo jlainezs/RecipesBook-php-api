@@ -7,10 +7,12 @@ use App\IngredientType\Application\Query\IngredientType\IngredientTypesQueryHand
 use App\IngredientType\Application\Query\IngredientType\IngredientTypesQueryResponse;
 use App\IngredientType\Application\Service\IngredientTypeItemsPager;
 use App\IngredientType\Domain\Model\IngredientType;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
+#[AllowMockObjectsWithoutExpectations]
 class IngredientTypesQueryHandlerTest extends TestCase
 {
     private IngredientTypeItemsPager&MockObject $pager;

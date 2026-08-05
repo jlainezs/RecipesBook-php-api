@@ -1,9 +1,8 @@
-TODO: (doing) Anything that has validation rules should be moved into a ValueObject
-TODO: (doing) Remove references from entities in diferent bounded contexts: use id's and do manipulations via bus (specific query or command).
 TODO: Rename namespace App\Shared\Domain\Exception into App\Shared\Domain\Exceptions
 TODO: Rename namespace App\Shared\Domain\ValueObject into App\Shared\Domain\ValueObjects
+TODO: Rename controllers: don't use Post*, Put*. Ex.: use UpdateSeasonController instead of PutSeasonController
 TODO: Add user management
 TODO: Add roles to check access
 TODO: Add account management. Need to bind users with accounts.
 TODO: Secure API routes
-TODO: Add entities account owner: create a entity reference value object and add it the aggreagate root items.
+TODO: Add entities account owner: create a entity reference value object and add it the aggregate root items.

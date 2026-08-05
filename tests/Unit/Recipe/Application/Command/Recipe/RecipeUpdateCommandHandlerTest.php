@@ -12,11 +12,13 @@ use App\Recipe\Domain\Repository\RecipeRepositoryInterface;
 use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
 use App\Shared\Domain\Exception\EmptyRequiredNameException;
 use App\UnitOfMeasure\Domain\Repository\UnitOfMeasureRepositoryInterface;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
+#[AllowMockObjectsWithoutExpectations]
 class RecipeUpdateCommandHandlerTest extends TestCase
 {
     private RecipeRepositoryInterface&MockObject $repository;

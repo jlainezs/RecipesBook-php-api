@@ -20,7 +20,7 @@ class UnitOfMeasureSymbolTypeTest extends TestCase
     public function setUp(): void
     {
         $this->type = new UnitOfMeasureSymbolType();
-        $this->platform = $this->createMock(AbstractPlatform::class);
+        $this->platform = $this->createStub(AbstractPlatform::class);
     }
 
     #[Test]

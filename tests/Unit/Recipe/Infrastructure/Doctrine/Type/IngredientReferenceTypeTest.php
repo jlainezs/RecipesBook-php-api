@@ -22,7 +22,7 @@ class IngredientReferenceTypeTest extends TestCase
     public function setUp(): void
     {
         $this->type = new IngredientReferenceType();
-        $this->platform = $this->createMock(AbstractPlatform::class);
+        $this->platform = $this->createStub(AbstractPlatform::class);
     }
 
     #[Test]

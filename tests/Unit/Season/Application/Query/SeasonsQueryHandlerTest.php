@@ -7,13 +7,15 @@ use App\Season\Application\Query\Season\SeasonsQueryHandler;
 use App\Season\Application\Query\Season\SeasonsQueryResponse;
 use App\Season\Application\Service\SeasonItemsPager;
 use App\Season\Domain\Model\Season;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 
+#[AllowMockObjectsWithoutExpectations]
 class SeasonsQueryHandlerTest extends TestCase
 {
-    private SeasonItemsPager&MockObject $pager;
+    private SeasonItemsPager&Stub $pager;
     private SeasonsQueryHandler $handler;
 
     protected function setUp(): void

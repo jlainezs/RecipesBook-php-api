@@ -19,7 +19,7 @@ class RecipeRatingTypeTest extends TestCase
     protected function setUp(): void
     {
         $this->type = new RecipeRatingType();
-        $this->platform = $this->createMock(AbstractPlatform::class);
+        $this->platform = $this->createStub(AbstractPlatform::class);
     }
 
     #[Test]

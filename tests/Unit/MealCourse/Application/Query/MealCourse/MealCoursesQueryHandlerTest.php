@@ -6,10 +6,12 @@ use App\MealCourse\Application\Query\MealCourse\MealCoursesQueryHandler;
 use App\MealCourse\Application\Query\MealCourse\MealCoursesQueryResponse;
 use App\MealCourse\Application\Service\MealCourseItemsPager;
 use App\MealCourse\Domain\Model\MealCourse;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
+#[AllowMockObjectsWithoutExpectations]
 class MealCoursesQueryHandlerTest extends TestCase
 {
     private MealCourseItemsPager&MockObject $pager;

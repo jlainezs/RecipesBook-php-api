@@ -75,7 +75,7 @@ class IngredientReferenceTest extends TestCase
     {
         yield 'wrongUuid1' => ['not-a-uuid'];
         yield 'wrongUuid2' => ['01KYXTXNRQ1EJCJ4BM6HP474NG'];
-        yield 'wrongUuid2' => ['    '];
+        yield 'wrongUuid3' => ['    '];
     }
 
     public static function emptyUuids(): iterable

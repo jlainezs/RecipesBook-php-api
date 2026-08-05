@@ -18,7 +18,7 @@ class RecipeIngredientQuantityTypeTest extends TestCase
     protected function setUp(): void
     {
         $this->type = new RecipeIngredientQuantityType();
-        $this->platform = $this->createMock(AbstractPlatform::class);
+        $this->platform = $this->createStub(AbstractPlatform::class);
     }
 
     public function it_exposes_the_name(): void
