@@ -1,0 +1,7 @@
+DELETE http://localhost:8000/api/v1/shopping-lists/f6febd8a-0e19-4bf0-8a30-5e0d4d3dc50a
+content-type: application/json
+
+###
+
+DELETE http://localhost:8000/api/v1/shopping-lists/30e182dc-3be6-49db-a095-55d16a75d244
+content-type: application/json

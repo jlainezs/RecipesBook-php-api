@@ -4,12 +4,12 @@ namespace App\Tests\Unit\ShoppingList\Presentation\Http\Controller;
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
 use App\ShoppingList\Application\Command\ShoppingListCreate\ShoppingListCreateCommand;
-use App\ShoppingList\Presentation\Http\Controller\PostShoppingListController;
+use App\ShoppingList\Presentation\Http\Controller\CreateShoppingListController;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-final class PostShoppingListControllerTest extends TestCase
+final class CreateShoppingListControllerTest extends TestCase
 {
     public function test_it_validates_dispatches_command_and_returns_201_response(): void
     {
@@ -36,7 +36,7 @@ final class PostShoppingListControllerTest extends TestCase
                 return $cmd->name === $listName;
             }));
 
-        $controller = new PostShoppingListController($commandBus, $validator);
+        $controller = new CreateShoppingListController($commandBus, $validator);
 
         // Creem una Request HTTP real amb el payload JSON requerit
         $request = Request::create(
