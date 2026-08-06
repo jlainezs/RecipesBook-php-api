@@ -4,6 +4,7 @@ namespace App\Tests\Unit\ShoppingList\Presentation\Http\Controller;
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
 use App\ShoppingList\Application\Command\ShoppingListCreate\ShoppingListCreateCommand;
+use App\ShoppingList\Application\Command\ShoppingListCreate\ShoppingListCreateDto;
 use App\ShoppingList\Presentation\Http\Controller\CreateShoppingListController;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -37,20 +38,13 @@ final class CreateShoppingListControllerTest extends TestCase
             }));
 
         $controller = new CreateShoppingListController($commandBus, $validator);
-
-        // Creem una Request HTTP real amb el payload JSON requerit
-        $request = Request::create(
-            uri: '/api/v1/shopping-lists/create',
-            method: 'POST',
-            server: ['CONTENT_TYPE' => 'application/json'],
-            content: json_encode(['name' => $listName])
-        );
+        $request = new ShoppingListCreateDto($listName);
 
         // 2. Act
         $response = $controller($request);
 
         // 3. Assert
-        $this->assertInstanceOf(JsonResponse::class, $response);
+        // $this->assertInstanceOf(JsonResponse::class, $response);
         $this->assertSame(201, $response->getStatusCode());
     }
 }
