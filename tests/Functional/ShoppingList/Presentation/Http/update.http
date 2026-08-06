@@ -1,0 +1,15 @@
+PUT http://localhost:8000/api/v1/shopping-lists/675cae12-f00d-44e5-9b8b-0e67b6c2a9b0
+content-type: application/json
+
+{
+    "name": "Default list updated"
+}
+
+###
+# Should throw 404
+PUT http://localhost:8000/api/v1/shopping-lists/34b8d733-a714-4b79-91e4-20f242eb427e
+content-type: application/json
+
+{
+    "name": "Default list updated"
+}
