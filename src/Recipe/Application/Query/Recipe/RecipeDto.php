@@ -3,6 +3,7 @@ namespace App\Recipe\Application\Query\Recipe;
 
 use DateTimeImmutable;
 use Symfony\Component\Validator\Constraints as Assert;
+
 readonly final class RecipeDto
 {
     public function __construct(
