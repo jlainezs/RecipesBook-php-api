@@ -1,0 +1,14 @@
+###
+# Should throw a 404
+GET http://localhost:8000/api/v1/shopping-lists/34b8d733-a714-4b79-91e4-20f242eb427e
+Content-Type: application/json
+
+###
+# 400
+GET http://localhost:8000/api/v1/shopping-lists/00000000-0000-0000-0000-000000000000
+Content-Type: application/json
+
+###
+# 200
+GET http://localhost:8000/api/v1/shopping-lists/675cae12-f00d-44e5-9b8b-0e67b6c2a9b0
+Content-Type: application/json
