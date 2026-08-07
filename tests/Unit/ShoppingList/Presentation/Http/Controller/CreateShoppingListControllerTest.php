@@ -6,12 +6,14 @@ use App\Shared\Application\Service\ApplicationDataValidator;
 use App\ShoppingList\Application\Command\ShoppingListCreate\ShoppingListCreateCommand;
 use App\ShoppingList\Application\Command\ShoppingListCreate\ShoppingListCreateDto;
 use App\ShoppingList\Presentation\Http\Controller\CreateShoppingListController;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 final class CreateShoppingListControllerTest extends TestCase
 {
+    #[Test]
     public function test_it_validates_dispatches_command_and_returns_201_response(): void
     {
         // 1. Arrange
@@ -25,7 +27,6 @@ final class CreateShoppingListControllerTest extends TestCase
             ->expects($this->once())
             ->method('validate')
             ->with($this->callback(function (ShoppingListCreateCommand $cmd) use ($listName) {
-                // Adapta $cmd->name() o $cmd->getName() segons com tinguis implementat el Command
                 return $cmd->name === $listName;
             }));
 

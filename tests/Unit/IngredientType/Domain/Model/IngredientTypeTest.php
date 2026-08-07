@@ -36,7 +36,6 @@ class IngredientTypeTest extends TestCase
     public function it_throws_on_empty_name(): void
     {
         $this->expectException(EmptyRequiredNameException::class);
-
         IngredientType::create('');
     }
 
