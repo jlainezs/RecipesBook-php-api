@@ -6,7 +6,6 @@ use App\Shared\Application\Service\ApplicationDataValidator;
 use App\ShoppingList\Application\Query\SoppingListsCollection\ShoppingListsCollectionQuery;
 use App\ShoppingList\Application\Query\SoppingListsCollection\ShoppingListsQueryResponse;
 use App\ShoppingList\Presentation\Http\Controller\ShoppingListsCollectionController;
-use App\ShoppingList\Presentation\Http\Response\ShoppingListsCollectionJsonResponse;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
