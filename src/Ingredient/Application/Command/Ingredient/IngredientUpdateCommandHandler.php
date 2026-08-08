@@ -2,11 +2,10 @@
 namespace App\Ingredient\Application\Command\Ingredient;
 
 use App\Ingredient\Domain\Exceptions\IngredientNotFoundException;
+use App\Ingredient\Domain\Repository\IngredientRepositoryInterface;
 use App\Ingredient\Domain\ValueObjects\IngredientTypeReference;
-use App\Ingredient\Infrastructure\Repository\IngredientRepository;
 use App\IngredientType\Application\Query\IngredientType\FindIngredientTypeReferenceQuery;
 use App\IngredientType\Domain\Exceptions\IngredientTypeNotFoundException;
-use App\IngredientType\Infrastructure\Repository\IngredientTypeRepository;
 use App\Shared\Application\Bus\QueryBus;
 use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObject\AggregateRootId;
@@ -18,7 +17,7 @@ use Symfony\Component\Messenger\Stamp\HandledStamp;
 readonly final class IngredientUpdateCommandHandler
 {
     public function __construct(
-        private IngredientRepository $ingredientRepository,
+        private IngredientRepositoryInterface $ingredientRepository,
         private QueryBus $queryBus
     ){}
 

@@ -7,6 +7,7 @@ use App\ShoppingList\Application\Query\ShoppingListInstance\ShoppingListInstance
 use App\ShoppingList\Application\Query\ShoppingListInstance\ShoppingListInstanceResponse;
 use App\ShoppingList\Domain\Exceptions\ShoppingListNotFoundException;
 use App\ShoppingList\Domain\Model\ShoppingList;
+use App\ShoppingList\Domain\Repository\ShoppingListRepositoryInterface;
 use App\ShoppingList\Infrastructure\Repository\ShoppingListRepository;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -14,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 class ShoppingListInstanceQueryHandlerTest extends TestCase
 {
     private ShoppingListInstanceQueryHandler $handler;
-    private ShoppingListRepository $repository;
+    private ShoppingListRepositoryInterface $repository;
 
     protected function setUp(): void
     {

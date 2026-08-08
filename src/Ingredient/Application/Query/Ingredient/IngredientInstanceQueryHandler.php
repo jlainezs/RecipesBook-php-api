@@ -3,8 +3,7 @@
 namespace App\Ingredient\Application\Query\Ingredient;
 
 use App\Ingredient\Domain\Exceptions\IngredientNotFoundException;
-use App\Ingredient\Domain\Model\Ingredient;
-use App\Ingredient\Infrastructure\Repository\IngredientRepository;
+use App\Ingredient\Domain\Repository\IngredientRepositoryInterface;
 use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObject\AggregateRootId;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -12,7 +11,7 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 #[AsMessageHandler]
 final readonly class IngredientInstanceQueryHandler
 {
-    public function __construct(private IngredientRepository $repository)
+    public function __construct(private IngredientRepositoryInterface $repository)
     {}
 
     /**

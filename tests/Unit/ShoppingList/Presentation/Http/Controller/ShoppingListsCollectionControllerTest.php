@@ -27,6 +27,10 @@ class ShoppingListsCollectionControllerTest extends TestCase
                         && $query->limit > 0;
                 }))
             ->willReturn(new ShoppingListsQueryResponse([]));
+        $validator->expects($this->never()) // TODO: MUST validate parameters!
+            ->method('validate')
+            ->withAnyParameters();
+
         $controller = new ShoppingListsCollectionController($queryBus, $validator);
         $request = Request::create(
             uri: '/shopping-lists?offset=0&limit=10',

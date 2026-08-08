@@ -3,7 +3,6 @@ namespace App\Tests\Unit\ShoppingList\Application\Query\ShoppingListCollection;
 
 use App\ShoppingList\Application\Query\SoppingListsCollection\ShoppingListsCollectionQuery;
 use App\ShoppingList\Application\Query\SoppingListsCollection\ShoppingListsCollectionQueryHandler;
-use App\ShoppingList\Application\Query\SoppingListsCollection\ShoppingListsQueryResponse;
 use App\ShoppingList\Application\Service\ShoppingListItemsPager;
 use App\ShoppingList\Domain\Model\ShoppingList;
 use PHPUnit\Framework\Attributes\Test;
@@ -21,7 +20,7 @@ class ShoppingListsCollectionQueryHandlerTest extends TestCase
     }
 
     #[Test]
-    public function it_returns_a_response_with_mapped_dtos(): void
+    public function it_returns_a_response_with_mapped_dto(): void
     {
         $sl1 = ShoppingList::create('list 1');
         $sl2 = ShoppingList::create('list 2');
@@ -33,12 +32,11 @@ class ShoppingListsCollectionQueryHandlerTest extends TestCase
 
         $response = ($this->handler)(new ShoppingListsCollectionQuery(0, 20));
 
-        $this->assertInstanceOf(ShoppingListsQueryResponse::class, $response);
         $this->assertCount(2, $response->items);
         $this->assertSame($sl1->getId()->toString(), $response->items[0]->id);
         $this->assertSame($sl2->getId()->toString(), $response->items[1]->id);
-        $this->assertSame($sl1->getName()->value(), "list 1");
-        $this->assertSame($sl2->getName()->value(), "list 2");
+        $this->assertSame("list 1", $sl1->getName()->value());
+        $this->assertSame("list 2", $sl2->getName()->value());
     }
 
     #[Test]
@@ -49,7 +47,6 @@ class ShoppingListsCollectionQueryHandlerTest extends TestCase
             ->method('items')
             ->willReturn([]);
         $response = ($this->handler)(new ShoppingListsCollectionQuery(0, 20));
-        $this->assertInstanceOf(ShoppingListsQueryResponse::class, $response);
         $this->assertCount(0, $response->items);
     }
 

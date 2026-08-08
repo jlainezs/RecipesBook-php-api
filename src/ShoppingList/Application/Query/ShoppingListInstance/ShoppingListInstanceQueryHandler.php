@@ -3,13 +3,13 @@ namespace App\ShoppingList\Application\Query\ShoppingListInstance;
 
 use App\Shared\Domain\ValueObject\AggregateRootId;
 use App\ShoppingList\Domain\Exceptions\ShoppingListNotFoundException;
-use App\ShoppingList\Infrastructure\Repository\ShoppingListRepository;
+use App\ShoppingList\Domain\Repository\ShoppingListRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
 final readonly class ShoppingListInstanceQueryHandler
 {
-    public function __construct(private ShoppingListRepository $repository)
+    public function __construct(private ShoppingListRepositoryInterface $repository)
     {}
 
     public function __invoke(ShoppingListInstanceQuery $query)

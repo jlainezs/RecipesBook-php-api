@@ -17,9 +17,8 @@ final class GetIngredientController extends AbstractController
     ){}
 
     #[Route('/api/v1/ingredients/{id}', name: 'ingredient_get_instance', methods: ['GET'])]
-    public function __invoke(Request $request): JsonResponse
+    public function __invoke(string $id): JsonResponse
     {
-        $id = $request->attributes->get('id');
         $query = new IngredientInstanceQuery($id);
         $this->validator->validate($query);
         $response = $this->queryBus->ask($query);
