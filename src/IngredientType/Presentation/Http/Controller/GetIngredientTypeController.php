@@ -6,7 +6,6 @@ use App\Shared\Application\Bus\QueryBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class GetIngredientTypeController extends AbstractController
@@ -17,9 +16,8 @@ final class GetIngredientTypeController extends AbstractController
     ){}
 
     #[Route('/api/v1/ingredient-types/{id}', name: 'ingredient_types_get_instance', methods: ['GET'])]
-    public function __invoke(Request $request):JsonResponse
+    public function __invoke(string $id):JsonResponse
     {
-        $id = $request->attributes->getString('id');
         $query = new IngredientTypeInstanceQuery($id);
         $this->validator->validate($query);
         $response = $this->queryBus->ask($query);

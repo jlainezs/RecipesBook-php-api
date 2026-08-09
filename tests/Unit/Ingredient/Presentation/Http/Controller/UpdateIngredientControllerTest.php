@@ -8,10 +8,8 @@ use App\Ingredient\Domain\ValueObjects\IngredientTypeReference;
 use App\Ingredient\Presentation\Http\Controller\PutIngredientController;
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
-use phpDocumentor\Reflection\Type;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class UpdateIngredientControllerTest extends TestCase

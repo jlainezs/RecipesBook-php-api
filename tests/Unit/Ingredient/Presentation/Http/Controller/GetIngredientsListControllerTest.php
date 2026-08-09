@@ -14,13 +14,13 @@ use Symfony\Component\HttpFoundation\Request;
 class GetIngredientsListControllerTest extends TestCase
 {
     private QueryBus $queryBus;
-    private ApplicationDataValidator $validator;
+    //private ApplicationDataValidator $validator;
 
     public function setUp(): void
     {
         $this->queryBus = $this->createMock(QueryBus::class);
         // TODO: request is not validated!
-        $this->validator = $this->createMock(ApplicationDataValidator::class);
+        //$this->validator = $this->createMock(ApplicationDataValidator::class);
     }
 
     #[Test]
