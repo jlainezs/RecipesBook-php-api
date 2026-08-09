@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 class ShoppingListsCollectionControllerTest extends TestCase
 {
     #[Test]
-    public function test_it_validates_dispatches_command_and_returns_201_response(): void
+    public function test_it_validates_dispatches_command_and_returns_200_response(): void
     {
         $queryBus = $this->createMock(QueryBus::class);
         $validator = $this->createMock(ApplicationDataValidator::class);
@@ -33,7 +33,7 @@ class ShoppingListsCollectionControllerTest extends TestCase
 
         $controller = new ShoppingListsCollectionController($queryBus, $validator);
         $request = Request::create(
-            uri: '/shopping-lists?offset=0&limit=10',
+            uri: '/api/v1/shopping-lists?offset=0&limit=10',
             server: ['CONTENT_TYPE' => 'application/json']
         );
 
