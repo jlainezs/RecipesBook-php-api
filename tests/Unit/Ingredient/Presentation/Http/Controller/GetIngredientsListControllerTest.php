@@ -7,6 +7,7 @@ use App\Ingredient\Application\Query\Ingredient\IngredientsQueryResponse;
 use App\Ingredient\Presentation\Http\Controller\GetIngredientsListController;
 use App\Shared\Application\Bus\QueryBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -22,6 +23,7 @@ class GetIngredientsListControllerTest extends TestCase
         $this->validator = $this->createMock(ApplicationDataValidator::class);
     }
 
+    #[Test]
     public function test_it_validates_dispatches_command_and_returns_200_response(): void
     {
         $this->queryBus
