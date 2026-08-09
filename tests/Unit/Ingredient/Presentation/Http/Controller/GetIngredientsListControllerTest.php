@@ -18,6 +18,7 @@ class GetIngredientsListControllerTest extends TestCase
     public function setUp(): void
     {
         $this->queryBus = $this->createMock(QueryBus::class);
+        // TODO: request is not validated!
         $this->validator = $this->createMock(ApplicationDataValidator::class);
     }
 
