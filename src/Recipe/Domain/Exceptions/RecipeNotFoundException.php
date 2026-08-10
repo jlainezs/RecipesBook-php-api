@@ -1,8 +1,8 @@
 <?php
-
 namespace App\Recipe\Domain\Exceptions;
 
 use App\Shared\Domain\Exception\EntityNotFoundException;
+
 use Throwable;
 
 class RecipeNotFoundException extends EntityNotFoundException

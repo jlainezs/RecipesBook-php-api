@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Unit\Recipe\Application\Command\Recipe;
+namespace App\Tests\Unit\Recipe\Application\Command\Recipe\RecipeDelete;
 
 use App\Recipe\Application\Command\RecipeDelete\RecipeDeleteCommand;
 use App\Recipe\Application\Command\RecipeDelete\RecipeDeleteCommandHandler;

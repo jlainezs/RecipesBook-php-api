@@ -2,6 +2,7 @@
 namespace App\Recipe\Application\Query\Recipe;
 
 use App\Recipe\Domain\Exceptions\RecipeNotFoundException;
+use App\Recipe\Domain\Repository\RecipeRepositoryInterface;
 use App\Recipe\Infrastructure\Repository\RecipeRepository;
 use App\Shared\Domain\ValueObject\AggregateRootId;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -9,7 +10,7 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 #[AsMessageHandler]
 final readonly class RecipeInstanceQueryHandler
 {
-    public function __construct(private RecipeRepository $repository)
+    public function __construct(private RecipeRepositoryInterface $repository)
     {}
 
     /**

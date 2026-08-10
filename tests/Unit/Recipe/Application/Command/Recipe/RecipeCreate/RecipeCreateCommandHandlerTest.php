@@ -1,5 +1,5 @@
 <?php
-namespace App\Tests\Unit\Recipe\Application\Command\Recipe;
+namespace App\Tests\Unit\Recipe\Application\Command\Recipe\RecipeCreate;
 
 use App\Ingredient\Domain\Repository\IngredientRepositoryInterface;
 use App\Recipe\Application\Command\RecipeCreate\RecipeCreateCommand;
