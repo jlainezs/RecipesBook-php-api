@@ -6,7 +6,6 @@ use App\Shared\Application\Bus\QueryBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class GetMealCourseInstance extends AbstractController
@@ -17,9 +16,8 @@ final class GetMealCourseInstance extends AbstractController
     ){}
 
     #[Route('/api/v1/meal-courses/{id}', name: 'meal_courses_get_instance', methods: ['GET'])]
-    public function __invoke(Request $request): JsonResponse
+    public function __invoke(string $id): JsonResponse
     {
-        $id = $request->attributes->getString('id');
         $query = new MealCourseInstanceQuery($id);
         $this->validator->validate($query);
         $response = $this->queryBus->ask($query);

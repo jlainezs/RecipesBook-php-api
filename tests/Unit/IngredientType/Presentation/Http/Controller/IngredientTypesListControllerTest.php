@@ -37,7 +37,7 @@ class IngredientTypesListControllerTest extends TestCase
             ->willReturn(new IngredientTypesQueryResponse([]));
         $controller = new IngredientTypesListController($this->queryBus, $this->validator);
         $request = Request::create(
-            uri: '/api/v1/ingredient-types?offset?&limit=10',
+            uri: '/api/v1/ingredient-types?offset=0&limit=10',
             server: ['Content-Type' => 'application/json']
         );
 

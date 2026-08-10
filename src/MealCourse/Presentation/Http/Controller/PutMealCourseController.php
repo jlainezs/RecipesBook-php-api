@@ -25,6 +25,6 @@ final class PutMealCourseController extends AbstractController
         $this->validator->validate($cmd);
         $this->commandBus->dispatch($cmd);
 
-        return $this->json(null, 204);
+        return new JsonResponse(null, 204);
     }
 }

@@ -24,6 +24,6 @@ final class PostMealCourseController extends AbstractController
         $this->validator->validate($cmd);
         $this->commandBus->dispatch($cmd);
 
-        return $this->json(null, 201);
+        return new JsonResponse(null, 201);
     }
 }

@@ -42,7 +42,7 @@ class CreateIngredientTypeControllerTest extends TestCase
             ));
         $controller = new PostIngredientTypeController($commandBus, $validator);
         $request = Request::create(
-            uri:'/ingredient-types/create',
+            uri:'/api/v1/ingredient-types/create',
             method:'POST',
             server: ['Content-Type' => 'application/json'],
             content: json_encode(['name' => $ingredientType->getName()->value()])

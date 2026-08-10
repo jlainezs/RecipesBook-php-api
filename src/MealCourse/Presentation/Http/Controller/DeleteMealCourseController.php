@@ -17,9 +17,8 @@ final class DeleteMealCourseController extends AbstractController
     ){}
 
     #[Route('/api/v1/meal-courses/{id}', name: 'meal_courses_delete_instance', methods: ['DELETE'])]
-    public function __invoke(Request $request): JsonResponse
+    public function __invoke(string $id): JsonResponse
     {
-        $id = $request->attributes->getString('id');
         $cmd = new MealCourseDeleteCommand($id);
         $this->validator->validate($cmd);
         $this->commandBus->dispatch($cmd);
