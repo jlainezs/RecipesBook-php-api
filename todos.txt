@@ -1,6 +1,8 @@
 TODO: Rename namespace App\Shared\Domain\Exception into App\Shared\Domain\Exceptions
 TODO: Rename namespace App\Shared\Domain\ValueObject into App\Shared\Domain\ValueObjects
 TODO: Rename controllers: don't use Post*, Put*. Ex.: use UpdateSeasonController instead of PutSeasonController
+TODO: Controllers should receive DTOs instead of Request. Some of them are already changed.
+TODO: Use same class names structure: RecipeUpdateController instead of UpdateRecipeController.
 TODO: Add user management
 TODO: Add roles to check access
 TODO: Add account management. Need to bind users with accounts.

@@ -18,7 +18,7 @@ final class PutRecipeController extends AbstractController
     function __construct(
         private readonly CommandBus $commandBus,
         private readonly ApplicationDataValidator $validator,
-        private LoggerInterface $logger
+        private readonly LoggerInterface $logger
     ){}
 
     #[Route('/api/v1/recipes/{id}', name: 'put_recipe', methods: ['PUT'])]
