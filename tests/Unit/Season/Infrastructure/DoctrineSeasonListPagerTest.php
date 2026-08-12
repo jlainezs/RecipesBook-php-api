@@ -1,20 +1,20 @@
 <?php
 namespace App\Tests\Unit\Season\Infrastructure;
 
-use App\MealCourse\Domain\Repository\MealCourseRepositoryInterface;
-use App\MealCourse\Infrastructure\DoctrineMealCourseListPager;
+use App\Season\Domain\Repository\SeasonRepositoryInterface;
+use App\Season\Infrastructure\DoctrineSeasonsListPager;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class DoctrineSeasonListPagerTest extends TestCase
 {
-    private DoctrineMealCourseListPager $pager;
-    private MealCourseRepositoryInterface $repository;
+    private DoctrineSeasonsListPager $pager;
+    private SeasonRepositoryInterface $repository;
 
     public function setUp(): void
     {
-        $this->repository = $this->createMock(MealCourseRepositoryInterface::class);
-        $this->pager = new DoctrineMealCourseListPager($this->repository);
+        $this->repository = $this->createMock(SeasonRepositoryInterface::class);
+        $this->pager = new DoctrineSeasonsListPager($this->repository);
     }
 
     #[Test]

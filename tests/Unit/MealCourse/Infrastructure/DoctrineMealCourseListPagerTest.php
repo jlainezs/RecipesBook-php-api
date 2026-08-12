@@ -2,19 +2,19 @@
 namespace App\Tests\Unit\MealCourse\Infrastructure;
 
 use App\MealCourse\Domain\Repository\MealCourseRepositoryInterface;
-use App\MealCourse\Infrastructure\DoctrineMealCourseListPager;
+use App\MealCourse\Infrastructure\DoctrineMealCoursesListPager;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class DoctrineMealCourseListPagerTest extends TestCase
 {
-    private DoctrineMealCourseListPager $pager;
+    private DoctrineMealCoursesListPager $pager;
     private MealCourseRepositoryInterface $repository;
 
     public function setUp(): void
     {
         $this->repository = $this->createMock(MealCourseRepositoryInterface::class);
-        $this->pager = new DoctrineMealCourseListPager($this->repository);
+        $this->pager = new DoctrineMealCoursesListPager($this->repository);
     }
 
     #[Test]
