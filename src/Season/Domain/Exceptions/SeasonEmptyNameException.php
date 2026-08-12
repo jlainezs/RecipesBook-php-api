@@ -10,7 +10,7 @@ final class SeasonEmptyNameException extends InvalidArgumentException
     public function __construct(?Throwable $previous = null)
     {
         parent::__construct(
-            "Season name is empty",
+            "Season name cannot be empty",
             0,
             $previous
         );
