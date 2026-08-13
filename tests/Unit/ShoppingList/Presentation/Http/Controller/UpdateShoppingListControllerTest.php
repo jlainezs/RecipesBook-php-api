@@ -12,6 +12,7 @@ use App\ShoppingList\Presentation\Http\Controller\UpdateShoppingListController;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 class UpdateShoppingListControllerTest extends TestCase
 {
@@ -37,10 +38,13 @@ class UpdateShoppingListControllerTest extends TestCase
             ->with($this->callback(
                 fn(ShoppingListUpdateCommand $cmd) => $cmd->id === $id->toString()
             ));
+        $logger->expects($this->never())
+            ->method('error')
+            ->withAnyParameters();
         $controller = new UpdateShoppingListController($commandBus, $validator, $logger);
 
         $response = $controller($id->toString(), $list);
 
-        $this->assertEquals(204, $response->getStatusCode());
+        $this->assertEquals(Response::HTTP_NO_CONTENT, $response->getStatusCode());
     }
 }

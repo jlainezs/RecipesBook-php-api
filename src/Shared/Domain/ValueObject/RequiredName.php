@@ -9,7 +9,7 @@ final readonly class RequiredName
 
     /**
      * @param string $name
-     * @trhows EmptyRequiredNameException
+     * @throws EmptyRequiredNameException
      */
     public function __construct(string $name)
     {

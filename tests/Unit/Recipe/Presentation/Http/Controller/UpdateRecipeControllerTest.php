@@ -53,6 +53,11 @@ class UpdateRecipeControllerTest extends TestCase
             ->with($this->callback(
                 fn(RecipeUpdateCommand $cmd) => $cmd->name === $recipe->name
             ));
+        $this->logger
+            ->expects($this->never())
+            ->method('error')
+            ->withAnyParameters();
+
         $controller = new PutRecipeController($this->commandBus, $this->validator, $this->logger);
         $response = $controller($id->toString(), $recipe);
         $this->assertEquals(204, $response->getStatusCode());

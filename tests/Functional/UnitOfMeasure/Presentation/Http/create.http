@@ -2,11 +2,11 @@ POST http://localhost:8000/api/v1/units-of-measure/create
 Content-Type: application/json
 Accept: application/json
 
-{"name": "Kilogram", "symbol": "Kg", "uomType": 0}
+{"name": "Kilogram", "symbol": "Kg", "unitOfMeasureType": 0}
 
 ###
 POST http://localhost:8000/api/v1/units-of-measure/create
 Content-Type: application/json
 Accept: application/json
 
-{"name": "Litre", "symbol": "l", "uomType": 1}
+{"name": "LitreXXX", "symbol": "lx", "unitOfMeasureType": 1}

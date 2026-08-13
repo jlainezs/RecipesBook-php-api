@@ -1,19 +1,23 @@
 <?php
 namespace App\Tests\Unit\Season\Presentation\Http\Controller;
 
+use App\Season\Application\Query\Season\SeasonInstanceQuery;
 use App\Season\Application\Query\Season\SeasonsQuery;
 use App\Season\Domain\Model\Season;
 use App\Season\Presentation\Http\Controller\GetSeasonController;
 use App\Shared\Application\Bus\QueryBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
 use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\Request;
 
 class GetSeasonControllerTest extends TestCase
 {
     /**
      * @throws EmptyIdNotAllowedException
      */
+    #[Test]
     public function it_validates_dispatches_query_and_returns_200(): void
     {
         $queryBus = $this->createMock(QueryBus::class);
@@ -22,13 +26,13 @@ class GetSeasonControllerTest extends TestCase
 
         $queryBus->expects($this->once())
             ->method('ask')
-            ->with(this->callback(
-                fn(SeasonsQuery $query) => $query->id !== $season->getId()->toString()
+            ->with($this->callback(
+                fn(SeasonInstanceQuery $query) => $query->id === $season->getId()->toString()
             ))->willReturn($season);
         $validator->expects($this->once())
             ->method('validate')
             ->with($this->callback(
-                fn(SeasonsQuery $query) => $query->id !== $season->getId()->toString()
+                fn(SeasonInstanceQuery $query) => $query->id === $season->getId()->toString()
             ));
         $controller = new GetSeasonController($queryBus, $validator);
         $request = Request::create(

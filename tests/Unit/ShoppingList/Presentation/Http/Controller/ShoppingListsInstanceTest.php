@@ -6,10 +6,12 @@ use App\Shared\Application\Service\ApplicationDataValidator;
 use App\ShoppingList\Application\Query\ShoppingListInstance\ShoppingListInstanceQuery;
 use App\ShoppingList\Domain\Model\ShoppingList;
 use App\ShoppingList\Presentation\Http\Controller\ShoppingListsInstance;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class ShoppingListsInstanceTest extends TestCase
 {
+    #[Test]
     public function it_validates_dispatches_query_and_returns_200(): void
     {
         $queryBus = $this->createMock(QueryBus::class);

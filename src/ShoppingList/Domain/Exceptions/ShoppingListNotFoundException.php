@@ -9,6 +9,7 @@ final class ShoppingListNotFoundException extends EntityNotFoundException
 {
     public function __construct(AggregateRootId $id, int $code = 0, ?Throwable $previous = null)
     {
-        parent::__construct("Shopping list with id {$id} not found", $code, $previous);
+        $msg = sprintf("Shopping list with id '%s' not found", $id->toString());
+        parent::__construct($msg, $code, $previous);
     }
 }
