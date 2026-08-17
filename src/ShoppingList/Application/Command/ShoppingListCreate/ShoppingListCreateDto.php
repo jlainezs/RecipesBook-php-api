@@ -7,5 +7,6 @@ final readonly class ShoppingListCreateDto
     public function __construct(
         #[Assert\NotBlank]
         public string $name,
+        public iterable $items
     ){}
 }

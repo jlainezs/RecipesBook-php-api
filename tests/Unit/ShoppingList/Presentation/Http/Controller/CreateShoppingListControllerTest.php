@@ -39,7 +39,7 @@ final class CreateShoppingListControllerTest extends TestCase
             }));
 
         $controller = new CreateShoppingListController($commandBus, $validator);
-        $request = new ShoppingListCreateDto($listName);
+        $request = new ShoppingListCreateDto($listName, []);
 
         // 2. Act
         $response = $controller($request);

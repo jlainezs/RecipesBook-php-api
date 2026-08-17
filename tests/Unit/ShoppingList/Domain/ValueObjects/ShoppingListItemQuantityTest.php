@@ -1,44 +1,45 @@
 <?php
-namespace App\Tests\Unit\Recipe\Domain\ValueObjects;
 
-use App\Recipe\Domain\Exceptions\RecipeIngredientInvalidQuantityException;
-use App\Recipe\Domain\ValueObjects\RecipeIngredientQuantity;
+namespace App\Tests\Unit\ShoppingList\Domain\ValueObjects;
+
+use App\ShoppingList\Domain\Exceptions\InvalidShoppingListItemQuantity;
+use App\ShoppingList\Domain\ValueObjects\ShoppingListItemQuantity;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
-class RecipeIngredientQuantityTest extends TestCase
+class ShoppingListItemQuantityTest extends TestCase
 {
     #[Test]
     #[DataProvider('wrongQuantities')]
     public function it_should_throw_withWrongQuantities(float $quantity)
     {
-        $this->expectException(RecipeIngredientInvalidQuantityException::class);
-        new RecipeIngredientQuantity($quantity);
+        $this->expectException(InvalidShoppingListItemQuantity::class);
+        new ShoppingListItemQuantity($quantity);
     }
 
     #[Test]
     #[DataProvider('goodQuantities')]
     public function it_should_keep_the_values(float $quantity)
     {
-        $ingredientQuantity = new RecipeIngredientQuantity($quantity);
-        $this->assertSame($ingredientQuantity->value(), $quantity);
+        $slQ = new ShoppingListItemQuantity($quantity);
+        $this->assertSame($slQ->value(), $quantity);
     }
 
     #[Test]
     #[DataProvider('goodQuantities')]
     public function it_should_convert_to_string_properly(float $quantity)
     {
-        $ingredientQuantity = new RecipeIngredientQuantity($quantity);
-        $this->assertSame((string)$ingredientQuantity, (string)$quantity);
+        $slQ = new ShoppingListItemQuantity($quantity);
+        $this->assertSame((string) $quantity, (string) $slQ->value());
     }
 
     #[Test]
     #[DataProvider('goodQuantities')]
     public function it_should_compare_equal(float $quantity)
     {
-        $quantity1 = new RecipeIngredientQuantity($quantity);
-        $quantity2 = new RecipeIngredientQuantity($quantity);
+        $quantity1 = new ShoppingListItemQuantity($quantity);
+        $quantity2 = new ShoppingListItemQuantity($quantity);
         $this->assertTrue($quantity1->equals($quantity2));
     }
 
@@ -53,5 +54,4 @@ class RecipeIngredientQuantityTest extends TestCase
         yield 'zero' => [0];
         yield 'float' => [1.3];
     }
-
 }

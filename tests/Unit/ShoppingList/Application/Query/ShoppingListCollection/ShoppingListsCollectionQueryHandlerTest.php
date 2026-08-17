@@ -22,8 +22,8 @@ class ShoppingListsCollectionQueryHandlerTest extends TestCase
     #[Test]
     public function it_returns_a_response_with_mapped_dto(): void
     {
-        $sl1 = ShoppingList::create('list 1');
-        $sl2 = ShoppingList::create('list 2');
+        $sl1 = ShoppingList::create('list 1', []);
+        $sl2 = ShoppingList::create('list 2', []);
         $this->pager
             ->expects($this->once())
             ->method('items')

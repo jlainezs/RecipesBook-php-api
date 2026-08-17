@@ -28,7 +28,7 @@ class ShoppingListDeleteCommandHandlerTest extends TestCase
     #[Test]
     public function it_deletes_the_shopping_list(): void
     {
-        $shoppingList = ShoppingList::create('shopping list');
+        $shoppingList = ShoppingList::create('shopping list', []);
         $id = $shoppingList->getId()->toString();
 
         $this->repository
@@ -52,7 +52,7 @@ class ShoppingListDeleteCommandHandlerTest extends TestCase
     #[Test]
     public function it_throws_when_the_shopping_list_is_not_found(): void
     {
-        $shoppingList = ShoppingList::create('shopping list');
+        $shoppingList = ShoppingList::create('shopping list', []);
         $id = $shoppingList->getId()->toString();
 
         $this->repository

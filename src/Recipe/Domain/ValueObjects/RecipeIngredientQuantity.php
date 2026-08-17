@@ -25,4 +25,9 @@ final readonly class RecipeIngredientQuantity
     {
         return (string) $this->quantity;
     }
+
+    public function equals(RecipeIngredientQuantity $other): bool
+    {
+        return $this->quantity === $other->quantity;
+    }
 }

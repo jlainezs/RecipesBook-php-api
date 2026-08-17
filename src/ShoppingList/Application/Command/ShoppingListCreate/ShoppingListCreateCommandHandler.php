@@ -13,7 +13,7 @@ final readonly class ShoppingListCreateCommandHandler
 
     public function __invoke(ShoppingListCreateCommand $command): void
     {
-        $shoppingList = ShoppingList::create($command->name);
+        $shoppingList = ShoppingList::create($command->name, []);
         $this->repository->save($shoppingList);
     }
 }

@@ -16,7 +16,7 @@ class ShoppingListsInstanceTest extends TestCase
     {
         $queryBus = $this->createMock(QueryBus::class);
         $validator = $this->createMock(ApplicationDataValidator::class);
-        $shoppingList = ShoppingList::create('Shopping List');
+        $shoppingList = ShoppingList::create('Shopping List', []);
 
         $queryBus->expects($this->once())
             ->method('ask')

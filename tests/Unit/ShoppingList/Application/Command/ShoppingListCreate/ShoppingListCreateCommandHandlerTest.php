@@ -29,7 +29,8 @@ class ShoppingListCreateCommandHandlerTest extends TestCase
             ->method('save')
             ->with($this->isInstanceOf(ShoppingList::class));
         ($this->handler)(new ShoppingListCreateCommand(
-            name: 'a shopping list'
+            name: 'a shopping list',
+            items: []
         ));
     }
     #[Test]
@@ -40,7 +41,8 @@ class ShoppingListCreateCommandHandlerTest extends TestCase
             ->method('save');
         $this->expectException(EmptyRequiredNameException::class);
         ($this->handler)(new ShoppingListCreateCommand(
-            name: ''
+            name: '',
+            items: []
         ));
     }
 }

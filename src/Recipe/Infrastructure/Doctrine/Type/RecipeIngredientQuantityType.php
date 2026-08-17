@@ -26,7 +26,7 @@ final class RecipeIngredientQuantityType extends Type
             $value === null => null,
             is_numeric($value) => new RecipeIngredientQuantity((float) $value),
             default => throw new ConversionException(
-                sprintf("Got '%s' instead of '%s. Could not convert it to database value", self::class, get_debug_type($value))
+                sprintf("Can't convert '%s' into a PHP value", get_debug_type($value))
             )
         };
     }

@@ -1,6 +1,7 @@
 <?php
 namespace App\Tests\Unit\ShoppingList\Application\Query\ShoppingListInstance;
 
+use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObject\AggregateRootId;
 use App\ShoppingList\Application\Query\ShoppingListInstance\ShoppingListInstanceQuery;
 use App\ShoppingList\Application\Query\ShoppingListInstance\ShoppingListInstanceQueryHandler;
@@ -29,7 +30,7 @@ class ShoppingListInstanceQueryHandlerTest extends TestCase
     #[Test]
     public function it_should_return_the_shopping_list(): void
     {
-        $shoppingList = ShoppingList::create('test');
+        $shoppingList = ShoppingList::create('test', []);
         $id = $shoppingList->getId();
         $this->repository
             ->expects($this->once())
@@ -42,6 +43,9 @@ class ShoppingListInstanceQueryHandlerTest extends TestCase
         $this->assertEquals($id->toString(), $queryResult->shoppingListDto->id);
     }
 
+    /**
+     * @throws EmptyIdNotAllowedException
+     */
     #[Test]
     public function it_should_throw_when_shopping_list_not_found(): void
     {

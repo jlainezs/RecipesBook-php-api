@@ -11,13 +11,15 @@ doctrine:
             aggregate_root_id: App\Shared\Infrastructure\Persistence\Doctrine\Type\AggregateRootIdType
             required_name: App\Shared\Infrastructure\Persistence\Doctrine\Type\RequiredNameType
             ingredient_type_reference:  App\Ingredient\Infrastructure\Doctrine\Type\IngredientTypeReferenceType
-            ingredient_reference: App\Recipe\Infrastructure\Doctrine\Type\IngredientReferenceType
+            ingredient_reference: App\Shared\Infrastructure\Persistence\Doctrine\Type\IngredientReferenceType
+            recipe_reference: App\Shared\Infrastructure\Persistence\Doctrine\Type\RecipeReferenceType
             unit_of_measure_symbol: App\UnitOfMeasure\Infrastructure\Doctrine\Type\UnitOfMeasureSymbolType
             recipe_servings: App\Recipe\Infrastructure\Doctrine\Type\RecipeServingsType
             recipe_rating: App\Recipe\Infrastructure\Doctrine\Type\RecipeRatingType
             ordering: App\Shared\Infrastructure\Persistence\Doctrine\Type\OrderingType
             recipe_ingredient_quantity: App\Recipe\Infrastructure\Doctrine\Type\RecipeIngredientQuantityType
             unit_of_measure_reference: App\Recipe\Infrastructure\Doctrine\Type\UnitOfMeasureReferenceType
+            shopping_list_item_quantity: App\ShoppingList\Infrastructure\Doctrine\Type\ShoppingListItemQuantityType
     orm:
         validate_xml_mapping: true
         naming_strategy: doctrine.orm.naming_strategy.underscore

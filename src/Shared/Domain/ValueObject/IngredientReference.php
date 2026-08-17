@@ -1,8 +1,7 @@
 <?php
-namespace App\Recipe\Domain\ValueObjects;
+namespace App\Shared\Domain\ValueObject;
 
 use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
-use App\Shared\Domain\ValueObject\AggregateRootId;
 
 final readonly class IngredientReference
 {
