@@ -23,22 +23,14 @@ final class PostRecipeController extends AbstractController
         RecipeCreateDto $request
     ): JsonResponse
     {
-        $name = $request->name;
-        $description = $request->description;
-        $source = $request->source;
-        $servings = $request->servings;
-        $rating = $request->rating;
-        $steps = $request->steps;
-        $ingredients = $request->ingredients;
-
         $command = new RecipeCreateCommand(
-            name: $name,
-            servings: $servings,
-            rating: $rating,
-            description: $description,
-            source: $source,
-            steps: $steps,
-            ingredients: $ingredients
+            name: $request->name,
+            servings: $request->servings,
+            rating: $request->rating,
+            description: $request->description,
+            source: $request->source,
+            steps: $request->steps,
+            ingredients: $request->ingredients
         );
         $this->validator->validate($command);
         $this->commandBus->dispatch($command);
