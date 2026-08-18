@@ -26,7 +26,7 @@ class UpdateShoppingListControllerTest extends TestCase
         $validator = $this->createMock(ApplicationDataValidator::class);
         $logger = $this->createMock(LoggerInterface::class);
         $id = AggregateRootId::generateId();
-        $list = new ShoppingListUpdateDto('Shopping List');
+        $list = new ShoppingListUpdateDto('Shopping List', []);
 
         $commandBus->expects($this->once())
             ->method('dispatch')

@@ -12,5 +12,6 @@ final readonly class ShoppingListUpdateCommand
         #[Assert\NotBlank]
         public string $name,
 
+        public iterable $items
     ){}
 }

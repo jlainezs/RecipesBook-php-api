@@ -18,6 +18,7 @@ final readonly class ShoppingListsCollectionQueryHandler
             fn(ShoppingList $item) => new ShoppingListDto(
                 id: $item->getId()->toString(),
                 name: $item->getName()->value(),
+                items: $item->getItems(),
                 scheduledFor: $item->getScheduledFor(),
                 createdAt: $item->getCreatedAt(),
                 updatedAt: $item->getUpdatedAt(),

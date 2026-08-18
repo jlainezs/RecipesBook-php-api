@@ -27,7 +27,7 @@ final class UpdateShoppingListController extends AbstractController
     ): JsonResponse
     {
         $name = $request->name;
-        $cmd = new ShoppingListUpdateCommand($id, $name);
+        $cmd = new ShoppingListUpdateCommand($id, $name, []);
         $this->validator->validate($cmd);
         $this->commandBus->dispatch($cmd);
 

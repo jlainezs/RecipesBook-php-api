@@ -40,7 +40,7 @@ class ShoppingListUpdateCommandHandlerTest extends TestCase
             ->expects($this->once())
             ->method('save')
             ->with($shoppingList);
-        ($this->handler)(new ShoppingListUpdateCommand($id, 'new name'));
+        ($this->handler)(new ShoppingListUpdateCommand($id, 'new name', []));
 
         $this->assertSame('new name', $shoppingList->getName()->value());
     }
@@ -63,7 +63,7 @@ class ShoppingListUpdateCommandHandlerTest extends TestCase
             ->expects($this->never())
             ->method('save');
         $this->expectException(EmptyRequiredNameException::class);
-        ($this->handler)(new ShoppingListUpdateCommand($id, ''));
+        ($this->handler)(new ShoppingListUpdateCommand($id, '', []));
     }
 
     /**
@@ -83,6 +83,6 @@ class ShoppingListUpdateCommandHandlerTest extends TestCase
             ->expects($this->never())
             ->method('save');
         $this->expectException(ShoppingListNotFoundException::class);
-        ($this->handler)(new ShoppingListUpdateCommand($id, 'new name'));
+        ($this->handler)(new ShoppingListUpdateCommand($id, 'new name', []));
     }
 }
