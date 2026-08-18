@@ -102,6 +102,9 @@ class ShoppingListTest extends TestCase
         $this->assertSame($quantity->value(), $shoppingListItem->getQuantity()->value());
     }
 
+    /**
+     * @throws EmptyIdNotAllowedException
+     */
     #[Test]
     public function it_removes_an_item_from_the_list(): void
     {
