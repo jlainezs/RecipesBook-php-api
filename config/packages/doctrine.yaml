@@ -18,7 +18,7 @@ doctrine:
             recipe_rating: App\Recipe\Infrastructure\Doctrine\Type\RecipeRatingType
             ordering: App\Shared\Infrastructure\Persistence\Doctrine\Type\OrderingType
             recipe_ingredient_quantity: App\Recipe\Infrastructure\Doctrine\Type\RecipeIngredientQuantityType
-            unit_of_measure_reference: App\Recipe\Infrastructure\Doctrine\Type\UnitOfMeasureReferenceType
+            unit_of_measure_reference: App\Shared\Infrastructure\Persistence\Doctrine\Type\UnitOfMeasureReferenceType
             shopping_list_item_quantity: App\ShoppingList\Infrastructure\Doctrine\Type\ShoppingListItemQuantityType
     orm:
         validate_xml_mapping: true
