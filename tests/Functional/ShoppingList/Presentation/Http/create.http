@@ -2,5 +2,22 @@ POST http://localhost:8000/api/v1/shopping-lists/create
 content-type: application/json
 
 {
-    "name": "Default list"
+    "name": "Default list",
+    "items": []
+}
+
+###
+
+POST http://localhost:8000/api/v1/shopping-lists/create
+content-type: application/json
+
+{
+    "name": "Default list",
+    "items": [
+        {
+          "ingredientId": "504ae18b-f7d6-4d08-8d0f-f0d08e48a788",
+          "unitOfMeasureId": "647bfd95-ba44-47bd-a745-2a7b4e9c055b",
+          "quantity": 4.3
+        }
+    ]
 }

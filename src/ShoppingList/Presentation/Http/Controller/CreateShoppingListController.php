@@ -24,7 +24,10 @@ final class CreateShoppingListController extends AbstractController
         ShoppingListCreateDto $request
     ): JsonResponse
     {
-        $cmd = new ShoppingListCreateCommand($request->name, []);
+        $cmd = new ShoppingListCreateCommand(
+            $request->name,
+            $request->items
+        );
         $this->validator->validate($cmd);
         $this->commandBus->dispatch($cmd);
 
