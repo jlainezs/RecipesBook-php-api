@@ -1,9 +1,9 @@
 <?php
-
 namespace App\Tests\Unit\ShoppingList\Domain\Model;
 
 use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObject\IngredientReference;
+use App\Shared\Domain\ValueObject\UnitOfMeasureReference;
 use App\ShoppingList\Domain\Model\ShoppingList;
 use App\ShoppingList\Domain\Model\ShoppingListItem;
 use App\ShoppingList\Domain\ValueObjects\ShoppingListItemQuantity;
@@ -20,10 +20,12 @@ class ShoppingListItemTest extends TestCase
     {
         $ingredient = new IngredientReference('f21832a7-26dd-49d3-9323-d9e28df2c6c8');
         $shoppingList = ShoppingList::create('test', []);
+        $unitOfMeasure = new UnitOfMeasureReference('f21832a7-26dd-49d3-9323-d9e28df2c6c8');
         $quantity = new ShoppingListItemQuantity(10);
         $shoppingListItem = ShoppingListItem::create(
             $shoppingList,
             $ingredient,
+            $unitOfMeasure,
             $quantity
         );
         $this->assertSame($ingredient->value()->toString(), $shoppingListItem->getIngredientReference()->value()->toString());
@@ -40,14 +42,17 @@ class ShoppingListItemTest extends TestCase
         $ingredient = new IngredientReference('f21832a7-26dd-49d3-9323-d9e28df2c6c8');
         $shoppingList = ShoppingList::create('test', []);
         $quantity = new ShoppingListItemQuantity(10);
+        $unitOfMeasure = new UnitOfMeasureReference('f21832a7-26dd-49d3-9323-d9e28df2c6c8');
         $shoppingListItem1 = ShoppingListItem::create(
             $shoppingList,
             $ingredient,
+            $unitOfMeasure,
             $quantity
         );
         $shoppingListItem2 = ShoppingListItem::create(
             $shoppingList,
             $ingredient,
+            $unitOfMeasure,
             $quantity
         );
         $this->assertNotSame($shoppingListItem1->getId()->toString(), $shoppingListItem2->getId()->toString());
@@ -62,9 +67,11 @@ class ShoppingListItemTest extends TestCase
         $ingredient = new IngredientReference('f21832a7-26dd-49d3-9323-d9e28df2c6c8');
         $shoppingList = ShoppingList::create('test', []);
         $quantity = new ShoppingListItemQuantity(10);
+        $unitOfMeasure = new UnitOfMeasureReference('f21832a7-26dd-49d3-9323-d9e28df2c6c8');
         $shoppingListItem = ShoppingListItem::create(
             $shoppingList,
             $ingredient,
+            $unitOfMeasure,
             $quantity
         );
         $newIngredient = new IngredientReference('f21832a7-26dd-49d3-9323-d9e28df2c6c9');
@@ -81,9 +88,11 @@ class ShoppingListItemTest extends TestCase
         $ingredient = new IngredientReference('f21832a7-26dd-49d3-9323-d9e28df2c6c8');
         $shoppingList = ShoppingList::create('test', []);
         $quantity = new ShoppingListItemQuantity(10);
+        $unitOfMeasure = new UnitOfMeasureReference('f21832a7-26dd-49d3-9323-d9e28df2c6c8');
         $shoppingListItem = ShoppingListItem::create(
             $shoppingList,
             $ingredient,
+            $unitOfMeasure,
             $quantity
         );
         $newQuantity = new ShoppingListItemQuantity(20);

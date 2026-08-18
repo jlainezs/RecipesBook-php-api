@@ -3,9 +3,9 @@ namespace App\Tests\Unit\ShoppingList\Domain\Model;
 
 use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
 use App\Shared\Domain\Exception\EmptyRequiredNameException;
-use App\Shared\Domain\Model\AggregateRoot;
 use App\Shared\Domain\ValueObject\AggregateRootId;
 use App\Shared\Domain\ValueObject\IngredientReference;
+use App\Shared\Domain\ValueObject\UnitOfMeasureReference;
 use App\ShoppingList\Domain\Model\ShoppingList;
 use App\ShoppingList\Domain\Model\ShoppingListItem;
 use App\ShoppingList\Domain\ValueObjects\ShoppingListItemQuantity;
@@ -88,10 +88,12 @@ class ShoppingListTest extends TestCase
     {
         $ingredient = new IngredientReference('f21832a7-26dd-49d3-9323-d9e28df2c6c8');
         $shoppingList = ShoppingList::create('test', []);
+        $unitOfMeasure = new UnitOfMeasureReference('f21832a7-26dd-49d3-9323-d9e28df2c6c8');
         $quantity = new ShoppingListItemQuantity(10);
         $shoppingListItem = ShoppingListItem::create(
             $shoppingList,
             $ingredient,
+            $unitOfMeasure,
             $quantity
         );
         $shoppingList->addItem($shoppingListItem);
@@ -106,15 +108,18 @@ class ShoppingListTest extends TestCase
         $ingredient1 = new IngredientReference('f21832a7-26dd-49d3-9323-d9e28df2c6c8');
         $ingredient2 = new IngredientReference('68f099d2-5348-4e33-ac48-6b0b46768c9a');
         $shoppingList = ShoppingList::create('test', []);
+        $unitOfMeasure = new UnitOfMeasureReference('f21832a7-26dd-49d3-9323-d9e28df2c6c8');
         $quantity = new ShoppingListItemQuantity(10);
         $shoppingListItem1 = ShoppingListItem::create(
             $shoppingList,
             $ingredient1,
+            $unitOfMeasure,
             $quantity
         );
         $shoppingListItem2 = ShoppingListItem::create(
             $shoppingList,
             $ingredient2,
+            $unitOfMeasure,
             $quantity
         );
 
