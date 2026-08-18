@@ -22,6 +22,6 @@ final readonly class RecipeReference
 
     public function equals(RecipeReference $other): bool
     {
-        return $this->value()->tOString() === $other->value()->toString();
+        return $this->value()->toString() === $other->value()->toString();
     }
 }

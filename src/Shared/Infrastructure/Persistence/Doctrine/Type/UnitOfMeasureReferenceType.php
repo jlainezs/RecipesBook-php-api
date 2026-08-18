@@ -1,8 +1,8 @@
 <?php
-namespace App\Recipe\Infrastructure\Doctrine\Type;
+namespace App\Shared\Infrastructure\Persistence\Doctrine\Type;
 
-use App\Recipe\Domain\ValueObjects\UnitOfMeasureReference;
 use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
+use App\Shared\Domain\ValueObject\UnitOfMeasureReference;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\GuidType;

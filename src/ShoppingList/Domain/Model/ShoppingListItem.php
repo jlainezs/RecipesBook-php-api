@@ -5,6 +5,7 @@ use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
 use App\Shared\Domain\Model\AggregateRoot;
 use App\Shared\Domain\ValueObject\AggregateRootId;
 use App\Shared\Domain\ValueObject\IngredientReference;
+use App\Shared\Domain\ValueObject\UnitOfMeasureReference;
 use App\ShoppingList\Domain\ValueObjects\ShoppingListItemQuantity;
 use DateTimeImmutable;
 
@@ -14,6 +15,7 @@ final class ShoppingListItem extends AggregateRoot
         private readonly AggregateRootId $id,
         private readonly ShoppingList $shoppingList,
         private IngredientReference $ingredient,
+        private UnitOfMeasureReference $unitOfMeasure,
         private ShoppingListItemQuantity $quantity,
         private readonly DateTimeImmutable $createdAt,
         private readonly DateTimeImmutable $updatedAt
@@ -22,12 +24,13 @@ final class ShoppingListItem extends AggregateRoot
     /**
      * @throws EmptyIdNotAllowedException
      */
-    public static function create(ShoppingList $shoppingList, IngredientReference $ingredient, ShoppingListItemQuantity $quantity): self
+    public static function create(ShoppingList $shoppingList, IngredientReference $ingredient, UnitOfMeasureReference $unitOfMeasure, ShoppingListItemQuantity $quantity): self
     {
         return new self(
             id: AggregateRootId::generateId(),
             shoppingList: $shoppingList,
             ingredient: $ingredient,
+            unitOfMeasure: $unitOfMeasure,
             quantity: $quantity,
             createdAt: new DateTimeImmutable(),
             updatedAt: new DateTimeImmutable()
@@ -71,5 +74,15 @@ final class ShoppingListItem extends AggregateRoot
     public function getShoppingList(): ShoppingList
     {
         return $this->shoppingList;
+    }
+
+    public function getUnitOfMeasure(): UnitOfMeasureReference
+    {
+        return $this->unitOfMeasure;
+    }
+
+    public function changeUnitOfMeasure(UnitOfMeasureReference $unitOfMeasure): void
+    {
+        $this->unitOfMeasure = $unitOfMeasure;
     }
 }

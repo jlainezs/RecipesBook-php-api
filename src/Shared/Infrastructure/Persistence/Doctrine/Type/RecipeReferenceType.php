@@ -19,6 +19,7 @@ final class RecipeReferenceType extends GuidType
 
     /**
      * @throws EmptyIdNotAllowedException
+     * @throws ConversionException
      */
     public function convertToPHPValue(mixed $value, AbstractPlatform $platform): ?RecipeReference
     {
