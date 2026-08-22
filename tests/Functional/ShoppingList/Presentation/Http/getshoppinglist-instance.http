@@ -12,3 +12,9 @@ Content-Type: application/json
 # 200
 GET http://localhost:8000/api/v1/shopping-lists/675cae12-f00d-44e5-9b8b-0e67b6c2a9b0
 Content-Type: application/json
+
+###
+# with items
+# 200
+GET http://localhost:8000/api/v1/shopping-lists/68b687ad-c7ab-4685-92c3-3b942fbb4cd1
+Content-Type: application/json

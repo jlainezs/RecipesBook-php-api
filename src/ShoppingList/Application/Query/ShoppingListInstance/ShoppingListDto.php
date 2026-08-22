@@ -9,7 +9,7 @@ readonly final class ShoppingListDto
     /**
      * @param string $id
      * @param string $name
-     * @param iterable $items
+     * @param array $items
      * @param ?DateTimeImmutable $scheduledFor
      * @param DateTimeImmutable $createdAt
      * @param DateTimeImmutable $updatedAt
@@ -20,7 +20,7 @@ readonly final class ShoppingListDto
 
         #[Assert\NotBlank]
         public string $name,
-        public iterable $items,
+        public array $items,
         public ?DateTimeImmutable $scheduledFor,
         public DateTimeImmutable $createdAt,
         public DateTimeImmutable $updatedAt

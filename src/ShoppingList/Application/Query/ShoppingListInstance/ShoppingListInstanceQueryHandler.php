@@ -5,6 +5,7 @@ use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObject\AggregateRootId;
 use App\ShoppingList\Domain\Exceptions\ShoppingListNotFoundException;
 use App\ShoppingList\Domain\Repository\ShoppingListRepositoryInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
@@ -13,7 +14,10 @@ final readonly class ShoppingListInstanceQueryHandler
     /**
      * @param ShoppingListRepositoryInterface $repository
      */
-    public function __construct(private ShoppingListRepositoryInterface $repository)
+    public function __construct(
+        private ShoppingListRepositoryInterface $repository,
+        private LoggerInterface $logger
+    )
     {}
 
     /**
@@ -27,10 +31,22 @@ final readonly class ShoppingListInstanceQueryHandler
         $id = new AggregateRootId($query->id);
         if ($shoppingList = $this->repository->findOne($id))
         {
+            $items = [];
+            foreach ($shoppingList->items() as $item)
+            {
+                $items[] = new ShoppingListItemDto(
+                    id: $item->getId()->toString(),
+                    ingredientId: $item->getIngredientReference()->value()->toString(),
+                    unitOfMeasureId: $item->getUnitOfMeasure()->value()->toString(),
+                    quantity: $item->getQuantity()->value(),
+                    createdAt: $item->getCreatedAt(),
+                    updatedAt: $item->getUpdatedAt(),
+                );
+            }
             return new ShoppingListInstanceResponse(new ShoppingListDto(
                 id: $shoppingList->getId()->toString(),
                 name: $shoppingList->getName()->value(),
-                items: $shoppingList->getItems(),
+                items: $items,
                 scheduledFor: $shoppingList->getScheduledFor(),
                 createdAt: $shoppingList->getCreatedAt(),
                 updatedAt: $shoppingList->getUpdatedAt(),

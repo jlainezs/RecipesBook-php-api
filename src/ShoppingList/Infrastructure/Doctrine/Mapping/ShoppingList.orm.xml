@@ -15,7 +15,7 @@
         <one-to-many field="items"
                      target-entity="App\ShoppingList\Domain\Model\ShoppingListItem"
                      mapped-by="shoppingList"
-
+                     fetch="EAGER"
         >
             <cascade>
                 <cascade-all />
