@@ -5,3 +5,8 @@ content-type: application/json
 
 DELETE http://localhost:8000/api/v1/shopping-lists/30e182dc-3be6-49db-a095-55d16a75d244
 content-type: application/json
+
+### Need to create a list and add some items in it
+### Should remove items
+DELETE http://localhost:8000/api/v1/shopping-lists/32e7501d-8ec0-40bd-bf8a-88d307490810
+Accept: application/json
