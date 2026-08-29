@@ -58,7 +58,7 @@ src/
 
 | Concern          | Technology                           |
 |------------------|--------------------------------------|
-| Language         | PHP 8.4+                             |
+| Language         | PHP 8.5+                             |
 | Framework        | Symfony 8.1                          |
 | ORM              | Doctrine ORM (XML mappings)          |
 | Database         | PostgreSQL 16                        |
@@ -69,7 +69,7 @@ src/
 ## Requirements
 
 - Docker and Docker Compose
-- PHP 8.4+ with Composer (for local development without Docker)
+- PHP 8.5+ with Composer (for local development without Docker)
 
 ## Getting started
 
