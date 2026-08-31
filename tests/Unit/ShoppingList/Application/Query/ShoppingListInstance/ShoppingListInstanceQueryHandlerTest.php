@@ -12,16 +12,19 @@ use App\ShoppingList\Domain\Repository\ShoppingListRepositoryInterface;
 use App\ShoppingList\Infrastructure\Repository\ShoppingListRepository;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 
 class ShoppingListInstanceQueryHandlerTest extends TestCase
 {
     private ShoppingListInstanceQueryHandler $handler;
+    private LoggerInterface $logger;
     private ShoppingListRepositoryInterface $repository;
 
     protected function setUp(): void
     {
         $this->repository = $this->createMock(ShoppingListRepository::class);
-        $this->handler = new ShoppingListInstanceQueryHandler($this->repository);
+        $this->logger = $this->createMock(LoggerInterface::class);
+        $this->handler = new ShoppingListInstanceQueryHandler($this->repository, $this->logger);
     }
 
     /**

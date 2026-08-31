@@ -2,7 +2,8 @@ PUT http://localhost:8000/api/v1/shopping-lists/675cae12-f00d-44e5-9b8b-0e67b6c2
 content-type: application/json
 
 {
-    "name": "Default list updated"
+    "name": "Default list updated",
+    "items": []
 }
 
 ###
@@ -11,5 +12,75 @@ PUT http://localhost:8000/api/v1/shopping-lists/34b8d733-a714-4b79-91e4-20f242eb
 content-type: application/json
 
 {
-    "name": "Default list updated"
+    "name": "Default list updated XXXXX",
+    "items": [
+    ]
+}
+
+###
+# add items
+PUT http://localhost:8000/api/v1/shopping-lists/68b687ad-c7ab-4685-92c3-3b942fbb4cd1
+content-type: application/json
+
+{
+    "name": "Default list updated",
+    "items": [
+        {
+          "id": "",
+          "shoppingListId": "68b687ad-c7ab-4685-92c3-3b942fbb4cd1",
+          "ingredientId": "504ae18b-f7d6-4d08-8d0f-f0d08e48a788",
+          "unitOfMeasureId": "647bfd95-ba44-47bd-a745-2a7b4e9c055b",
+          "quantity": 999.99
+        },
+        {
+            "id": "",
+            "shoppingListId": "68b687ad-c7ab-4685-92c3-3b942fbb4cd1",
+            "ingredientId": "dcc5836b-823d-4333-9e15-72b2cd47da18",
+            "unitOfMeasureId": "647bfd95-ba44-47bd-a745-2a7b4e9c055b",
+            "quantity": 666.66
+        }
+    ]
+}
+
+###
+# update items
+PUT http://localhost:8000/api/v1/shopping-lists/68b687ad-c7ab-4685-92c3-3b942fbb4cd1
+content-type: application/json
+
+{
+    "name": "Default list updated",
+    "items": [
+        {
+          "id": "426c8d95-54e2-44f0-89e8-54ace76dfd19",
+          "shoppingListId": "68b687ad-c7ab-4685-92c3-3b942fbb4cd1",
+          "ingredientId": "504ae18b-f7d6-4d08-8d0f-f0d08e48a788",
+          "unitOfMeasureId": "647bfd95-ba44-47bd-a745-2a7b4e9c055b",
+          "quantity": 10
+        },
+        {
+            "id": "dc7c2088-3d46-4a01-b5e9-57e2d0eac3b7",
+            "shoppingListId": "68b687ad-c7ab-4685-92c3-3b942fbb4cd1",
+            "ingredientId": "dcc5836b-823d-4333-9e15-72b2cd47da18",
+            "unitOfMeasureId": "647bfd95-ba44-47bd-a745-2a7b4e9c055b",
+            "quantity": 20
+        }
+    ]
+}
+
+###
+# Remove one item
+PUT http://localhost:8000/api/v1/shopping-lists/68b687ad-c7ab-4685-92c3-3b942fbb4cd1
+content-type: application/json
+
+{
+    "name": "Default list updated",
+    "items": [
+        {
+          "id": "dc7c2088-3d46-4a01-b5e9-57e2d0eac3b7",
+          "shoppingListId": "68b687ad-c7ab-4685-92c3-3b942fbb4cd1",
+          "ingredientId": "504ae18b-f7d6-4d08-8d0f-f0d08e48a788",
+          "unitOfMeasureId": "647bfd95-ba44-47bd-a745-2a7b4e9c055b",
+          "quantity": 999.99
+        }
+    ]
 }

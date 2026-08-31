@@ -4,6 +4,7 @@ namespace App\ShoppingList\Domain\Model;
 use App\Shared\Domain\Model\AggregateRoot;
 use App\Shared\Domain\ValueObject\AggregateRootId;
 use App\Shared\Domain\ValueObject\RequiredName;
+use App\ShoppingList\Domain\Exceptions\ShoppingListItemNotFoundException;
 use DateTimeImmutable;
 
 final class ShoppingList extends AggregateRoot
@@ -74,19 +75,76 @@ final class ShoppingList extends AggregateRoot
         $this->items[] = $item;
     }
 
-    private function itemsAsArray(): array
+    public function getItem(AggregateRootId $id): ?ShoppingListItem
     {
-        return iterator_to_array($this->items);
+        foreach ($this->items as $item)
+        {
+            if ($item->getId()->toString() === $id->toString())
+            {
+                return $item;
+            }
+        }
+
+        return null;
     }
 
-    public function removeItem(ShoppingListItem $item): void
+    /**
+     * @param ShoppingListItem[] $newItems
+     * @throws ShoppingListItemNotFoundException
+     */
+    public function setItems(array $newItems): void
     {
-        $newItems = array_filter(
-            $this->itemsAsArray(),
-            fn(ShoppingListItem $shoppingListItem) =>
-                $shoppingListItem->getId()->toString() !== $item->getId()->toString()
-        );
-        $this->items = array_values($newItems);
+        $notProcessedItems = [];
+        foreach ($this->getItems() as $item)
+        {
+            $notProcessedItems[$item->getId()->toString()] = $item;
+        }
+
+        foreach ($newItems as $item)
+        {
+            if (isset($notProcessedItems[$item->getId()->toString()]))
+            {
+                unset($notProcessedItems[$item->getId()->toString()]);
+                $elem = $this->getItem($item->getId());
+                $elem=$item;
+            }
+            else
+            {
+                $this->addItem($item);
+            }
+        }
+
+        foreach ($notProcessedItems as $item)
+        {
+            $this->removeItem($item);
+        }
+    }
+
+    public function itemsAsArray(): array
+    {
+        $itemsArray = [];
+        foreach ($this->getItems() as $item)
+        {
+            $itemsArray[$item->getId()->toString()] = $item;
+        }
+
+        return $itemsArray;    }
+
+    /**
+     * @throws ShoppingListItemNotFoundException
+     */
+    public function removeItem(ShoppingListItem $toBeRemoved): void
+    {
+        foreach ($this->getItems() as $k => $item)
+        {
+            if ($item->getId()->toString() === $toBeRemoved->getId()->toString())
+            {
+                unset($this->items[$k]);
+                return;
+            }
+        }
+
+        throw new ShoppingListItemNotFoundException($toBeRemoved->getId()->toString());
     }
 
     public function items(): iterable

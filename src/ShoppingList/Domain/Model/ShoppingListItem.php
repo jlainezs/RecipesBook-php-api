@@ -18,7 +18,7 @@ final class ShoppingListItem extends AggregateRoot
         private UnitOfMeasureReference $unitOfMeasure,
         private ShoppingListItemQuantity $quantity,
         private readonly DateTimeImmutable $createdAt,
-        private readonly DateTimeImmutable $updatedAt
+        private DateTimeImmutable $updatedAt
     ) {}
 
     /**
