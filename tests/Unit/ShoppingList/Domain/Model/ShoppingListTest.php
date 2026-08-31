@@ -6,6 +6,7 @@ use App\Shared\Domain\Exception\EmptyRequiredNameException;
 use App\Shared\Domain\ValueObject\AggregateRootId;
 use App\Shared\Domain\ValueObject\IngredientReference;
 use App\Shared\Domain\ValueObject\UnitOfMeasureReference;
+use App\ShoppingList\Domain\Exceptions\ShoppingListItemNotFoundException;
 use App\ShoppingList\Domain\Model\ShoppingList;
 use App\ShoppingList\Domain\Model\ShoppingListItem;
 use App\ShoppingList\Domain\ValueObjects\ShoppingListItemQuantity;
@@ -104,6 +105,7 @@ class ShoppingListTest extends TestCase
 
     /**
      * @throws EmptyIdNotAllowedException
+     * @throws ShoppingListItemNotFoundException
      */
     #[Test]
     public function it_removes_an_item_from_the_list(): void
@@ -131,7 +133,7 @@ class ShoppingListTest extends TestCase
         $shoppingList->removeItem($shoppingListItem1);
         $this->assertCount(1, $shoppingList->items());
 
-        $storedItem = $shoppingList->items()[0];
+        $storedItem = $shoppingList->items()[1];
         $this->assertSame(
             $ingredient2->value()->toString(),
             $storedItem->getIngredientReference()->value()->toString()
