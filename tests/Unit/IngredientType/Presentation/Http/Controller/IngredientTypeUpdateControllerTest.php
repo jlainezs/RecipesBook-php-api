@@ -3,7 +3,7 @@ namespace App\Tests\Unit\IngredientType\Presentation\Http\Controller;
 
 use App\IngredientType\Application\Command\IngredientType\IngredientTypeUpdateCommand;
 use App\IngredientType\Domain\Model\IngredientType;
-use App\IngredientType\Presentation\Http\Controller\PutIngredientTypeController;
+use App\IngredientType\Presentation\Http\Controller\UpdateIngredientTypeController;
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
@@ -45,7 +45,7 @@ class IngredientTypeUpdateControllerTest extends TestCase
                     return $cmd->id === $ingredientType->getId()->toString();
                 }
             ));
-        $controller = new PutIngredientTypeController($this->commandBus, $this->validator);
+        $controller = new UpdateIngredientTypeController($this->commandBus, $this->validator);
         $payload = ['name' => $ingredientType->getName()->value()];
         $request = Request::create(
             uri: '/api/v1/ingredient-types/' . $ingredientType->getId()->toString(),

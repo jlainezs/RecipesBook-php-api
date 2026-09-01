@@ -2,7 +2,7 @@
 namespace App\Tests\Unit\Ingredient\Presentation\Http\Controller;
 
 use App\Ingredient\Application\Command\Ingredient\IngredientCreateCommand;
-use App\Ingredient\Presentation\Http\Controller\PostIngredientController;
+use App\Ingredient\Presentation\Http\Controller\CreateIngredientController;
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
 use PHPUnit\Framework\Attributes\Test;
@@ -30,7 +30,7 @@ class CreateIngredientControllerTest extends TestCase
             ->with($this->callback(function(IngredientCreateCommand $cmd) use ($ingredientName): bool {
                 return $cmd->name === $ingredientName;
             }));
-        $controller = new PostIngredientController($commandBus, $validator);
+        $controller = new CreateIngredientController($commandBus, $validator);
         $request = Request::create(
             uri: '/api/v1/ingredients/create',
             method: 'POST',

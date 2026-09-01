@@ -5,7 +5,7 @@ namespace App\Tests\Unit\Ingredient\Presentation\Http\Controller;
 use App\Ingredient\Application\Command\Ingredient\IngredientUpdateCommand;
 use App\Ingredient\Domain\Model\Ingredient;
 use App\Ingredient\Domain\ValueObjects\IngredientTypeReference;
-use App\Ingredient\Presentation\Http\Controller\PutIngredientController;
+use App\Ingredient\Presentation\Http\Controller\UpdateIngredientController;
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
 use PHPUnit\Framework\Attributes\Test;
@@ -46,7 +46,7 @@ class UpdateIngredientControllerTest extends TestCase
                 }
             ));
 
-        $controller = new PutIngredientController($this->commandBus, $this->validator);
+        $controller = new UpdateIngredientController($this->commandBus, $this->validator);
         $payload = [
             'name' => $cmd->name,
             'description' => $cmd->description,

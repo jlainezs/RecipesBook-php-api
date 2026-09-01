@@ -5,6 +5,7 @@ use App\Season\Application\Command\Season\SeasonCreateCommand;
 use App\Season\Application\Command\Season\SeasonCreateCommandHandler;
 use App\Season\Domain\Model\Season;
 use App\Season\Domain\Repository\SeasonRepositoryInterface;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\Exceptions\EmptyRequiredNameException;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -21,6 +22,9 @@ class SeasonCreateHandlerTest extends TestCase
         $this->handler = new SeasonCreateCommandHandler($this->repository);
     }
 
+    /**
+     * @throws EmptyIdNotAllowedException
+     */
     #[Test]
     public function it_creates_and_saves_the_season(): void
     {

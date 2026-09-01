@@ -16,13 +16,15 @@ use PHPUnit\Framework\TestCase;
 class ShoppingListCreateCommandHandlerTest extends TestCase
 {
     private ShoppingListRepositoryInterface&MockObject $repository;
+    private IngredientRepositoryInterface $ingredientRepository;
+    private UnitOfMeasureRepositoryInterface $unitOfMeasureRepository;
     private ShoppingListCreateCommandHandler $handler;
 
     public function setUp(): void
     {
         $this->repository = $this->createMock(ShoppingListRepositoryInterface::class);
-        $this->ingredientRepository = $this->createMock(IngredientRepositoryInterface::class);
-        $this->unitOfMeasureRepository = $this->createMock(UnitOfMeasureRepositoryInterface::class);
+        $this->ingredientRepository = $this->createStub(IngredientRepositoryInterface::class);
+        $this->unitOfMeasureRepository = $this->createStub(UnitOfMeasureRepositoryInterface::class);
         $this->handler = new ShoppingListCreateCommandHandler(
             $this->repository,
             $this->ingredientRepository,

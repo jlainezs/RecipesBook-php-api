@@ -3,7 +3,7 @@ namespace App\Tests\Unit\IngredientType\Presentation\Http\Controller;
 
 use App\IngredientType\Application\Command\IngredientType\IngredientTypeCreateCommand;
 use App\IngredientType\Domain\Model\IngredientType;
-use App\IngredientType\Presentation\Http\Controller\PostIngredientTypeController;
+use App\IngredientType\Presentation\Http\Controller\CreateIngredientTypeController;
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
@@ -40,7 +40,7 @@ class CreateIngredientTypeControllerTest extends TestCase
                     return $cmd->name === $ingredientType->getName()->value();
                 }
             ));
-        $controller = new PostIngredientTypeController($commandBus, $validator);
+        $controller = new CreateIngredientTypeController($commandBus, $validator);
         $request = Request::create(
             uri:'/api/v1/ingredient-types/create',
             method:'POST',

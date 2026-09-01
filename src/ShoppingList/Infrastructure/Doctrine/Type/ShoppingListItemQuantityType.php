@@ -20,7 +20,7 @@ final class ShoppingListItemQuantityType extends Type
         return $platform->getSmallFloatDeclarationSQL($column);
     }
 
-    public function convertToPHPValue(mixed $value, AbstractPlatform $platform): ShoppingListItemQuantity
+    public function convertToPHPValue(mixed $value, AbstractPlatform $platform): ?ShoppingListItemQuantity
     {
         return match(true){
             $value === null => null,
