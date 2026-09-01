@@ -23,7 +23,7 @@ class ShoppingListInstanceQueryHandlerTest extends TestCase
     protected function setUp(): void
     {
         $this->repository = $this->createMock(ShoppingListRepository::class);
-        $this->logger = $this->createMock(LoggerInterface::class);
+        $this->logger = $this->createStub(LoggerInterface::class);
         $this->handler = new ShoppingListInstanceQueryHandler($this->repository, $this->logger);
     }
 
