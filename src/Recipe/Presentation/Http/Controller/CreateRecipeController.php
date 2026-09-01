@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
-final class PostRecipeController extends AbstractController
+final class CreateRecipeController extends AbstractController
 {
     public function __construct(
         private readonly CommandBus $commandBus,

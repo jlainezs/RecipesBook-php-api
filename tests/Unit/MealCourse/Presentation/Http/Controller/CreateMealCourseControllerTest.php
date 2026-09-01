@@ -4,7 +4,7 @@ namespace App\Tests\Unit\MealCourse\Presentation\Http\Controller;
 
 use App\MealCourse\Application\Command\MealCourse\MealCourseCreateCommand;
 use App\MealCourse\Domain\Model\MealCourse;
-use App\MealCourse\Presentation\Http\Controller\PostMealCourseController;
+use App\MealCourse\Presentation\Http\Controller\CreateMealCourseController;
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
@@ -40,7 +40,7 @@ class CreateMealCourseControllerTest extends TestCase
                     return $cmd->name === $mealCourse->getName();
                 }
             ));
-        $controller = new PostMealCourseController($commandBus, $validator);
+        $controller = new CreateMealCourseController($commandBus, $validator);
         $request = Request::create(
             uri:'/api/v1/meal-courses/create',
             method:'POST',

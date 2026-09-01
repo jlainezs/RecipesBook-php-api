@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
-final class PostUnitOfMeasureController extends AbstractController
+final class CreateUnitOfMeasureController extends AbstractController
 {
     public function __construct(
         private readonly CommandBus $commandBus,

@@ -3,7 +3,7 @@ namespace App\Tests\Unit\Season\Presentation\Http\Controller;
 
 use App\Season\Application\Command\Season\SeasonCreateCommand;
 use App\Season\Domain\Model\Season;
-use App\Season\Presentation\Http\Controller\PostSeasonController;
+use App\Season\Presentation\Http\Controller\CreateSeasonController;
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
@@ -33,7 +33,7 @@ class CreateSeasonControllerTest extends TestCase
             ->with($this->callback(
                 fn (SeasonCreateCommand $cmd) => $cmd->name === $season->getName()
             ));
-        $controller = new PostSeasonController($commandBus, $validator);
+        $controller = new CreateSeasonController($commandBus, $validator);
         $request = Request::create(
             uri:'/api/v1/seasons/create',
             method:'POST',

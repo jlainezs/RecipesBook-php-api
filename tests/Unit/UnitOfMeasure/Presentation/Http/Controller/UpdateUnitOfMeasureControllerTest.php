@@ -7,7 +7,7 @@ use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\UnitOfMeasure\Application\Command\UnitOfMeasure\UnitOfMeasureUpdateCommand;
 use App\UnitOfMeasure\Application\Command\UnitOfMeasure\UpdateUnitOfMeasureDto;
-use App\UnitOfMeasure\Presentation\Http\Controller\PutUnitOfMeasureController;
+use App\UnitOfMeasure\Presentation\Http\Controller\UpdateUnitOfMeasureController;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Response;
@@ -47,7 +47,7 @@ class UpdateUnitOfMeasureControllerTest extends TestCase
             ->with($this->callback(
                 fn (UnitOfMeasureUpdateCommand $cmd) => $cmd->id === $request->id
             ));
-        $controller = new PutUnitOfMeasureController($this->commandBus, $this->validator);
+        $controller = new UpdateUnitOfMeasureController($this->commandBus, $this->validator);
 
         $response = $controller($request);
 

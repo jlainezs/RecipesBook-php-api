@@ -6,7 +6,7 @@ use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
 use App\UnitOfMeasure\Application\Command\UnitOfMeasure\CreateUnitOfMeasureDto;
 use App\UnitOfMeasure\Application\Command\UnitOfMeasure\UnitOfMeasureCreateCommand;
-use App\UnitOfMeasure\Presentation\Http\Controller\PostUnitOfMeasureController;
+use App\UnitOfMeasure\Presentation\Http\Controller\CreateUnitOfMeasureController;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
@@ -41,7 +41,7 @@ class CreateUnitOfMeasureControllerTest extends TestCase
             ->with($this->callback(
                 fn (UnitOfMeasureCreateCommand $cmd) => $dto->name === $cmd->name
             ));
-        $controller = new PostUnitOfMeasureController($this->commandBus, $this->validator);
+        $controller = new CreateUnitOfMeasureController($this->commandBus, $this->validator);
         $response = $controller($dto);
         $this->assertEquals(201, $response->getStatusCode());
     }

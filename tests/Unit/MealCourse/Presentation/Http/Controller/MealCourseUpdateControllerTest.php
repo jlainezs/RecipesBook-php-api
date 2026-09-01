@@ -3,7 +3,7 @@ namespace App\Tests\Unit\MealCourse\Presentation\Http\Controller;
 
 use App\MealCourse\Application\Command\MealCourse\MealCourseUpdateCommand;
 use App\MealCourse\Domain\Model\MealCourse;
-use App\MealCourse\Presentation\Http\Controller\PutMealCourseController;
+use App\MealCourse\Presentation\Http\Controller\UpdateMealCourseController;
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
@@ -47,7 +47,7 @@ class MealCourseUpdateControllerTest extends TestCase
                     return $cmd->id === $mealCourse->getId()->toString();
                 }
             ));
-        $controller = new PutMealCourseController($this->commandBus, $this->validator);
+        $controller = new UpdateMealCourseController($this->commandBus, $this->validator);
         $payload = ['name' => 'test'];
         $request = Request::create(
             uri: '/api/v1/meal-courses/' . $mealCourse->getId()->toString(),

@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
-final class PutUnitOfMeasureController extends AbstractController
+final class UpdateUnitOfMeasureController extends AbstractController
 {
     public function __construct(
         private readonly CommandBus $commandBus,

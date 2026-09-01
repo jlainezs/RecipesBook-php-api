@@ -3,7 +3,7 @@ namespace App\Tests\Unit\Recipe\Presentation\Http\Controller;
 
 use App\Recipe\Application\Command\RecipeUpdate\RecipeUpdateCommand;
 use App\Recipe\Application\Command\RecipeUpdate\RecipeUpdateDto;
-use App\Recipe\Presentation\Http\Controller\PutRecipeController;
+use App\Recipe\Presentation\Http\Controller\UpdateRecipeController;
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
@@ -58,7 +58,7 @@ class UpdateRecipeControllerTest extends TestCase
             ->method('error')
             ->withAnyParameters();
 
-        $controller = new PutRecipeController($this->commandBus, $this->validator, $this->logger);
+        $controller = new UpdateRecipeController($this->commandBus, $this->validator, $this->logger);
         $response = $controller($id->toString(), $recipe);
         $this->assertEquals(204, $response->getStatusCode());
     }

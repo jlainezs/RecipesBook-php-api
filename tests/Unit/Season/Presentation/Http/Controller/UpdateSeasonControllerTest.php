@@ -3,7 +3,7 @@ namespace App\Tests\Unit\Season\Presentation\Http\Controller;
 
 use App\Season\Application\Command\Season\SeasonUpdateCommand;
 use App\Season\Domain\Model\Season;
-use App\Season\Presentation\Http\Controller\PutSeasonController;
+use App\Season\Presentation\Http\Controller\UpdateSeasonController;
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
@@ -33,7 +33,7 @@ class UpdateSeasonControllerTest extends TestCase
             ->with($this->callback(
                 fn (SeasonUpdateCommand $cmd) => $cmd->id === $season->getId()->toString()
             ));
-        $controller = new PutSeasonController($commandBus, $validator);
+        $controller = new UpdateSeasonController($commandBus, $validator);
         $payload = ['name' => $season->getName()];
         $request = Request::create(
             uri: '/api/v1/meal-courses/' . $season->getId()->toString(),

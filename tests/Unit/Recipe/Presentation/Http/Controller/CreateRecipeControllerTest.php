@@ -3,7 +3,7 @@ namespace App\Tests\Unit\Recipe\Presentation\Http\Controller;
 
 use App\Recipe\Application\Command\RecipeCreate\RecipeCreateCommand;
 use App\Recipe\Application\Command\RecipeCreate\RecipeCreateDto;
-use App\Recipe\Presentation\Http\Controller\PostRecipeController;
+use App\Recipe\Presentation\Http\Controller\CreateRecipeController;
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
 use PHPUnit\Framework\Attributes\Test;
@@ -36,7 +36,7 @@ class CreateRecipeControllerTest extends TestCase
             ->with($this->callback(
                 fn (RecipeCreateCommand $cmd) => $cmd->name === $recipe->name
             ));
-        $controller = new PostRecipeController($commandBus, $validator);
+        $controller = new CreateRecipeController($commandBus, $validator);
 
         $response = $controller($recipe);
         $this->assertEquals(201, $response->getStatusCode());
