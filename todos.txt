@@ -1,6 +1,4 @@
-TODO: Rename controllers: don't use Post*, Put*. Ex.: use UpdateSeasonController instead of PutSeasonController
 TODO: Controllers should receive DTOs instead of Request. Some of them are already changed.
-TODO: Use same class names structure: RecipeUpdateController instead of UpdateRecipeController.
 TODO: Add user management
 TODO: Add roles to check access
 TODO: Add account management. Need to bind users with accounts.

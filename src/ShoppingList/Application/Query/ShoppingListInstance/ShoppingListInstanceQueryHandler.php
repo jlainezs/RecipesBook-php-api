@@ -54,7 +54,9 @@ final readonly class ShoppingListInstanceQueryHandler
         }
         else
         {
-            throw new ShoppingListNotFoundException($id);
+            $e = new ShoppingListNotFoundException($id);
+            $this->logger->error($e->getMessage());
+            throw $e;
         }
     }
 }

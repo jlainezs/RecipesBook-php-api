@@ -68,6 +68,8 @@ final class UpdateRecipeController extends AbstractController
         $this->validator->validate($cmd);
         $this->commandBus->dispatch($cmd);
 
+        $this->logger->info("Recipe $id updated");
+
         return new JsonResponse(null, 204);
     }
 }

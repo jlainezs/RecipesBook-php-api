@@ -2,14 +2,12 @@
 namespace App\Recipe\Domain\Model;
 
 use App\Recipe\Domain\Exceptions\RecipeStepEmptyDescriptionException;
-use App\Recipe\Domain\Exceptions\RecipeStepInvalidOrderingException;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\Exceptions\InvalidOrderingException;
 use App\Shared\Domain\Model\AggregateRoot;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\Shared\Domain\ValueObjects\Ordering;
 use DateTimeImmutable;
-use Doctrine\Common\Collections\Order;
 
 final class RecipeStep extends AggregateRoot
 {
