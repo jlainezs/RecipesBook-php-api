@@ -3,7 +3,7 @@
 namespace App\Season\Domain\Repository;
 
 use App\Season\Domain\Model\Season;
-use App\Shared\Domain\ValueObject\AggregateRootId;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 
 interface SeasonRepositoryInterface
 {

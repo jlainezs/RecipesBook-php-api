@@ -1,9 +1,9 @@
 <?php
 namespace App\Tests\Unit\UnitOfMeasure\Application\Command\UnitOfMeasureUpdate;
 
-use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
-use App\Shared\Domain\Exception\EmptyRequiredNameException;
-use App\Shared\Domain\ValueObject\AggregateRootId;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
+use App\Shared\Domain\Exceptions\EmptyRequiredNameException;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\UnitOfMeasure\Application\Command\UnitOfMeasure\UnitOfMeasureUpdateCommand;
 use App\UnitOfMeasure\Application\Command\UnitOfMeasure\UnitOfMeasureUpdateCommandHandler;
 use App\UnitOfMeasure\Domain\Exceptions\UnitOfMeasureNotFoundException;

@@ -3,7 +3,7 @@ namespace App\Ingredient\Infrastructure\Repository;
 
 use App\Ingredient\Domain\Model\Ingredient;
 use App\Ingredient\Domain\Repository\IngredientRepositoryInterface;
-use App\Shared\Domain\ValueObject\AggregateRootId;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

@@ -5,7 +5,7 @@ use App\Recipe\Application\Command\RecipeDelete\RecipeDeleteCommand;
 use App\Recipe\Presentation\Http\Controller\DeleteRecipeController;
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
-use App\Shared\Domain\ValueObject\AggregateRootId;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;

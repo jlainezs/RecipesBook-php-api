@@ -1,9 +1,9 @@
 <?php
 namespace App\Tests\Unit\ShoppingList\Domain\Model;
 
-use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
-use App\Shared\Domain\ValueObject\IngredientReference;
-use App\Shared\Domain\ValueObject\UnitOfMeasureReference;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
+use App\Shared\Domain\ValueObjects\IngredientReference;
+use App\Shared\Domain\ValueObjects\UnitOfMeasureReference;
 use App\ShoppingList\Domain\Model\ShoppingList;
 use App\ShoppingList\Domain\Model\ShoppingListItem;
 use App\ShoppingList\Domain\ValueObjects\ShoppingListItemQuantity;

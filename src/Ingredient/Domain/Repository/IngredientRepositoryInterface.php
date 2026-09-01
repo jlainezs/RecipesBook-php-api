@@ -2,7 +2,7 @@
 namespace App\Ingredient\Domain\Repository;
 
 use App\Ingredient\Domain\Model\Ingredient;
-use App\Shared\Domain\ValueObject\AggregateRootId;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 
 interface IngredientRepositoryInterface
 {

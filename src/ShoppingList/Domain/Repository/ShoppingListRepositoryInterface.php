@@ -1,7 +1,7 @@
 <?php
 namespace App\ShoppingList\Domain\Repository;
 
-use App\Shared\Domain\ValueObject\AggregateRootId;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\ShoppingList\Domain\Model\ShoppingList;
 
 interface ShoppingListRepositoryInterface

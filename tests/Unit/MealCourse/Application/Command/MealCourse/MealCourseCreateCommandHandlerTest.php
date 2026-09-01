@@ -6,7 +6,7 @@ use App\MealCourse\Application\Command\MealCourse\MealCourseCreateCommandHandler
 use App\MealCourse\Domain\Exceptions\MealCourseEmptyNameException;
 use App\MealCourse\Domain\Model\MealCourse;
 use App\MealCourse\Domain\Repository\MealCourseRepositoryInterface;
-use App\Shared\Domain\Exception\EmptyRequiredNameException;
+use App\Shared\Domain\Exceptions\EmptyRequiredNameException;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 

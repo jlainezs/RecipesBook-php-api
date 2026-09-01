@@ -4,7 +4,7 @@ namespace App\Tests\Unit\MealCourse\Presentation\Http\Controller;
 use App\MealCourse\Presentation\Http\Controller\DeleteMealCourseController;
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
-use App\Shared\Domain\ValueObject\AggregateRootId;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 

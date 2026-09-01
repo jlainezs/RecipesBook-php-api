@@ -2,10 +2,10 @@
 namespace App\ShoppingList\Application\Command\ShoppingListCreate;
 
 use App\Ingredient\Domain\Repository\IngredientRepositoryInterface;
-use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
-use App\Shared\Domain\ValueObject\AggregateRootId;
-use App\Shared\Domain\ValueObject\IngredientReference;
-use App\Shared\Domain\ValueObject\UnitOfMeasureReference;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
+use App\Shared\Domain\ValueObjects\IngredientReference;
+use App\Shared\Domain\ValueObjects\UnitOfMeasureReference;
 use App\ShoppingList\Domain\Exceptions\InvalidIngredient;
 use App\ShoppingList\Domain\Exceptions\InvalidUnitOfMeasure;
 use App\ShoppingList\Domain\Model\ShoppingList;

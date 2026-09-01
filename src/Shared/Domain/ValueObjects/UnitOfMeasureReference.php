@@ -1,9 +1,10 @@
 <?php
-namespace App\Shared\Domain\ValueObject;
 
-use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
+namespace App\Shared\Domain\ValueObjects;
 
-final readonly class IngredientReference
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
+
+final readonly class UnitOfMeasureReference
 {
     private AggregateRootId $id;
 
@@ -12,7 +13,7 @@ final readonly class IngredientReference
      */
     public function __construct(string $id)
     {
-        $this->id = new AggregateRootId($id);
+        $this->id = new AggregateRootId($id);;
     }
 
     public function value(): AggregateRootId
@@ -25,7 +26,7 @@ final readonly class IngredientReference
         return $this->value()->__toString();
     }
 
-    public function equals(IngredientReference $other): bool
+    public function equals(UnitOfMeasureReference $other): bool
     {
         return $this->value()->toString() === $other->value()->toString();
     }

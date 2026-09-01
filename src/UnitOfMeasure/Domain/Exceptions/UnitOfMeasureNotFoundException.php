@@ -1,7 +1,7 @@
 <?php
 namespace App\UnitOfMeasure\Domain\Exceptions;
 
-use App\Shared\Domain\Exception\EntityNotFoundException;
+use App\Shared\Domain\Exceptions\EntityNotFoundException;
 use Throwable;
 
 class UnitOfMeasureNotFoundException extends EntityNotFoundException

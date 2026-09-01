@@ -6,7 +6,7 @@ use App\Ingredient\Application\Query\Ingredient\IngredientsQueryHandler;
 use App\Ingredient\Application\Service\IngredientItemsPager;
 use App\Ingredient\Domain\Model\Ingredient;
 use App\Ingredient\Domain\ValueObjects\IngredientTypeReference;
-use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 

@@ -1,7 +1,7 @@
 <?php
 namespace App\Ingredient\Domain\Exceptions;
 
-use App\Shared\Domain\Exception\EntityNotFoundException;
+use App\Shared\Domain\Exceptions\EntityNotFoundException;
 use Throwable;
 
 final class IngredientNotFoundException extends EntityNotFoundException

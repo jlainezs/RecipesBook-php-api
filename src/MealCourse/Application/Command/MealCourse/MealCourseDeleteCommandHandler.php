@@ -3,8 +3,8 @@ namespace App\MealCourse\Application\Command\MealCourse;
 
 use App\MealCourse\Domain\Exceptions\MealCourseNotFoundException;
 use App\MealCourse\Domain\Repository\MealCourseRepositoryInterface;
-use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
-use App\Shared\Domain\ValueObject\AggregateRootId;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]

@@ -3,8 +3,8 @@ namespace App\Tests\Unit\Recipe\Domain\Model;
 
 use App\Recipe\Domain\Model\Recipe;
 use App\Recipe\Domain\Model\RecipeStep;
-use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
-use App\Shared\Domain\Exception\InvalidOrderingException;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
+use App\Shared\Domain\Exceptions\InvalidOrderingException;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 

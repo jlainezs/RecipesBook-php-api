@@ -2,8 +2,8 @@
 namespace App\Tests\Unit\Season\Domain\Exceptions;
 
 use App\Season\Domain\Exceptions\SeasonNotFoundException;
-use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
-use App\Shared\Domain\ValueObject\AggregateRootId;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 

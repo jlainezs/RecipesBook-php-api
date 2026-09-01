@@ -1,8 +1,8 @@
 <?php
 namespace App\Tests\Unit\Shared\Infrastructure\Persistence\Type;
 
-use App\Shared\Domain\Exception\InvalidOrderingException;
-use App\Shared\Domain\ValueObject\Ordering;
+use App\Shared\Domain\Exceptions\InvalidOrderingException;
+use App\Shared\Domain\ValueObjects\Ordering;
 use App\Shared\Infrastructure\Persistence\Doctrine\Type\OrderingType;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Platforms\AbstractPlatform;

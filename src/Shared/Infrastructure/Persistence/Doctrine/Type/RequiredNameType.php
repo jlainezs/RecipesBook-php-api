@@ -1,8 +1,8 @@
 <?php
 namespace App\Shared\Infrastructure\Persistence\Doctrine\Type;
 
-use App\Shared\Domain\Exception\EmptyRequiredNameException;
-use App\Shared\Domain\ValueObject\RequiredName;
+use App\Shared\Domain\Exceptions\EmptyRequiredNameException;
+use App\Shared\Domain\ValueObjects\RequiredName;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\StringType;

@@ -2,7 +2,7 @@
 namespace App\MealCourse\Domain\Repository;
 
 use App\MealCourse\Domain\Model\MealCourse;
-use App\Shared\Domain\ValueObject\AggregateRootId;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 
 interface MealCourseRepositoryInterface
 {

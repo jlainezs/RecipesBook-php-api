@@ -2,8 +2,8 @@
 namespace App\Tests\Unit\Season\Domain\Model;
 
 use App\Season\Domain\Model\Season;
-use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
-use App\Shared\Domain\Exception\EmptyRequiredNameException;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
+use App\Shared\Domain\Exceptions\EmptyRequiredNameException;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 

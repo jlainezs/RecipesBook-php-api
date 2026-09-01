@@ -2,10 +2,10 @@
 namespace App\MealCourse\Domain\Model;
 
 use App\MealCourse\Domain\Exceptions\MealCourseEmptyNameException;
-use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\Model\AggregateRoot;
-use App\Shared\Domain\ValueObject\AggregateRootId;
-use App\Shared\Domain\ValueObject\RequiredName;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
+use App\Shared\Domain\ValueObjects\RequiredName;
 use DateTimeImmutable;
 
 final class MealCourse extends AggregateRoot

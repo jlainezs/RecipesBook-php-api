@@ -1,7 +1,7 @@
 <?php
 namespace App\Shared\Domain\Model;
 
-use App\Shared\Domain\ValueObject\AggregateRootId;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 
 final readonly class Owner
 {

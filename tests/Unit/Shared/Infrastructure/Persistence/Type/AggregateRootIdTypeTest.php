@@ -1,8 +1,8 @@
 <?php
 namespace App\Tests\Unit\Shared\Infrastructure\Persistence\Type;
 
-use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
-use App\Shared\Domain\ValueObject\AggregateRootId;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\Shared\Infrastructure\Persistence\Doctrine\Type\AggregateRootIdType;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Platforms\AbstractPlatform;

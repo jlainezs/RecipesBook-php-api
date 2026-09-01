@@ -3,7 +3,7 @@ namespace App\Season\Infrastructure\Repository;
 
 use App\Season\Domain\Model\Season;
 use App\Season\Domain\Repository\SeasonRepositoryInterface;
-use App\Shared\Domain\ValueObject\AggregateRootId;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

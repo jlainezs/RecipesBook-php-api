@@ -5,7 +5,7 @@ use App\Season\Application\Command\Season\SeasonCreateCommand;
 use App\Season\Application\Command\Season\SeasonCreateCommandHandler;
 use App\Season\Domain\Model\Season;
 use App\Season\Domain\Repository\SeasonRepositoryInterface;
-use App\Shared\Domain\Exception\EmptyRequiredNameException;
+use App\Shared\Domain\Exceptions\EmptyRequiredNameException;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;

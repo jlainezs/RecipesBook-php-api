@@ -2,8 +2,8 @@
 
 namespace App\Tests\Unit\UnitOfMeasure\Application\Query\UnitOfMeasure;
 
-use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
-use App\Shared\Domain\ValueObject\AggregateRootId;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\UnitOfMeasure\Application\Query\UnitOfMeasure\UnitOfMeasureInstanceQuery;
 use App\UnitOfMeasure\Application\Query\UnitOfMeasure\UnitOfMeasureInstanceQueryHandler;
 use App\UnitOfMeasure\Domain\Exceptions\UnitOfMeasureNotFoundException;

@@ -1,7 +1,7 @@
 <?php
 namespace App\Shared\Infrastructure\Persistence\Doctrine\Type;
 
-use App\Shared\Domain\ValueObject\Ordering;
+use App\Shared\Domain\ValueObjects\Ordering;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\ConversionException;

@@ -1,8 +1,8 @@
 <?php
 namespace App\Tests\Unit\ShoppingList\Application\Command\ShoppingListUpdate;
-use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
-use App\Shared\Domain\Exception\EmptyRequiredNameException;
-use App\Shared\Domain\ValueObject\AggregateRootId;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
+use App\Shared\Domain\Exceptions\EmptyRequiredNameException;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\ShoppingList\Application\Command\ShoppingListUpdate\ShoppingListUpdateCommand;
 use App\ShoppingList\Application\Command\ShoppingListUpdate\ShoppingListUpdateCommandHandler;
 use App\ShoppingList\Domain\Exceptions\ShoppingListNotFoundException;

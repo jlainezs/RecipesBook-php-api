@@ -2,7 +2,7 @@
 
 namespace App\Tests\Unit\UnitOfMeasure\Domain\Exceptions;
 
-use App\Shared\Domain\ValueObject\AggregateRootId;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\UnitOfMeasure\Domain\Exceptions\UnitOfMeasureNotFoundException;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;

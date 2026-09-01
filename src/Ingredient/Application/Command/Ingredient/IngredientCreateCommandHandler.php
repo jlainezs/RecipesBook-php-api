@@ -8,7 +8,7 @@ use App\Ingredient\Domain\ValueObjects\IngredientTypeReference;
 use App\IngredientType\Application\Query\IngredientType\FindIngredientTypeReferenceQuery;
 use App\IngredientType\Domain\Exceptions\IngredientTypeNotFoundException;
 use App\Shared\Application\Bus\QueryBus;
-use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]

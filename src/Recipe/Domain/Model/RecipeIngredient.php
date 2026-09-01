@@ -2,13 +2,13 @@
 namespace App\Recipe\Domain\Model;
 
 use App\Recipe\Domain\ValueObjects\RecipeIngredientQuantity;
-use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
-use App\Shared\Domain\Exception\InvalidOrderingException;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
+use App\Shared\Domain\Exceptions\InvalidOrderingException;
 use App\Shared\Domain\Model\AggregateRoot;
-use App\Shared\Domain\ValueObject\AggregateRootId;
-use App\Shared\Domain\ValueObject\IngredientReference;
-use App\Shared\Domain\ValueObject\Ordering;
-use App\Shared\Domain\ValueObject\UnitOfMeasureReference;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
+use App\Shared\Domain\ValueObjects\IngredientReference;
+use App\Shared\Domain\ValueObjects\Ordering;
+use App\Shared\Domain\ValueObjects\UnitOfMeasureReference;
 use DateTimeImmutable;
 
 final class RecipeIngredient extends AggregateRoot

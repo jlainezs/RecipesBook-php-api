@@ -7,7 +7,7 @@ use App\Season\Application\Command\Season\SeasonUpdateCommandHandler;
 use App\Season\Domain\Exceptions\SeasonNotFoundException;
 use App\Season\Domain\Model\Season;
 use App\Season\Domain\Repository\SeasonRepositoryInterface;
-use App\Shared\Domain\Exception\EmptyRequiredNameException;
+use App\Shared\Domain\Exceptions\EmptyRequiredNameException;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;

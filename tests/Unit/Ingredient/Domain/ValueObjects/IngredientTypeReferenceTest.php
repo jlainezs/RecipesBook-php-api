@@ -2,7 +2,7 @@
 namespace App\Tests\Unit\Ingredient\Domain\ValueObjects;
 
 use App\Ingredient\Domain\ValueObjects\IngredientTypeReference;
-use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;

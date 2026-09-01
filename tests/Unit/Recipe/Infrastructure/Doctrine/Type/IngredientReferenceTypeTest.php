@@ -2,9 +2,9 @@
 
 namespace App\Tests\Unit\Recipe\Infrastructure\Doctrine\Type;
 
-use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
-use App\Shared\Domain\ValueObject\AggregateRootId;
-use App\Shared\Domain\ValueObject\IngredientReference;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
+use App\Shared\Domain\ValueObjects\IngredientReference;
 use App\Shared\Infrastructure\Persistence\Doctrine\Type\IngredientReferenceType;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Platforms\AbstractPlatform;

@@ -3,8 +3,8 @@ namespace App\Tests\Unit\Ingredient\Infrastructure\Doctrine\Type;
 
 use App\Ingredient\Domain\ValueObjects\IngredientTypeReference;
 use App\Ingredient\Infrastructure\Doctrine\Type\IngredientTypeReferenceType;
-use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
-use App\Shared\Domain\ValueObject\AggregateRootId;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\ConversionException;

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Shared\Domain\ValueObject;
+namespace App\Shared\Domain\ValueObjects;
 
-use App\Shared\Domain\Exception\InvalidOrderingException;
+use App\Shared\Domain\Exceptions\InvalidOrderingException;
 
 final readonly class Ordering
 {

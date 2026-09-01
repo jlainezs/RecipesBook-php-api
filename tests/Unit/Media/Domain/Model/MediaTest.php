@@ -6,7 +6,7 @@ use App\Media\Domain\Exceptions\MediaEmptyMimeTypeException;
 use App\Media\Domain\Exceptions\MediaEmptyOwnerClassException;
 use App\Media\Domain\Exceptions\MediaEmptyPathException;
 use App\Media\Domain\Model\Media;
-use App\Shared\Domain\ValueObject\AggregateRootId;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;

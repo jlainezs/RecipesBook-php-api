@@ -1,11 +1,11 @@
 <?php
 namespace App\Tests\Unit\ShoppingList\Domain\Model;
 
-use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
-use App\Shared\Domain\Exception\EmptyRequiredNameException;
-use App\Shared\Domain\ValueObject\AggregateRootId;
-use App\Shared\Domain\ValueObject\IngredientReference;
-use App\Shared\Domain\ValueObject\UnitOfMeasureReference;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
+use App\Shared\Domain\Exceptions\EmptyRequiredNameException;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
+use App\Shared\Domain\ValueObjects\IngredientReference;
+use App\Shared\Domain\ValueObjects\UnitOfMeasureReference;
 use App\ShoppingList\Domain\Exceptions\ShoppingListItemNotFoundException;
 use App\ShoppingList\Domain\Model\ShoppingList;
 use App\ShoppingList\Domain\Model\ShoppingListItem;

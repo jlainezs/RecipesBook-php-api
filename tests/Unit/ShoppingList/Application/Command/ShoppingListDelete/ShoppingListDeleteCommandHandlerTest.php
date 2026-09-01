@@ -1,7 +1,7 @@
 <?php
 namespace App\Tests\Unit\ShoppingList\Application\Command\ShoppingListDelete;
 
-use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\ShoppingList\Application\Command\ShoppingListDelete\ShoppingListDeleteCommand;
 use App\ShoppingList\Application\Command\ShoppingListDelete\ShoppingListDeleteCommandHandler;
 use App\ShoppingList\Domain\Exceptions\ShoppingListNotFoundException;

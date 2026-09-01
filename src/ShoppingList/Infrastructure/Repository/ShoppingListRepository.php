@@ -1,7 +1,7 @@
 <?php
 namespace App\ShoppingList\Infrastructure\Repository;
 
-use App\Shared\Domain\ValueObject\AggregateRootId;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\ShoppingList\Domain\Model\ShoppingList;
 use App\ShoppingList\Domain\Repository\ShoppingListRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;

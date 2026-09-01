@@ -1,8 +1,8 @@
 <?php
 namespace App\Tests\Unit\UnitOfMeasure\Application\Command\UnitOfMeasureCreate;
 
-use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
-use App\Shared\Domain\Exception\EmptyRequiredNameException;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
+use App\Shared\Domain\Exceptions\EmptyRequiredNameException;
 use App\UnitOfMeasure\Application\Command\UnitOfMeasure\UnitOfMeasureCreateCommand;
 use App\UnitOfMeasure\Application\Command\UnitOfMeasure\UnitOfMeasureCreateCommandHandler;
 use App\UnitOfMeasure\Domain\Model\UnitOfMeasure;

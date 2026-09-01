@@ -1,8 +1,8 @@
 <?php
 namespace App\Tests\Unit\Shared\Infrastructure\Persistence\Type;
 
-use App\Shared\Domain\Exception\EmptyRequiredNameException;
-use App\Shared\Domain\ValueObject\RequiredName;
+use App\Shared\Domain\Exceptions\EmptyRequiredNameException;
+use App\Shared\Domain\ValueObjects\RequiredName;
 use App\Shared\Infrastructure\Persistence\Doctrine\Type\RequiredNameType;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Platforms\AbstractPlatform;

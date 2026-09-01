@@ -2,8 +2,8 @@
 namespace App\ShoppingList\Domain\Model;
 
 use App\Shared\Domain\Model\AggregateRoot;
-use App\Shared\Domain\ValueObject\AggregateRootId;
-use App\Shared\Domain\ValueObject\RequiredName;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
+use App\Shared\Domain\ValueObjects\RequiredName;
 use App\ShoppingList\Domain\Exceptions\ShoppingListItemNotFoundException;
 use DateTimeImmutable;
 

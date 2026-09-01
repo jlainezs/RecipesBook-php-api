@@ -4,7 +4,7 @@ use App\Ingredient\Domain\Exceptions\IngredientNotFoundException;
 use App\IngredientType\Domain\Exceptions\IngredientTypeNotFoundException;
 use App\MealCourse\Domain\Exceptions\MealCourseNotFoundException;
 use App\Season\Domain\Exceptions\SeasonNotFoundException;
-use App\Shared\Domain\Exception\EntityNotFoundException;
+use App\Shared\Domain\Exceptions\EntityNotFoundException;
 use App\Shared\Presentation\Http\Response\JsonErrorResponse;
 use App\UnitOfMeasure\Domain\Exceptions\UnitOfMeasureNotFoundException;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;

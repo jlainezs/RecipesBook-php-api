@@ -1,8 +1,8 @@
 <?php
 namespace App\ShoppingList\Domain\Exceptions;
 
-use App\Shared\Domain\Exception\EntityNotFoundException;
-use App\Shared\Domain\ValueObject\AggregateRootId;
+use App\Shared\Domain\Exceptions\EntityNotFoundException;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use Throwable;
 
 final class ShoppingListNotFoundException extends EntityNotFoundException

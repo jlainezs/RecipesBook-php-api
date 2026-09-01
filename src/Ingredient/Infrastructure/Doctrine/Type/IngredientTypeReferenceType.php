@@ -2,7 +2,7 @@
 namespace App\Ingredient\Infrastructure\Doctrine\Type;
 
 use App\Ingredient\Domain\ValueObjects\IngredientTypeReference;
-use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\GuidType;

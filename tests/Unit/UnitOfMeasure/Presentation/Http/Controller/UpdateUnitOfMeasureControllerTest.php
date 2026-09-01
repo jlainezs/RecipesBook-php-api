@@ -3,8 +3,8 @@ namespace App\Tests\Unit\UnitOfMeasure\Presentation\Http\Controller;
 
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
-use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
-use App\Shared\Domain\ValueObject\AggregateRootId;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\UnitOfMeasure\Application\Command\UnitOfMeasure\UnitOfMeasureUpdateCommand;
 use App\UnitOfMeasure\Application\Command\UnitOfMeasure\UpdateUnitOfMeasureDto;
 use App\UnitOfMeasure\Presentation\Http\Controller\PutUnitOfMeasureController;

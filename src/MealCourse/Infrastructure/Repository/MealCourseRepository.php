@@ -3,7 +3,7 @@ namespace App\MealCourse\Infrastructure\Repository;
 
 use App\MealCourse\Domain\Model\MealCourse;
 use App\MealCourse\Domain\Repository\MealCourseRepositoryInterface;
-use App\Shared\Domain\ValueObject\AggregateRootId;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

@@ -1,8 +1,8 @@
 <?php
 namespace App\Tests\Unit\ShoppingList\Application\Query\ShoppingListInstance;
 
-use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
-use App\Shared\Domain\ValueObject\AggregateRootId;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\ShoppingList\Application\Query\ShoppingListInstance\ShoppingListInstanceQuery;
 use App\ShoppingList\Application\Query\ShoppingListInstance\ShoppingListInstanceQueryHandler;
 use App\ShoppingList\Application\Query\ShoppingListInstance\ShoppingListInstanceResponse;

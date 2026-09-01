@@ -2,8 +2,8 @@
 namespace App\Tests\Unit\ShoppingList\Application\Command\ShoppingListCreate;
 
 use App\Ingredient\Domain\Repository\IngredientRepositoryInterface;
-use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
-use App\Shared\Domain\Exception\EmptyRequiredNameException;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
+use App\Shared\Domain\Exceptions\EmptyRequiredNameException;
 use App\ShoppingList\Application\Command\ShoppingListCreate\ShoppingListCreateCommand;
 use App\ShoppingList\Application\Command\ShoppingListCreate\ShoppingListCreateCommandHandler;
 use App\ShoppingList\Domain\Model\ShoppingList;

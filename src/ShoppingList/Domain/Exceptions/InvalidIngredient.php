@@ -1,7 +1,7 @@
 <?php
 namespace App\ShoppingList\Domain\Exceptions;
 
-use App\Shared\Domain\ValueObject\AggregateRootId;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use InvalidArgumentException;
 use Throwable;
 

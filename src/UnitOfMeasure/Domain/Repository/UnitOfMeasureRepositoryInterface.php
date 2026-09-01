@@ -2,7 +2,7 @@
 
 namespace App\UnitOfMeasure\Domain\Repository;
 
-use App\Shared\Domain\ValueObject\AggregateRootId;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\UnitOfMeasure\Domain\Model\UnitOfMeasure;
 
 interface UnitOfMeasureRepositoryInterface

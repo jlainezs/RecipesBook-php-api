@@ -1,7 +1,7 @@
 <?php
-namespace App\Shared\Domain\ValueObject;
+namespace App\Shared\Domain\ValueObjects;
 
-use App\Shared\Domain\Exception\EmptyRequiredNameException;
+use App\Shared\Domain\Exceptions\EmptyRequiredNameException;
 
 final readonly class RequiredName
 {

@@ -5,7 +5,7 @@ namespace App\Tests\Unit\IngredientType\Presentation\Http\Controller;
 use App\IngredientType\Presentation\Http\Controller\DeleteIngredientTypeController;
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
-use App\Shared\Domain\ValueObject\AggregateRootId;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 

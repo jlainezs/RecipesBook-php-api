@@ -1,7 +1,7 @@
 <?php
 namespace App\Media\Domain\Exceptions;
 
-use App\Shared\Domain\Exception\EntityNotFoundException;
+use App\Shared\Domain\Exceptions\EntityNotFoundException;
 use Throwable;
 
 final class MediaNotFoundException extends EntityNotFoundException

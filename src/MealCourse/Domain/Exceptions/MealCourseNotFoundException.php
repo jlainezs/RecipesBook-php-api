@@ -2,7 +2,7 @@
 
 namespace App\MealCourse\Domain\Exceptions;
 
-use App\Shared\Domain\Exception\EntityNotFoundException;
+use App\Shared\Domain\Exceptions\EntityNotFoundException;
 use Exception;
 use Throwable;
 

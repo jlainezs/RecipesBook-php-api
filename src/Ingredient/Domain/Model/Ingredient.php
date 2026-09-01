@@ -4,10 +4,10 @@ namespace App\Ingredient\Domain\Model;
 use App\Ingredient\Domain\Exceptions\IngredientEmptyNameException;
 use App\Ingredient\Domain\ValueObjects\IngredientTypeReference;
 use App\IngredientType\Domain\Exceptions\IngredientTypeEmptyNameException;
-use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\Model\AggregateRoot;
-use App\Shared\Domain\ValueObject\AggregateRootId;
-use App\Shared\Domain\ValueObject\RequiredName;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
+use App\Shared\Domain\ValueObjects\RequiredName;
 use DateTimeImmutable;
 
 final class Ingredient extends AggregateRoot

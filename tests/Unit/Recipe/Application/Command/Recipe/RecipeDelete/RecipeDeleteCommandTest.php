@@ -7,7 +7,7 @@ use App\Recipe\Application\Command\RecipeDelete\RecipeDeleteCommandHandler;
 use App\Recipe\Domain\Exceptions\RecipeNotFoundException;
 use App\Recipe\Domain\Model\Recipe;
 use App\Recipe\Domain\Repository\RecipeRepositoryInterface;
-use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;

@@ -1,7 +1,7 @@
 <?php
 namespace App\Tests\Unit\ShoppingList\Domain\Exceptions;
 
-use App\Shared\Domain\ValueObject\AggregateRootId;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\ShoppingList\Domain\Exceptions\ShoppingListNotFoundException;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;

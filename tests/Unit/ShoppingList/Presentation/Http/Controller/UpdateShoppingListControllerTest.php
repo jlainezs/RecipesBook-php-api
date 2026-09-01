@@ -4,8 +4,8 @@ namespace App\Tests\Unit\ShoppingList\Presentation\Http\Controller;
 
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
-use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
-use App\Shared\Domain\ValueObject\AggregateRootId;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\ShoppingList\Application\Command\ShoppingListUpdate\ShoppingListUpdateCommand;
 use App\ShoppingList\Application\Command\ShoppingListUpdate\ShoppingListUpdateDto;
 use App\ShoppingList\Presentation\Http\Controller\UpdateShoppingListController;

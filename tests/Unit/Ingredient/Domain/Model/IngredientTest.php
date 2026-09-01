@@ -3,8 +3,8 @@ namespace App\Tests\Unit\Ingredient\Domain\Model;
 
 use App\Ingredient\Domain\Model\Ingredient;
 use App\Ingredient\Domain\ValueObjects\IngredientTypeReference;
-use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
-use App\Shared\Domain\Exception\EmptyRequiredNameException;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
+use App\Shared\Domain\Exceptions\EmptyRequiredNameException;
 use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;

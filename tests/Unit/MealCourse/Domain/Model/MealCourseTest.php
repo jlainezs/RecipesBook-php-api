@@ -4,8 +4,8 @@ namespace App\Tests\Unit\MealCourse\Domain\Model;
 
 use App\MealCourse\Domain\Exceptions\MealCourseEmptyNameException;
 use App\MealCourse\Domain\Model\MealCourse;
-use App\Shared\Domain\Exception\EmptyRequiredNameException;
-use App\Shared\Domain\ValueObject\AggregateRootId;
+use App\Shared\Domain\Exceptions\EmptyRequiredNameException;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;

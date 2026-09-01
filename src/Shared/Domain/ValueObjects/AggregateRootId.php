@@ -1,7 +1,7 @@
 <?php
-namespace App\Shared\Domain\ValueObject;
+namespace App\Shared\Domain\ValueObjects;
 
-use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use Symfony\Component\Uid\Uuid;
 use Webmozart\Assert\Assert;
 

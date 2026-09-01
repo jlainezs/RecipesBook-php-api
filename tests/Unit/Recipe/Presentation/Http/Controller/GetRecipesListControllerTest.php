@@ -8,7 +8,7 @@ use App\Recipe\Domain\Model\Recipe;
 use App\Recipe\Presentation\Http\Controller\GetRecipesListController;
 use App\Recipe\Presentation\Http\Response\RecipesListJsonResponse;
 use App\Shared\Application\Bus\QueryBus;
-use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;

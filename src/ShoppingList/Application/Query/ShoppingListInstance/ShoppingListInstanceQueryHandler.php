@@ -1,8 +1,8 @@
 <?php
 namespace App\ShoppingList\Application\Query\ShoppingListInstance;
 
-use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
-use App\Shared\Domain\ValueObject\AggregateRootId;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\ShoppingList\Domain\Exceptions\ShoppingListNotFoundException;
 use App\ShoppingList\Domain\Repository\ShoppingListRepositoryInterface;
 use Psr\Log\LoggerInterface;

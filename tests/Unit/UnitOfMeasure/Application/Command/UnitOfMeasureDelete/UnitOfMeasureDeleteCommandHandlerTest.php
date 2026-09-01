@@ -1,7 +1,7 @@
 <?php
 namespace App\Tests\Unit\UnitOfMeasure\Application\Command\UnitOfMeasureDelete;
 
-use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\UnitOfMeasure\Application\Command\UnitOfMeasure\UnitOfMeasureDeleteCommand;
 use App\UnitOfMeasure\Application\Command\UnitOfMeasure\UnitOfMeasureDeleteCommandHandler;
 use App\UnitOfMeasure\Domain\Exceptions\UnitOfMeasureNotFoundException;

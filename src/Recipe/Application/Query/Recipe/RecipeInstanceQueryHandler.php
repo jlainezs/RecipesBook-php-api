@@ -4,7 +4,7 @@ namespace App\Recipe\Application\Query\Recipe;
 use App\Recipe\Domain\Exceptions\RecipeNotFoundException;
 use App\Recipe\Domain\Repository\RecipeRepositoryInterface;
 use App\Recipe\Infrastructure\Repository\RecipeRepository;
-use App\Shared\Domain\ValueObject\AggregateRootId;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]

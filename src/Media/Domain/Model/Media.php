@@ -5,10 +5,10 @@ use App\Media\Domain\Exceptions\MediaEmptyFileNameException;
 use App\Media\Domain\Exceptions\MediaEmptyMimeTypeException;
 use App\Media\Domain\Exceptions\MediaEmptyOwnerClassException;
 use App\Media\Domain\Exceptions\MediaEmptyPathException;
-use App\Shared\Domain\Exception\EmptyIdNotAllowedException;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\Model\AggregateRoot;
 use App\Shared\Domain\Model\Owner;
-use App\Shared\Domain\ValueObject\AggregateRootId;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use DateTimeImmutable;
 
 final class Media extends AggregateRoot
