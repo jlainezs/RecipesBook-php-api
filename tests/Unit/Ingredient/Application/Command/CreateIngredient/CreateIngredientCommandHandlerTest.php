@@ -2,7 +2,7 @@
 namespace App\Tests\Unit\Ingredient\Application\Command\CreateIngredient;
 
 use App\Ingredient\Application\Command\Ingredient\IngredientCreate\CreateIngredientCommand;
-use App\Ingredient\Application\Command\Ingredient\CreateIngredientCommandHandler;
+use App\Ingredient\Application\Command\Ingredient\IngredientCreate\IngredientCreateCommandHandler;
 use App\Ingredient\Domain\Model\Ingredient;
 use App\Ingredient\Domain\Repository\IngredientRepositoryInterface;
 use App\Ingredient\Domain\ValueObjects\IngredientTypeReference;
@@ -18,14 +18,14 @@ use PHPUnit\Framework\TestCase;
 class CreateIngredientCommandHandlerTest extends TestCase
 {
     private IngredientRepositoryInterface $repository;
-    private CreateIngredientCommandHandler $handler;
+    private IngredientCreateCommandHandler $handler;
     private QueryBus&MockObject $queryBus;
 
     public function setUp(): void
     {
         $this->queryBus = $this->createMock(QueryBus::class);
         $this->repository = $this->createMock(IngredientRepositoryInterface::class);
-        $this->handler = new CreateIngredientCommandHandler($this->repository, $this->queryBus);
+        $this->handler = new IngredientCreateCommandHandler($this->repository, $this->queryBus);
     }
 
     /**
