@@ -1,8 +1,8 @@
 <?php
 namespace App\Ingredient\Presentation\Http\Controller;
 
-use App\Ingredient\Application\Command\Ingredient\IngredientCreate\CreateIngredientCommand;
-use App\Ingredient\Application\Command\Ingredient\IngredientCreate\CreateIngredientDto;
+use App\Ingredient\Application\Command\Ingredient\CreateIngredient\CreateIngredientCommand;
+use App\Ingredient\Application\Command\Ingredient\CreateIngredient\CreateIngredientDto;
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

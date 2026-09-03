@@ -1,5 +1,5 @@
 <?php
-namespace App\Ingredient\Application\Command\Ingredient\IngredientCreate;
+namespace App\Ingredient\Application\Command\Ingredient\CreateIngredient;
 
 final readonly class CreateIngredientDto
 {

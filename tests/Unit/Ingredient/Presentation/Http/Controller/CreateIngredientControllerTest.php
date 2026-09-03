@@ -1,9 +1,9 @@
 <?php
 namespace App\Tests\Unit\Ingredient\Presentation\Http\Controller;
 
-use App\Ingredient\Application\Command\Ingredient\IngredientCreate\CreateIngredientCommand;
+use App\Ingredient\Application\Command\Ingredient\CreateIngredient\CreateIngredientCommand;
 use App\Ingredient\Presentation\Http\Controller\CreateIngredientController;
-use App\Ingredient\Application\Command\Ingredient\IngredientCreate\CreateIngredientDto;
+use App\Ingredient\Application\Command\Ingredient\CreateIngredient\CreateIngredientDto;
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
 use PHPUnit\Framework\Attributes\Test;

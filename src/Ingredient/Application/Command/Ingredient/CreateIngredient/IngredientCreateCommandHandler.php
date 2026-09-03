@@ -1,5 +1,5 @@
 <?php
-namespace App\Ingredient\Application\Command\Ingredient\IngredientCreate;
+namespace App\Ingredient\Application\Command\Ingredient\CreateIngredient;
 
 use App\Ingredient\Domain\Exceptions\IngredientEmptyNameException;
 use App\Ingredient\Domain\Model\Ingredient;

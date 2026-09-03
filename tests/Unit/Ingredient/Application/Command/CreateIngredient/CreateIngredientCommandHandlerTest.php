@@ -1,8 +1,8 @@
 <?php
 namespace App\Tests\Unit\Ingredient\Application\Command\CreateIngredient;
 
-use App\Ingredient\Application\Command\Ingredient\IngredientCreate\CreateIngredientCommand;
-use App\Ingredient\Application\Command\Ingredient\IngredientCreate\IngredientCreateCommandHandler;
+use App\Ingredient\Application\Command\Ingredient\CreateIngredient\CreateIngredientCommand;
+use App\Ingredient\Application\Command\Ingredient\CreateIngredient\IngredientCreateCommandHandler;
 use App\Ingredient\Domain\Model\Ingredient;
 use App\Ingredient\Domain\Repository\IngredientRepositoryInterface;
 use App\Ingredient\Domain\ValueObjects\IngredientTypeReference;
