@@ -7,7 +7,6 @@ use App\ShoppingList\Application\Command\ShoppingListCreate\ShoppingListCreateCo
 use App\ShoppingList\Application\Command\ShoppingListCreate\ShoppingListCreateDto;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 

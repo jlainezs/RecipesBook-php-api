@@ -1,8 +1,8 @@
 <?php
-namespace App\Tests\Unit\Ingredient\Application\Command\IngredientCreate;
+namespace App\Tests\Unit\Ingredient\Application\Command\CreateIngredient;
 
-use App\Ingredient\Application\Command\Ingredient\IngredientCreateCommand;
-use App\Ingredient\Application\Command\Ingredient\IngredientCreateCommandHandler;
+use App\Ingredient\Application\Command\Ingredient\IngredientCreate\CreateIngredientCommand;
+use App\Ingredient\Application\Command\Ingredient\CreateIngredientCommandHandler;
 use App\Ingredient\Domain\Model\Ingredient;
 use App\Ingredient\Domain\Repository\IngredientRepositoryInterface;
 use App\Ingredient\Domain\ValueObjects\IngredientTypeReference;
@@ -15,17 +15,17 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class IngredientCreateCommandHandlerTest extends TestCase
+class CreateIngredientCommandHandlerTest extends TestCase
 {
     private IngredientRepositoryInterface $repository;
-    private IngredientCreateCommandHandler $handler;
+    private CreateIngredientCommandHandler $handler;
     private QueryBus&MockObject $queryBus;
 
     public function setUp(): void
     {
         $this->queryBus = $this->createMock(QueryBus::class);
         $this->repository = $this->createMock(IngredientRepositoryInterface::class);
-        $this->handler = new IngredientCreateCommandHandler($this->repository, $this->queryBus);
+        $this->handler = new CreateIngredientCommandHandler($this->repository, $this->queryBus);
     }
 
     /**
@@ -48,7 +48,7 @@ class IngredientCreateCommandHandlerTest extends TestCase
             ->with($this->isInstanceOf(FindIngredientTypeReferenceQuery::class))
             ->willReturn($ingredientTypeRef);
 
-        ($this->handler)(new IngredientCreateCommand(
+        ($this->handler)(new CreateIngredientCommand(
             name: "ingredient 1",
             description: "tastes yummy",
             ingredientTypeId: $ingredientTypeId
@@ -75,7 +75,7 @@ class IngredientCreateCommandHandlerTest extends TestCase
             ->with($this->isInstanceOf(FindIngredientTypeReferenceQuery::class))
             ->willReturn($ingredientTypeRef);
         $this->expectException(EmptyRequiredNameException::class);
-        ($this->handler)(new IngredientCreateCommand(
+        ($this->handler)(new CreateIngredientCommand(
             name: "",
             description: "tastes yummy",
             ingredientTypeId: $ingredientTypeId

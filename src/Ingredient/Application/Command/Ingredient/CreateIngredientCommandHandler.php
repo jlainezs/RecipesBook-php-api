@@ -1,6 +1,7 @@
 <?php
 namespace App\Ingredient\Application\Command\Ingredient;
 
+use App\Ingredient\Application\Command\Ingredient\IngredientCreate\CreateIngredientCommand;
 use App\Ingredient\Domain\Exceptions\IngredientEmptyNameException;
 use App\Ingredient\Domain\Model\Ingredient;
 use App\Ingredient\Domain\Repository\IngredientRepositoryInterface;
@@ -12,7 +13,7 @@ use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final readonly class IngredientCreateCommandHandler
+final readonly class CreateIngredientCommandHandler
 {
     public function __construct(
         private IngredientRepositoryInterface $repository,
@@ -41,7 +42,7 @@ final readonly class IngredientCreateCommandHandler
      * @throws EmptyIdNotAllowedException
      * @throws IngredientTypeNotFoundException
      */
-    public function __invoke(IngredientCreateCommand $command): void
+    public function __invoke(CreateIngredientCommand $command): void
     {
         $ingredientTypeReference = null;
 
