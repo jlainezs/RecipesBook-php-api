@@ -8,7 +8,6 @@ use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\Request;
 
 class DeleteIngredientControllerTest extends TestCase
 {
@@ -30,8 +29,7 @@ class DeleteIngredientControllerTest extends TestCase
             ->withAnyParameters();
 
         $controller = new DeleteIngredientController($commandBus, $validator);
-        $request = 'an_id';
-        $response = $controller($request);
+        $response = $controller($id);
 
         $this->assertEquals(204, $response->getStatusCode());
     }
