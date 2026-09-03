@@ -1,9 +1,9 @@
 <?php
-namespace App\Ingredient\Application\Command\Ingredient;
+namespace App\Ingredient\Application\Command\Ingredient\UpdateIngredient;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-final readonly class IngredientUpdateCommand
+final readonly class UpdateIngredientCommand
 {
     public function __construct(
         #[Assert\Uuid]

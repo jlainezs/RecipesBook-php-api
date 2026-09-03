@@ -2,7 +2,8 @@
 
 namespace App\Tests\Unit\Ingredient\Presentation\Http\Controller;
 
-use App\Ingredient\Application\Command\Ingredient\IngredientUpdateCommand;
+use App\Ingredient\Application\Command\Ingredient\UpdateIngredient\UpdateIngredientCommand;
+use App\Ingredient\Application\Command\Ingredient\UpdateIngredient\UpdateIngredientDto;
 use App\Ingredient\Domain\Model\Ingredient;
 use App\Ingredient\Domain\ValueObjects\IngredientTypeReference;
 use App\Ingredient\Presentation\Http\Controller\UpdateIngredientController;
@@ -28,12 +29,12 @@ class UpdateIngredientControllerTest extends TestCase
     {
         $ingredientTypeRef = new IngredientTypeReference('4d083381-6833-4e29-819b-35b96c36bb6c');
         $ingredient = Ingredient::create('ingredient', 'description', $ingredientTypeRef);
-        $cmd = new IngredientUpdateCommand($ingredient->getId(), 'ingredient', 'description', $ingredientTypeRef);
+        $cmd = new UpdateIngredientCommand($ingredient->getId(), 'ingredient', 'description', $ingredientTypeRef);
         $this->commandBus
             ->expects($this->once())
             ->method('dispatch')
             ->with($this->callback(
-                function (IngredientUpdateCommand $cmdV) use ($cmd){
+                function (UpdateIngredientCommand $cmdV) use ($cmd){
                     return $cmdV->id === $cmd->id;
                 }
             ));
@@ -41,26 +42,19 @@ class UpdateIngredientControllerTest extends TestCase
             ->expects($this->once())
             ->method('validate')
             ->with($this->callback(
-                function (IngredientUpdateCommand $cmdV) use ($cmd){
+                function (UpdateIngredientCommand $cmdV) use ($cmd){
                     return $cmdV->id === $cmd->id;
                 }
             ));
 
         $controller = new UpdateIngredientController($this->commandBus, $this->validator);
-        $payload = [
-            'name' => $cmd->name,
-            'description' => $cmd->description,
-            'type' => $cmd->ingredientTypeId
-        ];
-
-        $request = Request::create(
-            uri: '/ingredients/api/v1/' . $ingredient->getId()->toString(),
-            method: 'PUT',
-            server: ['Content-Type' => 'application/json'],
-            content: json_encode($payload)
+        $request = new UpdateIngredientDto(
+            $cmd->name,
+            $cmd->ingredientTypeId,
+            $cmd->description
         );
-        $request->attributes->add(['id' => $ingredient->getId()->toString()]);
-        $response = $controller($request);
+
+        $response = $controller($ingredient->getId()->toString(), $request);
         $this->assertEquals(204, $response->getStatusCode());
     }
 }

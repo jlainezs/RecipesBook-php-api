@@ -1,8 +1,8 @@
 <?php
 namespace App\Tests\Unit\Ingredient\Application\Command\IngredientUpdate;
 
-use App\Ingredient\Application\Command\Ingredient\IngredientUpdateCommand;
-use App\Ingredient\Application\Command\Ingredient\IngredientUpdateCommandHandler;
+use App\Ingredient\Application\Command\Ingredient\UpdateIngredient\UpdateIngredientCommand;
+use App\Ingredient\Application\Command\Ingredient\UpdateIngredient\UpdateIngredientCommandHandler;
 use App\Ingredient\Domain\Exceptions\IngredientNotFoundException;
 use App\Ingredient\Domain\Model\Ingredient;
 use App\Ingredient\Domain\Repository\IngredientRepositoryInterface;
@@ -20,14 +20,14 @@ use PHPUnit\Framework\TestCase;
 class IngredientUpdateCommandHandlerTest extends TestCase
 {
     private IngredientRepositoryInterface $repository;
-    private IngredientUpdateCommandHandler $handler;
+    private UpdateIngredientCommandHandler $handler;
     private QueryBus&MockObject $queryBus;
 
     protected function setUp(): void
     {
         $this->repository = $this->createMock(IngredientRepositoryInterface::class);
         $this->queryBus = $this->createMock(QueryBus::class);
-        $this->handler = new IngredientUpdateCommandHandler($this->repository, $this->queryBus);
+        $this->handler = new UpdateIngredientCommandHandler($this->repository, $this->queryBus);
     }
 
     /**
@@ -56,7 +56,7 @@ class IngredientUpdateCommandHandlerTest extends TestCase
             ->method('ask')
             ->with($this->isInstanceOf(FindIngredientTypeReferenceQuery::class))
             ->willReturn($ingredientTypeRef);
-        ($this->handler)(new IngredientUpdateCommand(
+        ($this->handler)(new UpdateIngredientCommand(
             id: $ingredient->getId()->toString(),
             name: "ingredient 1",
             description: "tastes yummy",
@@ -93,7 +93,7 @@ class IngredientUpdateCommandHandlerTest extends TestCase
 
         $this->expectException(EmptyRequiredNameException::class);
 
-        ($this->handler)(new IngredientUpdateCommand(
+        ($this->handler)(new UpdateIngredientCommand(
             id: $ingredient->getId()->toString(),
             name: "",
             description: "tastes yummy",
@@ -130,7 +130,7 @@ class IngredientUpdateCommandHandlerTest extends TestCase
 
         $this->expectException(IngredientTypeNotFoundException::class);
 
-        ($this->handler)(new IngredientUpdateCommand(
+        ($this->handler)(new UpdateIngredientCommand(
             id: $ingredient->getId()->toString(),
             name: "test",
             description: "tastes yummy",
@@ -166,7 +166,7 @@ class IngredientUpdateCommandHandlerTest extends TestCase
 
         $this->expectException(IngredientNotFoundException::class);
 
-        ($this->handler)(new IngredientUpdateCommand(
+        ($this->handler)(new UpdateIngredientCommand(
             id: $ingredientId->toString(),
             name: "test",
             description: "tastes yummy",

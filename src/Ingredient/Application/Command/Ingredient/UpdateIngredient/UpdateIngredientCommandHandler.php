@@ -1,5 +1,5 @@
 <?php
-namespace App\Ingredient\Application\Command\Ingredient;
+namespace App\Ingredient\Application\Command\Ingredient\UpdateIngredient;
 
 use App\Ingredient\Domain\Exceptions\IngredientNotFoundException;
 use App\Ingredient\Domain\Repository\IngredientRepositoryInterface;
@@ -14,7 +14,7 @@ use Symfony\Component\Messenger\Exception\ExceptionInterface;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
 
 #[AsMessageHandler]
-readonly final class IngredientUpdateCommandHandler
+readonly final class UpdateIngredientCommandHandler
 {
     public function __construct(
         private IngredientRepositoryInterface $ingredientRepository,
@@ -49,7 +49,7 @@ readonly final class IngredientUpdateCommandHandler
      * @throws IngredientNotFoundException
      * @throws EmptyIdNotAllowedException
      */
-    public function __invoke(IngredientUpdateCommand $command): void
+    public function __invoke(UpdateIngredientCommand $command): void
     {
         $ingredient = $this->ingredientRepository->findOne(new AggregateRootId($command->id));
 
