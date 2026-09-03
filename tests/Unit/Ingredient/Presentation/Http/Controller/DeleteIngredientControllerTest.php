@@ -30,11 +30,7 @@ class DeleteIngredientControllerTest extends TestCase
             ->withAnyParameters();
 
         $controller = new DeleteIngredientController($commandBus, $validator);
-        $request = Request::create(
-            uri: '/api/v1/ingredients/delete',
-            method: 'DELETE',
-            server: ['Content-Type' => 'application/json']
-        );
+        $request = 'an_id';
         $response = $controller($request);
 
         $this->assertEquals(204, $response->getStatusCode());

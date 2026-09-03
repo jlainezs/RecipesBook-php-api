@@ -1,8 +1,8 @@
 <?php
-namespace App\Tests\Unit\Ingredient\Application\Command\IngredientDelete;
+namespace App\Tests\Unit\Ingredient\Application\Command\DeleteIngredient;
 
-use App\Ingredient\Application\Command\Ingredient\IngredientDeleteCommand;
-use App\Ingredient\Application\Command\Ingredient\IngredientDeleteCommandHandler;
+use App\Ingredient\Application\Command\Ingredient\DeleteIngredient\DeleteIngredientCommand;
+use App\Ingredient\Application\Command\Ingredient\DeleteIngredient\DeleteIngredientCommandHandler;
 use App\Ingredient\Domain\Exceptions\IngredientNotFoundException;
 use App\Ingredient\Domain\Model\Ingredient;
 use App\Ingredient\Domain\Repository\IngredientRepositoryInterface;
@@ -12,15 +12,15 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class IngredientDeleteCommandHandlerTest extends TestCase
+class DeleteIngredientCommandHandlerTest extends TestCase
 {
     private IngredientRepositoryInterface&MockObject $repository;
-    private IngredientDeleteCommandHandler $handler;
+    private DeleteIngredientCommandHandler $handler;
 
     protected function setUp(): void
     {
         $this->repository = $this->createMock(IngredientRepositoryInterface::class);
-        $this->handler = new IngredientDeleteCommandHandler($this->repository);
+        $this->handler = new DeleteIngredientCommandHandler($this->repository);
     }
 
     /**
@@ -44,7 +44,7 @@ class IngredientDeleteCommandHandlerTest extends TestCase
             ->method('delete')
             ->with($ingredient);
 
-        ($this->handler)(new IngredientDeleteCommand($id));
+        ($this->handler)(new DeleteIngredientCommand($id));
     }
 
     /**
@@ -65,6 +65,6 @@ class IngredientDeleteCommandHandlerTest extends TestCase
             ->method('delete');
 
         $this->expectException(IngredientNotFoundException::class);
-        ($this->handler)(new IngredientDeleteCommand($id));
+        ($this->handler)(new DeleteIngredientCommand($id));
     }
 }
