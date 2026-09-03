@@ -2,12 +2,10 @@
 namespace App\Ingredient\Presentation\Http\Controller;
 
 use App\Ingredient\Application\Command\Ingredient\DeleteIngredient\DeleteIngredientCommand;
-use App\Ingredient\Application\Command\Ingredient\DeleteIngredient\DeleteIngredientDto;
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class DeleteIngredientController extends AbstractController
