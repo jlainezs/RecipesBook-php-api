@@ -13,6 +13,7 @@ final readonly class ShoppingListInstanceQueryHandler
 {
     /**
      * @param ShoppingListRepositoryInterface $repository
+     * @param LoggerInterface $logger
      */
     public function __construct(
         private ShoppingListRepositoryInterface $repository,
