@@ -1,8 +1,8 @@
 <?php
 namespace App\Tests\Unit\Ingredient\Application\Query\IngredientInstance;
 
-use App\Ingredient\Application\Query\Ingredient\IngredientInstanceQuery;
-use App\Ingredient\Application\Query\Ingredient\IngredientInstanceQueryHandler;
+use App\Ingredient\Application\Query\Ingredient\GetIngredient\GetIngredientQuery;
+use App\Ingredient\Application\Query\Ingredient\GetIngredient\GetIngredientQueryHandler;
 use App\Ingredient\Application\Query\Ingredient\IngredientInstanceResponse;
 use App\Ingredient\Domain\Exceptions\IngredientNotFoundException;
 use App\Ingredient\Domain\Model\Ingredient;
@@ -16,12 +16,12 @@ use PHPUnit\Framework\TestCase;
 class IngredientInstanceQueryHandlerTest extends TestCase
 {
     private IngredientRepositoryInterface $repository;
-    private IngredientInstanceQueryHandler $handler;
+    private GetIngredientQueryHandler $handler;
 
     protected function setUp(): void
     {
         $this->repository = $this->createMock(IngredientRepositoryInterface::class);
-        $this->handler = new IngredientInstanceQueryHandler($this->repository);
+        $this->handler = new GetIngredientQueryHandler($this->repository);
     }
 
     /**
@@ -43,7 +43,7 @@ class IngredientInstanceQueryHandlerTest extends TestCase
             ->with($id)
             ->willReturn($ingredient);
 
-        $queryResult = $this->handler->__invoke(new IngredientInstanceQuery($id));
+        $queryResult = $this->handler->__invoke(new GetIngredientQuery($id));
         $this->assertNotNull($queryResult);
         $this->assertInstanceOf(IngredientInstanceResponse::class, $queryResult);
         $this->assertEquals($id->toString(), $queryResult->ingredientDto->id);
@@ -63,6 +63,6 @@ class IngredientInstanceQueryHandlerTest extends TestCase
             ->willReturn(null);
 
         $this->expectException(IngredientNotFoundException::class);
-        ($this->handler)(new IngredientInstanceQuery($id));
+        ($this->handler)(new GetIngredientQuery($id));
     }
 }

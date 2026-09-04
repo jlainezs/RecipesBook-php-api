@@ -1,7 +1,7 @@
 <?php
 namespace App\Tests\Unit\Ingredient\Presentation\Http\Controller;
 
-use App\Ingredient\Application\Query\Ingredient\IngredientInstanceQuery;
+use App\Ingredient\Application\Query\Ingredient\GetIngredient\GetIngredientQuery;
 use App\Ingredient\Presentation\Http\Controller\GetIngredientController;
 use App\Shared\Application\Bus\QueryBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
@@ -21,7 +21,7 @@ class GetIngredientControllerTest extends TestCase
             ->expects($this->once())
             ->method('validate')
             ->with($this->callback(
-                function (IngredientInstanceQuery $query) use ($id) {
+                function (GetIngredientQuery $query) use ($id) {
                     return $query->id === $id;
                 }
             ));
@@ -30,7 +30,7 @@ class GetIngredientControllerTest extends TestCase
             ->expects($this->once())
             ->method('ask')
             ->with($this->callback(
-                function (IngredientInstanceQuery $query) use ($id) {
+                function (GetIngredientQuery $query) use ($id) {
                     return $query->id === $id;
                 }
             ));

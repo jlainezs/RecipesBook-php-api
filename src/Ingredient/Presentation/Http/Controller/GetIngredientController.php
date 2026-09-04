@@ -1,12 +1,11 @@
 <?php
 namespace App\Ingredient\Presentation\Http\Controller;
 
-use App\Ingredient\Application\Query\Ingredient\IngredientInstanceQuery;
+use App\Ingredient\Application\Query\Ingredient\GetIngredient\GetIngredientQuery;
 use App\Shared\Application\Bus\QueryBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class GetIngredientController extends AbstractController
@@ -19,7 +18,7 @@ final class GetIngredientController extends AbstractController
     #[Route('/api/v1/ingredients/{id}', name: 'ingredient_get_instance', methods: ['GET'])]
     public function __invoke(string $id): JsonResponse
     {
-        $query = new IngredientInstanceQuery($id);
+        $query = new GetIngredientQuery($id);
         $this->validator->validate($query);
         $response = $this->queryBus->ask($query);
 
