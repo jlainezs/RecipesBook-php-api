@@ -3,7 +3,7 @@ namespace App\Tests\Unit\Ingredient\Application\Query\IngredientInstance;
 
 use App\Ingredient\Application\Query\Ingredient\GetIngredient\GetIngredientQuery;
 use App\Ingredient\Application\Query\Ingredient\GetIngredient\GetIngredientQueryHandler;
-use App\Ingredient\Application\Query\Ingredient\IngredientInstanceResponse;
+use App\Ingredient\Application\Query\Ingredient\GetIngredient\GetIngredientResponse;
 use App\Ingredient\Domain\Exceptions\IngredientNotFoundException;
 use App\Ingredient\Domain\Model\Ingredient;
 use App\Ingredient\Domain\Repository\IngredientRepositoryInterface;
@@ -45,7 +45,7 @@ class IngredientInstanceQueryHandlerTest extends TestCase
 
         $queryResult = $this->handler->__invoke(new GetIngredientQuery($id));
         $this->assertNotNull($queryResult);
-        $this->assertInstanceOf(IngredientInstanceResponse::class, $queryResult);
+        $this->assertInstanceOf(GetIngredientResponse::class, $queryResult);
         $this->assertEquals($id->toString(), $queryResult->ingredientDto->id);
     }
 
