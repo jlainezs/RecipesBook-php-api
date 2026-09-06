@@ -1,12 +1,11 @@
 <?php
 namespace App\MealCourse\Presentation\Http\Controller;
 
-use App\MealCourse\Application\Command\MealCourse\MealCourseDeleteCommand;
+use App\MealCourse\Application\Command\MealCourse\DeleteMealCourse\DeleteMealCourseCommand;
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class DeleteMealCourseController extends AbstractController
@@ -19,7 +18,7 @@ final class DeleteMealCourseController extends AbstractController
     #[Route('/api/v1/meal-courses/{id}', name: 'meal_courses_delete_instance', methods: ['DELETE'])]
     public function __invoke(string $id): JsonResponse
     {
-        $cmd = new MealCourseDeleteCommand($id);
+        $cmd = new DeleteMealCourseCommand($id);
         $this->validator->validate($cmd);
         $this->commandBus->dispatch($cmd);
 

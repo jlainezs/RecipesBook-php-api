@@ -8,5 +8,5 @@ Accept: application/json
 
 ###
 
-DELETE http://localhost:8000/api/v1/meal-courses/ed71989e-bc35-4c09-be49-79bf13c657b6
+DELETE http://localhost:8000/api/v1/meal-courses/6e8937fc-52ff-4d70-8901-ae90b69748cd
 Accept: application/json

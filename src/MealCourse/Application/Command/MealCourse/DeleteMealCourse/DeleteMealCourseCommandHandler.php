@@ -1,5 +1,5 @@
 <?php
-namespace App\MealCourse\Application\Command\MealCourse;
+namespace App\MealCourse\Application\Command\MealCourse\DeleteMealCourse;
 
 use App\MealCourse\Domain\Exceptions\MealCourseNotFoundException;
 use App\MealCourse\Domain\Repository\MealCourseRepositoryInterface;
@@ -8,7 +8,7 @@ use App\Shared\Domain\ValueObjects\AggregateRootId;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-readonly final class MealCourseDeleteCommandHandler
+readonly final class DeleteMealCourseCommandHandler
 {
     public function __construct(private MealCourseRepositoryInterface $repository)
     {}
@@ -17,7 +17,7 @@ readonly final class MealCourseDeleteCommandHandler
      * @throws MealCourseNotFoundException
      * @throws EmptyIdNotAllowedException
      */
-    public function __invoke(MealCourseDeleteCommand $command): void
+    public function __invoke(DeleteMealCourseCommand $command): void
     {
         if ($mealCourse = $this->repository->findOne(new AggregateRootId($command->id)))
         {

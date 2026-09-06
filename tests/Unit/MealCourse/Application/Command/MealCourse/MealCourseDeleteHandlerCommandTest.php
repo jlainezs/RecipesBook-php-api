@@ -1,8 +1,8 @@
 <?php
 namespace App\Tests\Unit\MealCourse\Application\Command\MealCourse;
 
-use App\MealCourse\Application\Command\MealCourse\MealCourseDeleteCommand;
-use App\MealCourse\Application\Command\MealCourse\MealCourseDeleteCommandHandler;
+use App\MealCourse\Application\Command\MealCourse\DeleteMealCourse\DeleteMealCourseCommand;
+use App\MealCourse\Application\Command\MealCourse\DeleteMealCourse\DeleteMealCourseCommandHandler;
 use App\MealCourse\Domain\Exceptions\MealCourseNotFoundException;
 use App\MealCourse\Domain\Model\MealCourse;
 use App\MealCourse\Domain\Repository\MealCourseRepositoryInterface;
@@ -12,12 +12,12 @@ use PHPUnit\Framework\TestCase;
 class MealCourseDeleteHandlerCommandTest extends TestCase
 {
     private MealCourseRepositoryInterface $repository;
-    private MealCourseDeleteCommandHandler $handler;
+    private DeleteMealCourseCommandHandler $handler;
 
     public function setUp(): void
     {
         $this->repository = $this->createMock(MealCourseRepositoryInterface::class);
-        $this->handler = new MealCourseDeleteCommandHandler($this->repository);
+        $this->handler = new DeleteMealCourseCommandHandler($this->repository);
     }
 
     #[Test]
@@ -37,7 +37,7 @@ class MealCourseDeleteHandlerCommandTest extends TestCase
             ->method("delete")
             ->with($mealCourse);
 
-        ($this->handler)(new MealCourseDeleteCommand($id));
+        ($this->handler)(new DeleteMealCourseCommand($id));
     }
 
     #[Test]
@@ -57,6 +57,6 @@ class MealCourseDeleteHandlerCommandTest extends TestCase
             ->method("delete");
 
         $this->expectException(MealCourseNotFoundException::class);
-        ($this->handler)(new MealCourseDeleteCommand($id));
+        ($this->handler)(new DeleteMealCourseCommand($id));
     }
 }
