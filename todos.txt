@@ -1,4 +1,5 @@
 TODO: Controllers should receive DTOs instead of Request. Some of them are already changed -- DOING
+TODO: Move validation rules from query/command to DTOs to keep query/command framework agnostic.
 TODO: Preparar fitxers de prompt a .claude/commands per a automatitzar tasques repetitives
 TODO: Preparar fitxer de skills a .claude/skills
 TODO: Crear fitxer CLAUDE.md (via /init)
