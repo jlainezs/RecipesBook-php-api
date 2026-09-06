@@ -1,9 +1,9 @@
 <?php
-namespace App\MealCourse\Application\Query\MealCourse;
+namespace App\MealCourse\Application\Query\MealCourse\GetMealCourse;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-readonly final class MealCourseInstanceQuery
+readonly final class GetMealCourseQuery
 {
     public function __construct(
         #[Assert\Uuid]

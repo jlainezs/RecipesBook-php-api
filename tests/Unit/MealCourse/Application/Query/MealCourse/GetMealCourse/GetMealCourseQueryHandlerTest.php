@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Tests\Unit\MealCourse\Application\Query\MealCourse;
+namespace App\Tests\Unit\MealCourse\Application\Query\MealCourse\GetMealCourse;
 
-use App\MealCourse\Application\Query\MealCourse\MealCourseInstanceQuery;
-use App\MealCourse\Application\Query\MealCourse\MealCourseInstanceQueryHandler;
-use App\MealCourse\Application\Query\MealCourse\MealCourseInstanceResponse;
+use App\MealCourse\Application\Query\MealCourse\GetMealCourse\GetMealCourseQuery;
+use App\MealCourse\Application\Query\MealCourse\GetMealCourse\GetMealCourseQueryHandler;
+use App\MealCourse\Application\Query\MealCourse\GetMealCourse\GetMealCourseResponse;
 use App\MealCourse\Domain\Exceptions\MealCourseNotFoundException;
 use App\MealCourse\Domain\Model\MealCourse;
 use App\MealCourse\Domain\Repository\MealCourseRepositoryInterface;
@@ -12,15 +12,15 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class MealCourseInstanceQueryHandlerTest extends TestCase
+class GetMealCourseQueryHandlerTest extends TestCase
 {
     private MealCourseRepositoryInterface&MockObject $repository;
-    private MealCourseInstanceQueryHandler $handler;
+    private GetMealCourseQueryHandler $handler;
 
     protected function setUp(): void
     {
         $this->repository = $this->createMock(MealCourseRepositoryInterface::class);
-        $this->handler = new MealCourseInstanceQueryHandler($this->repository);
+        $this->handler = new GetMealCourseQueryHandler($this->repository);
     }
 
     #[Test]
@@ -35,9 +35,9 @@ class MealCourseInstanceQueryHandlerTest extends TestCase
             ->with($id)
             ->willReturn($mealCourse);
 
-        $response = ($this->handler)(new MealCourseInstanceQuery($id));
+        $response = ($this->handler)(new GetMealCourseQuery($id));
 
-        $this->assertInstanceOf(MealCourseInstanceResponse::class, $response);
+        $this->assertInstanceOf(GetMealCourseResponse::class, $response);
         $this->assertNotNull($response->mealCourse);
         $this->assertSame($id, $response->mealCourse->id);
         $this->assertSame('Starter', $response->mealCourse->name);
@@ -54,6 +54,6 @@ class MealCourseInstanceQueryHandlerTest extends TestCase
             ->with($id)
             ->willReturn(null);
         $this->expectException(MealCourseNotFoundException::class);
-        $response = ($this->handler)(new MealCourseInstanceQuery($id));
+        $response = ($this->handler)(new GetMealCourseQuery($id));
     }
 }

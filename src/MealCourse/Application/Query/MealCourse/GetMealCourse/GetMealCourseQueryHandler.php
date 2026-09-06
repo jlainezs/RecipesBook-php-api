@@ -1,7 +1,8 @@
 <?php
 
-namespace App\MealCourse\Application\Query\MealCourse;
+namespace App\MealCourse\Application\Query\MealCourse\GetMealCourse;
 
+use App\MealCourse\Application\Query\MealCourse\MealCourseDto;
 use App\MealCourse\Domain\Exceptions\MealCourseNotFoundException;
 use App\MealCourse\Domain\Repository\MealCourseRepositoryInterface;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
@@ -9,7 +10,7 @@ use App\Shared\Domain\ValueObjects\AggregateRootId;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final readonly class MealCourseInstanceQueryHandler
+final readonly class GetMealCourseQueryHandler
 {
     public function __construct(private MealCourseRepositoryInterface $repository)
     {}
@@ -18,11 +19,11 @@ final readonly class MealCourseInstanceQueryHandler
      * @throws MealCourseNotFoundException
      * @throws EmptyIdNotAllowedException
      */
-    public function __invoke(MealCourseInstanceQuery $query): ?MealCourseInstanceResponse
+    public function __invoke(GetMealCourseQuery $query): ?GetMealCourseResponse
     {
         if ($mealCourse = $this->repository->findOne(new AggregateRootId($query->id)))
         {
-            return new MealCourseInstanceResponse(
+            return new GetMealCourseResponse(
                 new MealCourseDto(
                     $mealCourse->getId()->toString(),
                     $mealCourse->getName(),

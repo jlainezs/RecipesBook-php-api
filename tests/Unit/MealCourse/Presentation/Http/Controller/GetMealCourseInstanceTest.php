@@ -1,7 +1,7 @@
 <?php
 namespace App\Tests\Unit\MealCourse\Presentation\Http\Controller;
 
-use App\MealCourse\Application\Query\MealCourse\MealCourseInstanceQuery;
+use App\MealCourse\Application\Query\MealCourse\GetMealCourse\GetMealCourseQuery;
 use App\MealCourse\Domain\Model\MealCourse;
 use App\MealCourse\Presentation\Http\Controller\GetMealCourseInstance;
 use App\Shared\Application\Bus\QueryBus;
@@ -21,7 +21,7 @@ class GetMealCourseInstanceTest extends TestCase
             ->expects($this->once())
             ->method('validate')
             ->with($this->callback(
-                function (MealCourseInstanceQuery $query) use ($mealCourse): bool {
+                function (GetMealCourseQuery $query) use ($mealCourse): bool {
                     return $query->id === $mealCourse->getId()->toString();
                 }
             ));

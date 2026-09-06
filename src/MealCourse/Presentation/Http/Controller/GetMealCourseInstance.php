@@ -1,7 +1,7 @@
 <?php
 namespace App\MealCourse\Presentation\Http\Controller;
 
-use App\MealCourse\Application\Query\MealCourse\MealCourseInstanceQuery;
+use App\MealCourse\Application\Query\MealCourse\GetMealCourse\GetMealCourseQuery;
 use App\Shared\Application\Bus\QueryBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,7 +18,7 @@ final class GetMealCourseInstance extends AbstractController
     #[Route('/api/v1/meal-courses/{id}', name: 'meal_courses_get_instance', methods: ['GET'])]
     public function __invoke(string $id): JsonResponse
     {
-        $query = new MealCourseInstanceQuery($id);
+        $query = new GetMealCourseQuery($id);
         $this->validator->validate($query);
         $response = $this->queryBus->ask($query);
 
