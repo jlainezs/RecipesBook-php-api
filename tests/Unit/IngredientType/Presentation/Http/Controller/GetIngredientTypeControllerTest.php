@@ -1,7 +1,7 @@
 <?php
 namespace App\Tests\Unit\IngredientType\Presentation\Http\Controller;
 
-use App\IngredientType\Application\Query\IngredientType\IngredientTypeInstanceQuery;
+use App\IngredientType\Application\Query\IngredientType\GetIngredientType\GetIngredientTypeQuery;
 use App\IngredientType\Domain\Model\IngredientType;
 use App\IngredientType\Presentation\Http\Controller\GetIngredientTypeController;
 use App\Shared\Application\Bus\QueryBus;
@@ -22,7 +22,7 @@ class GetIngredientTypeControllerTest extends TestCase
             ->expects($this->once())
             ->method('validate')
             ->with($this->callback(
-                function(IngredientTypeInstanceQuery $query) use ($ingredientType) {
+                function(GetIngredientTypeQuery $query) use ($ingredientType) {
                     return $query->id === $ingredientType->getId()->toString();
                 }
             ));
@@ -31,7 +31,7 @@ class GetIngredientTypeControllerTest extends TestCase
             ->expects($this->once())
             ->method('ask')
             ->with($this->callback(
-                function(IngredientTypeInstanceQuery $query) use ($ingredientType) {
+                function(GetIngredientTypeQuery $query) use ($ingredientType) {
                     return $query->id === $ingredientType->getId()->toString();
                 }
             ))

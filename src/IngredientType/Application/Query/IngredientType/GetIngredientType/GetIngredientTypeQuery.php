@@ -1,9 +1,9 @@
 <?php
-namespace App\IngredientType\Application\Query\IngredientType;
+namespace App\IngredientType\Application\Query\IngredientType\GetIngredientType;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-readonly final class IngredientTypeInstanceQuery
+readonly final class GetIngredientTypeQuery
 {
     public function __construct(
         #[Assert\Uuid]

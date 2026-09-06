@@ -2,9 +2,9 @@
 
 namespace App\Tests\Unit\IngredientType\Application\Query;
 
-use App\IngredientType\Application\Query\IngredientType\IngredientTypeInstanceQueryHandler;
-use App\IngredientType\Application\Query\IngredientType\IngredientTypeInstanceQuery;
-use App\IngredientType\Application\Query\IngredientType\IngredientTypeInstanceResponse;
+use App\IngredientType\Application\Query\IngredientType\GetIngredientType\GetIngredientTypeQuery;
+use App\IngredientType\Application\Query\IngredientType\GetIngredientType\GetIngredientTypeQueryHandler;
+use App\IngredientType\Application\Query\IngredientType\GetIngredientType\GetIngredientTypeResponse;
 use App\IngredientType\Domain\Exceptions\IngredientTypeNotFoundException;
 use App\IngredientType\Domain\Model\IngredientType;
 use App\IngredientType\Domain\Repository\IngredientTypeRepositoryInterface;
@@ -15,12 +15,12 @@ use PHPUnit\Framework\TestCase;
 class IngredientTypeInstanceHandlerTest extends TestCase
 {
     private IngredientTypeRepositoryInterface&MockObject $repository;
-    private IngredientTypeInstanceQueryHandler $handler;
+    private GetIngredientTypeQueryHandler $handler;
 
     protected function setUp(): void
     {
         $this->repository = $this->createMock(IngredientTypeRepositoryInterface::class);
-        $this->handler = new IngredientTypeInstanceQueryHandler($this->repository);
+        $this->handler = new GetIngredientTypeQueryHandler($this->repository);
     }
 
     #[Test]
@@ -35,9 +35,9 @@ class IngredientTypeInstanceHandlerTest extends TestCase
             ->with($id)
             ->willReturn($ingredientType);
 
-        $response = ($this->handler)(new IngredientTypeInstanceQuery($id));
+        $response = ($this->handler)(new GetIngredientTypeQuery($id));
 
-        $this->assertInstanceOf(IngredientTypeInstanceResponse::class, $response);
+        $this->assertInstanceOf(GetIngredientTypeResponse::class, $response);
         $this->assertNotNull($response->ingredientType);
         $this->assertSame($id, $response->ingredientType->id);
         $this->assertSame('Vegetable', $response->ingredientType->name);
@@ -56,6 +56,6 @@ class IngredientTypeInstanceHandlerTest extends TestCase
 
         $this->expectException(IngredientTypeNotFoundException::class);
 
-        ($this->handler)(new IngredientTypeInstanceQuery($id));
+        ($this->handler)(new GetIngredientTypeQuery($id));
     }
 }

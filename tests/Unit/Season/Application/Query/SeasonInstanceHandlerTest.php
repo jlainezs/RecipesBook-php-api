@@ -2,14 +2,8 @@
 
 namespace App\Tests\Unit\Season\Application\Query;
 
-use App\IngredientType\Application\Query\IngredientType\IngredientTypeInstanceQueryHandler;
-use App\IngredientType\Application\Query\IngredientType\IngredientTypeInstanceQuery;
-use App\IngredientType\Application\Query\IngredientType\IngredientTypeInstanceResponse;
-use App\IngredientType\Domain\Exceptions\IngredientTypeNotFoundException;
-use App\IngredientType\Domain\Model\IngredientType;
-use App\IngredientType\Domain\Repository\IngredientTypeRepositoryInterface;
-use App\Season\Application\Query\Season\SeasonInstanceQueryHandler;
 use App\Season\Application\Query\Season\SeasonInstanceQuery;
+use App\Season\Application\Query\Season\SeasonInstanceQueryHandler;
 use App\Season\Application\Query\Season\SeasonInstanceResponse;
 use App\Season\Domain\Exceptions\SeasonNotFoundException;
 use App\Season\Domain\Model\Season;
