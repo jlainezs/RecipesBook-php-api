@@ -36,7 +36,6 @@ class GetIngredientControllerTest extends TestCase
             ));
 
         $controller = new GetIngredientController($queryBus, $validator);
-
         $response = $controller($id);
 
         $this->assertEquals(200, $response->getStatusCode());
