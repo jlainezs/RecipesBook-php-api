@@ -1,18 +1,19 @@
 <?php
 
-namespace App\Ingredient\Application\Query\Ingredient;
+namespace App\Ingredient\Application\Query\Ingredient\GetIngredients;
 
+use App\Ingredient\Application\Query\Ingredient\IngredientDto;
 use App\Ingredient\Application\Service\IngredientItemsPager;
 use App\Ingredient\Domain\Model\Ingredient;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final readonly class IngredientsQueryHandler
+final readonly class GetIngredientsQueryHandler
 {
     public function __construct(private IngredientItemsPager $list)
     {}
 
-    public function __invoke(IngredientsQuery $query): IngredientsQueryResponse
+    public function __invoke(GetIngredientsQuery $query): GetIngredientsQueryResponse
     {
         $itemsDto = array_map(
             fn(Ingredient $ingredient) => new IngredientDto(
@@ -25,6 +26,6 @@ final readonly class IngredientsQueryHandler
             ),
             $this->list->items($query->offset, $query->limit)
         );
-        return new IngredientsQueryResponse($itemsDto);
+        return new GetIngredientsQueryResponse($itemsDto);
     }
 }

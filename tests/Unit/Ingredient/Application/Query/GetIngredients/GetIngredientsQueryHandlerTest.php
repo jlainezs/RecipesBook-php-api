@@ -1,8 +1,8 @@
 <?php
-namespace App\Tests\Unit\Ingredient\Application\Query\Ingredients;
+namespace App\Tests\Unit\Ingredient\Application\Query\GetIngredients;
 
-use App\Ingredient\Application\Query\Ingredient\IngredientsQuery;
-use App\Ingredient\Application\Query\Ingredient\IngredientsQueryHandler;
+use App\Ingredient\Application\Query\Ingredient\GetIngredients\GetIngredientsQuery;
+use App\Ingredient\Application\Query\Ingredient\GetIngredients\GetIngredientsQueryHandler;
 use App\Ingredient\Application\Service\IngredientItemsPager;
 use App\Ingredient\Domain\Model\Ingredient;
 use App\Ingredient\Domain\ValueObjects\IngredientTypeReference;
@@ -10,15 +10,15 @@ use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
-class IngredientsQueryHandlerTest extends TestCase
+class GetIngredientsQueryHandlerTest extends TestCase
 {
     private IngredientItemsPager $pager;
-    private IngredientsQueryHandler $handler;
+    private GetIngredientsQueryHandler $handler;
 
     protected function setUp(): void
     {
         $this->pager = $this->createMock(IngredientItemsPager::class);
-        $this->handler = new IngredientsQueryHandler($this->pager);
+        $this->handler = new GetIngredientsQueryHandler($this->pager);
     }
 
     /**
@@ -38,7 +38,7 @@ class IngredientsQueryHandlerTest extends TestCase
             ->with(0, 20)
             ->willReturn([$i1, $i2]);
 
-        $response = ($this->handler)(new IngredientsQuery(0, 20));
+        $response = ($this->handler)(new GetIngredientsQuery(0, 20));
 
         $this->assertCount(2, $response->items);
         $this->assertSame($i1->getId()->toString(), $response->items[0]->id);
@@ -62,7 +62,7 @@ class IngredientsQueryHandlerTest extends TestCase
             ->with(0, 20)
             ->willReturn([]);
 
-        $response = ($this->handler)(new IngredientsQuery(0, 20));
+        $response = ($this->handler)(new GetIngredientsQuery(0, 20));
 
         $this->assertCount(0, $response->items);
     }
@@ -76,6 +76,6 @@ class IngredientsQueryHandlerTest extends TestCase
             ->with(10, 5)
             ->willReturn([]);
 
-        ($this->handler)(new IngredientsQuery(10, 5));
+        ($this->handler)(new GetIngredientsQuery(10, 5));
     }
 }

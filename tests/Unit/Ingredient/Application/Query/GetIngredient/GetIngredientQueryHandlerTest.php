@@ -1,5 +1,5 @@
 <?php
-namespace App\Tests\Unit\Ingredient\Application\Query\IngredientInstance;
+namespace App\Tests\Unit\Ingredient\Application\Query\GetIngredient;
 
 use App\Ingredient\Application\Query\Ingredient\GetIngredient\GetIngredientQuery;
 use App\Ingredient\Application\Query\Ingredient\GetIngredient\GetIngredientQueryHandler;
@@ -13,7 +13,7 @@ use App\Shared\Domain\ValueObjects\AggregateRootId;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
-class IngredientInstanceQueryHandlerTest extends TestCase
+class GetIngredientQueryHandlerTest extends TestCase
 {
     private IngredientRepositoryInterface $repository;
     private GetIngredientQueryHandler $handler;
