@@ -2,8 +2,8 @@
 
 namespace App\Tests\Unit\IngredientType\Application\Command;
 
-use App\IngredientType\Application\Command\IngredientType\IngredientTypeDeleteCommand;
-use App\IngredientType\Application\Command\IngredientType\IngredientTypeDeleteCommandHandler;
+use App\IngredientType\Application\Command\IngredientType\DeleteIngredientType\DeleteIngredientTypeCommand;
+use App\IngredientType\Application\Command\IngredientType\DeleteIngredientType\DeleteIngredientTypeCommandHandler;
 use App\IngredientType\Domain\Exceptions\IngredientTypeNotFoundException;
 use App\IngredientType\Domain\Model\IngredientType;
 use App\IngredientType\Domain\Repository\IngredientTypeRepositoryInterface;
@@ -14,12 +14,12 @@ use PHPUnit\Framework\TestCase;
 class IngredientTypeDeleteHandlerTest extends TestCase
 {
     private IngredientTypeRepositoryInterface&MockObject $repository;
-    private IngredientTypeDeleteCommandHandler $handler;
+    private DeleteIngredientTypeCommandHandler $handler;
 
     protected function setUp(): void
     {
         $this->repository = $this->createMock(IngredientTypeRepositoryInterface::class);
-        $this->handler = new IngredientTypeDeleteCommandHandler($this->repository);
+        $this->handler = new DeleteIngredientTypeCommandHandler($this->repository);
     }
 
     #[Test]
@@ -39,7 +39,7 @@ class IngredientTypeDeleteHandlerTest extends TestCase
             ->method('delete')
             ->with($ingredientType);
 
-        ($this->handler)(new IngredientTypeDeleteCommand($id));
+        ($this->handler)(new DeleteIngredientTypeCommand($id));
     }
 
     #[Test]
@@ -59,6 +59,6 @@ class IngredientTypeDeleteHandlerTest extends TestCase
 
         $this->expectException(IngredientTypeNotFoundException::class);
 
-        ($this->handler)(new IngredientTypeDeleteCommand($id));
+        ($this->handler)(new DeleteIngredientTypeCommand($id));
     }
 }

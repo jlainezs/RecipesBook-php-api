@@ -1,11 +1,6 @@
 <?php
 namespace App\Tests\Unit\Season\Application\Command;
 
-use App\IngredientType\Application\Command\IngredientType\IngredientTypeDeleteCommand;
-use App\IngredientType\Application\Command\IngredientType\IngredientTypeDeleteCommandHandler;
-use App\IngredientType\Domain\Exceptions\IngredientTypeNotFoundException;
-use App\IngredientType\Domain\Model\IngredientType;
-use App\IngredientType\Domain\Repository\IngredientTypeRepositoryInterface;
 use App\Season\Application\Command\Season\SeasonDeleteCommand;
 use App\Season\Application\Command\Season\SeasonDeleteCommandHandler;
 use App\Season\Domain\Exceptions\SeasonNotFoundException;

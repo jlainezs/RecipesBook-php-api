@@ -1,9 +1,9 @@
 <?php
-namespace App\IngredientType\Application\Command\IngredientType;
+namespace App\IngredientType\Application\Command\IngredientType\DeleteIngredientType;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-readonly final class IngredientTypeDeleteCommand
+readonly final class DeleteIngredientTypeCommand
 {
     public function __construct(
         #[Assert\Uuid]

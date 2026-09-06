@@ -1,7 +1,7 @@
 <?php
 namespace App\IngredientType\Presentation\Http\Controller;
 
-use App\IngredientType\Application\Command\IngredientType\IngredientTypeDeleteCommand;
+use App\IngredientType\Application\Command\IngredientType\DeleteIngredientType\DeleteIngredientTypeCommand;
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,7 +18,7 @@ final class DeleteIngredientTypeController extends AbstractController
     #[Route('/api/v1/ingredient-types/{id}', name: 'ingredient_types_delete_instance', methods: ['DELETE'])]
     public function __invoke(string $id): JsonResponse
     {
-        $cmd = new IngredientTypeDeleteCommand($id);
+        $cmd = new DeleteIngredientTypeCommand($id);
         $this->validator->validate($cmd);
         $this->commandBus->dispatch($cmd);
 

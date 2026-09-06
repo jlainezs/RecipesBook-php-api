@@ -1,5 +1,5 @@
 <?php
-namespace App\IngredientType\Application\Command\IngredientType;
+namespace App\IngredientType\Application\Command\IngredientType\DeleteIngredientType;
 
 use App\IngredientType\Domain\Exceptions\IngredientTypeNotFoundException;
 use App\IngredientType\Domain\Repository\IngredientTypeRepositoryInterface;
@@ -8,7 +8,7 @@ use App\Shared\Domain\ValueObjects\AggregateRootId;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final readonly class IngredientTypeDeleteCommandHandler
+final readonly class DeleteIngredientTypeCommandHandler
 {
     public function __construct(private IngredientTypeRepositoryInterface $repository)
     {}
@@ -17,7 +17,7 @@ final readonly class IngredientTypeDeleteCommandHandler
      * @throws IngredientTypeNotFoundException
      * @throws EmptyIdNotAllowedException
      */
-    public function __invoke(IngredientTypeDeleteCommand $command): void
+    public function __invoke(DeleteIngredientTypeCommand $command): void
     {
         if ($ingredientType = $this->repository->findOne(new AggregateRootId($command->id)))
         {
