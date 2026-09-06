@@ -2,11 +2,12 @@
 
 namespace App\Tests\Unit\IngredientType\Application\Query\IngredientType;
 
-use App\IngredientType\Application\Query\IngredientType\IngredientTypesQuery;
-use App\IngredientType\Application\Query\IngredientType\IngredientTypesQueryHandler;
-use App\IngredientType\Application\Query\IngredientType\IngredientTypesQueryResponse;
+use App\IngredientType\Application\Query\IngredientType\GetIngredientTypes\GetIngredientTypesQuery;
+use App\IngredientType\Application\Query\IngredientType\GetIngredientTypes\GetIngredientTypesQueryHandler;
+use App\IngredientType\Application\Query\IngredientType\GetIngredientTypes\GetIngredientTypesQueryResponse;
 use App\IngredientType\Application\Service\IngredientTypeItemsPager;
 use App\IngredientType\Domain\Model\IngredientType;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -16,14 +17,17 @@ use PHPUnit\Framework\TestCase;
 class IngredientTypesQueryHandlerTest extends TestCase
 {
     private IngredientTypeItemsPager&MockObject $pager;
-    private IngredientTypesQueryHandler $handler;
+    private GetIngredientTypesQueryHandler $handler;
 
     protected function setUp(): void
     {
         $this->pager = $this->createMock(IngredientTypeItemsPager::class);
-        $this->handler = new IngredientTypesQueryHandler($this->pager);
+        $this->handler = new GetIngredientTypesQueryHandler($this->pager);
     }
 
+    /**
+     * @throws EmptyIdNotAllowedException
+     */
     #[Test]
     public function it_returns_a_response_with_mapped_dtos(): void
     {
@@ -36,9 +40,9 @@ class IngredientTypesQueryHandlerTest extends TestCase
             ->with(0, 20)
             ->willReturn([$vegetable, $fruit]);
 
-        $response = ($this->handler)(new IngredientTypesQuery(0, 20));
+        $response = ($this->handler)(new GetIngredientTypesQuery(0, 20));
 
-        $this->assertInstanceOf(IngredientTypesQueryResponse::class, $response);
+        $this->assertInstanceOf(GetIngredientTypesQueryResponse::class, $response);
         $this->assertCount(2, $response->items);
         $this->assertSame($vegetable->getId()->toString(), $response->items[0]->id);
         $this->assertSame('Vegetable', $response->items[0]->name);
@@ -53,9 +57,9 @@ class IngredientTypesQueryHandlerTest extends TestCase
             ->method('items')
             ->willReturn([]);
 
-        $response = ($this->handler)(new IngredientTypesQuery());
+        $response = ($this->handler)(new GetIngredientTypesQuery());
 
-        $this->assertInstanceOf(IngredientTypesQueryResponse::class, $response);
+        $this->assertInstanceOf(GetIngredientTypesQueryResponse::class, $response);
         $this->assertEmpty($response->items);
     }
 
@@ -68,6 +72,6 @@ class IngredientTypesQueryHandlerTest extends TestCase
             ->with(10, 5)
             ->willReturn([]);
 
-        ($this->handler)(new IngredientTypesQuery(10, 5));
+        ($this->handler)(new GetIngredientTypesQuery(10, 5));
     }
 }
