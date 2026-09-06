@@ -1,7 +1,9 @@
 <?php
 namespace App\Tests\Unit\IngredientType\Presentation\Http\Controller;
 
-use App\IngredientType\Application\Command\IngredientType\IngredientTypeUpdateCommand;
+use App\Ingredient\Application\Command\Ingredient\UpdateIngredient\UpdateIngredientDto;
+use App\IngredientType\Application\Command\IngredientType\UpdateIngredientType\UpdateIngredientTypeCommand;
+use App\IngredientType\Application\Command\IngredientType\UpdateIngredientType\UpdateIngredientTypeDto;
 use App\IngredientType\Domain\Model\IngredientType;
 use App\IngredientType\Presentation\Http\Controller\UpdateIngredientTypeController;
 use App\Shared\Application\Bus\CommandBus;
@@ -33,7 +35,7 @@ class IngredientTypeUpdateControllerTest extends TestCase
             ->expects($this->once())
             ->method('dispatch')
             ->with($this->callback(
-                function (IngredientTypeUpdateCommand $cmd) use ($ingredientType) {
+                function (UpdateIngredientTypeCommand $cmd) use ($ingredientType) {
                     return $cmd->name === $ingredientType->getName()->value();
                 }
             ));
@@ -41,21 +43,16 @@ class IngredientTypeUpdateControllerTest extends TestCase
             ->expects($this->once())
             ->method('validate')
             ->with($this->callback(
-                function (IngredientTypeUpdateCommand $cmd) use ($ingredientType) {
+                function (UpdateIngredientTypeCommand $cmd) use ($ingredientType) {
                     return $cmd->id === $ingredientType->getId()->toString();
                 }
             ));
         $controller = new UpdateIngredientTypeController($this->commandBus, $this->validator);
         $payload = ['name' => $ingredientType->getName()->value()];
-        $request = Request::create(
-            uri: '/api/v1/ingredient-types/' . $ingredientType->getId()->toString(),
-            method: 'PUT',
-            server: ['Content-Type' => 'application/json'],
-            content: json_encode($payload)
-        );
-        $request->attributes->set('id', $ingredientType->getId()->toString());
+        $request = new UpdateIngredientTypeDto($ingredientType->getName()->value());
+        $id = $ingredientType->getId()->toString();
 
-        $response = $controller($request);
+        $response = $controller($id, $request);
 
         $this->assertEquals(204, $response->getStatusCode());
     }

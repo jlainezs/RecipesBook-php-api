@@ -9,7 +9,7 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:8000/api/v1/ingredients/1baf32a2-b176-4070-a142-416af3c2aa1e
+DELETE http://localhost:8000/api/v1/ingredients/3fde0d93-38eb-425c-a763-0d802b9cfc55
 Accept: application/json
 
 ###

@@ -2,9 +2,8 @@
 
 namespace App\Tests\Unit\IngredientType\Application\Command;
 
-use App\IngredientType\Application\Command\IngredientType\IngredientTypeUpdateCommand;
-use App\IngredientType\Application\Command\IngredientType\IngredientTypeUpdateCommandHandler;
-use App\IngredientType\Domain\Exceptions\IngredientTypeEmptyNameException;
+use App\IngredientType\Application\Command\IngredientType\UpdateIngredientType\UpdateIngredientTypeCommand;
+use App\IngredientType\Application\Command\IngredientType\UpdateIngredientType\UpdateIngredientTypeCommandHandler;
 use App\IngredientType\Domain\Exceptions\IngredientTypeNotFoundException;
 use App\IngredientType\Domain\Model\IngredientType;
 use App\IngredientType\Domain\Repository\IngredientTypeRepositoryInterface;
@@ -16,12 +15,12 @@ use PHPUnit\Framework\TestCase;
 class IngredientTypeUpdateHandlerTest extends TestCase
 {
     private IngredientTypeRepositoryInterface&MockObject $repository;
-    private IngredientTypeUpdateCommandHandler $handler;
+    private UpdateIngredientTypeCommandHandler $handler;
 
     protected function setUp(): void
     {
         $this->repository = $this->createMock(IngredientTypeRepositoryInterface::class);
-        $this->handler = new IngredientTypeUpdateCommandHandler($this->repository);
+        $this->handler = new UpdateIngredientTypeCommandHandler($this->repository);
     }
 
     #[Test]
@@ -41,7 +40,7 @@ class IngredientTypeUpdateHandlerTest extends TestCase
             ->method('save')
             ->with($ingredientType);
 
-        ($this->handler)(new IngredientTypeUpdateCommand($id, 'Fruit'));
+        ($this->handler)(new UpdateIngredientTypeCommand($id, 'Fruit'));
 
         $this->assertSame('Fruit', $ingredientType->getName()->value());
     }
@@ -63,7 +62,7 @@ class IngredientTypeUpdateHandlerTest extends TestCase
 
         $this->expectException(IngredientTypeNotFoundException::class);
 
-        ($this->handler)(new IngredientTypeUpdateCommand($id, 'Fruit'));
+        ($this->handler)(new UpdateIngredientTypeCommand($id, 'Fruit'));
     }
 
     #[Test]
@@ -84,6 +83,6 @@ class IngredientTypeUpdateHandlerTest extends TestCase
 
         $this->expectException(EmptyRequiredNameException::class);
 
-        ($this->handler)(new IngredientTypeUpdateCommand($id, ''));
+        ($this->handler)(new UpdateIngredientTypeCommand($id, ''));
     }
 }

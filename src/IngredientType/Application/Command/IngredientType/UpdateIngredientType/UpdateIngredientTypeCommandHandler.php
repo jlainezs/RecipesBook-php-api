@@ -1,5 +1,5 @@
 <?php
-namespace App\IngredientType\Application\Command\IngredientType;
+namespace App\IngredientType\Application\Command\IngredientType\UpdateIngredientType;
 
 use App\IngredientType\Domain\Exceptions\IngredientTypeEmptyNameException;
 use App\IngredientType\Domain\Exceptions\IngredientTypeNotFoundException;
@@ -9,7 +9,7 @@ use App\Shared\Domain\ValueObjects\AggregateRootId;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-readonly final class IngredientTypeUpdateCommandHandler
+readonly final class UpdateIngredientTypeCommandHandler
 {
     public function __construct(private IngredientTypeRepositoryInterface $repository)
     {}
@@ -19,7 +19,7 @@ readonly final class IngredientTypeUpdateCommandHandler
      * @throws IngredientTypeNotFoundException
      * @throws EmptyIdNotAllowedException
      */
-    public function __invoke(IngredientTypeUpdateCommand $command): void
+    public function __invoke(UpdateIngredientTypeCommand $command): void
     {
         if ($ingredientType = $this->repository->findOne(new AggregateRootId($command->id)))
         {
