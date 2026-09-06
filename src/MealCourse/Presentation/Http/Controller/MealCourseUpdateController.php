@@ -1,15 +1,17 @@
 <?php
 namespace App\MealCourse\Presentation\Http\Controller;
 
-use App\MealCourse\Application\Command\MealCourse\MealCourseUpdateCommand;
+use App\MealCourse\Application\Command\MealCourse\UpdateMealCourse\MealCourseUpdateCommand;
+use App\MealCourse\Application\Command\MealCourse\UpdateMealCourse\MealCourseUpdateDto;
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
-final class UpdateMealCourseController extends AbstractController
+final class MealCourseUpdateController extends AbstractController
 {
     public function __construct(
         private readonly CommandBus $commandBus,
@@ -17,11 +19,9 @@ final class UpdateMealCourseController extends AbstractController
     ){}
 
     #[Route('/api/v1/meal-courses/{id}', name: 'meal_course_update', methods: ['PUT'])]
-    public function __invoke(Request $request): JsonResponse
+    public function __invoke(string $id, #[MapRequestPayload] MealCourseUpdateDto $dto): JsonResponse
     {
-        $name = $request->getPayload()->getString('name');
-        $id = $request->attributes->getString('id');
-        $cmd = new MealCourseUpdateCommand($id, $name);
+        $cmd = new MealCourseUpdateCommand($id, $dto->name);
         $this->validator->validate($cmd);
         $this->commandBus->dispatch($cmd);
 

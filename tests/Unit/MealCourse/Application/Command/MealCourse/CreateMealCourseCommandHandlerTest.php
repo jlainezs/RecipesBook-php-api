@@ -9,7 +9,7 @@ use App\Shared\Domain\Exceptions\EmptyRequiredNameException;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
-class MealCourseCreateCommandHandlerTest extends TestCase
+class CreateMealCourseCommandHandlerTest extends TestCase
 {
     private MealCourseRepositoryInterface $repository;
     private CreateMealCourseCommandHandler $handler;

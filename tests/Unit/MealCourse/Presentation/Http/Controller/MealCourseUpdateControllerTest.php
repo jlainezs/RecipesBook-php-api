@@ -1,9 +1,10 @@
 <?php
 namespace App\Tests\Unit\MealCourse\Presentation\Http\Controller;
 
-use App\MealCourse\Application\Command\MealCourse\MealCourseUpdateCommand;
+use App\MealCourse\Application\Command\MealCourse\UpdateMealCourse\MealCourseUpdateCommand;
+use App\MealCourse\Application\Command\MealCourse\UpdateMealCourse\MealCourseUpdateDto;
 use App\MealCourse\Domain\Model\MealCourse;
-use App\MealCourse\Presentation\Http\Controller\UpdateMealCourseController;
+use App\MealCourse\Presentation\Http\Controller\MealCourseUpdateController;
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
@@ -47,17 +48,9 @@ class MealCourseUpdateControllerTest extends TestCase
                     return $cmd->id === $mealCourse->getId()->toString();
                 }
             ));
-        $controller = new UpdateMealCourseController($this->commandBus, $this->validator);
-        $payload = ['name' => 'test'];
-        $request = Request::create(
-            uri: '/api/v1/meal-courses/' . $mealCourse->getId()->toString(),
-            method: 'PUT',
-            server: ['Content-Type' => 'application/json'],
-            content: json_encode($payload)
-        );
-        $request->attributes->set('id', $mealCourse->getId()->toString());
-
-        $response = $controller($request);
+        $controller = new MealCourseUpdateController($this->commandBus, $this->validator);
+        $request = new MealCourseUpdateDto($mealCourse->getName());
+        $response = $controller($mealCourse->getId()->toString(), $request);
 
         $this->assertEquals(204, $response->getStatusCode());
     }

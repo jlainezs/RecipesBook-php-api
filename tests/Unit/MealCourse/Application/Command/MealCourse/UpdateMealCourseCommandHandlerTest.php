@@ -2,15 +2,15 @@
 
 namespace App\Tests\Unit\MealCourse\Application\Command\MealCourse;
 
-use App\MealCourse\Application\Command\MealCourse\MealCourseUpdateCommand;
-use App\MealCourse\Application\Command\MealCourse\MealCourseUpdateCommandHandler;
+use App\MealCourse\Application\Command\MealCourse\UpdateMealCourse\MealCourseUpdateCommand;
+use App\MealCourse\Application\Command\MealCourse\UpdateMealCourse\MealCourseUpdateCommandHandler;
 use App\MealCourse\Domain\Model\MealCourse;
 use App\MealCourse\Domain\Repository\MealCourseRepositoryInterface;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class MealCourseUpdateCommandHandlerTest extends TestCase
+class UpdateMealCourseCommandHandlerTest extends TestCase
 {
     private MealCourseRepositoryInterface&MockObject $repository;
     private MealCourseUpdateCommandHandler $handler;

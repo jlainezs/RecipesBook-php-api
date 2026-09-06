@@ -1,5 +1,5 @@
 <?php
-namespace App\MealCourse\Application\Command\MealCourse;
+namespace App\MealCourse\Application\Command\MealCourse\UpdateMealCourse;
 
 use App\MealCourse\Domain\Exceptions\MealCourseEmptyNameException;
 use App\MealCourse\Domain\Exceptions\MealCourseNotFoundException;

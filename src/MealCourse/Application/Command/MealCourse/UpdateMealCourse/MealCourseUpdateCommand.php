@@ -1,5 +1,5 @@
 <?php
-namespace App\MealCourse\Application\Command\MealCourse;
+namespace App\MealCourse\Application\Command\MealCourse\UpdateMealCourse;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
