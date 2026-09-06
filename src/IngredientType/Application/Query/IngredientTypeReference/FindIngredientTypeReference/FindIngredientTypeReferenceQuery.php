@@ -1,5 +1,5 @@
 <?php
-namespace App\IngredientType\Application\Query\IngredientType;
+namespace App\IngredientType\Application\Query\IngredientTypeReference\FindIngredientTypeReference;
 
 final readonly class FindIngredientTypeReferenceQuery
 {

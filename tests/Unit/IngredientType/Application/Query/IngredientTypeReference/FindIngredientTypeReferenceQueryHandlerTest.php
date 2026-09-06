@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Tests\Unit\IngredientType\Application\Query;
+namespace App\Tests\Unit\IngredientType\Application\Query\IngredientTypeReference;
 
-use App\IngredientType\Application\Query\IngredientType\FindIngredientTypeReferenceQuery;
-use App\IngredientType\Application\Query\IngredientType\FindIngredientTypeReferenceQueryHandler;
+use App\IngredientType\Application\Query\IngredientTypeReference\FindIngredientTypeReference\FindIngredientTypeReferenceQuery;
+use App\IngredientType\Application\Query\IngredientTypeReference\FindIngredientTypeReference\FindIngredientTypeReferenceQueryHandler;
 use App\IngredientType\Domain\Exceptions\IngredientTypeNotFoundException;
 use App\IngredientType\Domain\Model\IngredientType;
 use App\IngredientType\Domain\Repository\IngredientTypeRepositoryInterface;
