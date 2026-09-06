@@ -2,9 +2,8 @@
 
 namespace App\Tests\Unit\IngredientType\Application\Command;
 
-use App\IngredientType\Application\Command\IngredientType\IngredientTypeCreateCommand;
-use App\IngredientType\Application\Command\IngredientType\IngredientTypeCreateCommandHandler;
-use App\IngredientType\Domain\Exceptions\IngredientTypeEmptyNameException;
+use App\IngredientType\Application\Command\IngredientType\CreateIngredientType\CreateIngredientTypeCommand;
+use App\IngredientType\Application\Command\IngredientType\CreateIngredientType\CreateIngredientTypeCommandHandler;
 use App\IngredientType\Domain\Model\IngredientType;
 use App\IngredientType\Domain\Repository\IngredientTypeRepositoryInterface;
 use App\Shared\Domain\Exceptions\EmptyRequiredNameException;
@@ -15,12 +14,12 @@ use PHPUnit\Framework\TestCase;
 class IngredientTypeCreateHandlerTest extends TestCase
 {
     private IngredientTypeRepositoryInterface&MockObject $repository;
-    private IngredientTypeCreateCommandHandler $handler;
+    private CreateIngredientTypeCommandHandler $handler;
 
     protected function setUp(): void
     {
         $this->repository = $this->createMock(IngredientTypeRepositoryInterface::class);
-        $this->handler = new IngredientTypeCreateCommandHandler($this->repository);
+        $this->handler = new CreateIngredientTypeCommandHandler($this->repository);
     }
 
     #[Test]
@@ -31,7 +30,7 @@ class IngredientTypeCreateHandlerTest extends TestCase
             ->method('save')
             ->with($this->isInstanceOf(IngredientType::class));
 
-        ($this->handler)(new IngredientTypeCreateCommand('Vegetable'));
+        ($this->handler)(new CreateIngredientTypeCommand('Vegetable'));
     }
 
     #[Test]
@@ -43,7 +42,7 @@ class IngredientTypeCreateHandlerTest extends TestCase
 
         $this->expectException(EmptyRequiredNameException::class);
 
-        ($this->handler)(new IngredientTypeCreateCommand(''));
+        ($this->handler)(new CreateIngredientTypeCommand(''));
     }
 
     #[Test]
@@ -55,6 +54,6 @@ class IngredientTypeCreateHandlerTest extends TestCase
 
         $this->expectException(EmptyRequiredNameException::class);
 
-        ($this->handler)(new IngredientTypeCreateCommand('   '));
+        ($this->handler)(new CreateIngredientTypeCommand('   '));
     }
 }

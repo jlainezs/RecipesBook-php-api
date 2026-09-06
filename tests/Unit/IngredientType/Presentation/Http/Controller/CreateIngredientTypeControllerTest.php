@@ -1,7 +1,8 @@
 <?php
 namespace App\Tests\Unit\IngredientType\Presentation\Http\Controller;
 
-use App\IngredientType\Application\Command\IngredientType\IngredientTypeCreateCommand;
+use App\IngredientType\Application\Command\IngredientType\CreateIngredientType\CreateIngredientTypeCommand;
+use App\IngredientType\Application\Command\IngredientType\CreateIngredientType\CreateIngredientTypeDto;
 use App\IngredientType\Domain\Model\IngredientType;
 use App\IngredientType\Presentation\Http\Controller\CreateIngredientTypeController;
 use App\Shared\Application\Bus\CommandBus;
@@ -28,7 +29,7 @@ class CreateIngredientTypeControllerTest extends TestCase
             ->method('validate')
             ->with(
                 $this->callback(
-                function (IngredientTypeCreateCommand $cmd) use ($ingredientType) {
+                function (CreateIngredientTypeCommand $cmd) use ($ingredientType) {
                     return $cmd->name === $ingredientType->getName()->value();
                 }
             ));
@@ -36,18 +37,14 @@ class CreateIngredientTypeControllerTest extends TestCase
             ->expects($this->once())
             ->method('dispatch')
             ->with($this->callback(
-                function(IngredientTypeCreateCommand $cmd) use ($ingredientType) {
+                function(CreateIngredientTypeCommand $cmd) use ($ingredientType) {
                     return $cmd->name === $ingredientType->getName()->value();
                 }
             ));
         $controller = new CreateIngredientTypeController($commandBus, $validator);
-        $request = Request::create(
-            uri:'/api/v1/ingredient-types/create',
-            method:'POST',
-            server: ['Content-Type' => 'application/json'],
-            content: json_encode(['name' => $ingredientType->getName()->value()])
+        $request = new CreateIngredientTypeDto(
+            name: $ingredientType->getName()->value()
         );
-
         $response = $controller($request);
 
         $this->assertEquals(201, $response->getStatusCode());
