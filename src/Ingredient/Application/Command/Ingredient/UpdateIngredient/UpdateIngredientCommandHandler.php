@@ -4,14 +4,13 @@ namespace App\Ingredient\Application\Command\Ingredient\UpdateIngredient;
 use App\Ingredient\Domain\Exceptions\IngredientNotFoundException;
 use App\Ingredient\Domain\Repository\IngredientRepositoryInterface;
 use App\Ingredient\Domain\ValueObjects\IngredientTypeReference;
-use App\IngredientType\Application\Query\IngredientType\FindIngredientTypeReferenceQuery;
+use App\IngredientType\Application\Query\IngredientTypeReference\FindIngredientTypeReference\FindIngredientTypeReferenceQuery;
 use App\IngredientType\Domain\Exceptions\IngredientTypeNotFoundException;
 use App\Shared\Application\Bus\QueryBus;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\Exception\ExceptionInterface;
-use Symfony\Component\Messenger\Stamp\HandledStamp;
 
 #[AsMessageHandler]
 readonly final class UpdateIngredientCommandHandler

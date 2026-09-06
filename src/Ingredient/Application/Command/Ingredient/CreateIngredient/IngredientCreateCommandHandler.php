@@ -5,7 +5,7 @@ use App\Ingredient\Domain\Exceptions\IngredientEmptyNameException;
 use App\Ingredient\Domain\Model\Ingredient;
 use App\Ingredient\Domain\Repository\IngredientRepositoryInterface;
 use App\Ingredient\Domain\ValueObjects\IngredientTypeReference;
-use App\IngredientType\Application\Query\IngredientType\FindIngredientTypeReferenceQuery;
+use App\IngredientType\Application\Query\IngredientTypeReference\FindIngredientTypeReference\FindIngredientTypeReferenceQuery;
 use App\IngredientType\Domain\Exceptions\IngredientTypeNotFoundException;
 use App\Shared\Application\Bus\QueryBus;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;

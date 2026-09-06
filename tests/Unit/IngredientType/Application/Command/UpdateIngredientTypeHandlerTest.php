@@ -12,7 +12,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class IngredientTypeUpdateHandlerTest extends TestCase
+class UpdateIngredientTypeHandlerTest extends TestCase
 {
     private IngredientTypeRepositoryInterface&MockObject $repository;
     private UpdateIngredientTypeCommandHandler $handler;

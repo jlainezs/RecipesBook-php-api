@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Unit\IngredientType\Application\Query;
+namespace App\Tests\Unit\IngredientType\Application\Query\IngredientType;
 
 use App\IngredientType\Application\Query\IngredientType\IngredientTypesQuery;
 use App\IngredientType\Application\Query\IngredientType\IngredientTypesQueryHandler;

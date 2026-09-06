@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Unit\IngredientType\Application\Query;
+namespace App\Tests\Unit\IngredientType\Application\Query\IngredientType;
 
 use App\IngredientType\Application\Query\IngredientType\GetIngredientType\GetIngredientTypeQuery;
 use App\IngredientType\Application\Query\IngredientType\GetIngredientType\GetIngredientTypeQueryHandler;
@@ -12,7 +12,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class IngredientTypeInstanceHandlerTest extends TestCase
+class GetIngredientTypeQueryHandlerTest extends TestCase
 {
     private IngredientTypeRepositoryInterface&MockObject $repository;
     private GetIngredientTypeQueryHandler $handler;

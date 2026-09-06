@@ -11,7 +11,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class IngredientTypeDeleteHandlerTest extends TestCase
+class DeleteIngredientTypeHandlerTest extends TestCase
 {
     private IngredientTypeRepositoryInterface&MockObject $repository;
     private DeleteIngredientTypeCommandHandler $handler;
