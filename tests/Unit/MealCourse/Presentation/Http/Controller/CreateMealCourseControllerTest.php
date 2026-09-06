@@ -2,7 +2,8 @@
 
 namespace App\Tests\Unit\MealCourse\Presentation\Http\Controller;
 
-use App\MealCourse\Application\Command\MealCourse\MealCourseCreateCommand;
+use App\MealCourse\Application\Command\MealCourse\CreateMealCourse\CreateMealCourseCommand;
+use App\MealCourse\Application\Command\MealCourse\CreateMealCourse\CreateMealCourseDto;
 use App\MealCourse\Domain\Model\MealCourse;
 use App\MealCourse\Presentation\Http\Controller\CreateMealCourseController;
 use App\Shared\Application\Bus\CommandBus;
@@ -27,7 +28,7 @@ class CreateMealCourseControllerTest extends TestCase
         $validator->expects($this->once())
             ->method('validate')
             ->with($this->callback(
-                function (MealCourseCreateCommand $cmd) use ($mealCourse)
+                function (CreateMealCourseCommand $cmd) use ($mealCourse)
                 {
                     return $cmd->name === $mealCourse->getName();
                 }
@@ -35,18 +36,13 @@ class CreateMealCourseControllerTest extends TestCase
         $commandBus->expects($this->once())
             ->method('dispatch')
             ->with($this->callback(
-                function (MealCourseCreateCommand $cmd) use ($mealCourse)
+                function (CreateMealCourseCommand $cmd) use ($mealCourse)
                 {
                     return $cmd->name === $mealCourse->getName();
                 }
             ));
         $controller = new CreateMealCourseController($commandBus, $validator);
-        $request = Request::create(
-            uri:'/api/v1/meal-courses/create',
-            method:'POST',
-            server: ['Content-Type' => 'application/json'],
-            content: json_encode(['name' => $mealCourse->getName()])
-        );
+        $request = new CreateMealCourseDto($mealCourse->getName());
 
         $response = $controller($request);
 

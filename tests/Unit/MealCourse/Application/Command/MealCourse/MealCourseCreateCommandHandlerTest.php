@@ -1,9 +1,8 @@
 <?php
 namespace App\Tests\Unit\MealCourse\Application\Command\MealCourse;
 
-use App\MealCourse\Application\Command\MealCourse\MealCourseCreateCommand;
-use App\MealCourse\Application\Command\MealCourse\MealCourseCreateCommandHandler;
-use App\MealCourse\Domain\Exceptions\MealCourseEmptyNameException;
+use App\MealCourse\Application\Command\MealCourse\CreateMealCourse\CreateMealCourseCommand;
+use App\MealCourse\Application\Command\MealCourse\CreateMealCourse\CreateMealCourseCommandHandler;
 use App\MealCourse\Domain\Model\MealCourse;
 use App\MealCourse\Domain\Repository\MealCourseRepositoryInterface;
 use App\Shared\Domain\Exceptions\EmptyRequiredNameException;
@@ -13,12 +12,12 @@ use PHPUnit\Framework\TestCase;
 class MealCourseCreateCommandHandlerTest extends TestCase
 {
     private MealCourseRepositoryInterface $repository;
-    private MealCourseCreateCommandHandler $handler;
+    private CreateMealCourseCommandHandler $handler;
 
     public function setUp(): void
     {
         $this->repository = $this->createMock(MealCourseRepositoryInterface::class);
-        $this->handler = new MealCourseCreateCommandHandler($this->repository);
+        $this->handler = new CreateMealCourseCommandHandler($this->repository);
     }
 
     #[Test]
@@ -28,7 +27,7 @@ class MealCourseCreateCommandHandlerTest extends TestCase
             ->expects($this->once())
             ->method('save')
             ->with($this->isInstanceOf(MealCourse::class));
-        ($this->handler)(new MealCourseCreateCommand("Starter"));
+        ($this->handler)(new CreateMealCourseCommand("Starter"));
     }
 
     #[Test]
@@ -38,7 +37,7 @@ class MealCourseCreateCommandHandlerTest extends TestCase
             ->expects($this->never())
             ->method('save');
         $this->expectException(EmptyRequiredNameException::class);
-        ($this->handler)(new MealCourseCreateCommand(""));
+        ($this->handler)(new CreateMealCourseCommand(""));
     }
 
     #[Test]
@@ -48,6 +47,6 @@ class MealCourseCreateCommandHandlerTest extends TestCase
             ->expects($this->never())
             ->method('save');
         $this->expectException(EmptyRequiredNameException::class);
-        ($this->handler)(new MealCourseCreateCommand("    "));
+        ($this->handler)(new CreateMealCourseCommand("    "));
     }
 }
