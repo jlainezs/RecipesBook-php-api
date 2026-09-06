@@ -9,7 +9,7 @@ use App\MealCourse\Domain\Repository\MealCourseRepositoryInterface;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
-class MealCourseDeleteHandlerCommandTest extends TestCase
+class DeleteMealCourseHandlerCommandTest extends TestCase
 {
     private MealCourseRepositoryInterface $repository;
     private DeleteMealCourseCommandHandler $handler;
