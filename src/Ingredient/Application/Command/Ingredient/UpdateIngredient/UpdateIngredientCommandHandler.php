@@ -24,7 +24,6 @@ readonly final class UpdateIngredientCommandHandler
 
     /**
      * @throws IngredientTypeNotFoundException|ExceptionInterface
-     * @throws EmptyIdNotAllowedException
      */
     private function findIngredientTypeReference(string $ingredientTypeId): IngredientTypeReference
     {
@@ -32,11 +31,8 @@ readonly final class UpdateIngredientCommandHandler
             new FindIngredientTypeReferenceQuery($ingredientTypeId)
         );
 
-        /** @var HandledStamp|null $handledStamp */
-        //$handledStamp = $envelope->
-        //$foundId = $handledStamp?->getResult();
-
-        if ($envelope === null) {
+        if ($envelope === null)
+        {
             throw new IngredientTypeNotFoundException($ingredientTypeId);
         }
 
@@ -48,6 +44,7 @@ readonly final class UpdateIngredientCommandHandler
      * @throws IngredientTypeNotFoundException
      * @throws IngredientNotFoundException
      * @throws EmptyIdNotAllowedException
+     * @throws ExceptionInterface
      */
     public function __invoke(UpdateIngredientCommand $command): void
     {
@@ -59,11 +56,13 @@ readonly final class UpdateIngredientCommandHandler
 
         $ingredientTypeReference = null;
 
-        if ($command->ingredientTypeId !== null) {
+        if ($command->ingredientTypeId !== null)
+        {
             $ingredientTypeReference = $this->findIngredientTypeReference($command->ingredientTypeId);
         }
 
-        if (null === $ingredientTypeReference) {
+        if (null === $ingredientTypeReference)
+        {
             throw new IngredientTypeNotFoundException($command->ingredientTypeId);
         }
 
