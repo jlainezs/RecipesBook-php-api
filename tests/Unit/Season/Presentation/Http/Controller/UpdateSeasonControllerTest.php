@@ -1,7 +1,8 @@
 <?php
 namespace App\Tests\Unit\Season\Presentation\Http\Controller;
 
-use App\Season\Application\Command\Season\SeasonUpdateCommand;
+use App\Season\Application\Command\Season\UpdateSeason\UpdateSeasonCommand;
+use App\Season\Application\Command\Season\UpdateSeason\UpdateSeasonDto;
 use App\Season\Domain\Model\Season;
 use App\Season\Presentation\Http\Controller\UpdateSeasonController;
 use App\Shared\Application\Bus\CommandBus;
@@ -9,7 +10,6 @@ use App\Shared\Application\Service\ApplicationDataValidator;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\Request;
 
 class UpdateSeasonControllerTest extends TestCase
 {
@@ -26,24 +26,17 @@ class UpdateSeasonControllerTest extends TestCase
         $commandBus->expects($this->once())
             ->method('dispatch')
             ->with($this->callback(
-                fn (SeasonUpdateCommand $cmd) => $cmd->id === $season->getId()->toString()
+                fn (UpdateSeasonCommand $cmd) => $cmd->id === $season->getId()->toString()
             ));
         $validator->expects($this->once())
             ->method('validate')
             ->with($this->callback(
-                fn (SeasonUpdateCommand $cmd) => $cmd->id === $season->getId()->toString()
+                fn (UpdateSeasonCommand $cmd) => $cmd->id === $season->getId()->toString()
             ));
         $controller = new UpdateSeasonController($commandBus, $validator);
-        $payload = ['name' => $season->getName()];
-        $request = Request::create(
-            uri: '/api/v1/meal-courses/' . $season->getId()->toString(),
-            method: 'PUT',
-            server: ['Content-Type' => 'application/json'],
-            content: json_encode($payload)
-        );
-        $request->attributes->add(['id' => $season->getId()->toString()]);
+        $request = new UpdateSeasonDto($season->getName());
 
-        $response = $controller($request);
+        $response = $controller($season->getId()->toString(), $request);
         $this->assertEquals(204, $response->getStatusCode());
     }
 }

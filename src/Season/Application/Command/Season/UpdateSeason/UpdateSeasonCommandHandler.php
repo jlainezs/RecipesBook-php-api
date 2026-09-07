@@ -1,5 +1,5 @@
 <?php
-namespace App\Season\Application\Command\Season;
+namespace App\Season\Application\Command\Season\UpdateSeason;
 
 use App\Season\Domain\Exceptions\SeasonEmptyNameException;
 use App\Season\Domain\Exceptions\SeasonNotFoundException;
@@ -9,7 +9,7 @@ use App\Shared\Domain\ValueObjects\AggregateRootId;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-readonly final class SeasonUpdateCommandHandler
+readonly final class UpdateSeasonCommandHandler
 {
     public function __construct(private SeasonRepositoryInterface $repository)
     {}
@@ -19,7 +19,7 @@ readonly final class SeasonUpdateCommandHandler
      * @throws SeasonEmptyNameException
      * @throws EmptyIdNotAllowedException
      */
-    public function __invoke(SeasonUpdateCommand $command): void
+    public function __invoke(UpdateSeasonCommand $command): void
     {
         if ($season = $this->repository->findOne(new AggregateRootId($command->id)))
         {

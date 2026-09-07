@@ -2,8 +2,8 @@
 
 namespace App\Tests\Unit\Season\Application\Command;
 
-use App\Season\Application\Command\Season\SeasonUpdateCommand;
-use App\Season\Application\Command\Season\SeasonUpdateCommandHandler;
+use App\Season\Application\Command\Season\UpdateSeason\UpdateSeasonCommand;
+use App\Season\Application\Command\Season\UpdateSeason\UpdateSeasonCommandHandler;
 use App\Season\Domain\Exceptions\SeasonNotFoundException;
 use App\Season\Domain\Model\Season;
 use App\Season\Domain\Repository\SeasonRepositoryInterface;
@@ -15,12 +15,12 @@ use PHPUnit\Framework\TestCase;
 class SeasonUpdateHandlerTest extends TestCase
 {
     private SeasonRepositoryInterface&MockObject $repository;
-    private SeasonUpdateCommandHandler $handler;
+    private UpdateSeasonCommandHandler $handler;
 
     protected function setUp(): void
     {
         $this->repository = $this->createMock(SeasonRepositoryInterface::class);
-        $this->handler = new SeasonUpdateCommandHandler($this->repository);
+        $this->handler = new UpdateSeasonCommandHandler($this->repository);
     }
 
     #[Test]
@@ -40,7 +40,7 @@ class SeasonUpdateHandlerTest extends TestCase
             ->method('save')
             ->with($season);
 
-        ($this->handler)(new SeasonUpdateCommand($id, 'Winter'));
+        ($this->handler)(new UpdateSeasonCommand($id, 'Winter'));
 
         $this->assertSame('Winter', $season->getName());
     }
@@ -62,7 +62,7 @@ class SeasonUpdateHandlerTest extends TestCase
 
         $this->expectException(SeasonNotFoundException::class);
 
-        ($this->handler)(new SeasonUpdateCommand($id, 'Summer'));
+        ($this->handler)(new UpdateSeasonCommand($id, 'Summer'));
     }
 
     #[Test]
@@ -83,6 +83,6 @@ class SeasonUpdateHandlerTest extends TestCase
 
         $this->expectException(EmptyRequiredNameException::class);
 
-        ($this->handler)(new SeasonUpdateCommand($id, ''));
+        ($this->handler)(new UpdateSeasonCommand($id, ''));
     }
 }
