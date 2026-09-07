@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\Routing\Attribute\Route;
 
-final class MealCoursesListController extends AbstractController
+final class GetMealCoursesController extends AbstractController
 {
     public function __construct(
         private readonly QueryBus $queryBus,

@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
-final class MealCourseUpdateController extends AbstractController
+final class UpdateMealCourseController extends AbstractController
 {
     public function __construct(
         private readonly CommandBus $commandBus,

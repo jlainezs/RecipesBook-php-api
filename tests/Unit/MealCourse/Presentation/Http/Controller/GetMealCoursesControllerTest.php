@@ -4,7 +4,7 @@ namespace App\Tests\Unit\MealCourse\Presentation\Http\Controller;
 use App\MealCourse\Application\Query\MealCourse\GetMealCourses\GetMealCoursesDto;
 use App\MealCourse\Application\Query\MealCourse\GetMealCourses\GetMealCoursesQuery;
 use App\MealCourse\Application\Query\MealCourse\GetMealCourses\GetMealCoursesQueryResponse;
-use App\MealCourse\Presentation\Http\Controller\MealCoursesListController;
+use App\MealCourse\Presentation\Http\Controller\GetMealCoursesController;
 use App\Shared\Application\Bus\QueryBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
 use PHPUnit\Framework\Attributes\Test;
@@ -43,7 +43,7 @@ class GetMealCoursesControllerTest extends TestCase
                         && $query->limit > 0;
                 }
             ));
-        $controller = new MealCoursesListController($this->queryBus, $this->validator);
+        $controller = new GetMealCoursesController($this->queryBus, $this->validator);
         $request = new GetMealCoursesDto(
             offset: 0,
             limit: 10
