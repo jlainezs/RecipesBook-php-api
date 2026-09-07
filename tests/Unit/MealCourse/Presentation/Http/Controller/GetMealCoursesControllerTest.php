@@ -11,7 +11,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 
-class MealCourseListControllerTest extends TestCase
+class GetMealCoursesControllerTest extends TestCase
 {
     private QueryBus $queryBus;
     private ApplicationDataValidator $validator;

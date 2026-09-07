@@ -9,7 +9,7 @@ use App\Shared\Application\Service\ApplicationDataValidator;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
-class GetMealCourseInstanceTest extends TestCase
+class GetMealCourseTest extends TestCase
 {
     #[Test]
     public function it_validates_dispatches_query_and_returns_200(): void
