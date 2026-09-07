@@ -1,5 +1,5 @@
 <?php
-namespace App\Tests\Unit\MealCourse\Application\Query\MealCourse;
+namespace App\Tests\Unit\MealCourse\Application\Query\MealCourse\GetMealCourses;
 
 use App\MealCourse\Application\Query\MealCourse\GetMealCourses\GetMealCoursesQuery;
 use App\MealCourse\Application\Query\MealCourse\GetMealCourses\GetMealCoursesQueryHandler;
@@ -12,7 +12,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 #[AllowMockObjectsWithoutExpectations]
-class MealCoursesQueryHandlerTest extends TestCase
+class GetMealCoursesQueryHandlerTest extends TestCase
 {
     private MealCourseItemsPager&MockObject $pager;
     private GetMealCoursesQueryHandler $handler;
