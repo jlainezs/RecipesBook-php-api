@@ -1,9 +1,9 @@
 <?php
-namespace App\Recipe\Application\Query\Recipe;
+namespace App\Recipe\Application\Query\Recipe\GetRecipe;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-final readonly class RecipeInstanceQuery
+final readonly class GetRecipeQuery
 {
     public function __construct(
         #[Assert\Uuid]

@@ -1,8 +1,8 @@
 <?php
 namespace App\Tests\Unit\Recipe\Application\Query\Recipe;
 
-use App\Recipe\Application\Query\Recipe\RecipeInstanceQuery;
-use App\Recipe\Application\Query\Recipe\RecipeInstanceQueryHandler;
+use App\Recipe\Application\Query\Recipe\GetRecipe\GetRecipeQuery;
+use App\Recipe\Application\Query\Recipe\GetRecipe\GetRecipeQueryHandler;
 use App\Recipe\Domain\Exceptions\RecipeNotFoundException;
 use App\Recipe\Domain\Model\Recipe;
 use App\Recipe\Domain\Repository\RecipeRepositoryInterface;
@@ -13,14 +13,14 @@ use PHPUnit\Framework\TestCase;
 
 class RecipeInstanceQueryHandlerTest extends TestCase
 {
-    private RecipeInstanceQueryHandler $handler;
+    private GetRecipeQueryHandler $handler;
     private RecipeRepositoryInterface&MockObject $repository;
     private Recipe $testRecipe;
 
     protected function setUp(): void
     {
         $this->repository = $this->createMock(RecipeRepositoryInterface::class);
-        $this->handler = new RecipeInstanceQueryHandler($this->repository);
+        $this->handler = new GetRecipeQueryHandler($this->repository);
         $this->testRecipe = Recipe::create(
             name: 'Test Recipe',
             servings: 1,
@@ -45,7 +45,7 @@ class RecipeInstanceQueryHandlerTest extends TestCase
             ->method('findOne')
             ->with($this->testRecipe->getId()->toString())
             ->willReturn($this->testRecipe);
-        $response = ($this->handler)(new RecipeInstanceQuery($this->testRecipe->getId()->toString()));
+        $response = ($this->handler)(new GetRecipeQuery($this->testRecipe->getId()->toString()));
 
         $this->assertNotNull($response);
         $this->assertSame($this->testRecipe->getId()->toString(), $response->recipeDto->id);
@@ -60,6 +60,6 @@ class RecipeInstanceQueryHandlerTest extends TestCase
             ->with($this->testRecipe->getId()->toString())
             ->willReturn(null);
         $this->expectException(RecipeNotFoundException::class);
-        ($this->handler)(new RecipeInstanceQuery($this->testRecipe->getId()->toString()));
+        ($this->handler)(new GetRecipeQuery($this->testRecipe->getId()->toString()));
     }
 }

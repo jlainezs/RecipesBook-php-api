@@ -1,14 +1,16 @@
 <?php
-namespace App\Recipe\Application\Query\Recipe;
+namespace App\Recipe\Application\Query\Recipe\GetRecipe;
 
+use App\Recipe\Application\Query\Recipe\RecipeDto;
+use App\Recipe\Application\Query\Recipe\RecipeIngredientDto;
+use App\Recipe\Application\Query\Recipe\RecipeStepDto;
 use App\Recipe\Domain\Exceptions\RecipeNotFoundException;
 use App\Recipe\Domain\Repository\RecipeRepositoryInterface;
-use App\Recipe\Infrastructure\Repository\RecipeRepository;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final readonly class RecipeInstanceQueryHandler
+final readonly class GetRecipeQueryHandler
 {
     public function __construct(private RecipeRepositoryInterface $repository)
     {}
@@ -16,7 +18,7 @@ final readonly class RecipeInstanceQueryHandler
     /**
      * @throws RecipeNotFoundException
      */
-    public function __invoke(RecipeInstanceQuery $query): RecipeInstanceResponse
+    public function __invoke(GetRecipeQuery $query): GetRecipeQueryResponse
     {
         if ($recipe = $this->repository->findOne(new AggregateRootId($query->id)))
         {
@@ -48,7 +50,7 @@ final readonly class RecipeInstanceQueryHandler
                 );
             }
 
-            return new RecipeInstanceResponse(new RecipeDto(
+            return new GetRecipeQueryResponse(new RecipeDto(
                 id: $recipe->getId()->toString(),
                 name: $recipe->getName(),
                 servings: $recipe->getServings()->value(),

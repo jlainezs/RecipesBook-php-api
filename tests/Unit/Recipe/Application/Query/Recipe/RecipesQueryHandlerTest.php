@@ -1,8 +1,8 @@
 <?php
 namespace App\Tests\Unit\Recipe\Application\Query\Recipe;
 
-use App\Recipe\Application\Query\Recipe\RecipesQuery;
-use App\Recipe\Application\Query\Recipe\RecipesQueryHandler;
+use App\Recipe\Application\Query\Recipe\GetRecipes\GetRecipesQuery;
+use App\Recipe\Application\Query\Recipe\GetRecipes\GetRecipesQueryHandler;
 use App\Recipe\Application\Service\RecipeItemsPager;
 use App\Recipe\Domain\Model\Recipe;
 use PHPUnit\Framework\Attributes\Test;
@@ -12,13 +12,13 @@ use PHPUnit\Framework\TestCase;
 class RecipesQueryHandlerTest extends TestCase
 {
     private RecipeItemsPager&MockObject $pager;
-    private RecipesQueryHandler $handler;
+    private GetRecipesQueryHandler $handler;
     private Recipe $testRecipe;
 
     protected function setUp(): void
     {
         $this->pager = $this->createMock(RecipeItemsPager::class);
-        $this->handler = new RecipesQueryHandler($this->pager);
+        $this->handler = new GetRecipesQueryHandler($this->pager);
         $this->testRecipe = Recipe::create(
             name: 'Test Recipe',
             servings: 1,
@@ -38,7 +38,7 @@ class RecipesQueryHandlerTest extends TestCase
             ->method('items')
             ->with(0, 20)
             ->willReturn([$this->testRecipe]);
-        $response = ($this->handler)(new RecipesQuery(0, 20));
+        $response = ($this->handler)(new GetRecipesQuery(0, 20));
 
         $this->assertCount(1, $response->items);
         $this->assertSame($this->testRecipe->getName(), $response->items[0]->name);
@@ -57,7 +57,7 @@ class RecipesQueryHandlerTest extends TestCase
             ->withAnyParameters()
             ->willReturn([]);
 
-        $response = ($this->handler)(new RecipesQuery(0, 20));
+        $response = ($this->handler)(new GetRecipesQuery(0, 20));
         $this->assertEmpty($response->items);
     }
 
@@ -70,6 +70,6 @@ class RecipesQueryHandlerTest extends TestCase
             ->with(10, 5)
             ->willReturn([]);
 
-        $response = ($this->handler)(new RecipesQuery(10, 5));
+        $response = ($this->handler)(new GetRecipesQuery(10, 5));
     }
 }

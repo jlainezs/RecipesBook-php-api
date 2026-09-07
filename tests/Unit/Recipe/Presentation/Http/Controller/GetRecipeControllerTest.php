@@ -1,7 +1,7 @@
 <?php
 namespace App\Tests\Unit\Recipe\Presentation\Http\Controller;
 
-use App\Recipe\Application\Query\Recipe\RecipeInstanceQuery;
+use App\Recipe\Application\Query\Recipe\GetRecipe\GetRecipeQuery;
 use App\Recipe\Domain\Model\Recipe;
 use App\Recipe\Presentation\Http\Controller\GetRecipeController;
 use App\Shared\Application\Bus\QueryBus;
@@ -29,12 +29,12 @@ class GetRecipeControllerTest extends TestCase
         $validator->expects($this->once())
             ->method('validate')
             ->with($this->callback(
-                fn (RecipeInstanceQuery $command) => $command->id === $recipe->getId()->toString()
+                fn (GetRecipeQuery $command) => $command->id === $recipe->getId()->toString()
             ));
         $queryBus->expects($this->once())
             ->method('ask')
             ->with($this->callback(
-                fn (RecipeInstanceQuery $command) => $command->id === $recipe->getId()->toString()
+                fn (GetRecipeQuery $command) => $command->id === $recipe->getId()->toString()
             ));
         $controller = new GetRecipeController($queryBus, $validator);
         $request = Request::create(
@@ -44,7 +44,7 @@ class GetRecipeControllerTest extends TestCase
         $request->attributes->set('id', $recipe->getId()->toString());
 
         $response = $controller($request);
-        
+
         $this->assertEquals(200, $response->getStatusCode());
     }
 }

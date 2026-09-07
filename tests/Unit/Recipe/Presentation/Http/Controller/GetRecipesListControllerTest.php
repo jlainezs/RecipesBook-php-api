@@ -2,24 +2,26 @@
 
 namespace App\Tests\Unit\Recipe\Presentation\Http\Controller;
 
-use App\Recipe\Application\Query\Recipe\RecipesQuery;
-use App\Recipe\Application\Query\Recipe\RecipesQueryResponse;
+use App\Recipe\Application\Query\Recipe\GetRecipes\GetRecipesQuery;
+use App\Recipe\Application\Query\Recipe\GetRecipes\GetRecipesDto;
+use App\Recipe\Application\Query\Recipe\GetRecipes\GetRecipesQueryResponse;
 use App\Recipe\Domain\Model\Recipe;
 use App\Recipe\Presentation\Http\Controller\GetRecipesListController;
-use App\Recipe\Presentation\Http\Response\RecipesListJsonResponse;
 use App\Shared\Application\Bus\QueryBus;
+use App\Shared\Application\Service\ApplicationDataValidator;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\Request;
 
 class GetRecipesListControllerTest extends TestCase
 {
     private QueryBus $queryBus;
+    private ApplicationDataValidator $validator;
 
     public function setUp(): void
     {
         $this->queryBus = $this->createMock(QueryBus::class);
+        $this->validator = $this->createMock(ApplicationDataValidator::class);
     }
 
     /**
@@ -41,14 +43,22 @@ class GetRecipesListControllerTest extends TestCase
             ->expects($this->once())
             ->method('ask')
             ->withAnyParameters()
-            ->willReturn(new RecipesQueryResponse([$recipe]));
-        $controller = new GetRecipesListController($this->queryBus);
-        $request = Request::create(
-            uri: '/api/v1/recipes?offset=0&limit=10',
-            server: ['Content-Type' => 'application/json']
-        );
-        $request->attributes->add(['offset' => 0, 'limit' => 10]);
+            ->willReturn(new GetRecipesQueryResponse([$recipe]));
+        $this->validator
+            ->expects($this->once())
+            ->method('validate')
+            ->with($this->callback(
+                function (GetRecipesQuery $query): bool {
+                    return $query->offset >= 0
+                        && $query->limit > 10;
+                }
+            ));
 
+        $controller = new GetRecipesListController($this->queryBus, $this->validator);
+        $request = new GetRecipesDto(
+            offset: 0,
+            limit: 20
+        );
         $response = $controller($request);
         $data = json_decode($response->getContent());
 

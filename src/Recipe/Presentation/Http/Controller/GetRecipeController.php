@@ -1,7 +1,7 @@
 <?php
 namespace App\Recipe\Presentation\Http\Controller;
 
-use App\Recipe\Application\Query\Recipe\RecipeInstanceQuery;
+use App\Recipe\Application\Query\Recipe\GetRecipe\GetRecipeQuery;
 use App\Shared\Application\Bus\QueryBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,7 +20,7 @@ final class GetRecipeController extends AbstractController
     public function __invoke(Request $request): JsonResponse
     {
         $id = $request->attributes->get('id');
-        $query = new RecipeInstanceQuery($id);
+        $query = new GetRecipeQuery($id);
         $this->validator->validate($query);
         $response = $this->queryBus->ask($query);
 
