@@ -1,17 +1,18 @@
 <?php
-namespace App\MealCourse\Application\Query\MealCourse;
+namespace App\MealCourse\Application\Query\MealCourse\GetMealCourses;
 
+use App\MealCourse\Application\Query\MealCourse\MealCourseDto;
 use App\MealCourse\Application\Service\MealCourseItemsPager;
 use App\MealCourse\Domain\Model\MealCourse;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final readonly class MealCoursesQueryHandler
+final readonly class GetMealCoursesQueryHandler
 {
     public function __construct(private MealCourseItemsPager $list)
     {}
 
-    public function __invoke(MealCoursesQuery $query): MealCoursesQueryResponse
+    public function __invoke(GetMealCoursesQuery $query): GetMealCoursesQueryResponse
     {
         $itemsDto = array_map(
             fn(MealCourse $t) => new MealCourseDto(
@@ -22,6 +23,6 @@ final readonly class MealCoursesQueryHandler
             ),
             $this->list->items($query->offset, $query->limit)
         );
-        return new MealCoursesQueryResponse($itemsDto);
+        return new GetMealCoursesQueryResponse($itemsDto);
     }
 }

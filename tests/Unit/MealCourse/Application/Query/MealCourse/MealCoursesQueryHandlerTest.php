@@ -1,9 +1,9 @@
 <?php
 namespace App\Tests\Unit\MealCourse\Application\Query\MealCourse;
 
-use App\MealCourse\Application\Query\MealCourse\MealCoursesQuery;
-use App\MealCourse\Application\Query\MealCourse\MealCoursesQueryHandler;
-use App\MealCourse\Application\Query\MealCourse\MealCoursesQueryResponse;
+use App\MealCourse\Application\Query\MealCourse\GetMealCourses\GetMealCoursesQuery;
+use App\MealCourse\Application\Query\MealCourse\GetMealCourses\GetMealCoursesQueryHandler;
+use App\MealCourse\Application\Query\MealCourse\GetMealCourses\GetMealCoursesQueryResponse;
 use App\MealCourse\Application\Service\MealCourseItemsPager;
 use App\MealCourse\Domain\Model\MealCourse;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
@@ -15,12 +15,12 @@ use PHPUnit\Framework\TestCase;
 class MealCoursesQueryHandlerTest extends TestCase
 {
     private MealCourseItemsPager&MockObject $pager;
-    private MealCoursesQueryHandler $handler;
+    private GetMealCoursesQueryHandler $handler;
 
     protected function setUp(): void
     {
         $this->pager = $this->createMock(MealCourseItemsPager::class);
-        $this->handler = new MealCoursesQueryHandler($this->pager);
+        $this->handler = new GetMealCoursesQueryHandler($this->pager);
     }
 
     #[Test]
@@ -34,9 +34,9 @@ class MealCoursesQueryHandlerTest extends TestCase
             ->method('items')
             ->with(0, 20)
             ->willReturn([$starter, $main]);
-        $response = ($this->handler)(new MealCoursesQuery(0, 20));
+        $response = ($this->handler)(new GetMealCoursesQuery(0, 20));
 
-        $this->assertInstanceOf(MealCoursesQueryResponse::class, $response);
+        $this->assertInstanceOf(GetMealCoursesQueryResponse::class, $response);
         $this->assertCount(2, $response->items);
         $this->assertSame($starter->getId()->toString(), $response->items[0]->id);
         $this->assertSame($starter->getName(), $response->items[0]->name);
@@ -50,9 +50,9 @@ class MealCoursesQueryHandlerTest extends TestCase
         $this->pager
             ->method('items')
             ->willReturn([]);
-        $response = ($this->handler)(new MealCoursesQuery(0, 20));
+        $response = ($this->handler)(new GetMealCoursesQuery(0, 20));
 
-        $this->assertInstanceOf(MealCoursesQueryResponse::class, $response);
+        $this->assertInstanceOf(GetMealCoursesQueryResponse::class, $response);
         $this->assertEmpty($response->items);
     }
 
@@ -65,7 +65,7 @@ class MealCoursesQueryHandlerTest extends TestCase
             ->with(10, 5)
             ->willReturn([]);
 
-        ($this->handler)(new MealCoursesQuery(10, 5));
+        ($this->handler)(new GetMealCoursesQuery(10, 5));
     }
 
 }
