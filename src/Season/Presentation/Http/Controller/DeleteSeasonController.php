@@ -1,7 +1,7 @@
 <?php
 namespace App\Season\Presentation\Http\Controller;
 
-use App\Season\Application\Command\Season\SeasonDeleteCommand;
+use App\Season\Application\Command\Season\DeleteSeason\SeasonDeleteCommand;
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

@@ -1,5 +1,5 @@
 <?php
-namespace App\Season\Application\Command\Season;
+namespace App\Season\Application\Command\Season\DeleteSeason;
 
 use Symfony\Component\Validator\Constraints as Assert;
 

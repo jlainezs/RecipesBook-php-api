@@ -1,8 +1,8 @@
 <?php
 namespace App\Tests\Unit\Season\Application\Command;
 
-use App\Season\Application\Command\Season\SeasonDeleteCommand;
-use App\Season\Application\Command\Season\SeasonDeleteCommandHandler;
+use App\Season\Application\Command\Season\DeleteSeason\SeasonDeleteCommand;
+use App\Season\Application\Command\Season\DeleteSeason\SeasonDeleteCommandHandler;
 use App\Season\Domain\Exceptions\SeasonNotFoundException;
 use App\Season\Domain\Model\Season;
 use App\Season\Domain\Repository\SeasonRepositoryInterface;

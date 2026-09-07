@@ -1,5 +1,5 @@
 <?php
-namespace App\Season\Application\Command\Season;
+namespace App\Season\Application\Command\Season\DeleteSeason;
 
 use App\Season\Domain\Exceptions\SeasonNotFoundException;
 use App\Season\Domain\Repository\SeasonRepositoryInterface;
