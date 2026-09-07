@@ -1,7 +1,8 @@
 <?php
 namespace App\Tests\Unit\Season\Presentation\Http\Controller;
 
-use App\Season\Application\Command\Season\SeasonCreateCommand;
+use App\Season\Application\Command\Season\CreateSeason\CreateSeasonCommand;
+use App\Season\Application\Command\Season\CreateSeason\CreateSeasonDto;
 use App\Season\Domain\Model\Season;
 use App\Season\Presentation\Http\Controller\CreateSeasonController;
 use App\Shared\Application\Bus\CommandBus;
@@ -26,21 +27,17 @@ class CreateSeasonControllerTest extends TestCase
         $commandBus->expects($this->once())
             ->method('dispatch')
             ->with($this->callback(
-                fn (SeasonCreateCommand $cmd) => $cmd->name === $season->getName()
+                fn (CreateSeasonCommand $cmd) => $cmd->name === $season->getName()
             ));
         $validator->expects($this->once())
             ->method('validate')
             ->with($this->callback(
-                fn (SeasonCreateCommand $cmd) => $cmd->name === $season->getName()
+                fn (CreateSeasonCommand $cmd) => $cmd->name === $season->getName()
             ));
         $controller = new CreateSeasonController($commandBus, $validator);
-        $request = Request::create(
-            uri:'/api/v1/seasons/create',
-            method:'POST',
-            server: ['Content-Type' => 'application/json'],
-            content: json_encode(['name' => $season->getName()])
+        $request = new CreateSeasonDto(
+            name:$season->getName()
         );
-
         $response = $controller($request);
 
         $this->assertEquals(201, $response->getStatusCode());

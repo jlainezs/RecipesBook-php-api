@@ -1,8 +1,8 @@
 <?php
 namespace App\Tests\Unit\Season\Application\Command;
 
-use App\Season\Application\Command\Season\SeasonCreateCommand;
-use App\Season\Application\Command\Season\SeasonCreateCommandHandler;
+use App\Season\Application\Command\Season\CreateSeason\CreateSeasonCommand;
+use App\Season\Application\Command\Season\CreateSeason\CreateSeasonCommandHandler;
 use App\Season\Domain\Model\Season;
 use App\Season\Domain\Repository\SeasonRepositoryInterface;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
@@ -14,12 +14,12 @@ use PHPUnit\Framework\TestCase;
 class SeasonCreateHandlerTest extends TestCase
 {
     private SeasonRepositoryInterface&MockObject $repository;
-    private SeasonCreateCommandHandler $handler;
+    private CreateSeasonCommandHandler $handler;
 
     protected function setUp(): void
     {
         $this->repository = $this->createMock(SeasonRepositoryInterface::class);
-        $this->handler = new SeasonCreateCommandHandler($this->repository);
+        $this->handler = new CreateSeasonCommandHandler($this->repository);
     }
 
     /**
@@ -33,7 +33,7 @@ class SeasonCreateHandlerTest extends TestCase
             ->method('save')
             ->with($this->isInstanceOf(Season::class));
 
-        ($this->handler)(new SeasonCreateCommand('Summer'));
+        ($this->handler)(new CreateSeasonCommand('Summer'));
     }
 
     #[Test]
@@ -45,7 +45,7 @@ class SeasonCreateHandlerTest extends TestCase
 
         $this->expectException(EmptyRequiredNameException::class);
 
-        ($this->handler)(new SeasonCreateCommand(''));
+        ($this->handler)(new CreateSeasonCommand(''));
     }
 
     #[Test]
@@ -57,6 +57,6 @@ class SeasonCreateHandlerTest extends TestCase
 
         $this->expectException(EmptyRequiredNameException::class);
 
-        ($this->handler)(new SeasonCreateCommand('   '));
+        ($this->handler)(new CreateSeasonCommand('   '));
     }
 }
