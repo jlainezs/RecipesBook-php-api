@@ -9,4 +9,4 @@ POST http://localhost:8000/api/v1/units-of-measure/create
 Content-Type: application/json
 Accept: application/json
 
-{"name": "LitreXXX", "symbol": "lx", "unitOfMeasureType": 1}
+{"name": "LitreYYYY", "symbol": "ly", "unitOfMeasureType": 1}

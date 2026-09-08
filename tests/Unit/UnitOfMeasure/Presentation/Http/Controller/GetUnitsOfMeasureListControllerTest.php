@@ -4,9 +4,10 @@ namespace App\Tests\Unit\UnitOfMeasure\Presentation\Http\Controller;
 
 use App\Shared\Application\Bus\QueryBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
-use App\UnitOfMeasure\Application\Query\UnitOfMeasure\UnitsOfMeasureQuery;
-use App\UnitOfMeasure\Application\Query\UnitOfMeasure\UnitsOfMeasureQueryResponse;
-use App\UnitOfMeasure\Presentation\Http\Controller\UnitsOfMeasureListController;
+use App\UnitOfMeasure\Application\Query\UnitOfMeasure\GetUnitOfMeasures\GetUnitsOfMeasureDto;
+use App\UnitOfMeasure\Application\Query\UnitOfMeasure\GetUnitOfMeasures\GetUnitsOfMeasureQuery;
+use App\UnitOfMeasure\Application\Query\UnitOfMeasure\GetUnitOfMeasures\GetUnitsOfMeasureQueryResponse;
+use App\UnitOfMeasure\Presentation\Http\Controller\GetUnitsOfMeasureController;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,24 +30,19 @@ class GetUnitsOfMeasureListControllerTest extends TestCase
             ->expects($this->once())
             ->method('ask')
             ->with($this->callback(
-                fn (UnitsOfMeasureQuery $query) => ($query->offset >= 0 && $query->limit > 0)
+                fn (GetUnitsOfMeasureQuery $query) => ($query->offset >= 0 && $query->limit > 0)
             ))
-            ->willReturn(new UnitsOfMeasureQueryResponse([]));
+            ->willReturn(new GetUnitsOfMeasureQueryResponse([]));
         $this->validator
-            ->expects($this->never()) // TODO: MUST validate parameters!
+            ->expects($this->once())
             ->method('validate')
             ->with($this->callback(
-                fn (UnitsOfMeasureQuery $query) => ($query->offset >= 0 && $query->limit > 0)
+                fn (GetUnitsOfMeasureQuery $query) => ($query->offset >= 0 && $query->limit > 0)
             ));
-        $controller = new UnitsOfMeasureListController($this->queryBus, $this->validator);
-        $request = Request::create(
-            uri: '/api/v1/units-of-measure?offset=0&limit=10',
-            server: ['CONTENT_TYPE' => 'application/json']
+        $controller = new GetUnitsOfMeasureController($this->queryBus, $this->validator);
+        $request = new GetUnitsOfMeasureDto(
+            offset: 0, limit: 10
         );
-        $request->attributes->add(
-            ['offset' => 0, 'limit' => 10]
-        );
-
         $response = $controller($request);
         $this->assertEquals(200, $response->getStatusCode());
     }

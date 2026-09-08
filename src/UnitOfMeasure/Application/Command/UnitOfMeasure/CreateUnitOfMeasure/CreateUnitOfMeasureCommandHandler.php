@@ -1,5 +1,5 @@
 <?php
-namespace App\UnitOfMeasure\Application\Command\UnitOfMeasure;
+namespace App\UnitOfMeasure\Application\Command\UnitOfMeasure\CreateUnitOfMeasure;
 
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\UnitOfMeasure\Domain\Exceptions\UnitOfMeasureEmptyNameException;
@@ -9,7 +9,7 @@ use App\UnitOfMeasure\Domain\Repository\UnitOfMeasureRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final readonly class UnitOfMeasureCreateCommandHandler
+final readonly class CreateUnitOfMeasureCommandHandler
 {
     public function __construct(private UnitOfMeasureRepositoryInterface $repository)
     {}
@@ -19,7 +19,7 @@ final readonly class UnitOfMeasureCreateCommandHandler
      * @throws UnitOfMeasureEmptyNameException
      * @throws EmptyIdNotAllowedException
      */
-    public function __invoke(UnitOfMeasureCreateCommand $command): void
+    public function __invoke(CreateUnitOfMeasureCommand $command): void
     {
         $uom = UnitOfMeasure::create($command->name, $command->symbol, $command->unitOfMeasureEnum);
         $this->repository->save($uom);

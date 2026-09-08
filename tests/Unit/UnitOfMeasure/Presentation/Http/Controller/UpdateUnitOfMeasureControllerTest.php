@@ -5,8 +5,8 @@ use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
-use App\UnitOfMeasure\Application\Command\UnitOfMeasure\UnitOfMeasureUpdateCommand;
-use App\UnitOfMeasure\Application\Command\UnitOfMeasure\UpdateUnitOfMeasureDto;
+use App\UnitOfMeasure\Application\Command\UnitOfMeasure\UpdateUnitOfMeasure\UpdateUnitOfMeasureCommand;
+use App\UnitOfMeasure\Application\Command\UnitOfMeasure\UpdateUnitOfMeasure\UpdateUnitOfMeasureDto;
 use App\UnitOfMeasure\Presentation\Http\Controller\UpdateUnitOfMeasureController;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -29,8 +29,8 @@ class UpdateUnitOfMeasureControllerTest extends TestCase
     #[Test]
     public function it_dispatches_command_and_returns_204(): void
     {
+        $id = AggregateRootId::generateId()->toString();
         $request = new UpdateUnitOfMeasureDto(
-            AggregateRootId::generateId()->toString(),
             'name',
             'symbol',
             1
@@ -39,17 +39,17 @@ class UpdateUnitOfMeasureControllerTest extends TestCase
             ->expects($this->once())
             ->method('dispatch')
             ->with($this->callback(
-                fn (UnitOfMeasureUpdateCommand $cmd) => $cmd->id === $request->id
+                fn (UpdateUnitOfMeasureCommand $cmd) => $cmd->id === $id
             ));
         $this->validator
             ->expects($this->once())
             ->method('validate')
             ->with($this->callback(
-                fn (UnitOfMeasureUpdateCommand $cmd) => $cmd->id === $request->id
+                fn (UpdateUnitOfMeasureCommand $cmd) => $cmd->id === $id
             ));
         $controller = new UpdateUnitOfMeasureController($this->commandBus, $this->validator);
 
-        $response = $controller($request);
+        $response = $controller($id, $request);
 
         $this->assertEquals(Response::HTTP_NO_CONTENT, $response->getStatusCode());
     }

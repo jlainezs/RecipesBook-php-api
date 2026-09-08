@@ -1,14 +1,15 @@
 <?php
-namespace App\UnitOfMeasure\Application\Query\UnitOfMeasure;
+namespace App\UnitOfMeasure\Application\Query\UnitOfMeasure\GetUnitOfMeasure;
 
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
+use App\UnitOfMeasure\Application\Query\UnitOfMeasure\UnitOfMeasureDto;
 use App\UnitOfMeasure\Domain\Exceptions\UnitOfMeasureNotFoundException;
 use App\UnitOfMeasure\Domain\Repository\UnitOfMeasureRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final readonly class UnitOfMeasureInstanceQueryHandler
+final readonly class GetUnitOfMeasureQueryHandler
 {
     public function __construct(private UnitOfMeasureRepositoryInterface $repository)
     {}
@@ -17,11 +18,11 @@ final readonly class UnitOfMeasureInstanceQueryHandler
      * @throws UnitOfMeasureNotFoundException
      * @throws EmptyIdNotAllowedException
      */
-    public function __invoke(UnitOfMeasureInstanceQuery $query): ?UnitOfMeasureInstanceResponse
+    public function __invoke(GetUnitOfMeasureQuery $query): ?GetUnitOfMeasureResponse
     {
         if ($uom = $this->repository->findOne(new AggregateRootId($query->id)))
         {
-            return new UnitOfMeasureInstanceResponse(
+            return new GetUnitOfMeasureResponse(
                 new UnitOfMeasureDto(
                     id: $uom->getId()->toString(),
                     name: $uom->getName(),

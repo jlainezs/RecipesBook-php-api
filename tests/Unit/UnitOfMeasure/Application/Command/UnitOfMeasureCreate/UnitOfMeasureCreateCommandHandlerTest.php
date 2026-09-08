@@ -3,8 +3,8 @@ namespace App\Tests\Unit\UnitOfMeasure\Application\Command\UnitOfMeasureCreate;
 
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\Exceptions\EmptyRequiredNameException;
-use App\UnitOfMeasure\Application\Command\UnitOfMeasure\UnitOfMeasureCreateCommand;
-use App\UnitOfMeasure\Application\Command\UnitOfMeasure\UnitOfMeasureCreateCommandHandler;
+use App\UnitOfMeasure\Application\Command\UnitOfMeasure\CreateUnitOfMeasure\CreateUnitOfMeasureCommand;
+use App\UnitOfMeasure\Application\Command\UnitOfMeasure\CreateUnitOfMeasure\CreateUnitOfMeasureCommandHandler;
 use App\UnitOfMeasure\Domain\Model\UnitOfMeasure;
 use App\UnitOfMeasure\Domain\Model\UnitOfMeasureEnum;
 use App\UnitOfMeasure\Domain\Repository\UnitOfMeasureRepositoryInterface;
@@ -14,12 +14,12 @@ use PHPUnit\Framework\TestCase;
 class UnitOfMeasureCreateCommandHandlerTest extends TestCase
 {
     private UnitOfMeasureRepositoryInterface $repository;
-    private UnitOfMeasureCreateCommandHandler $handler;
+    private CreateUnitOfMeasureCommandHandler $handler;
 
     public function setUp(): void
     {
         $this->repository = $this->createMock(UnitOfMeasureRepositoryInterface::class);
-        $this->handler = new UnitOfMeasureCreateCommandHandler($this->repository);
+        $this->handler = new CreateUnitOfMeasureCommandHandler($this->repository);
     }
 
     /**
@@ -32,7 +32,7 @@ class UnitOfMeasureCreateCommandHandlerTest extends TestCase
             ->expects($this->once())
             ->method('save')
             ->with($this->isInstanceOf(UnitOfMeasure::class));
-        ($this->handler)(new UnitOfMeasureCreateCommand(
+        ($this->handler)(new CreateUnitOfMeasureCommand(
             name: 'unit',
             symbol: 'u',
             unitOfMeasureEnum: UnitOfMeasureEnum::Units
@@ -50,7 +50,7 @@ class UnitOfMeasureCreateCommandHandlerTest extends TestCase
             ->method('save')
             ->with($this->isInstanceOf(UnitOfMeasure::class));
         $this->expectException(EmptyRequiredNameException::class);
-        ($this->handler)(new UnitOfMeasureCreateCommand(
+        ($this->handler)(new CreateUnitOfMeasureCommand(
             name: '',
             symbol: 'u',
             unitOfMeasureEnum: UnitOfMeasureEnum::Units

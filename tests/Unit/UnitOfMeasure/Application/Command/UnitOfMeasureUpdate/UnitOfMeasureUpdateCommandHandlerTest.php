@@ -4,8 +4,8 @@ namespace App\Tests\Unit\UnitOfMeasure\Application\Command\UnitOfMeasureUpdate;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\Exceptions\EmptyRequiredNameException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
-use App\UnitOfMeasure\Application\Command\UnitOfMeasure\UnitOfMeasureUpdateCommand;
-use App\UnitOfMeasure\Application\Command\UnitOfMeasure\UnitOfMeasureUpdateCommandHandler;
+use App\UnitOfMeasure\Application\Command\UnitOfMeasure\UpdateUnitOfMeasure\UpdateUnitOfMeasureCommand;
+use App\UnitOfMeasure\Application\Command\UnitOfMeasure\UpdateUnitOfMeasure\UpdateUnitOfMeasureCommandHandler;
 use App\UnitOfMeasure\Domain\Exceptions\UnitOfMeasureNotFoundException;
 use App\UnitOfMeasure\Domain\Exceptions\UnitOfMeasureSymbolLengthException;
 use App\UnitOfMeasure\Domain\Model\UnitOfMeasure;
@@ -16,13 +16,13 @@ use PHPUnit\Framework\TestCase;
 
 class UnitOfMeasureUpdateCommandHandlerTest extends TestCase
 {
-    private UnitOfMeasureUpdateCommandHandler $handler;
+    private UpdateUnitOfMeasureCommandHandler $handler;
     private UnitOfMeasureRepositoryInterface $repository;
 
     protected function setUp(): void
     {
         $this->repository = $this->createMock(UnitOfMeasureRepositoryInterface::class);
-        $this->handler = new UnitOfMeasureUpdateCommandHandler($this->repository);
+        $this->handler = new UpdateUnitOfMeasureCommandHandler($this->repository);
     }
 
     /**
@@ -48,7 +48,7 @@ class UnitOfMeasureUpdateCommandHandlerTest extends TestCase
             ->expects($this->once())
             ->method('save')
             ->with($unitOfMeasure);
-        $cmd = new UnitOfMeasureUpdateCommand(
+        $cmd = new UpdateUnitOfMeasureCommand(
             id: $id->toString(),
             name: 'new name',
             symbol: 't',
@@ -81,7 +81,7 @@ class UnitOfMeasureUpdateCommandHandlerTest extends TestCase
             ->expects($this->never())
             ->method('save')
             ->with($unitOfMeasure);
-        $cmd = new UnitOfMeasureUpdateCommand(
+        $cmd = new UpdateUnitOfMeasureCommand(
             id: $id->toString(),
             name: '',
             symbol: 't',
@@ -98,7 +98,7 @@ class UnitOfMeasureUpdateCommandHandlerTest extends TestCase
     public function it_throws_when_shopping_list_is_not_found(): void
     {
         $id = AggregateRootId::generateId();
-        $cmd = new UnitOfMeasureUpdateCommand(
+        $cmd = new UpdateUnitOfMeasureCommand(
             id: $id->toString(),
             name: 'new name',
             symbol: 't',

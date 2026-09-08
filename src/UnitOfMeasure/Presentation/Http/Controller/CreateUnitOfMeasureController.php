@@ -3,12 +3,11 @@ namespace App\UnitOfMeasure\Presentation\Http\Controller;
 
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
-use App\UnitOfMeasure\Application\Command\UnitOfMeasure\CreateUnitOfMeasureDto;
-use App\UnitOfMeasure\Application\Command\UnitOfMeasure\UnitOfMeasureCreateCommand;
+use App\UnitOfMeasure\Application\Command\UnitOfMeasure\CreateUnitOfMeasure\CreateUnitOfMeasureDto;
+use App\UnitOfMeasure\Application\Command\UnitOfMeasure\CreateUnitOfMeasure\CreateUnitOfMeasureCommand;
 use App\UnitOfMeasure\Domain\Model\UnitOfMeasureEnum;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -25,7 +24,7 @@ final class CreateUnitOfMeasureController extends AbstractController
         CreateUnitOfMeasureDto $request
     ): JsonResponse
     {
-        $cmd = new UnitOfMeasureCreateCommand(
+        $cmd = new CreateUnitOfMeasureCommand(
             $request->name,
             $request->symbol,
             UnitOfMeasureEnum::from($request->unitOfMeasureType)

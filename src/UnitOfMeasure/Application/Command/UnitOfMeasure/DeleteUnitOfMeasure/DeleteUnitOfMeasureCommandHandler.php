@@ -1,5 +1,5 @@
 <?php
-namespace App\UnitOfMeasure\Application\Command\UnitOfMeasure;
+namespace App\UnitOfMeasure\Application\Command\UnitOfMeasure\DeleteUnitOfMeasure;
 
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
@@ -8,7 +8,7 @@ use App\UnitOfMeasure\Domain\Repository\UnitOfMeasureRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final readonly class UnitOfMeasureDeleteCommandHandler
+final readonly class DeleteUnitOfMeasureCommandHandler
 {
     public function __construct(private UnitOfMeasureRepositoryInterface $repository)
     {}
@@ -17,7 +17,7 @@ final readonly class UnitOfMeasureDeleteCommandHandler
      * @throws UnitOfMeasureNotFoundException
      * @throws EmptyIdNotAllowedException
      */
-    public function __invoke(UnitOfMeasureDeleteCommand $command): void
+    public function __invoke(DeleteUnitOfMeasureCommand $command): void
     {
         if ($uom = $this->repository->findOne(new AggregateRootId($command->id)))
         {

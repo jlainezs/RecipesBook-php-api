@@ -2,8 +2,8 @@
 namespace App\Tests\Unit\UnitOfMeasure\Application\Command\UnitOfMeasureDelete;
 
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
-use App\UnitOfMeasure\Application\Command\UnitOfMeasure\UnitOfMeasureDeleteCommand;
-use App\UnitOfMeasure\Application\Command\UnitOfMeasure\UnitOfMeasureDeleteCommandHandler;
+use App\UnitOfMeasure\Application\Command\UnitOfMeasure\DeleteUnitOfMeasure\DeleteUnitOfMeasureCommand;
+use App\UnitOfMeasure\Application\Command\UnitOfMeasure\DeleteUnitOfMeasure\DeleteUnitOfMeasureCommandHandler;
 use App\UnitOfMeasure\Domain\Exceptions\UnitOfMeasureNotFoundException;
 use App\UnitOfMeasure\Domain\Exceptions\UnitOfMeasureSymbolLengthException;
 use App\UnitOfMeasure\Domain\Model\UnitOfMeasure;
@@ -15,12 +15,12 @@ use PHPUnit\Framework\TestCase;
 class UnitOfMeasureDeleteCommandHandlerTest extends TestCase
 {
     private UnitOfMeasureRepositoryInterface $repository;
-    private UnitOfMeasureDeleteCommandHandler $handler;
+    private DeleteUnitOfMeasureCommandHandler $handler;
 
     protected function setUp(): void
     {
         $this->repository = $this->createMock(UnitOfMeasureRepositoryInterface::class);
-        $this->handler = new UnitOfMeasureDeleteCommandHandler($this->repository);
+        $this->handler = new DeleteUnitOfMeasureCommandHandler($this->repository);
     }
 
     /**
@@ -47,7 +47,7 @@ class UnitOfMeasureDeleteCommandHandlerTest extends TestCase
             ->expects($this->once())
             ->method('delete')
             ->with($uom);
-        $command = new UnitOfMeasureDeleteCommand($id);
+        $command = new DeleteUnitOfMeasureCommand($id);
         ($this->handler)($command);
     }
 
@@ -74,7 +74,7 @@ class UnitOfMeasureDeleteCommandHandlerTest extends TestCase
         $this->repository
             ->expects($this->never())
             ->method('delete');
-        $command = new UnitOfMeasureDeleteCommand($id);
+        $command = new DeleteUnitOfMeasureCommand($id);
 
         $this->expectException(UnitOfMeasureNotFoundException::class);
         ($this->handler)($command);

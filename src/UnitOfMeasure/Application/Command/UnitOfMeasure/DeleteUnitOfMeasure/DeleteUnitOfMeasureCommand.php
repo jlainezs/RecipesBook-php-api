@@ -1,9 +1,9 @@
 <?php
-namespace App\UnitOfMeasure\Application\Command\UnitOfMeasure;
+namespace App\UnitOfMeasure\Application\Command\UnitOfMeasure\DeleteUnitOfMeasure;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-readonly final class UnitOfMeasureDeleteCommand
+readonly final class DeleteUnitOfMeasureCommand
 {
     public function __construct(
         #[Assert\Uuid]

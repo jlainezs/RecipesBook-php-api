@@ -4,8 +4,8 @@ namespace App\Tests\Unit\UnitOfMeasure\Application\Query\UnitOfMeasure;
 
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
-use App\UnitOfMeasure\Application\Query\UnitOfMeasure\UnitOfMeasureInstanceQuery;
-use App\UnitOfMeasure\Application\Query\UnitOfMeasure\UnitOfMeasureInstanceQueryHandler;
+use App\UnitOfMeasure\Application\Query\UnitOfMeasure\GetUnitOfMeasure\GetUnitOfMeasureQuery;
+use App\UnitOfMeasure\Application\Query\UnitOfMeasure\GetUnitOfMeasure\GetUnitOfMeasureQueryHandler;
 use App\UnitOfMeasure\Domain\Exceptions\UnitOfMeasureNotFoundException;
 use App\UnitOfMeasure\Domain\Exceptions\UnitOfMeasureSymbolLengthException;
 use App\UnitOfMeasure\Domain\Model\UnitOfMeasure;
@@ -16,13 +16,13 @@ use PHPUnit\Framework\TestCase;
 
 class UnitOfMeasureInstanceQueryHandlerTest extends TestCase
 {
-    private UnitOfMeasureInstanceQueryHandler $handler;
+    private GetUnitOfMeasureQueryHandler $handler;
     private UnitOfMeasureRepositoryInterface $repository;
 
     protected function setUp(): void
     {
         $this->repository = $this->createMock(UnitOfMeasureRepositoryInterface::class);
-        $this->handler = new UnitOfMeasureInstanceQueryHandler($this->repository);
+        $this->handler = new GetUnitOfMeasureQueryHandler($this->repository);
     }
 
     /**
@@ -43,7 +43,7 @@ class UnitOfMeasureInstanceQueryHandlerTest extends TestCase
             ->method('findOne')
             ->with($id)
             ->willReturn($uom);
-        $queryResult = ($this->handler)(new UnitOfMeasureInstanceQuery($id));
+        $queryResult = ($this->handler)(new GetUnitOfMeasureQuery($id));
         $this->assertNotNull($queryResult);
         $this->assertEquals($id->toString(), $queryResult->unitOfMeasure->id);
     }
@@ -61,6 +61,6 @@ class UnitOfMeasureInstanceQueryHandlerTest extends TestCase
             ->with($id)
             ->willReturn(null);
         $this->expectException(UnitOfMeasureNotFoundException::class);
-        ($this->handler)(new UnitOfMeasureInstanceQuery($id));
+        ($this->handler)(new GetUnitOfMeasureQuery($id));
     }
 }

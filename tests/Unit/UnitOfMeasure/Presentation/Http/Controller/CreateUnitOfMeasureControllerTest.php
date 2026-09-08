@@ -4,8 +4,8 @@ namespace App\Tests\Unit\UnitOfMeasure\Presentation\Http\Controller;
 
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
-use App\UnitOfMeasure\Application\Command\UnitOfMeasure\CreateUnitOfMeasureDto;
-use App\UnitOfMeasure\Application\Command\UnitOfMeasure\UnitOfMeasureCreateCommand;
+use App\UnitOfMeasure\Application\Command\UnitOfMeasure\CreateUnitOfMeasure\CreateUnitOfMeasureDto;
+use App\UnitOfMeasure\Application\Command\UnitOfMeasure\CreateUnitOfMeasure\CreateUnitOfMeasureCommand;
 use App\UnitOfMeasure\Presentation\Http\Controller\CreateUnitOfMeasureController;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -33,13 +33,13 @@ class CreateUnitOfMeasureControllerTest extends TestCase
             ->expects($this->once())
             ->method('validate')
             ->with($this->callback(
-                fn (UnitOfMeasureCreateCommand $cmd) => $dto->name === $cmd->name
+                fn (CreateUnitOfMeasureCommand $cmd) => $dto->name === $cmd->name
             ));
         $this->commandBus
             ->expects($this->once())
             ->method('dispatch')
             ->with($this->callback(
-                fn (UnitOfMeasureCreateCommand $cmd) => $dto->name === $cmd->name
+                fn (CreateUnitOfMeasureCommand $cmd) => $dto->name === $cmd->name
             ));
         $controller = new CreateUnitOfMeasureController($this->commandBus, $this->validator);
         $response = $controller($dto);

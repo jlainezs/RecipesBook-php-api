@@ -1,5 +1,5 @@
 <?php
-namespace App\UnitOfMeasure\Application\Command\UnitOfMeasure;
+namespace App\UnitOfMeasure\Application\Command\UnitOfMeasure\UpdateUnitOfMeasure;
 
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\Exceptions\EmptyRequiredNameException;
@@ -12,7 +12,7 @@ use App\UnitOfMeasure\Domain\Repository\UnitOfMeasureRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-readonly final class UnitOfMeasureUpdateCommandHandler
+readonly final class UpdateUnitOfMeasureCommandHandler
 {
     public function __construct(private UnitOfMeasureRepositoryInterface $repository)
     {}
@@ -25,7 +25,7 @@ readonly final class UnitOfMeasureUpdateCommandHandler
      * @throws UnitOfMeasureSymbolLengthException
      * @throws EmptyRequiredNameException
      */
-    public function __invoke(UnitOfMeasureUpdateCommand $command): void
+    public function __invoke(UpdateUnitOfMeasureCommand $command): void
     {
         if ($uom = $this->repository->findOne(new AggregateRootId($command->id)))
         {

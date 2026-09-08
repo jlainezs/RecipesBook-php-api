@@ -1,8 +1,6 @@
 <?php
 
-namespace App\UnitOfMeasure\Application\Command\UnitOfMeasure;
-
-use App\UnitOfMeasure\Domain\Model\UnitOfMeasureEnum;
+namespace App\UnitOfMeasure\Application\Command\UnitOfMeasure\CreateUnitOfMeasure;
 
 class CreateUnitOfMeasureDto
 {
