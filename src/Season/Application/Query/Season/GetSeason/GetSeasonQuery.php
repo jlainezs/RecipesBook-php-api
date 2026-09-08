@@ -1,9 +1,9 @@
 <?php
-namespace App\Season\Application\Query\Season;
+namespace App\Season\Application\Query\Season\GetSeason;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-final readonly class SeasonInstanceQuery
+final readonly class GetSeasonQuery
 {
     public function __construct(
         #[Assert\Uuid]

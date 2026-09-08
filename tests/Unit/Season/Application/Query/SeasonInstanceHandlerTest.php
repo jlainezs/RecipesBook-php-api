@@ -2,9 +2,9 @@
 
 namespace App\Tests\Unit\Season\Application\Query;
 
-use App\Season\Application\Query\Season\SeasonInstanceQuery;
-use App\Season\Application\Query\Season\SeasonInstanceQueryHandler;
-use App\Season\Application\Query\Season\SeasonInstanceResponse;
+use App\Season\Application\Query\Season\GetSeason\GetSeasonQuery;
+use App\Season\Application\Query\Season\GetSeason\GetSeasonQueryHandler;
+use App\Season\Application\Query\Season\GetSeason\GetSeasonQueryResponse;
 use App\Season\Domain\Exceptions\SeasonNotFoundException;
 use App\Season\Domain\Model\Season;
 use App\Season\Domain\Repository\SeasonRepositoryInterface;
@@ -15,12 +15,12 @@ use PHPUnit\Framework\TestCase;
 class SeasonInstanceHandlerTest extends TestCase
 {
     private SeasonRepositoryInterface&MockObject $repository;
-    private SeasonInstanceQueryHandler $handler;
+    private GetSeasonQueryHandler $handler;
 
     protected function setUp(): void
     {
         $this->repository = $this->createMock(SeasonRepositoryInterface::class);
-        $this->handler = new SeasonInstanceQueryHandler($this->repository);
+        $this->handler = new GetSeasonQueryHandler($this->repository);
     }
 
     #[Test]
@@ -35,9 +35,9 @@ class SeasonInstanceHandlerTest extends TestCase
             ->with($id)
             ->willReturn($season);
 
-        $response = ($this->handler)(new SeasonInstanceQuery($id));
+        $response = ($this->handler)(new GetSeasonQuery($id));
 
-        $this->assertInstanceOf(SeasonInstanceResponse::class, $response);
+        $this->assertInstanceOf(GetSeasonQueryResponse::class, $response);
         $this->assertNotNull($response->season);
         $this->assertSame($id, $response->season->id);
         $this->assertSame('Summer', $response->season->name);
@@ -56,6 +56,6 @@ class SeasonInstanceHandlerTest extends TestCase
 
         $this->expectException(SeasonNotFoundException::class);
 
-        ($this->handler)(new SeasonInstanceQuery($id));
+        ($this->handler)(new GetSeasonQuery($id));
     }
 }

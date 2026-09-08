@@ -2,9 +2,9 @@
 
 namespace App\Tests\Unit\Season\Application\Query;
 
-use App\Season\Application\Query\Season\SeasonsQuery;
-use App\Season\Application\Query\Season\SeasonsQueryHandler;
-use App\Season\Application\Query\Season\SeasonsQueryResponse;
+use App\Season\Application\Query\Season\GetSeasons\GetSeasonsQuery;
+use App\Season\Application\Query\Season\GetSeasons\GetSeasonsQueryHandler;
+use App\Season\Application\Query\Season\GetSeasons\GetSeasonsQueryResponse;
 use App\Season\Application\Service\SeasonItemsPager;
 use App\Season\Domain\Model\Season;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
@@ -16,12 +16,12 @@ use PHPUnit\Framework\TestCase;
 class SeasonsQueryHandlerTest extends TestCase
 {
     private SeasonItemsPager&Stub $pager;
-    private SeasonsQueryHandler $handler;
+    private GetSeasonsQueryHandler $handler;
 
     protected function setUp(): void
     {
         $this->pager = $this->createMock(SeasonItemsPager::class);
-        $this->handler = new SeasonsQueryHandler($this->pager);
+        $this->handler = new GetSeasonsQueryHandler($this->pager);
     }
 
     #[Test]
@@ -36,9 +36,9 @@ class SeasonsQueryHandlerTest extends TestCase
             ->with(0, 20)
             ->willReturn([$summer, $winter]);
 
-        $response = ($this->handler)(new SeasonsQuery(0, 20));
+        $response = ($this->handler)(new GetSeasonsQuery(0, 20));
 
-        $this->assertInstanceOf(SeasonsQueryResponse::class, $response);
+        $this->assertInstanceOf(GetSeasonsQueryResponse::class, $response);
         $this->assertCount(2, $response->items);
         $this->assertSame($summer->getId()->toString(), $response->items[0]->id);
         $this->assertSame('Summer', $response->items[0]->name);
@@ -53,9 +53,9 @@ class SeasonsQueryHandlerTest extends TestCase
             ->method('items')
             ->willReturn([]);
 
-        $response = ($this->handler)(new SeasonsQuery());
+        $response = ($this->handler)(new GetSeasonsQuery());
 
-        $this->assertInstanceOf(SeasonsQueryResponse::class, $response);
+        $this->assertInstanceOf(GetSeasonsQueryResponse::class, $response);
         $this->assertEmpty($response->items);
     }
 
@@ -68,6 +68,6 @@ class SeasonsQueryHandlerTest extends TestCase
             ->with(10, 5)
             ->willReturn([]);
 
-        ($this->handler)(new SeasonsQuery(10, 5));
+        ($this->handler)(new GetSeasonsQuery(10, 5));
     }
 }

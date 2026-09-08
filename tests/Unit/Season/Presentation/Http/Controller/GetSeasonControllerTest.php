@@ -1,8 +1,7 @@
 <?php
 namespace App\Tests\Unit\Season\Presentation\Http\Controller;
 
-use App\Season\Application\Query\Season\SeasonInstanceQuery;
-use App\Season\Application\Query\Season\SeasonsQuery;
+use App\Season\Application\Query\Season\GetSeason\GetSeasonQuery;
 use App\Season\Domain\Model\Season;
 use App\Season\Presentation\Http\Controller\GetSeasonController;
 use App\Shared\Application\Bus\QueryBus;
@@ -27,12 +26,12 @@ class GetSeasonControllerTest extends TestCase
         $queryBus->expects($this->once())
             ->method('ask')
             ->with($this->callback(
-                fn(SeasonInstanceQuery $query) => $query->id === $season->getId()->toString()
+                fn(GetSeasonQuery $query) => $query->id === $season->getId()->toString()
             ))->willReturn($season);
         $validator->expects($this->once())
             ->method('validate')
             ->with($this->callback(
-                fn(SeasonInstanceQuery $query) => $query->id === $season->getId()->toString()
+                fn(GetSeasonQuery $query) => $query->id === $season->getId()->toString()
             ));
         $controller = new GetSeasonController($queryBus, $validator);
         $request = Request::create(

@@ -1,7 +1,7 @@
 <?php
 namespace App\Season\Presentation\Http\Controller;
 
-use App\Season\Application\Query\Season\SeasonInstanceQuery;
+use App\Season\Application\Query\Season\GetSeason\GetSeasonQuery;
 use App\Shared\Application\Bus\QueryBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,7 +20,7 @@ final class GetSeasonController extends AbstractController
     public function __invoke(Request $request):JsonResponse
     {
         $id = $request->attributes->getString('id');
-        $query = new SeasonInstanceQuery($id);
+        $query = new GetSeasonQuery($id);
         $this->validator->validate($query);
         $response = $this->queryBus->ask($query);
 
