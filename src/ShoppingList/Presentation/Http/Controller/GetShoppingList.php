@@ -3,12 +3,12 @@ namespace App\ShoppingList\Presentation\Http\Controller;
 
 use App\Shared\Application\Bus\QueryBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
-use App\ShoppingList\Application\Query\ShoppingListInstance\ShoppingListInstanceQuery;
+use App\ShoppingList\Application\Query\ShoppingList\ShoppingListQuery;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 
-final class ShoppingListsInstance extends AbstractController
+final class GetShoppingList extends AbstractController
 {
     public function __construct(
         private readonly QueryBus $queryBus,
@@ -20,7 +20,7 @@ final class ShoppingListsInstance extends AbstractController
         string $id
     ): JsonResponse
     {
-        $query = new ShoppingListInstanceQuery($id);
+        $query = new ShoppingListQuery($id);
         $this->validator->validate($query);
         $response = $this->queryBus->ask($query);
 

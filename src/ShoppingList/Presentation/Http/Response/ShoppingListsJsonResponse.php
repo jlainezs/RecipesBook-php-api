@@ -3,7 +3,7 @@ namespace App\ShoppingList\Presentation\Http\Response;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class ShoppingListsCollectionJsonResponse
+class ShoppingListsJsonResponse
 {
     public static function create(array $items): JsonResponse
     {

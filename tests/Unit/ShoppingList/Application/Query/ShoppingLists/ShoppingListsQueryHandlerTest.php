@@ -1,22 +1,22 @@
 <?php
-namespace App\Tests\Unit\ShoppingList\Application\Query\ShoppingListCollection;
+namespace App\Tests\Unit\ShoppingList\Application\Query\ShoppingLists;
 
-use App\ShoppingList\Application\Query\SoppingListsCollection\ShoppingListsCollectionQuery;
-use App\ShoppingList\Application\Query\SoppingListsCollection\ShoppingListsCollectionQueryHandler;
+use App\ShoppingList\Application\Query\SoppingLists\ShoppingListsQuery;
+use App\ShoppingList\Application\Query\SoppingLists\ShoppingListsQueryHandler;
 use App\ShoppingList\Application\Service\ShoppingListItemsPager;
 use App\ShoppingList\Domain\Model\ShoppingList;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
-class ShoppingListsCollectionQueryHandlerTest extends TestCase
+class ShoppingListsQueryHandlerTest extends TestCase
 {
     private ShoppingListItemsPager $pager;
-    private ShoppingListsCollectionQueryHandler $handler;
+    private ShoppingListsQueryHandler $handler;
 
     protected function setUp(): void
     {
         $this->pager = $this->createMock(ShoppingListItemsPager::class);
-        $this->handler = new ShoppingListsCollectionQueryHandler($this->pager);
+        $this->handler = new ShoppingListsQueryHandler($this->pager);
     }
 
     #[Test]
@@ -30,7 +30,7 @@ class ShoppingListsCollectionQueryHandlerTest extends TestCase
             ->with(0, 20)
             ->willReturn([$sl1, $sl2]);
 
-        $response = ($this->handler)(new ShoppingListsCollectionQuery(0, 20));
+        $response = ($this->handler)(new ShoppingListsQuery(0, 20));
 
         $this->assertCount(2, $response->items);
         $this->assertSame($sl1->getId()->toString(), $response->items[0]->id);
@@ -46,7 +46,7 @@ class ShoppingListsCollectionQueryHandlerTest extends TestCase
             ->expects($this->once())
             ->method('items')
             ->willReturn([]);
-        $response = ($this->handler)(new ShoppingListsCollectionQuery(0, 20));
+        $response = ($this->handler)(new ShoppingListsQuery(0, 20));
         $this->assertCount(0, $response->items);
     }
 
@@ -58,6 +58,6 @@ class ShoppingListsCollectionQueryHandlerTest extends TestCase
             ->method('items')
             ->with(10, 5)
             ->willReturn([]);
-        ($this->handler)(new ShoppingListsCollectionQuery(10, 5));
+        ($this->handler)(new ShoppingListsQuery(10, 5));
     }
 }

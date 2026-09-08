@@ -1,11 +1,11 @@
 <?php
-namespace App\Tests\Unit\ShoppingList\Application\Query\ShoppingListInstance;
+namespace App\Tests\Unit\ShoppingList\Application\Query\ShoppingList;
 
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
-use App\ShoppingList\Application\Query\ShoppingListInstance\ShoppingListInstanceQuery;
-use App\ShoppingList\Application\Query\ShoppingListInstance\ShoppingListInstanceQueryHandler;
-use App\ShoppingList\Application\Query\ShoppingListInstance\ShoppingListInstanceResponse;
+use App\ShoppingList\Application\Query\ShoppingList\ShoppingListQuery;
+use App\ShoppingList\Application\Query\ShoppingList\ShoppingListQueryHandler;
+use App\ShoppingList\Application\Query\ShoppingList\ShoppingListResponse;
 use App\ShoppingList\Domain\Exceptions\ShoppingListNotFoundException;
 use App\ShoppingList\Domain\Model\ShoppingList;
 use App\ShoppingList\Domain\Repository\ShoppingListRepositoryInterface;
@@ -14,9 +14,9 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
-class ShoppingListInstanceQueryHandlerTest extends TestCase
+class ShoppingListQueryHandlerTest extends TestCase
 {
-    private ShoppingListInstanceQueryHandler $handler;
+    private ShoppingListQueryHandler $handler;
     private LoggerInterface $logger;
     private ShoppingListRepositoryInterface $repository;
 
@@ -24,7 +24,7 @@ class ShoppingListInstanceQueryHandlerTest extends TestCase
     {
         $this->repository = $this->createMock(ShoppingListRepository::class);
         $this->logger = $this->createStub(LoggerInterface::class);
-        $this->handler = new ShoppingListInstanceQueryHandler($this->repository, $this->logger);
+        $this->handler = new ShoppingListQueryHandler($this->repository, $this->logger);
     }
 
     /**
@@ -40,9 +40,9 @@ class ShoppingListInstanceQueryHandlerTest extends TestCase
             ->method('findOne')
             ->with($id)
             ->willReturn($shoppingList);
-        $queryResult = $this->handler->__invoke(new ShoppingListInstanceQuery($id));
+        $queryResult = $this->handler->__invoke(new ShoppingListQuery($id));
         $this->assertNotNull($queryResult);
-        $this->assertInstanceOf(ShoppingListInstanceResponse::class, $queryResult);
+        $this->assertInstanceOf(ShoppingListResponse::class, $queryResult);
         $this->assertEquals($id->toString(), $queryResult->shoppingListDto->id);
     }
 
@@ -59,6 +59,6 @@ class ShoppingListInstanceQueryHandlerTest extends TestCase
             ->with($id)
             ->willReturn(null);
         $this->expectException(ShoppingListNotFoundException::class);
-        ($this->handler)(new ShoppingListInstanceQuery($id));
+        ($this->handler)(new ShoppingListQuery($id));
     }
 }

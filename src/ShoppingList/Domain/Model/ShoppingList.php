@@ -128,7 +128,8 @@ final class ShoppingList extends AggregateRoot
             $itemsArray[$item->getId()->toString()] = $item;
         }
 
-        return $itemsArray;    }
+        return $itemsArray;
+    }
 
     /**
      * @throws ShoppingListItemNotFoundException

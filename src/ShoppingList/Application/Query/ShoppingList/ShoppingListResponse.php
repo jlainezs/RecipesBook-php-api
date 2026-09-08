@@ -1,7 +1,7 @@
 <?php
-namespace App\ShoppingList\Application\Query\ShoppingListInstance;
+namespace App\ShoppingList\Application\Query\ShoppingList;
 
-final readonly class ShoppingListInstanceResponse
+final readonly class ShoppingListResponse
 {
     /**
      * @param ?ShoppingListDto $shoppingListDto

@@ -1,5 +1,5 @@
 <?php
-namespace App\ShoppingList\Application\Query\ShoppingListInstance;
+namespace App\ShoppingList\Application\Query\ShoppingList;
 
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
@@ -9,7 +9,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final readonly class ShoppingListInstanceQueryHandler
+final readonly class ShoppingListQueryHandler
 {
     /**
      * @param ShoppingListRepositoryInterface $repository
@@ -22,12 +22,12 @@ final readonly class ShoppingListInstanceQueryHandler
     {}
 
     /**
-     * @param ShoppingListInstanceQuery $query
-     * @return ShoppingListInstanceResponse
+     * @param ShoppingListQuery $query
+     * @return ShoppingListResponse
      * @throws EmptyIdNotAllowedException
      * @throws ShoppingListNotFoundException
      */
-    public function __invoke(ShoppingListInstanceQuery $query): ShoppingListInstanceResponse
+    public function __invoke(ShoppingListQuery $query): ShoppingListResponse
     {
         $id = new AggregateRootId($query->id);
         if ($shoppingList = $this->repository->findOne($id))
@@ -44,7 +44,7 @@ final readonly class ShoppingListInstanceQueryHandler
                     updatedAt: $item->getUpdatedAt(),
                 );
             }
-            return new ShoppingListInstanceResponse(new ShoppingListDto(
+            return new ShoppingListResponse(new ShoppingListDto(
                 id: $shoppingList->getId()->toString(),
                 name: $shoppingList->getName()->value(),
                 items: $items,

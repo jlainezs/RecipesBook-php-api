@@ -1,9 +1,9 @@
 <?php
-namespace App\ShoppingList\Application\Query\ShoppingListInstance;
+namespace App\ShoppingList\Application\Query\ShoppingList;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-final readonly class ShoppingListInstanceQuery
+final readonly class ShoppingListQuery
 {
     /**
      * @param string $id
