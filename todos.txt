@@ -1,7 +1,4 @@
 TODO: Move validation rules from query/command to DTOs to keep query/command framework agnostic.
-TODO: Preparar fitxers de prompt a .claude/commands per a automatitzar tasques repetitives
-TODO: Preparar fitxer de skills a .claude/skills
-TODO: Crear fitxer CLAUDE.md (via /init)
 TODO: Add user management
 TODO: Add roles to check access
 TODO: Add account management. Need to bind users with accounts.
