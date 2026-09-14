@@ -1,14 +1,15 @@
 <?php
-namespace App\UnitOfMeasure\Domain\Exceptions;
+
+namespace App\Security\Domain\Exceptions;
 
 use App\Shared\Domain\Exceptions\EntityNotFoundException;
 use Throwable;
 
-class UnitOfMeasureNotFoundException extends EntityNotFoundException
+final class UserNotFoundException extends EntityNotFoundException
 {
     public function __construct(string $userIdentifier = "", int $code = 0, ?Throwable $previous = null)
     {
-        $message = sprintf('Unit of measure with id "%s" not found', $userIdentifier);
+        $message = sprintf("User identified by '%s' not found", $userIdentifier);
         parent::__construct($message, $code, $previous);
     }
 }

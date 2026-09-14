@@ -6,9 +6,9 @@ use Throwable;
 
 class IngredientTypeNotFoundException extends EntityNotFoundException
 {
-    public function __construct(readonly string $requestedId = "", int $code = 0, readonly ?Throwable $previous = null)
+    public function __construct(readonly string $userIdentifier = "", int $code = 0, readonly ?Throwable $previous = null)
     {
-        $message = sprintf('Ingredient type with id "%s" not found', $requestedId);
+        $message = sprintf('Ingredient type with id "%s" not found', $userIdentifier);
         parent::__construct($message, $code, $previous);
     }
 }

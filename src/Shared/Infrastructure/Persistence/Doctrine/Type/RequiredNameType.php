@@ -27,7 +27,7 @@ final class RequiredNameType extends StringType
             $value === null => throw new EmptyRequiredNameException(),
             is_string($value) => new RequiredName($value),
             default => throw new ConversionException(
-                sprintf("Got '%s' instead of '%s. Could not convert it to database value", self::class, get_debug_type($value))
+                sprintf("Got '%s' instead of '%s. Could not convert it to PHP value", self::class, get_debug_type($value))
             )
         };
     }

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                                      https://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+    <!--
+        use api_user because user is a reserved keyword in PostgreSQL
+    -->
+    <entity name="App\Security\Domain\Model\User"
+            table="api_user"
+            repository-class="App\Security\Infrastructure\Repository\UserRepository"
+    >
+        <id name="id" type="aggregate_root_id" column="id">
+            <generator strategy="NONE" />
+        </id>
+
+        <field name="email" column="email" type="email" length="180" unique="true" />
+        <field name="password" column="password" />
+        <field name="firstName" column="first_name" type="required_name" length="150" />
+        <field name="lastName" column="last_name" type="required_name" length="150" />
+        <field name="roles" column="roles" type="user_roles" />
+        <field name="createdAt" type="datetime_immutable" column="created_at" />
+        <field name="updatedAt" type="datetime_immutable" column="updated_at" />
+    </entity>
+</doctrine-mapping>

@@ -29,7 +29,7 @@ class RBCreateBCCommand
         'Domain/Model',
         'Domain/Repository',
         'Infrastructure',
-        'Infrastructure/DoctrineMapping',
+        'Infrastructure/Mapping',
         'Infrastructure/Repository',
         'Presentation',
         'Presentation/Http',
