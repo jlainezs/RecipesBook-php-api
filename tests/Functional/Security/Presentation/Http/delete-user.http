@@ -1,0 +1,17 @@
+###
+# WIll succeed if id is in the database
+
+DELETE http://localhost:8000/api/v1/users/80cfa1c5-e0f9-44ff-83ab-c4269cd9a741
+Accept: application/json
+
+###
+# 2nd run will fail, 404
+
+DELETE http://localhost:8000/api/v1/users/80cfa1c5-e0f9-44ff-83ab-c4269cd9a741
+Accept: application/json
+
+###
+# will fail, 400
+
+DELETE http://localhost:8000/api/v1/users/the_user
+Accept: application/json
