@@ -19,7 +19,7 @@ final class DeleteUserController extends AbstractController
     #[Route('/api/v1/users/{id}', name: 'users_delete_instance', methods: ['DELETE'])]
     public function __invoke(Request $request): JsonResponse
     {
-        $id = $request->attributes->get('id');
+        $id = $request->attributes->getString('id');
         $cmd = new DeleteUserCommand($id);
         $this->validator->validate($cmd);
         $this->commandBus->dispatch($cmd);
