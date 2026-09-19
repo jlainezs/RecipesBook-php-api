@@ -1,0 +1,2 @@
+GET http://localhost:8000/api/v1/users/b68c9bc2-0c4d-4136-b738-711e920ce47a
+Accept: application/json

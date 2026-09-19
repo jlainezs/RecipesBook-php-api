@@ -1,5 +1,5 @@
 <?php
-namespace App\Tests\Unit\Security\Http\Controller;
+namespace App\Tests\Unit\Security\Preserntation\Http\Controller;
 
 use App\Security\Presentation\Http\Controller\DeleteUserController;
 use App\Shared\Application\Bus\CommandBus;
