@@ -23,7 +23,7 @@ class SeasonsListControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_returns_meal_course_list(): void
+    public function it_returns_seasons_list(): void
     {
         $this->queryBus->expects($this->once())
             ->method('ask')
