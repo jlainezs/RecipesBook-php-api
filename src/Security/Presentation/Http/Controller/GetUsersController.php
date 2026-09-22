@@ -19,7 +19,7 @@ final class GetUsersController extends AbstractController
         private readonly ApplicationDataValidator $validator
     ){}
 
-    #[Route('/users', 'users_list', ['GET'])]
+    #[Route('/users', 'users_list', methods:['GET'])]
     public function __invoke(#[MapQueryString] GetUsersDto $dto): JsonResponse
     {
         $query = new GetUsersQuery(

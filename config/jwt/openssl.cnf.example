@@ -1,0 +1,8 @@
+[ req ]
+default_bits        = 4096
+default_keyfile     = privkey.pem
+distinguished_name  = req_distinguished_name
+prompt              = no
+
+[ req_distinguished_name ]
+CN                  = localhost
