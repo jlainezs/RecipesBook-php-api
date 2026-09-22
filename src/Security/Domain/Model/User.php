@@ -1,6 +1,7 @@
 <?php
 namespace App\Security\Domain\Model;
 
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\Shared\Domain\ValueObjects\Email;
 use App\Shared\Domain\ValueObjects\RequiredName;
@@ -22,6 +23,9 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
         private DateTimeImmutable          $updatedAt,
     ){}
 
+    /**
+     * @throws EmptyIdNotAllowedException
+     */
     public static function create(
         string $email,
         string $password,
