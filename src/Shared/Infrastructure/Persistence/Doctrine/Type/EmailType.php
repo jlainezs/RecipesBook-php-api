@@ -30,6 +30,7 @@ final class EmailType extends StringType
         return match(true) {
             $value === null => null,
             $value instanceof Email => $value->value(),
+            is_string($value) => $value,
             default => throw new ConversionException(
                 sprintf("Got '%s' instead of Email. Could not convert it to database value", get_debug_type($value))
             )
