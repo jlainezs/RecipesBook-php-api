@@ -2,6 +2,7 @@
 namespace App\Tests\Unit\Security\Application\Command\User\UpdateUser;
 use App\Security\Application\Command\User\UpdateUser\UpdateUserCommand;
 use App\Security\Application\Command\User\UpdateUser\UpdateUserCommandHandler;
+use App\Security\Application\Service\ApplicationPasswordHasher;
 use App\Security\Domain\Exceptions\UserNotFoundException;
 use App\Security\Domain\Model\User;
 use App\Security\Domain\Repository\UserRepositoryInterface;
@@ -9,16 +10,22 @@ use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UpdateUserCommandHandlerTest extends TestCase
 {
     private UserRepositoryInterface $repository;
     private UpdateUserCommandHandler $handler;
+    private ApplicationPasswordHasher $passwordHasher;
+    private UserPasswordHasherInterface $userPasswordHasherInterface;
+
 
     protected function setUp(): void
     {
         $this->repository = $this->createMock(UserRepositoryInterface::class);
-        $this->handler = new UpdateUserCommandHandler($this->repository);
+        $this->userPasswordHasherInterface = $this->createMock(UserPasswordHasherInterface::class);
+        $this->passwordHasher = new ApplicationPasswordHasher($this->userPasswordHasherInterface);
+        $this->handler = new UpdateUserCommandHandler($this->repository, $this->passwordHasher);
     }
 
     /**

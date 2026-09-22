@@ -7,3 +7,15 @@ Content-Type: application/json
     "firstName": "test",
     "lastName": "more test"
 }
+
+###
+
+POST http://localhost:8000/api/v1/users/create
+Content-Type: application/json
+
+{
+    "email": "test@test.com",
+    "password": "password",
+    "firstName": "test",
+    "lastName": "more test"
+}

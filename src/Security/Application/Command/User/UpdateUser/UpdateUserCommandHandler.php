@@ -1,6 +1,7 @@
 <?php
 namespace App\Security\Application\Command\User\UpdateUser;
 
+use App\Security\Application\Service\ApplicationPasswordHasher;
 use App\Security\Domain\Exceptions\UserNotFoundException;
 use App\Security\Domain\Repository\UserRepositoryInterface;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
@@ -13,7 +14,8 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 final readonly class UpdateUserCommandHandler
 {
     public function __construct(
-        private UserRepositoryInterface $repository
+        private UserRepositoryInterface $repository,
+        private ApplicationPasswordHasher $applicationPasswordHasher,
     ){}
 
     /**
@@ -31,6 +33,7 @@ final readonly class UpdateUserCommandHandler
 
             if (!empty($command->password))
             {
+                $hashedPassword = $this->applicationPasswordHasher->hash($user, $command->password);
                 $user->changePassword($command->password);
             }
 
