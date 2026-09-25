@@ -2,6 +2,6 @@ GET http://localhost:8000/api/v1/login_check
 Content-Type: application/json
 
 {
-    "username": "test@test.com",
+    "username": "god.himself@heaven.org",
     "password": "password"
 }

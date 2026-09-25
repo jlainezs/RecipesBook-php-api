@@ -22,7 +22,7 @@ class UserTest extends TestCase
         );
         $this->assertEquals('email@email.com', $user->getEmail()->value());
         $this->assertEquals(['ROLE_USER'], $user->getRoles());
-        $this->assertEquals($user->getId()->toString(), $user->getUserIdentifier());
+        $this->assertEquals($user->getEmail()->value(), $user->getUserIdentifier());
     }
 
     #[Test]
