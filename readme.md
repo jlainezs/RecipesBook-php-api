@@ -38,12 +38,12 @@ src/
 
 ### Layer responsibilities
 
-| Layer | Responsibility |
-|---|---|
-| **Domain** | Aggregates, value objects, domain events, repository interfaces. No framework dependencies. |
-| **Application** | Use cases (query/command handlers), DTOs, application service ports. Depends only on Domain. |
-| **Infrastructure** | Doctrine repositories, ORM mappings, framework adapters. Implements domain and application ports. |
-| **Presentation** | HTTP controllers and response factories. Depends on Application layer only. |
+| Layer              | Responsibility                                                                                                      |
+|--------------------|---------------------------------------------------------------------------------------------------------------------|
+| **Domain**         | Aggregates, value objects, domain events, repository interfaces. No framework dependencies.                         |
+| **Application**    | Use cases (query/command handlers), DTOs, application service ports. Depends only on Domain.                        |
+| **Infrastructure** | Doctrine repositories, ORM mappings, framework adapters, console commands. Implements domain and application ports. |
+| **Presentation**   | HTTP controllers and response factories. Depends on Application layer only.                                         |
 
 ### Key design decisions
 
@@ -65,6 +65,27 @@ src/
 | Message Bus      | Symfony Messenger (sync transport)   |
 | API              | Custom REST endpoints + API Platform |
 | Containerisation | Docker / Docker Compose              |
+
+## Security
+
+API is attending requests under ``/api/v1`` url. All routes require a bearer token.
+
+### First run
+Create an admin user by executing ``$ php bin/console rb:create-admin`` and answering the 
+questions.
+
+### Get a bearer token
+Do a post request to ``/api/v1/login_check`` and provide your user details in the request body. Check
+``Security/Presentation/Http/login.http`` for a sample. Note users, from the point of view of security,
+are identified by its email, not the ID property.
+
+Now you should use this bearer token in all the api request. Just put it in the ``Authorization`` http header:
+
+```
+GET http://localhost:8000/api/v1/....
+Accept: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI....
+```
 
 ## Requirements
 
