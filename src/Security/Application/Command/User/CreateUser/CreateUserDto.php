@@ -8,5 +8,6 @@ final readonly class CreateUserDto
         public string $password,
         public string $firstName,
         public string $lastName,
+        public array $roles
     ){}
 }

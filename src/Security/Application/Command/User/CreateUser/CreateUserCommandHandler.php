@@ -21,13 +21,20 @@ final readonly class CreateUserCommandHandler
      */
     public function __invoke(CreateUserCommand $command): void
     {
+        $roles = $command->roles;
+        if (empty($roles))
+        {
+            $roles[] = UserRole::USER;
+        }
+
         $user = User::create(
             email: $command->email,
             password: '',
             firstName: $command->firstName,
             lastName: $command->lastName,
-            roles: [UserRole::USER]
+            roles: $roles,
         );
+
         $hashedPassword = $this->applicationPasswordHasher->hash($user, $command->password);
         $user->changePassword($hashedPassword);
         $this->repository->save($user);

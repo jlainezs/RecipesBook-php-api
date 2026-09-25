@@ -14,5 +14,6 @@ readonly final class CreateUserCommand
         public string $firstName,
         #[Assert\NotBlank(message: "Last name is required")]
         public string $lastName,
+        public array $roles
     ){}
 }

@@ -5,6 +5,7 @@ use App\Security\Application\Command\User\CreateUser\CreateUserCommand;
 use App\Security\Application\Command\User\CreateUser\CreateUserCommandHandler;
 use App\Security\Application\Service\ApplicationPasswordHasher;
 use App\Security\Domain\Model\User;
+use App\Security\Domain\Model\UserRole;
 use App\Security\Domain\Repository\UserRepositoryInterface;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use PHPUnit\Framework\Attributes\Test;
@@ -42,6 +43,7 @@ class CreateUserCommandHandlerTest extends TestCase
             "password",
             "firstName",
             "lastName",
+            [UserRole::USER]
         ));
     }
 }

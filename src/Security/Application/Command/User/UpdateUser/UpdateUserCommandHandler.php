@@ -30,11 +30,12 @@ final readonly class UpdateUserCommandHandler
             $user->changeEmail(new Email($command->email));
             $user->changeFirstName(new RequiredName($command->firstName));
             $user->changeLastName(new RequiredName($command->lastName));
+            $user->setRoles($command->roles);
 
             if (!empty($command->password))
             {
                 $hashedPassword = $this->applicationPasswordHasher->hash($user, $command->password);
-                $user->changePassword($command->password);
+                $user->changePassword($hashedPassword);
             }
 
             $this->repository->save($user);

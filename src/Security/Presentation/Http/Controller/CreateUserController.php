@@ -24,7 +24,8 @@ final class CreateUserController extends AbstractController
             $createUserDto->email,
             $createUserDto->password,
             $createUserDto->firstName,
-            $createUserDto->lastName
+            $createUserDto->lastName,
+            $createUserDto->roles,
         );
         $this->validator->validate($cmd);
         $this->commandBus->dispatch($cmd);

@@ -3,6 +3,7 @@ namespace App\Tests\Unit\Security\Preserntation\Http\Controller;
 
 use App\Security\Application\Command\User\CreateUser\CreateUserCommand;
 use App\Security\Application\Command\User\CreateUser\CreateUserDto;
+use App\Security\Domain\Model\UserRole;
 use App\Security\Presentation\Http\Controller\CreateUserController;
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
@@ -20,7 +21,8 @@ class CreateUserControllerTest extends TestCase
             'eml@eml.com',
             'password',
             'John',
-            'Doe'
+            'Doe',
+            [UserRole::USER]
         );
         $commandBus->expects($this->once())
             ->method('dispatch')

@@ -4,6 +4,7 @@ namespace App\Tests\Unit\Security\Preserntation\Http\Controller;
 use App\Security\Application\Command\User\UpdateUser\UpdateUserCommand;
 use App\Security\Application\Command\User\UpdateUser\UpdateUserDto;
 use App\Security\Domain\Model\User;
+use App\Security\Domain\Model\UserRole;
 use App\Security\Presentation\Http\Controller\UpdateUserController;
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
@@ -22,7 +23,7 @@ class UpdateUserControllerTest extends TestCase
             'password',
             'first',
             'last',
-            []
+            [UserRole::USER]
         );
         $commandBus->expects($this->once())
             ->method('dispatch')
@@ -40,7 +41,7 @@ class UpdateUserControllerTest extends TestCase
             null,
             "First updated",
             "Last updated",
-            []
+            [UserRole::USER]
         );
         $response = $controller($user->getId()->toString(), $request);
         $this->assertEquals(204, $response->getStatusCode());
