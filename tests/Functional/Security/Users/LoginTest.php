@@ -1,5 +1,5 @@
 <?php
-namespace App\Tests\Integration\Security\Users;
+namespace App\Tests\Functional\Security\Users;
 
 use App\DataFixtures\LoginFixtures;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
