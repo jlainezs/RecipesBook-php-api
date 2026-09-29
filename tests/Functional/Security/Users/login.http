@@ -1,0 +1,22 @@
+GET {{host}}{{api}}/login_check
+Content-Type: application/json
+Accept: application/json
+
+{
+    "username": "{{username}}",
+    "password": "{{password}}"
+}
+
+> {%
+    client.global.set("auth_token", response.body.token);
+%}
+
+### Should fail
+GET http://localhost:8000/api/v1/login_check
+Content-Type: application/json
+Accept: application/json
+
+{
+    "username": "{{username}}",
+    "password": "this_is_clearly_a_bad_password"
+}

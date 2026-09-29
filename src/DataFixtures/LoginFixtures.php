@@ -14,19 +14,24 @@ final class LoginFixtures extends Fixture
         private readonly UserPasswordHasherInterface $userPasswordHasher
     ){}
 
+    public const string USER_NAME = 'test@example.com';
+    public const string PASSWORD = 'test';
+    public const string FIRST_NAME = 'First';
+    public const string LAST_NAME = 'Last';
+
     /**
      * @throws EmptyIdNotAllowedException
      */
     public function load(ObjectManager $manager): void
     {
         $user = User::create(
-            'test@example.com',
-            'XXX',
-            'First',
-            'Last',
+            self::USER_NAME,
+            self::PASSWORD,
+            self::FIRST_NAME,
+            self::LAST_NAME,
             [UserRole::USER]
         );
-        $user->changePassword($this->userPasswordHasher->hashPassword($user, 'test'));
+        $user->changePassword($this->userPasswordHasher->hashPassword($user, self::PASSWORD));
         $manager->persist($user);
         $manager->flush();
     }
