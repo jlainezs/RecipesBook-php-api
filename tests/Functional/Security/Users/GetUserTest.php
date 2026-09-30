@@ -1,7 +1,7 @@
 <?php
 namespace App\Tests\Functional\Security\Users;
 
-use App\DataFixtures\LoginFixtures;
+use App\DataFixtures\Security\LoginFixtures;
 use App\Security\Domain\Repository\UserRepositoryInterface;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\Shared\Domain\ValueObjects\Email;
