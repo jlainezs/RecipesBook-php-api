@@ -1,6 +1,8 @@
-### will succeed.
+###
 # First execute login.http to set auth_token
+###
 
+### will succeed.
 GET {{host}}{{api}}/users/b68c9bc2-0c4d-4136-b738-711e920ce47a
 Accept: application/json
 Authorization: Bearer {{auth_token}}
