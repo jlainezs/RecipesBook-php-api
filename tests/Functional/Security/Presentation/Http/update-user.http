@@ -1,4 +1,5 @@
 PUT http://localhost:8000/api/v1/users/b68c9bc2-0c4d-4136-b738-711e920ce47a
+Authorization: Bearer {{auth_token}}
 Content-Type: application/json
 
 {
@@ -6,5 +7,5 @@ Content-Type: application/json
     "password": "lolo",
     "firstName": "test",
     "lastName": "more test",
-    "roles": "ROLE_USER"
+    "roles": ["ROLE_USER"]
 }

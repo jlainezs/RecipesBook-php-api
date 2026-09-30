@@ -6,6 +6,7 @@ use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\Shared\Domain\ValueObjects\Email;
 use App\Shared\Domain\ValueObjects\RequiredName;
 use DateTimeImmutable;
+use InvalidArgumentException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -66,7 +67,26 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setRoles(array $roles):void
     {
-        $this->roles = $roles;
+        $tmpRoles = [];
+        foreach ($roles as $role)
+        {
+            if (is_string($role))
+            {
+                $userRole = UserRole::tryFrom($role);
+                if (!$userRole)
+                {
+                    throw new InvalidArgumentException(sprintf("Invalid role %s", $role));
+                }
+
+                $tmpRoles[] = $userRole;
+            }
+            else if ($role instanceof UserRole)
+            {
+                $tmpRoles[] = $role;
+            };
+        }
+
+        $this->roles = $tmpRoles;
     }
 
     /**

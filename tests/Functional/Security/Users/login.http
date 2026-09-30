@@ -1,4 +1,4 @@
-GET {{host}}{{api}}/login_check
+POST {{host}}{{api}}/login_check
 Content-Type: application/json
 Accept: application/json
 
@@ -12,7 +12,7 @@ Accept: application/json
 %}
 
 ### Should fail
-GET http://localhost:8000/api/v1/login_check
+POST http://localhost:8000/api/v1/login_check
 Content-Type: application/json
 Accept: application/json
 
