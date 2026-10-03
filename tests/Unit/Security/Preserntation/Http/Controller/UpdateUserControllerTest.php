@@ -41,7 +41,7 @@ class UpdateUserControllerTest extends TestCase
             null,
             "First updated",
             "Last updated",
-            [UserRole::USER]
+            [UserRole::USER->value]
         );
         $response = $controller($user->getId()->toString(), $request);
         $this->assertEquals(204, $response->getStatusCode());

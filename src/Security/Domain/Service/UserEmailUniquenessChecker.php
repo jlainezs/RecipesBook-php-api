@@ -5,10 +5,10 @@ use App\Security\Domain\Repository\UserRepositoryInterface;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\Shared\Domain\ValueObjects\Email;
 
-final readonly class UserEmailUniquenessChecker
+class UserEmailUniquenessChecker
 {
     public function __construct(
-        private UserRepositoryInterface $userRepository
+        readonly private UserRepositoryInterface $userRepository
     ){}
 
     /**
