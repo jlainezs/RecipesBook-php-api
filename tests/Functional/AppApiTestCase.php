@@ -1,6 +1,8 @@
 <?php
 namespace App\Tests\Functional;
 
+use App\DataFixtures\Security\AdditionalUsersFixtures;
+use App\Security\Domain\Repository\UserRepositoryInterface;
 use Doctrine\Bundle\FixturesBundle\Loader\SymfonyFixturesLoader;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\FixtureInterface;
@@ -17,6 +19,10 @@ abstract class AppApiTestCase extends WebTestCase
     protected SymfonyFixturesLoader $fixtureLoader;
     protected ObjectManager $entityManager;
     protected ORMExecutor $executor;
+    protected string $userToken;
+    protected UserRepositoryInterface $userRepository;
+    protected AdditionalUsersFixtures $additionalUsersFixtures;
+
 
     public function setUp(): void
     {
@@ -25,6 +31,7 @@ abstract class AppApiTestCase extends WebTestCase
         $this->container = self::getContainer();
         $this->entityManager = $this->container->get('doctrine')->getManager();
         $this->fixtureLoader = $this->container->get('doctrine.fixtures.loader');
+        $this->userRepository = $this->container->get(UserRepositoryInterface::class);
         $this->executor = new ORMExecutor($this->entityManager, new ORMPurger());
     }
 
@@ -34,6 +41,7 @@ abstract class AppApiTestCase extends WebTestCase
             'username' => $userName,
             'password' => $password,
         ]);
+        $this->userToken = $this->getAuthToken();
     }
 
     protected function getAuthToken(): string

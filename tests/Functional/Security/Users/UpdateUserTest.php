@@ -23,9 +23,7 @@ class UpdateUserTest extends AppApiTestCase
         $this->additionalUsersFixtures = new AdditionalUsersFixtures($this->container->get(UserPasswordHasherInterface::class));
         $this->loadFixture(new LoginFixtures($this->container->get(UserPasswordHasherInterface::class)));
         $this->loadFixture($this->additionalUsersFixtures);
-        $this->userRepository = $this->container->get(UserRepositoryInterface::class);
         $this->loginWithUser(LoginFixtures::USER_NAME, LoginFixtures::PASSWORD);
-        $this->userToken = $this->getAuthToken();
     }
 
     #[Test]

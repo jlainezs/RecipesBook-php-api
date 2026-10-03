@@ -3,7 +3,6 @@ namespace App\Tests\Functional\Security\Users;
 
 use App\DataFixtures\Security\AdditionalUsersFixtures;
 use App\DataFixtures\Security\LoginFixtures;
-use App\Security\Domain\Repository\UserRepositoryInterface;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\Tests\Functional\AppApiTestCase;
@@ -13,7 +12,6 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class DeleteUserTest extends AppApiTestCase
 {
-    protected UserRepositoryInterface $userRepository;
     protected string $userToken;
     protected string $userId;
     protected AdditionalUsersFixtures $additionalUsersFixtures;
@@ -27,9 +25,7 @@ class DeleteUserTest extends AppApiTestCase
         $this->additionalUsersFixtures = new AdditionalUsersFixtures($this->container->get(UserPasswordHasherInterface::class));
         $this->loadFixture(new LoginFixtures($this->container->get(UserPasswordHasherInterface::class)));
         $this->loadFixture($this->additionalUsersFixtures);
-        $this->userRepository = $this->container->get(UserRepositoryInterface::class);
         $this->loginWithUser(LoginFixtures::USER_NAME, LoginFixtures::PASSWORD);
-        $this->userToken = $this->getAuthToken();
     }
 
     #[Test]

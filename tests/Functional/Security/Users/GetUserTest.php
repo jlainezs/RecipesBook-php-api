@@ -12,14 +12,12 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class GetUserTest extends AppApiTestCase
 {
-    protected UserRepositoryInterface $userRepository;
     protected string $userToken;
 
     public function setUp(): void
     {
         parent::setUp();
         $this->loadFixture(new LoginFixtures($this->container->get(UserPasswordHasherInterface::class)));
-        $this->userRepository = $this->container->get(UserRepositoryInterface::class);
         $this->loginWithUser(LoginFixtures::USER_NAME, LoginFixtures::PASSWORD);
         $this->userToken = $this->getAuthToken();
     }
