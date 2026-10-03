@@ -1,14 +1,14 @@
 <?php
 namespace App\Security\Domain\Service;
 use App\Security\Domain\Exceptions\UserEmailAlreadyInUseException;
-use App\Security\Infrastructure\Repository\UserRepository;
+use App\Security\Domain\Repository\UserRepositoryInterface;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\Shared\Domain\ValueObjects\Email;
 
 final readonly class UserEmailUniquenessChecker
 {
     public function __construct(
-        private UserRepository $userRepository
+        private UserRepositoryInterface $userRepository
     ){}
 
     /**
@@ -27,7 +27,7 @@ final readonly class UserEmailUniquenessChecker
      */
     public function isEmailUniqueExceptUser(Email $email, AggregateRootId $userId): void
     {
-        if ($this->userRepository->findOneByEmailExcceptUser($email, $userId) !== null)
+        if ($this->userRepository->findOneByEmailExceptUser($email, $userId) !== null)
         {
            throw new UserEmailAlreadyInUseException($email);
         }

@@ -22,7 +22,17 @@ final class UserRepository extends ServiceEntityRepository implements UserReposi
 
     public function findOneByEmail(Email $email): ?User
     {
-        return $this->findOneBy(['email' => $email->value()]);
+        return $this->findOneBy([
+            'email' => $email->value()
+        ]);
+    }
+
+    public function findOneByEmailExceptUser(Email $email, AggregateRootId $excludeUserId): ?User
+    {
+        return $this->findOneBy([
+            'email' => $email,
+            'id' => ['!=' => $excludeUserId],
+        ]);
     }
 
     public function findAll(?int $limit = null, ?int $offset = null): array
