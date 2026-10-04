@@ -3,6 +3,7 @@ namespace App\Security\Presentation\Http\Controller;
 
 use App\Security\Application\Command\User\CreateUser\CreateUserCommand;
 use App\Security\Application\Command\User\CreateUser\CreateUserDto;
+use App\Security\Domain\Model\UserRole;
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
