@@ -9,6 +9,7 @@ use App\IngredientType\Presentation\Http\Controller\UpdateIngredientTypeControll
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,7 +31,7 @@ class IngredientTypeUpdateControllerTest extends TestCase
     #[Test]
     public function it_should_update_ingredient_type(): void
     {
-        $ingredientType = IngredientType::create('name');
+        $ingredientType = IngredientType::create(AggregateRootId::generateId()->toString(),'name');
         $this->commandBus
             ->expects($this->once())
             ->method('dispatch')

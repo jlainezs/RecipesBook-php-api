@@ -1,5 +1,7 @@
 POST http://localhost:8000/api/v1/ingredients/create
 Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{auth_token}}
 
 {
     "name": "XXXXXX An ingredient test here dubi dubi do",

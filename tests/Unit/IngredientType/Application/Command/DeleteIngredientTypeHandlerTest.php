@@ -7,6 +7,7 @@ use App\IngredientType\Application\Command\IngredientType\DeleteIngredientType\D
 use App\IngredientType\Domain\Exceptions\IngredientTypeNotFoundException;
 use App\IngredientType\Domain\Model\IngredientType;
 use App\IngredientType\Domain\Repository\IngredientTypeRepositoryInterface;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -25,7 +26,7 @@ class DeleteIngredientTypeHandlerTest extends TestCase
     #[Test]
     public function it_deletes_when_ingredient_type_is_found(): void
     {
-        $ingredientType = IngredientType::create('Vegetable');
+        $ingredientType = IngredientType::create(AggregateRootId::generateId()->toString(),'Vegetable');
         $id = $ingredientType->getId()->toString();
 
         $this->repository

@@ -20,7 +20,7 @@ final readonly class CreateIngredientTypeCommandHandler
      */
     public function __invoke(CreateIngredientTypeCommand $command): void
     {
-        $ingredientType = IngredientType::create($command->name);
+        $ingredientType = IngredientType::create($command->id,  $command->name);
         $this->repository->save($ingredientType);
     }
 }

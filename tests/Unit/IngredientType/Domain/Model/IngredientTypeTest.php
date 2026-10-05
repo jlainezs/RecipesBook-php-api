@@ -4,6 +4,7 @@ namespace App\Tests\Unit\IngredientType\Domain\Model;
 
 use App\IngredientType\Domain\Exceptions\IngredientTypeEmptyNameException;
 use App\IngredientType\Domain\Model\IngredientType;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\Exceptions\EmptyRequiredNameException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
 use DateTimeImmutable;
@@ -15,7 +16,7 @@ class IngredientTypeTest extends TestCase
     #[Test]
     public function it_creates_with_a_valid_name(): void
     {
-        $ingredientType = IngredientType::create('Vegetable');
+        $ingredientType = IngredientType::create(AggregateRootId::generateId()->toString(),'Vegetable');
 
         $this->assertSame('Vegetable', $ingredientType->getName()->value());
         $this->assertInstanceOf(AggregateRootId::class, $ingredientType->getId());
@@ -23,20 +24,26 @@ class IngredientTypeTest extends TestCase
         $this->assertInstanceOf(DateTimeImmutable::class, $ingredientType->getUpdatedAt());
     }
 
+    /**
+     * @throws EmptyIdNotAllowedException
+     */
     #[Test]
     public function it_generates_a_unique_id_on_each_creation(): void
     {
-        $first = IngredientType::create('Vegetable');
-        $second = IngredientType::create('Fruit');
+        $first = IngredientType::create(AggregateRootId::generateId()->toString(),'Vegetable');
+        $second = IngredientType::create(AggregateRootId::generateId()->toString(),'Fruit');
 
         $this->assertNotSame($first->getId()->toString(), $second->getId()->toString());
     }
 
+    /**
+     * @throws EmptyIdNotAllowedException
+     */
     #[Test]
     public function it_throws_on_empty_name(): void
     {
         $this->expectException(EmptyRequiredNameException::class);
-        IngredientType::create('');
+        IngredientType::create(AggregateRootId::generateId()->toString(),'');
     }
 
     #[Test]
@@ -44,13 +51,13 @@ class IngredientTypeTest extends TestCase
     {
         $this->expectException(EmptyRequiredNameException::class);
 
-        IngredientType::create('   ');
+        IngredientType::create(AggregateRootId::generateId()->toString(),'   ');
     }
 
     #[Test]
     public function it_renames_successfully(): void
     {
-        $ingredientType = IngredientType::create('Vegetable');
+        $ingredientType = IngredientType::create(AggregateRootId::generateId()->toString(),'Vegetable');
 
         $ingredientType->rename('Fruit');
 
@@ -60,7 +67,7 @@ class IngredientTypeTest extends TestCase
     #[Test]
     public function it_throws_on_rename_with_empty_name(): void
     {
-        $ingredientType = IngredientType::create('Vegetable');
+        $ingredientType = IngredientType::create(AggregateRootId::generateId()->toString(),'Vegetable');
 
         $this->expectException(EmptyRequiredNameException::class);
 
@@ -70,7 +77,7 @@ class IngredientTypeTest extends TestCase
     #[Test]
     public function it_throws_on_rename_with_whitespace_only_name(): void
     {
-        $ingredientType = IngredientType::create('Vegetable');
+        $ingredientType = IngredientType::create(AggregateRootId::generateId()->toString(),'Vegetable');
 
         $this->expectException(EmptyRequiredNameException::class);
 

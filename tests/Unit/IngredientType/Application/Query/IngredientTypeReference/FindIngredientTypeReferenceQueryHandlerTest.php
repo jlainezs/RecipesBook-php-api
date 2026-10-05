@@ -30,7 +30,7 @@ class FindIngredientTypeReferenceQueryHandlerTest extends TestCase
     #[Test]
     public function it_should_return_ingredient_type_reference(): void
     {
-        $ingredientType = IngredientType::create('test');
+        $ingredientType = IngredientType::create(AggregateRootId::generateId()->toString(),'test');
 
         $this->repository
             ->expects($this->once())

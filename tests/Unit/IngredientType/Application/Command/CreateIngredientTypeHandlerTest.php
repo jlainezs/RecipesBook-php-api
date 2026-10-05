@@ -6,7 +6,9 @@ use App\IngredientType\Application\Command\IngredientType\CreateIngredientType\C
 use App\IngredientType\Application\Command\IngredientType\CreateIngredientType\CreateIngredientTypeCommandHandler;
 use App\IngredientType\Domain\Model\IngredientType;
 use App\IngredientType\Domain\Repository\IngredientTypeRepositoryInterface;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\Exceptions\EmptyRequiredNameException;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -30,9 +32,12 @@ class CreateIngredientTypeHandlerTest extends TestCase
             ->method('save')
             ->with($this->isInstanceOf(IngredientType::class));
 
-        ($this->handler)(new CreateIngredientTypeCommand('Vegetable'));
+        ($this->handler)(new CreateIngredientTypeCommand(AggregateRootId::generateId()->toString(), 'Vegetable'));
     }
 
+    /**
+     * @throws EmptyIdNotAllowedException
+     */
     #[Test]
     public function it_throws_and_does_not_save_when_name_is_empty(): void
     {
@@ -42,7 +47,7 @@ class CreateIngredientTypeHandlerTest extends TestCase
 
         $this->expectException(EmptyRequiredNameException::class);
 
-        ($this->handler)(new CreateIngredientTypeCommand(''));
+        ($this->handler)(new CreateIngredientTypeCommand(AggregateRootId::generateId()->toString(),''));
     }
 
     #[Test]
@@ -54,6 +59,6 @@ class CreateIngredientTypeHandlerTest extends TestCase
 
         $this->expectException(EmptyRequiredNameException::class);
 
-        ($this->handler)(new CreateIngredientTypeCommand('   '));
+        ($this->handler)(new CreateIngredientTypeCommand(AggregateRootId::generateId()->toString(),'   '));
     }
 }

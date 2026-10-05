@@ -8,6 +8,7 @@ use App\IngredientType\Application\Query\IngredientType\GetIngredientType\GetIng
 use App\IngredientType\Domain\Exceptions\IngredientTypeNotFoundException;
 use App\IngredientType\Domain\Model\IngredientType;
 use App\IngredientType\Domain\Repository\IngredientTypeRepositoryInterface;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -26,7 +27,7 @@ class GetIngredientTypeQueryHandlerTest extends TestCase
     #[Test]
     public function it_returns_a_response_with_dto_when_found(): void
     {
-        $ingredientType = IngredientType::create('Vegetable');
+        $ingredientType = IngredientType::create(AggregateRootId::generateId()->toString(), 'Vegetable');
         $id = $ingredientType->getId()->toString();
 
         $this->repository
