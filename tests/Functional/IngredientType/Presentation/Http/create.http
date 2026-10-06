@@ -4,3 +4,21 @@ Accept: application/json
 Authorization: Bearer {{auth_token}}
 
 {"name": "XXXX another sample ingredient type"}
+
+### Should fail 400
+
+POST http://localhost:8000/api/v1/ingredient-types
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{auth_token}}
+
+{"name": ""}
+
+### Should fail 400
+
+POST http://localhost:8000/api/v1/ingredient-types
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{auth_token}}
+
+{}
