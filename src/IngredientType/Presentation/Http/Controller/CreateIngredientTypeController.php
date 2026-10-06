@@ -28,7 +28,7 @@ final class CreateIngredientTypeController extends AbstractController
     /**
      * @throws EmptyIdNotAllowedException
      */
-    #[Route('/api/v1/ingredient-types/create', name: 'create_ingredient_type', methods: ['POST'])]
+    #[Route('/api/v1/ingredient-types', name: 'create_ingredient_type', methods: ['POST'])]
     public function __invoke(#[MapRequestPayload] CreateIngredientTypeDto $dto):JsonResponse
     {
         $id = AggregateRootId::generateId();
