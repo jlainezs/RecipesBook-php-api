@@ -1,28 +1,24 @@
 <?php
-
 namespace App\IngredientType\Presentation\Http\Controller;
 
-use App\IngredientType\Application\Command\IngredientType\CreateIngredientType\CreateIngredientTypeCommand;
+use App\IngredientType\Application\Command\IngredientType\CreateIngredientType\CreateIngredientTypeCommandFactory;
 use App\IngredientType\Application\Command\IngredientType\CreateIngredientType\CreateIngredientTypeDto;
-use App\IngredientType\Application\Query\IngredientType\GetIngredientType\GetIngredientTypeQuery;
-use App\IngredientType\Application\Query\IngredientType\GetIngredientTypes\GetIngredientTypesQueryDto;
-use App\IngredientType\Domain\Model\IngredientType;
+use App\IngredientType\Application\Command\IngredientType\CreateIngredientType\CreateIngredientTypeResponse;
 use App\Shared\Application\Bus\CommandBus;
-use App\Shared\Application\Bus\QueryBus;
-use App\Shared\Application\Service\ApplicationDataValidator;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
-use App\Shared\Domain\ValueObjects\AggregateRootId;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final class CreateIngredientTypeController extends AbstractController
 {
     public function __construct(
         private readonly CommandBus $commandBus,
-        private readonly QueryBus $queryBus,
-        private readonly ApplicationDataValidator $validator
+        private readonly CreateIngredientTypeCommandFactory $commandFactory,
+        private readonly UrlGeneratorInterface $urlGenerator,
     ){}
 
     /**
@@ -31,14 +27,18 @@ final class CreateIngredientTypeController extends AbstractController
     #[Route('/api/v1/ingredient-types', name: 'create_ingredient_type', methods: ['POST'])]
     public function __invoke(#[MapRequestPayload] CreateIngredientTypeDto $dto):JsonResponse
     {
-        $id = AggregateRootId::generateId();
-        $cmd = new CreateIngredientTypeCommand($id->toString(), $dto->name);
-        $this->validator->validate($cmd);
+        $cmd = $this->commandFactory->createFromDto($dto);
         $this->commandBus->dispatch($cmd);
+        $response = new CreateIngredientTypeResponse($cmd->id);
 
-        $query = new GetIngredientTypeQuery($id->toString());
-        $response = $this->queryBus->ask($query);
-
-        return new JsonResponse($response, 201);
+        return new JsonResponse(
+            data: $response,
+            status: Response::HTTP_CREATED,
+            headers: [
+                'Content-Type' => 'application/json',
+                'Location' => $this->urlGenerator->generate('get_ingredient_type', ['id' => $cmd->id], UrlGeneratorInterface::ABSOLUTE_URL),
+                'Cache-Control' => 'no-cache, no-store, must-revalidate',
+            ]
+        );
     }
 }

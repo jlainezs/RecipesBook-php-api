@@ -1,10 +1,9 @@
 <?php
 namespace App\DataFixtures\Ingredient;
 
-use App\IngredientType\Application\Service\IngredientTypeItemsPager;
 use App\IngredientType\Domain\Model\IngredientType;
-use App\IngredientType\Infrastructure\Repository\IngredientTypeRepository;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -23,14 +22,14 @@ class AdditionalIngredientFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $toCreate = [
-            'test ingredient type 1',
-            'test ingredient type 2'.
-            'test ingredient type 3'
+            [AggregateRootId::generateId()->toString(), 'test ingredient type 1'],
+            [AggregateRootId::generateId()->toString(), 'test ingredient type 2'],
+            [AggregateRootId::generateId()->toString(), 'test ingredient type 3']
         ];
 
         foreach ($toCreate as $ingredientType)
         {
-            $manager->persist(IngredientType::create($ingredientType));
+            $manager->persist(IngredientType::create($ingredientType[0], $ingredientType[1]));
         }
 
         $manager->flush();
