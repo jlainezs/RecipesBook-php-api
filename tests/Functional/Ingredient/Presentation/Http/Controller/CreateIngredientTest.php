@@ -22,9 +22,7 @@ class CreateIngredientTest extends  AppApiTestCase
         parent::setUp();
         $this->loadFixture(new LoginFixtures($this->container->get(UserPasswordHasherInterface::class)));
         $this->loginWithUser(LoginFixtures::USER_NAME, LoginFixtures::PASSWORD);
-        $this->additionalIngredientFixtures = new AdditionalIngredientFixtures(
-            $this->container->get(IngredientTypeItemsPager::class)
-        );
+        $this->additionalIngredientFixtures = new AdditionalIngredientFixtures();
         $this->loadFixture($this->additionalIngredientFixtures);
     }
 
@@ -33,9 +31,9 @@ class CreateIngredientTest extends  AppApiTestCase
     {
         $this->assertNotEmpty($this->additionalIngredientFixtures->testIngredientTypes);
         $ingredientToCreateData = [
-            'an ingredient',
-            $this->additionalIngredientFixtures->testIngredientTypes[0]->getId()->toString(),
-            'no description available'
+            'name' =>'an ingredient',
+            'ingredientTypeId' => $this->additionalIngredientFixtures->testIngredientTypes[0]->getId()->toString(),
+            'description' =>'no description available'
         ];
         $this->client->request(
             'POST',

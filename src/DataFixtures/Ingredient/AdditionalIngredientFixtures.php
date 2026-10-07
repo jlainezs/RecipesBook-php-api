@@ -29,7 +29,9 @@ class AdditionalIngredientFixtures extends Fixture
 
         foreach ($toCreate as $ingredientType)
         {
-            $manager->persist(IngredientType::create($ingredientType[0], $ingredientType[1]));
+            $ingredientType = IngredientType::create($ingredientType[0], $ingredientType[1]);
+            $this->testIngredientTypes[] = $ingredientType;
+            $manager->persist($ingredientType);
         }
 
         $manager->flush();

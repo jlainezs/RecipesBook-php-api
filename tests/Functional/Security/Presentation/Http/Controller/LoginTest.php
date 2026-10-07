@@ -35,10 +35,6 @@ class LoginTest extends AppApiTestCase
     #[DataProvider('wrongCredentials')]
     public function login_with_wrong_credentials_will_fail(string $userName, string $password):void
     {
-        // setup data
-        $this->fixtureLoader->addFixture(new LoginFixtures($this->container->get(UserPasswordHasherInterface::class)));
-        $this->executor->execute($this->fixtureLoader->getFixtures());
-
         // act
         $this->loginWithUser($userName, $password);
 

@@ -16,7 +16,6 @@ abstract class AppApiTestCase extends WebTestCase
 {
     protected KernelBrowser $client;
     protected Container $container;
-    protected SymfonyFixturesLoader $fixtureLoader;
     protected ObjectManager $entityManager;
     protected ORMExecutor $executor;
     protected string $userToken;
@@ -30,9 +29,9 @@ abstract class AppApiTestCase extends WebTestCase
         $this->client = self::createClient();
         $this->container = self::getContainer();
         $this->entityManager = $this->container->get('doctrine')->getManager();
-        $this->fixtureLoader = $this->container->get('doctrine.fixtures.loader');
         $this->userRepository = $this->container->get(UserRepositoryInterface::class);
         $this->executor = new ORMExecutor($this->entityManager, new ORMPurger());
+        $this->executor->purge();
     }
 
     protected function loginWithUser(string $userName, string $password): void
@@ -52,8 +51,6 @@ abstract class AppApiTestCase extends WebTestCase
 
     protected function loadFixture(FixtureInterface $fixture): void
     {
-        $this->fixtureLoader->addFixture($fixture);
-        $this->executor->execute($this->fixtureLoader->getFixtures());
-
+        $this->executor->execute([$fixture], true);
     }
 }
