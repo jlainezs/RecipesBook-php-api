@@ -14,11 +14,15 @@ final class JsonErrorResponse extends JsonResponse
         string $traceAsString = '',
     )
     {
+        $headers['content-type'] = 'application/problem+json';
+        $instance = $file . ':' . $line;
+        $details = explode("\n", $traceAsString);
         parent::__construct([
-            'error' => $message,
-            'file' => $file,
-            'line' => $line,
-            'trace' => explode("\n", $traceAsString),
+            'type' => $message,
+            'title' => $message,
+            'status' => $statusCode,
+            'instance' => $instance,
+            'detail' => $details
         ], $statusCode, $headers);
     }
 }

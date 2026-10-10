@@ -3,14 +3,13 @@ namespace App\Tests\Functional\Ingredient\Presentation\Http\Controller;
 
 use App\DataFixtures\Ingredient\AdditionalIngredientFixtures;
 use App\DataFixtures\Security\LoginFixtures;
-use App\IngredientType\Application\Service\IngredientTypeItemsPager;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Tests\Functional\AppApiTestCase;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-class CreateIngredientTest extends  AppApiTestCase
+class CreateIngredientControllerTest extends  AppApiTestCase
 {
     private AdditionalIngredientFixtures $additionalIngredientFixtures;
 
