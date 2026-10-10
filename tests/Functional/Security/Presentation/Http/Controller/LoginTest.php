@@ -1,5 +1,5 @@
 <?php
-namespace App\Tests\Functional\Security\Users;
+namespace App\Tests\Functional\Security\Presentation\Http\Controller;
 
 use App\DataFixtures\Security\LoginFixtures;
 use App\Tests\Functional\AppApiTestCase;
