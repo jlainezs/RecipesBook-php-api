@@ -37,17 +37,8 @@ class LoginTest extends AppApiTestCase
     {
         // act
         $this->loginWithUser($userName, $password);
-
-        $this->assertResponseStatusCodeSame(Response::HTTP_UNAUTHORIZED);
-        $this->assertResponseHeaderSame('content-type', 'application/json');
-        $responseData = json_decode($this->client->getResponse()->getContent(), true);
-        $this->assertIsArray($responseData);
-        $this->assertArrayHasKey('message', $responseData);
-        $this->assertNotEmpty($responseData['message']);
-        $this->assertEquals("Invalid credentials.", $responseData['message']);
-        $this->assertArrayHasKey('code', $responseData);
-        $this->assertNotEmpty($responseData['code']);
-        $this->assertEquals(Response::HTTP_UNAUTHORIZED, $responseData['code']);
+        $responseData = $this->assertProblemDetailsResponse(Response::HTTP_UNAUTHORIZED);
+        $this->assertEquals("Bad credentials", $responseData['title']);
     }
 
     public static function wrongCredentials(): iterable

@@ -5,6 +5,8 @@ use Lexik\Bundle\JWTAuthenticationBundle\Event\AuthenticationFailureEvent;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTExpiredEvent;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTInvalidEvent;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTNotFoundEvent;
+use Lexik\Bundle\JWTAuthenticationBundle\Events;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -14,6 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 final readonly class JwtAuthenticationFailureListener
 {
+    #[AsEventListener(event: Events::JWT_INVALID)]
     public function onJWTInvalid(JWTInvalidEvent $event): void
     {
         $response = $this->createProblemResponse(
@@ -27,6 +30,7 @@ final readonly class JwtAuthenticationFailureListener
         $event->setResponse($response);
     }
 
+    #[AsEventListener(event: Events::JWT_EXPIRED)]
     public function onJWTExpired(JWTExpiredEvent $event): void
     {
         $response = $this->createProblemResponse(
@@ -40,6 +44,7 @@ final readonly class JwtAuthenticationFailureListener
         $event->setResponse($response);
     }
 
+    #[AsEventListener(event: Events::JWT_NOT_FOUND)]
     public function onJWTNotFound(JWTNotFoundEvent $event): void
     {
         $response = $this->createProblemResponse(
@@ -53,6 +58,7 @@ final readonly class JwtAuthenticationFailureListener
         $event->setResponse($response);
     }
 
+    #[AsEventListener(event: Events::AUTHENTICATION_FAILURE)]
     public function onAuthenticationFailureResponse(AuthenticationFailureEvent $event): void
     {
         $response = $this->createProblemResponse(
