@@ -60,6 +60,20 @@ class GetIngredientTypeControllerTest extends AppApiTestCase
         $this->assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
     }
 
+    public function testGetIngredientTypeUnauthorizedFails()
+    {
+        $this->client->request(
+            'GET',
+            $this->getDefinedUrl('get_ingredient_type', ['id' => AggregateRootId::generateId()->toString()]),
+            [],
+            [],
+            [
+                'HTTP_ACCEPT' => 'application/json'
+            ]
+        );
+        $this->assertResponseStatusCodeSame(Response::HTTP_UNAUTHORIZED);
+    }
+
     #[DataProvider('wrongIds')]
     public function testGetIngredientTypeWithWrongIdFails(string $id)
     {
