@@ -1,7 +1,7 @@
 <?php
 namespace App\Tests\Functional\Ingredient\Presentation\Http\Controller;
 
-use App\DataFixtures\Ingredient\AdditionalIngredientFixtures;
+use App\DataFixtures\Ingredient\AdditionalIngredientTypeFixtures;
 use App\DataFixtures\Security\LoginFixtures;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Tests\Functional\AppApiTestCase;
@@ -11,7 +11,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class CreateIngredientControllerTest extends  AppApiTestCase
 {
-    private AdditionalIngredientFixtures $additionalIngredientFixtures;
+    private AdditionalIngredientTypeFixtures $additionalIngredientTypeFixtures;
 
     /**
      * @throws EmptyIdNotAllowedException
@@ -21,17 +21,17 @@ class CreateIngredientControllerTest extends  AppApiTestCase
         parent::setUp();
         $this->loadFixture(new LoginFixtures($this->container->get(UserPasswordHasherInterface::class)));
         $this->loginWithUser(LoginFixtures::USER_NAME, LoginFixtures::PASSWORD);
-        $this->additionalIngredientFixtures = new AdditionalIngredientFixtures();
-        $this->loadFixture($this->additionalIngredientFixtures);
+        $this->additionalIngredientTypeFixtures = new AdditionalIngredientTypeFixtures();
+        $this->loadFixture($this->additionalIngredientTypeFixtures);
     }
 
     #[Test]
     public function testCreateIngredient()
     {
-        $this->assertNotEmpty($this->additionalIngredientFixtures->testIngredientTypes);
+        $this->assertNotEmpty($this->additionalIngredientTypeFixtures->testIngredientTypes);
         $ingredientToCreateData = [
             'name' =>'an ingredient',
-            'ingredientTypeId' => $this->additionalIngredientFixtures->testIngredientTypes[0]->getId()->toString(),
+            'ingredientTypeId' => $this->additionalIngredientTypeFixtures->testIngredientTypes[0]->getId()->toString(),
             'description' =>'no description available'
         ];
         $this->client->request(

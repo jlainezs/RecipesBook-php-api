@@ -7,7 +7,7 @@ use App\Shared\Domain\ValueObjects\AggregateRootId;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class AdditionalIngredientFixtures extends Fixture
+class AdditionalIngredientTypeFixtures extends Fixture
 {
     public array $testIngredientTypes;
 

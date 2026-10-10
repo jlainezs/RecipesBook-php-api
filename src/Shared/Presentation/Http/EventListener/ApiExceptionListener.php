@@ -8,6 +8,7 @@ use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
+use Symfony\Component\Routing\Exception\InvalidParameterException;
 use Symfony\Component\Validator\Exception\ValidationFailedException;
 
 #[AsEventListener(event: KernelEvents::EXCEPTION, method: 'onKernelException')]
@@ -23,7 +24,8 @@ final class ApiExceptionListener
 
         $response = match (true) {
             $exception instanceof ValidationFailedException,
-            $exception instanceof UnprocessableEntityHttpException
+            $exception instanceof UnprocessableEntityHttpException,
+            $exception instanceof InvalidParameterException
             => new JsonErrorResponse(
                     $exception->getMessage(), 400, [],
                     $exception->getFile(),
