@@ -1,7 +1,7 @@
 <?php
 namespace App\Tests\Functional\IngredientType\Presentation\Http\Controller;
 
-use App\DataFixtures\Ingredient\AdditionalIngredientTypeFixtures;
+use App\DataFixtures\Ingredient\IngredientTypeFixtures;
 use App\DataFixtures\Security\LoginFixtures;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Tests\Functional\AppApiTestCase;
@@ -11,7 +11,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class GetIngredientTypesControllerTest extends AppApiTestCase
 {
-    private AdditionalIngredientTypeFixtures $additionalIngredientTypeFixtures;
+    private IngredientTypeFixtures $additionalIngredientTypeFixtures;
 
     /**
      * @throws EmptyIdNotAllowedException
@@ -21,7 +21,7 @@ class GetIngredientTypesControllerTest extends AppApiTestCase
         parent::setUp();
         $this->loadFixture(new LoginFixtures($this->container->get(UserPasswordHasherInterface::class)));
         $this->loginWithUser(LoginFixtures::USER_NAME, LoginFixtures::PASSWORD);
-        $this->additionalIngredientTypeFixtures = new AdditionalIngredientTypeFixtures();
+        $this->additionalIngredientTypeFixtures = new IngredientTypeFixtures();
         $this->loadFixture($this->additionalIngredientTypeFixtures);
     }
 

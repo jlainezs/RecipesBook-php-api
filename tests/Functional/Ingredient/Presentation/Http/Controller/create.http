@@ -1,4 +1,4 @@
-POST http://localhost:8000/api/v1/ingredients/create
+POST http://localhost:8000/api/v1/ingredients
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer {{auth_token}}
@@ -10,7 +10,7 @@ Authorization: Bearer {{auth_token}}
 }
 
 ### another creation
-POST http://localhost:8000/api/v1/ingredients/create
+POST http://localhost:8000/api/v1/ingredients
 Content-Type: application/json
 
 {
@@ -22,7 +22,7 @@ Content-Type: application/json
 ###
 # Expected to fail - invalid UID
 
-POST http://localhost:8000/api/v1/ingredients/create
+POST http://localhost:8000/api/v1/ingredients
 Content-Type: application/json
 
 {
@@ -34,7 +34,7 @@ Content-Type: application/json
 ###
 # Expected to fail - ingredientTypeId not found
 
-POST http://localhost:8000/api/v1/ingredients/create
+POST http://localhost:8000/api/v1/ingredients
 Content-Type: application/json
 
 {

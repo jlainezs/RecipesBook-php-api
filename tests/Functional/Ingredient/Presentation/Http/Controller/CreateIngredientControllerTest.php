@@ -1,7 +1,7 @@
 <?php
 namespace App\Tests\Functional\Ingredient\Presentation\Http\Controller;
 
-use App\DataFixtures\Ingredient\AdditionalIngredientTypeFixtures;
+use App\DataFixtures\Ingredient\IngredientTypeFixtures;
 use App\DataFixtures\Security\LoginFixtures;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Tests\Functional\AppApiTestCase;
@@ -11,7 +11,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class CreateIngredientControllerTest extends  AppApiTestCase
 {
-    private AdditionalIngredientTypeFixtures $additionalIngredientTypeFixtures;
+    private IngredientTypeFixtures $additionalIngredientTypeFixtures;
 
     /**
      * @throws EmptyIdNotAllowedException
@@ -21,7 +21,7 @@ class CreateIngredientControllerTest extends  AppApiTestCase
         parent::setUp();
         $this->loadFixture(new LoginFixtures($this->container->get(UserPasswordHasherInterface::class)));
         $this->loginWithUser(LoginFixtures::USER_NAME, LoginFixtures::PASSWORD);
-        $this->additionalIngredientTypeFixtures = new AdditionalIngredientTypeFixtures();
+        $this->additionalIngredientTypeFixtures = new IngredientTypeFixtures();
         $this->loadFixture($this->additionalIngredientTypeFixtures);
     }
 
@@ -36,7 +36,7 @@ class CreateIngredientControllerTest extends  AppApiTestCase
         ];
         $this->client->request(
             'POST',
-            '/api/v1/ingredients/create',
+            '/api/v1/ingredients',
             [],
             [],
             [
@@ -47,5 +47,8 @@ class CreateIngredientControllerTest extends  AppApiTestCase
             json_encode($ingredientToCreateData)
         );
         $this->assertResponseStatusCodeSame(Response::HTTP_CREATED);
+        $ingredientResponse = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertIsArray($ingredientResponse);
+        $this->assertArrayHasKey('id', $ingredientResponse);
     }
 }
