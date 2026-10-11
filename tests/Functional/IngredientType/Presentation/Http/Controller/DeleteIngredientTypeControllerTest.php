@@ -40,7 +40,21 @@ class DeleteIngredientTypeControllerTest extends AppApiTestCase
             ]
         );
         $this->assertResponseStatusCodeSame(Response::HTTP_NO_CONTENT);
+
+        // ensure the ingredient type was not deleted
+        $this->client->request(
+            'GET',
+            $this->getDefinedUrl('get_ingredient_type', ['id' => $this->additionalIngredientTypeFixtures->testIngredientTypes[0]->getId()->toString()]),
+            [],
+            [],
+            [
+                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
+                'HTTP_ACCEPT' => 'application/json'
+            ]
+        );
+        $this->assertProblemDetailsResponse(Response::HTTP_NOT_FOUND);
     }
+
     #[Test]
     public function deleteIngredientTypeNotFound(): void
     {
