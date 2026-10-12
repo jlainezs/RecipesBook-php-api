@@ -36,7 +36,7 @@ class CreateIngredientControllerTest extends  AppApiTestCase
         ];
         $this->client->request(
             'POST',
-            '/api/v1/ingredients',
+            $this->getDefinedUrl('ingredient_create'),
             [],
             [],
             [

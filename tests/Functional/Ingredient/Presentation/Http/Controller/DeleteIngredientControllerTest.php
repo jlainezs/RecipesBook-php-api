@@ -35,7 +35,7 @@ class DeleteIngredientControllerTest extends AppApiTestCase
         $ingredientId = $this->ingredientFixtures->testIngredients[0]->getId()->toString();
         $this->client->request(
             'DELETE',
-            '/api/v1/ingredients/' . $ingredientId,
+            $this->getDefinedUrl('ingredient_delete', ['id' => $ingredientId]),
             [],
             [],
             [
