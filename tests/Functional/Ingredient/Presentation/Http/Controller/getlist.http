@@ -5,6 +5,12 @@ Accept: application/json
 Authorization: Bearer {{auth_token}}
 
 ###
+# Should return 200
+GET http://localhost:8000/api/v1/ingredients
+Accept: application/json
+Authorization: Bearer {{auth_token}}
+
+###
 # Should fail
 GET http://localhost:8000/api/v1/ingredients?offset=0&limit=1000
 Accept: application/json

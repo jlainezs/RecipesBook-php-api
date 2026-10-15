@@ -1,5 +1,7 @@
 PUT http://localhost:8000/api/v1/ingredients/fc066bb1-22a9-47a4-981d-81f5065b461f
 Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{auth_token}}
 
 {
     "name": "An ingredient test here but with a new name",
@@ -10,6 +12,8 @@ Content-Type: application/json
 ###
 PUT http://localhost:8000/api/v1/ingredients/dcc5836b-823d-4333-9e15-72b2cd47da18
 Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{auth_token}}
 
 {
     "name": "Another ingredient FFFFFFFFFFFFFFFFFFF updated.",
@@ -21,6 +25,8 @@ Content-Type: application/json
 # Expected to fail - non existant ingredient type id
 PUT http://localhost:8000/api/v1/ingredients/fc066bb1-22a9-47a4-981d-81f5065b461f
 Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{auth_token}}
 
 {
     "name": "Will fail",
@@ -32,6 +38,8 @@ Content-Type: application/json
 # Expected to fail - non existant ingredient id
 PUT http://localhost:8000/api/v1/ingredients/00000000-0000-0000-0000-000000000000
 Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{auth_token}}
 
 {
     "name": "Will fail",

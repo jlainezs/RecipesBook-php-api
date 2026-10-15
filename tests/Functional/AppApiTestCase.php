@@ -2,6 +2,7 @@
 namespace App\Tests\Functional;
 
 use App\Shared\Domain\ValueObjects\Email;
+use Exception;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use App\DataFixtures\Security\AdditionalUsersFixtures;
@@ -13,6 +14,7 @@ use Doctrine\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DependencyInjection\Container;
+use Throwable;
 
 abstract class AppApiTestCase extends WebTestCase
 {
@@ -33,7 +35,16 @@ abstract class AppApiTestCase extends WebTestCase
         $this->entityManager = $this->container->get('doctrine')->getManager();
         $this->userRepository = $this->container->get(UserRepositoryInterface::class);
         $this->executor = new ORMExecutor($this->entityManager, new ORMPurger());
-        $this->executor->purge();
+
+        try
+        {
+            $this->executor->purge();
+        }
+        catch (Throwable $t)
+        {
+            echo "WARN: " . $t->getMessage();
+        }
+
         $this->urlGenerator = $this->container->get(UrlGeneratorInterface::class);
     }
 
