@@ -14,6 +14,7 @@ use App\Shared\Domain\ValueObjects\AggregateRootId;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CreateMealCourseControllerTest extends TestCase
@@ -57,7 +58,7 @@ class CreateMealCourseControllerTest extends TestCase
 
         $response = $controller($request);
 
-        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
 
     }
 }
