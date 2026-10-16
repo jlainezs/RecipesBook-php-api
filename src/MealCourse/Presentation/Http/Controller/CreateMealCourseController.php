@@ -34,6 +34,7 @@ final class CreateMealCourseController extends AbstractController
                 'Content-Type' => 'application/json',
                 'Location' => $this->urlGenerator->generate('ingredient_get_instance', ['id' => $cmd->id], UrlGeneratorInterface::ABSOLUTE_URL),
                 'Cache-Control' => 'no-cache, no-store, must-revalidate',
-            ]);
+            ]
+        );
     }
 }
