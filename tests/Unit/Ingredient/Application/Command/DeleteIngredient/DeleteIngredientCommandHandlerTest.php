@@ -30,8 +30,11 @@ class DeleteIngredientCommandHandlerTest extends TestCase
     #[Test]
     public function it_deletes_the_ingredient(): void
     {
-        $ingredient = Ingredient::create('test');
-        $id = $ingredient->getId();
+        $id = AggregateRootId::generateId()->toString();
+        $ingredient = Ingredient::create(
+            $id,
+            'test'
+        );
 
         $this->repository
             ->expects($this->once())

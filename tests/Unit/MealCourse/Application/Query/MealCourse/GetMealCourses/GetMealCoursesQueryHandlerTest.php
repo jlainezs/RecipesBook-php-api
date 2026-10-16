@@ -6,6 +6,7 @@ use App\MealCourse\Application\Query\MealCourse\GetMealCourses\GetMealCoursesQue
 use App\MealCourse\Application\Query\MealCourse\GetMealCourses\GetMealCoursesQueryResponse;
 use App\MealCourse\Application\Service\MealCourseItemsPager;
 use App\MealCourse\Domain\Model\MealCourse;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -26,8 +27,10 @@ class GetMealCoursesQueryHandlerTest extends TestCase
     #[Test]
     public function it_returns_a_response_with_mapped_dtos(): void
     {
-        $starter = MealCourse::create('Starter');
-        $main = MealCourse::create('Main');
+        $id1 = AggregateRootId::generateId()->toString();
+        $starter = MealCourse::create($id1, 'Starter');
+        $id2 = AggregateRootId::generateId()->toString();
+        $main = MealCourse::create($id2, 'Main');
 
         $this->pager
             ->expects($this->once())

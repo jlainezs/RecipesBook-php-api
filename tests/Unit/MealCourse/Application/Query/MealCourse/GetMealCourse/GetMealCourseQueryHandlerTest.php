@@ -8,6 +8,7 @@ use App\MealCourse\Application\Query\MealCourse\GetMealCourse\GetMealCourseRespo
 use App\MealCourse\Domain\Exceptions\MealCourseNotFoundException;
 use App\MealCourse\Domain\Model\MealCourse;
 use App\MealCourse\Domain\Repository\MealCourseRepositoryInterface;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -26,7 +27,8 @@ class GetMealCourseQueryHandlerTest extends TestCase
     #[Test]
     public function it_returns_a_response_with_dto_when_found(): void
     {
-        $mealCourse = MealCourse::create('Starter');
+        $id = AggregateRootId::generateId()->toString();
+        $mealCourse = MealCourse::create($id, 'Starter');
         $id = $mealCourse->getId()->toString();
 
         $this->repository

@@ -7,6 +7,7 @@ use App\Ingredient\Application\Service\IngredientItemsPager;
 use App\Ingredient\Domain\Model\Ingredient;
 use App\Ingredient\Domain\ValueObjects\IngredientTypeReference;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
@@ -29,8 +30,10 @@ class GetIngredientsQueryHandlerTest extends TestCase
     {
         $itr1 = new IngredientTypeReference('c0740d3d-b189-4cf3-90eb-d3dd14f3a4c4');
         $itr2 = new IngredientTypeReference('792ffc6a-cc7c-4dfa-8118-24e9bce3409b');
-        $i1 = Ingredient::create('i1', 'd1', $itr1);
-        $i2 = Ingredient::create('i2', 'd2', $itr2);
+        $ingredientId1 = AggregateRootId::generateId()->toString();
+        $i1 = Ingredient::create($ingredientId1, 'i1', 'd1', $itr1);
+        $ingredientId2 = AggregateRootId::generateId()->toString();
+        $i2 = Ingredient::create($ingredientId2,'i2', 'd2', $itr2);
 
         $this->pager
             ->expects($this->once())

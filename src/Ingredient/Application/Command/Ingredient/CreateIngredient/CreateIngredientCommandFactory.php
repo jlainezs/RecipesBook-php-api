@@ -8,7 +8,7 @@ use App\Shared\Domain\ValueObjects\AggregateRootId;
 readonly class CreateIngredientCommandFactory
 {
     public function __construct(
-        public readonly ApplicationDataValidator $validator
+        public ApplicationDataValidator $validator
     ){}
 
     /**

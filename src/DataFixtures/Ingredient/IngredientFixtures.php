@@ -4,6 +4,7 @@ namespace App\DataFixtures\Ingredient;
 
 use App\Ingredient\Domain\Model\Ingredient;
 use App\Ingredient\Domain\ValueObjects\IngredientTypeReference;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -16,6 +17,10 @@ class IngredientFixtures extends Fixture
     {
         $this->testIngredients = [];
     }
+
+    /**
+     * @throws EmptyIdNotAllowedException
+     */
     public function load(ObjectManager $manager): void
     {
         $rawIngredients = [
@@ -30,6 +35,7 @@ class IngredientFixtures extends Fixture
         foreach ($rawIngredients as $rawIngredient)
         {
             $ingredient = Ingredient::create(
+                $rawIngredient["id"],
                 $rawIngredient["name"],
                 $rawIngredient["description"],
                 new IngredientTypeReference($rawIngredient["ingredientTypeId"])

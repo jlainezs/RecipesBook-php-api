@@ -33,8 +33,9 @@ class GetIngredientQueryHandlerTest extends TestCase
     {
         $ingredientTypeId = "b4bac84a-9193-4405-98b7-7e53a65cc9a8";
         $ingredientTypeRef = new IngredientTypeReference($ingredientTypeId);
+        $ingredientId = AggregateRootId::generateId()->toString();
 
-        $ingredient = Ingredient::create('test', 'description', $ingredientTypeRef);
+        $ingredient = Ingredient::create($ingredientId, 'test', 'description', $ingredientTypeRef);
         $id = $ingredient->getId();
 
         $this->repository

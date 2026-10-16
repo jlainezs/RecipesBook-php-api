@@ -3,15 +3,18 @@
 namespace App\Tests\Unit\MealCourse\Presentation\Http\Controller;
 
 use App\MealCourse\Application\Command\MealCourse\CreateMealCourse\CreateMealCourseCommand;
+use App\MealCourse\Application\Command\MealCourse\CreateMealCourse\CreateMealCourseCommandFactory;
 use App\MealCourse\Application\Command\MealCourse\CreateMealCourse\CreateMealCourseDto;
 use App\MealCourse\Domain\Model\MealCourse;
 use App\MealCourse\Presentation\Http\Controller\CreateMealCourseController;
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CreateMealCourseControllerTest extends TestCase
 {
@@ -23,7 +26,11 @@ class CreateMealCourseControllerTest extends TestCase
     {
         $commandBus = $this->createMock(CommandBus::class);
         $validator = $this->createMock(ApplicationDataValidator::class);
-        $mealCourse = MealCourse::create(name:'test');
+        $cmdFactory = new CreateMealCourseCommandFactory($validator);
+        $urlGeneratorInterface = $this->createMock(UrlGeneratorInterface::class);
+
+        $id = AggregateRootId::generateId()->toString();
+        $mealCourse = MealCourse::create(id:$id, name:'test');
 
         $validator->expects($this->once())
             ->method('validate')
@@ -41,7 +48,11 @@ class CreateMealCourseControllerTest extends TestCase
                     return $cmd->name === $mealCourse->getName();
                 }
             ));
-        $controller = new CreateMealCourseController($commandBus, $validator);
+        $urlGeneratorInterface->expects($this->once())
+            ->method('generate')
+            ->withAnyParameters();
+
+        $controller = new CreateMealCourseController($commandBus, $cmdFactory, $urlGeneratorInterface);
         $request = new CreateMealCourseDto($mealCourse->getName());
 
         $response = $controller($request);

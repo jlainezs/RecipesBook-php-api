@@ -54,6 +54,7 @@ final readonly class IngredientCreateCommandHandler
         }
 
         $ingredient = Ingredient::create(
+            $command->id,
             $command->name,
             $command->description,
             $ingredientTypeReference
