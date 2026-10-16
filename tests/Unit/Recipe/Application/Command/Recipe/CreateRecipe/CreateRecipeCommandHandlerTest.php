@@ -1,14 +1,15 @@
 <?php
-namespace App\Tests\Unit\Recipe\Application\Command\Recipe\RecipeCreate;
+namespace App\Tests\Unit\Recipe\Application\Command\Recipe\CreateRecipe;
 
 use App\Ingredient\Domain\Repository\IngredientRepositoryInterface;
-use App\Recipe\Application\Command\RecipeCreate\RecipeCreateCommand;
-use App\Recipe\Application\Command\RecipeCreate\RecipeCreateCommandHandler;
+use App\Recipe\Application\Command\CreateRecipe\CreateRecipeCommand;
+use App\Recipe\Application\Command\CreateRecipe\CreateRecipeCommandHandler;
 use App\Recipe\Domain\Exceptions\RecipeInvalidServingsException;
 use App\Recipe\Domain\Model\Recipe;
 use App\Recipe\Domain\Repository\RecipeRepositoryInterface;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\Exceptions\EmptyRequiredNameException;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\UnitOfMeasure\Domain\Repository\UnitOfMeasureRepositoryInterface;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\Test;
@@ -16,19 +17,19 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 #[AllowMockObjectsWithoutExpectations]
-class RecipeCreateCommandHandlerTest extends TestCase
+class CreateRecipeCommandHandlerTest extends TestCase
 {
     private RecipeRepositoryInterface&MockObject $repository;
     private IngredientRepositoryInterface&MockObject $ingredientrepository;
     private UnitOfMeasureRepositoryInterface&MockObject $unitofmeasurerepository;
-    private RecipeCreateCommandHandler $handler;
+    private CreateRecipeCommandHandler $handler;
 
     public function setUp(): void
     {
         $this->repository = $this->createMock(RecipeRepositoryInterface::class);
         $this->ingredientrepository = $this->createMock(IngredientRepositoryInterface::class);
         $this->unitofmeasurerepository = $this->createMock(UnitOfMeasureRepositoryInterface::class);
-        $this->handler = new RecipeCreateCommandHandler(
+        $this->handler = new CreateRecipeCommandHandler(
             $this->repository,
             $this->ingredientrepository,
             $this->unitofmeasurerepository
@@ -45,7 +46,8 @@ class RecipeCreateCommandHandlerTest extends TestCase
         $this->repository->expects($this->once())
             ->method('save')
             ->with($this->isInstanceOf(Recipe::class));
-        ($this->handler)(new RecipeCreateCommand(
+        ($this->handler)(new CreateRecipeCommand(
+            AggregateRootId::generateId()->toString(),
             "name",
             1,
             1,
@@ -65,7 +67,8 @@ class RecipeCreateCommandHandlerTest extends TestCase
         $this->repository->expects($this->never())
             ->method('save');
         $this->expectException(EmptyRequiredNameException::class);
-        ($this->handler)(new RecipeCreateCommand(
+        ($this->handler)(new CreateRecipeCommand(
+            AggregateRootId::generateId()->toString(),
             "",
             1,
             1,
@@ -85,7 +88,8 @@ class RecipeCreateCommandHandlerTest extends TestCase
         $this->repository->expects($this->never())
             ->method('save');
         $this->expectException(EmptyRequiredNameException::class);
-        ($this->handler)(new RecipeCreateCommand(
+        ($this->handler)(new CreateRecipeCommand(
+            AggregateRootId::generateId()->toString(),
             " ",
             1,
             1,

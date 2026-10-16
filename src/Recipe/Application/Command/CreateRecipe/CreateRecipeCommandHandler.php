@@ -1,5 +1,5 @@
 <?php
-namespace App\Recipe\Application\Command\RecipeCreate;
+namespace App\Recipe\Application\Command\CreateRecipe;
 
 use App\Ingredient\Domain\Exceptions\IngredientNotFoundException;
 use App\Ingredient\Domain\Repository\IngredientRepositoryInterface;
@@ -17,7 +17,7 @@ use App\UnitOfMeasure\Domain\Repository\UnitOfMeasureRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final readonly class RecipeCreateCommandHandler
+final readonly class CreateRecipeCommandHandler
 {
     public function __construct(
         private RecipeRepositoryInterface $repository,
@@ -31,12 +31,13 @@ final readonly class RecipeCreateCommandHandler
      * @throws IngredientNotFoundException
      * @throws UnitOfMeasureNotFoundException
      */
-    public function __invoke(RecipeCreateCommand $command): void
+    public function __invoke(CreateRecipeCommand $command): void
     {
         $ingredients = [];
         $steps = [];
 
         $recipe = Recipe::create(
+            $command->id,
             $command->name,
             $command->servings,
             $command->rating,

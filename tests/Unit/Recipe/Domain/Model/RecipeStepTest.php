@@ -5,6 +5,7 @@ use App\Recipe\Domain\Model\Recipe;
 use App\Recipe\Domain\Model\RecipeStep;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\Exceptions\InvalidOrderingException;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
@@ -17,6 +18,7 @@ class RecipeStepTest extends TestCase
     public function it_creates_a_recipe_step(): void
     {
         $recipe = Recipe::create(
+            id: AggregateRootId::generateId()->toString(),
             name: 'Salt',
             servings: 1,
             rating: 2,
@@ -39,6 +41,7 @@ class RecipeStepTest extends TestCase
     public function it_throws_exception_when_wrong_ordering(): void
     {
         $recipe = Recipe::create(
+            id: AggregateRootId::generateId()->toString(),
             name: 'Salt',
             servings: 1,
             rating: 2,

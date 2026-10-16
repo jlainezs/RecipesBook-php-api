@@ -10,6 +10,7 @@ use App\Recipe\Presentation\Http\Controller\GetRecipesListController;
 use App\Shared\Application\Bus\QueryBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
@@ -31,6 +32,7 @@ class GetRecipesListControllerTest extends TestCase
     public function it_returns_recipes_list(): void
     {
         $recipe = Recipe::create(
+            id: AggregateRootId::generateId()->toString(),
             name: 'test',
             servings: 4,
             rating: 5,

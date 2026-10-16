@@ -22,6 +22,7 @@ class RecipeIngredientTest extends TestCase
         $ingredientId = AggregateRootId::generateId();
         $unitOfMeasureId = AggregateRootId::generateId();
         $recipe = Recipe::create(
+            id: AggregateRootId::generateId()->toString(),
             name: 'Salt',
             servings: 1,
             rating: 2,
@@ -57,12 +58,16 @@ class RecipeIngredientTest extends TestCase
         );
     }
 
+    /**
+     * @throws EmptyIdNotAllowedException
+     */
     #[Test]
     public function it_generates_a_unique_id_on_each_creation(): void
     {
         $ingredientId = AggregateRootId::generateId();
         $unitOfMeasureId = AggregateRootId::generateId();
         $recipe = Recipe::create(
+            id: AggregateRootId::generateId()->toString(),
             name: 'Salt',
             servings: 1,
             rating: 2,
