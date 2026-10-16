@@ -1,5 +1,5 @@
 <?php
-namespace App\Ingredient\Application\Command\Ingredient\CreateIngredient;
+namespace App\MealCourse\Application\Command\MealCourse\CreateMealCourse;
 
 final readonly class CreateMealCourseResponse
 {

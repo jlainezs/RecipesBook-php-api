@@ -1,9 +1,9 @@
 <?php
 namespace App\MealCourse\Presentation\Http\Controller;
 
-use App\Ingredient\Application\Command\Ingredient\CreateIngredient\CreateMealCourseResponse;
 use App\MealCourse\Application\Command\MealCourse\CreateMealCourse\CreateMealCourseCommandFactory;
 use App\MealCourse\Application\Command\MealCourse\CreateMealCourse\CreateMealCourseDto;
+use App\MealCourse\Application\Command\MealCourse\CreateMealCourse\CreateMealCourseResponse;
 use App\Shared\Application\Bus\CommandBus;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
