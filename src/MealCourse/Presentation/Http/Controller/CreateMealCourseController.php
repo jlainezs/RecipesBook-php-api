@@ -32,7 +32,7 @@ final class CreateMealCourseController extends AbstractController
             status: Response::HTTP_CREATED,
             headers: [
                 'Content-Type' => 'application/json',
-                'Location' => $this->urlGenerator->generate('ingredient_get_instance', ['id' => $cmd->id], UrlGeneratorInterface::ABSOLUTE_URL),
+                'Location' => $this->urlGenerator->generate('meal_courses_get_instance', ['id' => $cmd->id], UrlGeneratorInterface::ABSOLUTE_URL),
                 'Cache-Control' => 'no-cache, no-store, must-revalidate',
             ]
         );
