@@ -1,28 +1,39 @@
 <?php
-
 namespace App\Tests\Unit\UnitOfMeasure\Presentation\Http\Controller;
 
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
+use App\UnitOfMeasure\Application\Command\UnitOfMeasure\CreateUnitOfMeasure\CreateUnitOfMeasureCommandFactory;
 use App\UnitOfMeasure\Application\Command\UnitOfMeasure\CreateUnitOfMeasure\CreateUnitOfMeasureDto;
 use App\UnitOfMeasure\Application\Command\UnitOfMeasure\CreateUnitOfMeasure\CreateUnitOfMeasureCommand;
 use App\UnitOfMeasure\Presentation\Http\Controller\CreateUnitOfMeasureController;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CreateUnitOfMeasureControllerTest extends TestCase
 {
-    private CommandBus $commandBus;
-    private ApplicationDataValidator $validator;
+    public CommandBus $commandBus;
+    public CreateUnitOfMeasureCommandFactory $commandFactory;
+    public UrlGeneratorInterface $urlGenerator;
+    public ApplicationDataValidator $validator;
+
 
     protected function setUp(): void
     {
         $this->commandBus = $this->createMock(CommandBus::class);
         $this->validator = $this->createMock(ApplicationDataValidator::class);
+        $this->commandFactory = new CreateUnitOfMeasureCommandFactory($this->validator);
+        $this->urlGenerator = $this->createMock(UrlGeneratorInterface::class);
     }
 
+    /**
+     * @throws EmptyIdNotAllowedException
+     */
     #[Test]
-    public function test_it_validates_dispatches_command_and_returns_201_response(): void
+    public function it_dispatches_command_and_returns_201_response(): void
     {
         $dto = new CreateUnitOfMeasureDto(
             name: 'test',
@@ -41,8 +52,17 @@ class CreateUnitOfMeasureControllerTest extends TestCase
             ->with($this->callback(
                 fn (CreateUnitOfMeasureCommand $cmd) => $dto->name === $cmd->name
             ));
-        $controller = new CreateUnitOfMeasureController($this->commandBus, $this->validator);
+        $this->urlGenerator
+            ->expects($this->once())
+            ->method('generate')
+            ->withAnyParameters();
+
+        $controller = new CreateUnitOfMeasureController(
+            $this->commandBus,
+            $this->commandFactory,
+            $this->urlGenerator
+        );
         $response = $controller($dto);
-        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
     }
 }

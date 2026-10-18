@@ -4,6 +4,7 @@ namespace App\UnitOfMeasure\Application\Command\UnitOfMeasure\CreateUnitOfMeasur
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\UnitOfMeasure\Domain\Exceptions\UnitOfMeasureEmptyNameException;
 use App\UnitOfMeasure\Domain\Exceptions\UnitOfMeasureEmptySymbolException;
+use App\UnitOfMeasure\Domain\Exceptions\UnitOfMeasureSymbolLengthException;
 use App\UnitOfMeasure\Domain\Model\UnitOfMeasure;
 use App\UnitOfMeasure\Domain\Repository\UnitOfMeasureRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -18,10 +19,13 @@ final readonly class CreateUnitOfMeasureCommandHandler
      * @throws UnitOfMeasureEmptySymbolException
      * @throws UnitOfMeasureEmptyNameException
      * @throws EmptyIdNotAllowedException
+     * @throws UnitOfMeasureSymbolLengthException
      */
     public function __invoke(CreateUnitOfMeasureCommand $command): void
     {
-        $uom = UnitOfMeasure::create($command->name, $command->symbol, $command->unitOfMeasureEnum);
+        $uom = UnitOfMeasure::create(
+            $command->id, $command->name, $command->symbol, $command->unitOfMeasureEnum
+        );
         $this->repository->save($uom);
     }
 }

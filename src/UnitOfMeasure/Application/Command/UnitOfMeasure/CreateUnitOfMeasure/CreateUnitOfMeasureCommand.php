@@ -7,6 +7,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 readonly final class CreateUnitOfMeasureCommand
 {
     public function __construct(
+        #[Assert\Uuid]
+        public string $id,
         #[Assert\NotBlank]
         public string $name,
 
