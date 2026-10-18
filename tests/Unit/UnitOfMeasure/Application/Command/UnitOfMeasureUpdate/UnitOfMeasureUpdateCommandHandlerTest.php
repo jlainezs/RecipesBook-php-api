@@ -34,6 +34,7 @@ class UnitOfMeasureUpdateCommandHandlerTest extends TestCase
     public function it_should_update_unit_of_measure():void
     {
         $unitOfMeasure = UnitOfMeasure::create(
+            AggregateRootId::generateId()->toString(),
             name: 'test',
             symbol: 't',
             unitOfMeasureType: UnitOfMeasureEnum::Units
@@ -67,6 +68,7 @@ class UnitOfMeasureUpdateCommandHandlerTest extends TestCase
     public function it_throws_when_setting_empty_name(): void
     {
         $unitOfMeasure = UnitOfMeasure::create(
+            id: AggregateRootId::generateId()->toString(),
             name: 'test',
             symbol: 't',
             unitOfMeasureType: UnitOfMeasureEnum::Units
