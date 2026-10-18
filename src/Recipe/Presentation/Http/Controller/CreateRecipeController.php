@@ -24,7 +24,7 @@ final class CreateRecipeController extends AbstractController
     /**
      * @throws EmptyIdNotAllowedException
      */
-    #[Route('/api/v1/recipes/create', name: 'post_recipe', methods: ['POST'])]
+    #[Route('/api/v1/recipes', name: 'post_recipe', methods: ['POST'])]
     public function __invoke(
         #[MapRequestPayload]
         CreateRecipeDto $request
@@ -38,7 +38,12 @@ final class CreateRecipeController extends AbstractController
             $result,
             Response::HTTP_CREATED,
             [
-                'Location' => $this->urlGenerator->generate('get_recipe', ['id' => $command->id])
+                'Content-Type' => 'application/json',
+                'Location' => $this->urlGenerator->generate(
+                    'get_recipe',
+                    ['id' => $command->id],
+                    UrlGeneratorInterface::ABSOLUTE_URL),
+                'Cache-Control' => 'must-revalidate, no-cache, no-store, private',
             ]
         );
     }

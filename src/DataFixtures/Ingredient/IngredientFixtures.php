@@ -29,6 +29,12 @@ class IngredientFixtures extends Fixture
                 "name" => "An ingredient test",
                 "description" =>"The description of this test ingredient",
                 "ingredientTypeId" => "84d77bf6-43d6-4d4e-b559-3a203e750eeb"
+            ],
+            [
+                "id" => AggregateRootId::generateId()->toString(),
+                "name" => "An ingredient test 2",
+                "description" =>"The description of this test ingredient 2",
+                "ingredientTypeId" => "84d77bf6-43d6-4d4e-b559-3a203e750eeb"
             ]
         ];
 
