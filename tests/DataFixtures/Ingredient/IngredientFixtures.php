@@ -12,6 +12,7 @@ use Doctrine\Persistence\ObjectManager;
 class IngredientFixtures extends Fixture
 {
     public array $testIngredients;
+    public IngredientTypeFixtures $ingredientTypeFixtures;
 
     public function __construct()
     {
@@ -23,18 +24,21 @@ class IngredientFixtures extends Fixture
      */
     public function load(ObjectManager $manager): void
     {
+        $this->ingredientTypeFixtures = new IngredientTypeFixtures();
+        $this->ingredientTypeFixtures->load($manager);
+
         $rawIngredients = [
             [
                 "id" => AggregateRootId::generateId()->toString(),
                 "name" => "An ingredient test",
                 "description" =>"The description of this test ingredient",
-                "ingredientTypeId" => "84d77bf6-43d6-4d4e-b559-3a203e750eeb"
+                "ingredientTypeId" => $this->ingredientTypeFixtures->testIngredientTypes[0]->getId()->toString()
             ],
             [
                 "id" => AggregateRootId::generateId()->toString(),
                 "name" => "An ingredient test 2",
                 "description" =>"The description of this test ingredient 2",
-                "ingredientTypeId" => "84d77bf6-43d6-4d4e-b559-3a203e750eeb"
+                "ingredientTypeId" => $this->ingredientTypeFixtures->testIngredientTypes[1]->getId()->toString()
             ]
         ];
 

@@ -12,7 +12,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-class RecipeCreateControllerTest extends AppApiTestCase
+class CreateRecipeControllerTest extends AppApiTestCase
 {
     private IngredientFixtures $ingredientFixtures;
     private UnitOfMeasureFixture $unitOfMeasureFixtures;
