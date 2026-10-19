@@ -1,11 +1,11 @@
 <?php
 namespace App\Tests\Functional\IngredientType\Presentation\Http\Controller;
 
-use App\DataFixtures\MealCourse\MealCourseFixtures;
-use App\DataFixtures\Security\LoginFixtures;
 use App\MealCourse\Domain\Repository\MealCourseRepositoryInterface;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
+use App\Tests\DataFixtures\MealCourse\MealCourseFixtures;
+use App\Tests\DataFixtures\Security\LoginFixtures;
 use App\Tests\Functional\AppApiTestCase;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\HttpFoundation\Response;

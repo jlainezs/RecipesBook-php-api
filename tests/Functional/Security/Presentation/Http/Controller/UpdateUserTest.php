@@ -1,12 +1,11 @@
 <?php
 namespace App\Tests\Functional\Security\Users;
 
-use App\DataFixtures\Security\AdditionalUsersFixtures;
-use App\DataFixtures\Security\LoginFixtures;
 use App\Security\Domain\Model\UserRole;
-use App\Security\Domain\Repository\UserRepositoryInterface;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
+use App\Tests\DataFixtures\Security\AdditionalUsersFixtures;
+use App\Tests\DataFixtures\Security\LoginFixtures;
 use App\Tests\Functional\AppApiTestCase;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\HttpFoundation\Response;

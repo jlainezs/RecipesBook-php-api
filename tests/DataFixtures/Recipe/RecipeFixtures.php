@@ -1,5 +1,5 @@
 <?php
-namespace App\DataFixtures\Recipe;
+namespace App\Tests\DataFixtures\Recipe;
 
 use App\Recipe\Domain\Model\Recipe;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;

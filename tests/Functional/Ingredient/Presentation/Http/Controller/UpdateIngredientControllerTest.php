@@ -1,11 +1,11 @@
 <?php
 namespace App\Tests\Functional\Ingredient\Presentation\Http\Controller;
 
-use App\DataFixtures\Ingredient\IngredientFixtures;
-use App\DataFixtures\Ingredient\IngredientTypeFixtures;
-use App\DataFixtures\Security\LoginFixtures;
 use App\Ingredient\Domain\Repository\IngredientRepositoryInterface;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
+use App\Tests\DataFixtures\Ingredient\IngredientFixtures;
+use App\Tests\DataFixtures\Ingredient\IngredientTypeFixtures;
+use App\Tests\DataFixtures\Security\LoginFixtures;
 use App\Tests\Functional\AppApiTestCase;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\HttpFoundation\Response;

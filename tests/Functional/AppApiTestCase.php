@@ -1,19 +1,18 @@
 <?php
 namespace App\Tests\Functional;
 
-use App\Shared\Domain\ValueObjects\Email;
-use Exception;
-use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use App\DataFixtures\Security\AdditionalUsersFixtures;
 use App\Security\Domain\Repository\UserRepositoryInterface;
+use App\Shared\Domain\ValueObjects\Email;
+use App\Tests\DataFixtures\Security\AdditionalUsersFixtures;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\Persistence\ObjectManager;
+use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Throwable;
 
 abstract class AppApiTestCase extends WebTestCase

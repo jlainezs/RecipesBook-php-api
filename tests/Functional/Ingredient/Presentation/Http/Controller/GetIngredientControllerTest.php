@@ -2,14 +2,14 @@
 
 namespace App\Tests\Functional\Ingredient\Presentation\Http\Controller;
 
-use App\DataFixtures\Ingredient\IngredientFixtures;
-use App\DataFixtures\Security\LoginFixtures;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
+use App\Tests\DataFixtures\Ingredient\IngredientFixtures;
+use App\Tests\DataFixtures\Security\LoginFixtures;
 use App\Tests\Functional\AppApiTestCase;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\HttpFoundation\Response;
 use PHPUnit\Framework\Attributes\Test;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class GetIngredientControllerTest extends AppApiTestCase
 {

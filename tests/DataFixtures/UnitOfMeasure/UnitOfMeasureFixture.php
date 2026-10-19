@@ -1,5 +1,5 @@
 <?php
-namespace App\DataFixtures\UnitOfMeasure;
+namespace App\Tests\DataFixtures\UnitOfMeasure;
 
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;

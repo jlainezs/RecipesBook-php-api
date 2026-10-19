@@ -1,5 +1,5 @@
 <?php
-namespace App\DataFixtures\Security;
+namespace App\Tests\DataFixtures\Security;
 
 use App\Security\Domain\Model\User;
 use App\Security\Domain\Model\UserRole;

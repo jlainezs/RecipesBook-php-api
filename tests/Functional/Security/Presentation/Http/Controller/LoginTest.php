@@ -1,7 +1,7 @@
 <?php
 namespace App\Tests\Functional\Security\Presentation\Http\Controller;
 
-use App\DataFixtures\Security\LoginFixtures;
+use App\Tests\DataFixtures\Security\LoginFixtures;
 use App\Tests\Functional\AppApiTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;

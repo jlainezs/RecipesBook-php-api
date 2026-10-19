@@ -1,5 +1,5 @@
 <?php
-namespace App\DataFixtures\MealCourse;
+namespace App\Tests\DataFixtures\MealCourse;
 
 use App\MealCourse\Domain\Model\MealCourse;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;

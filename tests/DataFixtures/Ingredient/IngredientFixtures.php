@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DataFixtures\Ingredient;
+namespace App\Tests\DataFixtures\Ingredient;
 
 use App\Ingredient\Domain\Model\Ingredient;
 use App\Ingredient\Domain\ValueObjects\IngredientTypeReference;
