@@ -2,6 +2,8 @@
 namespace App\Tests\Functional\Recipe\Presentation\Http\Controller;
 
 use App\Recipe\Domain\Repository\RecipeRepositoryInterface;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\Tests\DataFixtures\Recipe\RecipeFixtures;
 use App\Tests\DataFixtures\Security\LoginFixtures;
 use App\Tests\Functional\AppApiTestCase;
@@ -45,5 +47,46 @@ class DeleteRecipeControllerTest extends AppApiTestCase
         // ensure recipe is deleted
         $recipe = $this->recipeRepository->findOne($recipeToDelete->getId());
         $this->assertNull($recipe);
+    }
+
+    /**
+     * @throws EmptyIdNotAllowedException
+     */
+    #[Test]
+    public function it_fails_if_recipe_is_not_found(): void
+    {
+        $idToDelete = AggregateRootId::generateId();
+        $this->client->request(
+            "DELETE",
+            $this->getDefinedUrl('delete_recipe', ['id' => $idToDelete->toString()]),
+            [],
+            [],
+            [
+                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
+                'CONTENT_TYPE' => 'application/json',
+                'HTTP_ACCEPT' => 'application/json'
+            ]
+        );
+        $this->assertProblemDetailsResponse(Response::HTTP_NOT_FOUND);
+    }
+
+    /**
+     * @throws EmptyIdNotAllowedException
+     */
+    #[Test]
+    public function it_fails_if_not_authorized(): void
+    {
+        $idToDelete = AggregateRootId::generateId();
+        $this->client->request(
+            "DELETE",
+            $this->getDefinedUrl('delete_recipe', ['id' => $idToDelete->toString()]),
+            [],
+            [],
+            [
+                'CONTENT_TYPE' => 'application/json',
+                'HTTP_ACCEPT' => 'application/json'
+            ]
+        );
+        $this->assertProblemDetailsResponse(Response::HTTP_UNAUTHORIZED);
     }
 }

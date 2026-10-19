@@ -9,7 +9,6 @@ use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\Shared\Domain\ValueObjects\IngredientReference;
 use App\Shared\Domain\ValueObjects\UnitOfMeasureReference;
 use App\Tests\DataFixtures\Ingredient\IngredientFixtures;
-use App\Tests\DataFixtures\Ingredient\IngredientTypeFixtures;
 use App\Tests\DataFixtures\UnitOfMeasure\UnitOfMeasureFixture;
 use App\UnitOfMeasure\Domain\Exceptions\UnitOfMeasureSymbolLengthException;
 use Doctrine\Bundle\FixturesBundle\Fixture;
