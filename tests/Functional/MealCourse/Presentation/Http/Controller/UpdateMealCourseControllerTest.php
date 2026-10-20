@@ -1,5 +1,5 @@
 <?php
-namespace App\Tests\Functional\IngredientType\Presentation\Http\Controller;
+namespace App\Tests\Functional\MealCourse\Presentation\Http\Controller;
 
 use App\MealCourse\Domain\Repository\MealCourseRepositoryInterface;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
