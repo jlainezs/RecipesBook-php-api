@@ -72,6 +72,30 @@ class RecipeFixtures extends Fixture
                         "quantity" => 5, "ordering" => 2
                     ],
                 ],
+            ],
+            [
+                "id" => AggregateRootId::generateId()->toString(),
+                "name" => "Test Recipe 2",
+                "servings" => 2,
+                "raging" => 5,
+                "description" => "Test Recipe Description 2",
+                "source" => "Test Recipe Source 2",
+                "steps" => [
+                    ["description" => "Step 2.1", "ordering" => 1],
+                    ["description" => "Step 2.2", "ordering" => 2]
+                ],
+                "ingredients" => [
+                    [
+                        "ingredientId" => $this->ingredientFixtures->testIngredients[0]->getId()->toString(),
+                        "unitOfMeasureId" => $this->unitOfMeasureFixtures->testUnitOfMeasures[0]->getId()->toString(),
+                        "quantity" => 2, "ordering" => 1
+                    ],
+                    [
+                        "ingredientId" => $this->ingredientFixtures->testIngredients[0]->getId()->toString(),
+                        "unitOfMeasureId" => $this->unitOfMeasureFixtures->testUnitOfMeasures[1]->getId()->toString(),
+                        "quantity" => 8, "ordering" => 2
+                    ],
+                ],
             ]
         ];
 
