@@ -4,6 +4,7 @@ namespace App\Shared\Presentation\Http\EventListener;
 use App\Shared\Domain\Exceptions\EmptyRequiredNameException;
 use App\Shared\Domain\Exceptions\EntityNotFoundException;
 use App\Shared\Presentation\Http\Response\JsonErrorResponse;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
@@ -16,6 +17,11 @@ use Symfony\Component\Validator\Exception\ValidationFailedException;
 #[AsEventListener(event: KernelEvents::EXCEPTION, method: 'onKernelException')]
 final class ApiExceptionListener
 {
+    public function __construct(
+        #[Autowire('%kernel.debug%')]
+        private bool $isDebug
+    ){}
+
     public function onKernelException(ExceptionEvent $event): void
     {
         $exception = $event->getThrowable();
@@ -24,34 +30,32 @@ final class ApiExceptionListener
             $exception = $exception->getPrevious();
         }
 
-        $response = match (true) {
+        $statusCode = match (true) {
             $exception instanceof ValidationFailedException,
             $exception instanceof UnprocessableEntityHttpException,
             $exception instanceof InvalidParameterException,
             $exception instanceof EmptyRequiredNameException
-            => new JsonErrorResponse(
-                    $exception->getMessage(),
-                    Response::HTTP_BAD_REQUEST, [],
-                    $exception->getFile(),
-                    $exception->getLine()
-                ),
+            =>
+                Response::HTTP_BAD_REQUEST,
 
             $exception instanceof EntityNotFoundException
-             => new JsonErrorResponse(
-                 $exception->getMessage(),
-                 Response::HTTP_NOT_FOUND
-            ),
+             =>
+                 Response::HTTP_NOT_FOUND,
 
             default
-            => new JsonErrorResponse(
-                    $exception::class . ': ' . $exception->getMessage(),
-                    Response::HTTP_INTERNAL_SERVER_ERROR, [],
-                    $exception->getFile(),
-                    $exception->getLine(),
-                    $exception->getTraceAsString()
-                )
+            =>
+                Response::HTTP_INTERNAL_SERVER_ERROR,
             };
 
-        $event->setResponse($response);
+        $event->setResponse(
+            new JsonErrorResponse(
+                $exception::class . ': ' . $exception->getMessage(),
+                $statusCode,
+                [],
+                $this->isDebug ? $exception->getFile() : null,
+                $this->isDebug ? $exception->getLine() : null,
+                $this->isDebug ? $exception->getTraceAsString() : null
+            )
+        );
     }
 }
