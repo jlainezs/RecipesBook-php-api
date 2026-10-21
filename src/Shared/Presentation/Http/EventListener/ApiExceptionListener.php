@@ -1,9 +1,11 @@
 <?php
 namespace App\Shared\Presentation\Http\EventListener;
 
+use App\Shared\Domain\Exceptions\EmptyRequiredNameException;
 use App\Shared\Domain\Exceptions\EntityNotFoundException;
 use App\Shared\Presentation\Http\Response\JsonErrorResponse;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -25,20 +27,25 @@ final class ApiExceptionListener
         $response = match (true) {
             $exception instanceof ValidationFailedException,
             $exception instanceof UnprocessableEntityHttpException,
-            $exception instanceof InvalidParameterException
+            $exception instanceof InvalidParameterException,
+            $exception instanceof EmptyRequiredNameException
             => new JsonErrorResponse(
-                    $exception->getMessage(), 400, [],
+                    $exception->getMessage(),
+                    Response::HTTP_BAD_REQUEST, [],
                     $exception->getFile(),
                     $exception->getLine()
                 ),
 
             $exception instanceof EntityNotFoundException
-             => new JsonErrorResponse($exception->getMessage(), 404),
+             => new JsonErrorResponse(
+                 $exception->getMessage(),
+                 Response::HTTP_NOT_FOUND
+            ),
 
             default
             => new JsonErrorResponse(
                     $exception::class . ': ' . $exception->getMessage(),
-                    500, [],
+                    Response::HTTP_INTERNAL_SERVER_ERROR, [],
                     $exception->getFile(),
                     $exception->getLine(),
                     $exception->getTraceAsString()
