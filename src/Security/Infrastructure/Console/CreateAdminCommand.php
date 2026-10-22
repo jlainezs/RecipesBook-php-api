@@ -1,10 +1,10 @@
 <?php
 namespace App\Security\Infrastructure\Console;
 
-use App\Security\Application\Command\User\CreateUser\CreateUserCommand;
+use App\Security\Application\Command\User\CreateUser\CreateUserCommandFactory;
+use App\Security\Application\Command\User\CreateUser\CreateUserDto;
 use App\Security\Domain\Model\UserRole;
 use App\Shared\Application\Bus\CommandBus;
-use App\Shared\Application\Service\ApplicationDataValidator;
 use App\Shared\Infrastructure\Console\RecipeBookStyle;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -20,7 +20,7 @@ final class CreateAdminCommand extends Command
 {
     public function __construct(
         private readonly CommandBus $commandBus,
-        private readonly ApplicationDataValidator $validator
+        private readonly CreateUserCommandFactory $commandFactory
     )
     {
         parent::__construct();
@@ -38,14 +38,14 @@ final class CreateAdminCommand extends Command
         {
             $password = $io->askPassword();
 
-            $cmd = new CreateUserCommand(
+            $dto = new CreateUserDto(
                 $email,
                 $password,
                 $firstName,
                 $lastName,
                 $roles,
             );
-            $this->validator->validate($cmd);
+            $cmd = $this->commandFactory->createFromDto($dto);
             $this->commandBus->dispatch($cmd);
         }
         catch (Throwable $t)
