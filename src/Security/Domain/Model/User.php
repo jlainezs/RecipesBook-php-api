@@ -28,6 +28,7 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @throws EmptyIdNotAllowedException
      */
     public static function create(
+        string $id,
         string $email,
         string $password,
         string $firstName,
@@ -35,7 +36,7 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
         array $roles,
     ):self {
         return new self(
-            AggregateRootId::generateId(),
+            new AggregateRootId($id),
             new Email($email),
             $password,
             new RequiredName($firstName),

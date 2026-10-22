@@ -42,6 +42,7 @@ class UpdateUserCommandHandlerTest extends TestCase
             ->method('isEmailUniqueExceptUser')
             ->withAnyParameters();
         $user = User::create(
+            AggregateRootId::generateId()->toString(),
             'eml@eml.com',
             'password',
             'first',
@@ -84,6 +85,7 @@ class UpdateUserCommandHandlerTest extends TestCase
     public function it_does_not_change_password_if_it_is_not_provided(): void
     {
         $user = User::create(
+            AggregateRootId::generateId()->toString(),
             'eml@eml.com',
             'password',
             'first',

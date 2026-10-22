@@ -6,17 +6,23 @@ use App\Security\Domain\Model\User;
 use App\Security\Presentation\Http\Controller\GetUserController;
 use App\Shared\Application\Bus\QueryBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class GetUserControllerTest extends TestCase
 {
+    /**
+     * @throws EmptyIdNotAllowedException
+     */
     #[Test]
     public function it_validates_dispatches_query_and_returns_200(): void
     {
         $queryBus = $this->createMock(QueryBus::class);
         $validator = $this->createMock(ApplicationDataValidator::class);
         $user = User::create(
+            AggregateRootId::generateId()->toString(),
             'eml@eml.com',
             'password',
             'first name',

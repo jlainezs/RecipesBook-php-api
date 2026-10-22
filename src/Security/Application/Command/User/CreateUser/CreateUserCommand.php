@@ -5,6 +5,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 readonly final class CreateUserCommand
 {
     public function __construct(
+        #[Assert\Uuid]
+        public string $id,
         #[Assert\NotBlank(message: "Email is required")]
         #[Assert\Email(message: "Invalid email provided")]
         public string $email,

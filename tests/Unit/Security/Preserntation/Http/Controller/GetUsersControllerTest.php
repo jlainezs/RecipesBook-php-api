@@ -8,6 +8,8 @@ use App\Security\Domain\Model\User;
 use App\Security\Presentation\Http\Controller\GetUsersController;
 use App\Shared\Application\Bus\QueryBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
@@ -22,10 +24,14 @@ class GetUsersControllerTest extends TestCase
         $this->validator = $this->createMock(ApplicationDataValidator::class);
     }
 
+    /**
+     * @throws EmptyIdNotAllowedException
+     */
     #[Test]
     public function it_returns_users_list(): void
     {
         $user1 = User::create(
+            AggregateRootId::generateId()->toString(),
             'eml1@eml.com',
             'password1',
             'first name 1',
@@ -33,6 +39,7 @@ class GetUsersControllerTest extends TestCase
             []
         );
         $user2 = User::create(
+            AggregateRootId::generateId()->toString(),
             'eml2@eml.com',
             'password2',
             'first name2',

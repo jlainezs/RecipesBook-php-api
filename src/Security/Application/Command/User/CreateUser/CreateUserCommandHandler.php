@@ -32,6 +32,7 @@ final readonly class CreateUserCommandHandler
             : $command->roles;
 
         $user = User::create(
+            id: $command->id,
             email: $command->email,
             password: '',
             firstName: $command->firstName,

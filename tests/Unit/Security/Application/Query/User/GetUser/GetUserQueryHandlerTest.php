@@ -6,6 +6,8 @@ use App\Security\Application\Query\User\GetUser\GetUserQueryHandler;
 use App\Security\Domain\Exceptions\UserNotFoundException;
 use App\Security\Domain\Model\User;
 use App\Security\Domain\Repository\UserRepositoryInterface;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -23,18 +25,20 @@ class GetUserQueryHandlerTest extends TestCase
 
     /**
      * @throws UserNotFoundException
+     * @throws EmptyIdNotAllowedException
      */
     #[Test]
     public function it_returns_a_response_with_dto_when_found(): void
     {
+        $id = AggregateRootId::generateId()->toString();
         $user = User::create(
+            $id,
             'test@example.com',
             'password',
             'Test',
             'User',
             []
         );
-        $id = $user->getId()->toString();
 
         $this->repository
             ->expects($this->once())
