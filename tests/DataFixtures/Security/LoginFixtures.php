@@ -4,6 +4,7 @@ namespace App\Tests\DataFixtures\Security;
 use App\Security\Domain\Model\User;
 use App\Security\Domain\Model\UserRole;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -25,6 +26,7 @@ final class LoginFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $user = User::create(
+            AggregateRootId::generateId()->toString(),
             self::USER_NAME,
             self::PASSWORD,
             self::FIRST_NAME,

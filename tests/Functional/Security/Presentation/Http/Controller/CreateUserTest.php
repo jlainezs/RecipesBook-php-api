@@ -4,6 +4,7 @@ namespace App\Tests\Functional\Security\Users;
 
 use App\Security\Domain\Model\UserRole;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\Tests\DataFixtures\Security\AdditionalUsersFixtures;
 use App\Tests\DataFixtures\Security\LoginFixtures;
 use App\Tests\Functional\AppApiTestCase;
@@ -25,10 +26,14 @@ class CreateUserTest extends AppApiTestCase
         $this->loginWithUser(LoginFixtures::USER_NAME, LoginFixtures::PASSWORD);
     }
 
+    /**
+     * @throws EmptyIdNotAllowedException
+     */
     #[Test]
     public function Create_user_with_valid_data()
     {
         $userToCreateData = [
+            'id' => AggregateRootId::generateId()->toString(),
             'email' => 'john.doe@example.com',
             'password' => 'password',
             'firstName' => 'John',
@@ -37,7 +42,7 @@ class CreateUserTest extends AppApiTestCase
         ];
         $this->client->request(
             'POST',
-            '/api/v1/users/create',
+            $this->getDefinedUrl('users_create'),
             [],
             [],
             [
@@ -50,10 +55,14 @@ class CreateUserTest extends AppApiTestCase
         $this->assertResponseStatusCodeSame(Response::HTTP_CREATED);
     }
 
+    /**
+     * @throws EmptyIdNotAllowedException
+     */
     #[Test]
     public function Create_user_does_not_allow_duplicate_email()
     {
         $userToCreateData = [
+            'id' => AggregateRootId::generateId()->toString(),
             'email' => 'john.doe@example.com',
             'password' => 'password',
             'firstName' => 'John',
@@ -61,6 +70,7 @@ class CreateUserTest extends AppApiTestCase
             'roles' => [UserRole::USER],
         ];
         $anotherToCreateData = [
+            'id' => AggregateRootId::generateId()->toString(),
             'email' => 'john.doe@example.com',
             'password' => 'password',
             'firstName' => 'Jane',
@@ -69,7 +79,7 @@ class CreateUserTest extends AppApiTestCase
         ];
         $this->client->request(
             'POST',
-            '/api/v1/users/create',
+            $this->getDefinedUrl('users_create'),
             [],
             [],
             [
@@ -83,7 +93,7 @@ class CreateUserTest extends AppApiTestCase
 
         $this->client->request(
             'POST',
-            '/api/v1/users/create',
+            $this->getDefinedUrl('users_create'),
             [],
             [],
             [

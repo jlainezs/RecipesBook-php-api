@@ -18,6 +18,7 @@ class UpdateRecipeControllerTest extends AppApiTestCase
     public RecipeFixtures $recipeFixtures;
     private UnitOfMeasureFixture $unitOfMeasureFixtures;
     public RecipeRepositoryInterface $recipeRepository;
+    public IngredientFixtures $ingredientFixtures;
 
     private function testRecipe(): array
     {
