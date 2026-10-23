@@ -24,7 +24,7 @@ final class CreateUnitOfMeasureController extends AbstractController
     /**
      * @throws EmptyIdNotAllowedException
      */
-    #[Route('/api/v1/units-of-measure/create', name: 'unit_of_measure_create', methods: ['POST'])]
+    #[Route('/api/v1/units-of-measure', name: 'unit_of_measure_create', methods: ['POST'])]
     public function __invoke(
         #[MapRequestPayload]
         CreateUnitOfMeasureDto $request
