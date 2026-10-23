@@ -2,6 +2,7 @@
 
 namespace App\Tests\Unit\UnitOfMeasure\Application\Query\UnitsOfMeasure;
 
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\UnitOfMeasure\Application\Query\UnitOfMeasure\GetUnitOfMeasures\GetUnitsOfMeasureQuery;
 use App\UnitOfMeasure\Application\Query\UnitOfMeasure\GetUnitOfMeasures\GetUnitsOfMeasureQueryHandler;
 use App\UnitOfMeasure\Application\Service\UnitsOfMeasureItemsPager;
@@ -25,11 +26,13 @@ class UnitsOfMeasureQueryHandlerTest extends TestCase
     public function it_returns_a_response_with_mapped_dto(): void
     {
         $uom1 = UnitOfMeasure::create(
+            AggregateRootId::generateId()->toString(),
             'uom1',
             'U1',
             UnitOfMeasureEnum::Units
         );
         $uom2 = UnitOfMeasure::create(
+            AggregateRootId::generateId()->toString(),
             'uom2',
             'U2',
             UnitOfMeasureEnum::Units

@@ -9,6 +9,8 @@ use App\Ingredient\Domain\ValueObjects\IngredientTypeReference;
 use App\Ingredient\Presentation\Http\Controller\UpdateIngredientController;
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,11 +26,15 @@ class UpdateIngredientControllerTest extends TestCase
         $this->validator = $this->createMock(ApplicationDataValidator::class);
     }
 
+    /**
+     * @throws EmptyIdNotAllowedException
+     */
     #[Test]
     public function it_should_update_ingredient(): void
     {
         $ingredientTypeRef = new IngredientTypeReference('4d083381-6833-4e29-819b-35b96c36bb6c');
-        $ingredient = Ingredient::create('ingredient', 'description', $ingredientTypeRef);
+        $ingredientId = AggregateRootId::generateId()->toString();
+        $ingredient = Ingredient::create($ingredientId, 'ingredient', 'description', $ingredientTypeRef);
         $cmd = new UpdateIngredientCommand($ingredient->getId(), 'ingredient', 'description', $ingredientTypeRef);
         $this->commandBus
             ->expects($this->once())

@@ -20,7 +20,7 @@ final readonly class CreateMealCourseCommandHandler
      */
     public function __invoke(CreateMealCourseCommand $command): void
     {
-        $mealCourse = MealCourse::create($command->name);
+        $mealCourse = MealCourse::create($command->id, $command->name);
         $this->repository->save($mealCourse);
     }
 }

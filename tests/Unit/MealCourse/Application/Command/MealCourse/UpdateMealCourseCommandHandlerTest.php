@@ -6,6 +6,7 @@ use App\MealCourse\Application\Command\MealCourse\UpdateMealCourse\MealCourseUpd
 use App\MealCourse\Application\Command\MealCourse\UpdateMealCourse\MealCourseUpdateCommandHandler;
 use App\MealCourse\Domain\Model\MealCourse;
 use App\MealCourse\Domain\Repository\MealCourseRepositoryInterface;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -24,7 +25,8 @@ class UpdateMealCourseCommandHandlerTest extends TestCase
     #[Test]
     public function it_renames_and_saves_the_meal_course(): void
     {
-        $mealCourse = MealCourse::create("Starter");
+        $id = AggregateRootId::generateId()->toString();
+        $mealCourse = MealCourse::create($id, "Starter");
         $id = $mealCourse->getId()->toString();
 
         $this->repository

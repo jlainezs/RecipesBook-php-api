@@ -1,0 +1,12 @@
+<?php
+namespace App\ShoppingList\Application\Command\ShoppingListCreate;
+
+use Symfony\Component\Validator\Constraints as Assert;
+final readonly class CreateShoppingListDto
+{
+    public function __construct(
+        #[Assert\NotBlank]
+        public string $name,
+        public iterable $items
+    ){}
+}

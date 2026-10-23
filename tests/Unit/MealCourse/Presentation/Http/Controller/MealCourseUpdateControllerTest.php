@@ -8,6 +8,7 @@ use App\MealCourse\Presentation\Http\Controller\UpdateMealCourseController;
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,7 +30,8 @@ class MealCourseUpdateControllerTest extends TestCase
     #[Test]
     public function it_should_update_ingredient_type(): void
     {
-        $mealCourse = MealCourse::create('test');
+        $id = AggregateRootId::generateId()->toString();
+        $mealCourse = MealCourse::create($id, 'test');
         $this->commandBus
             ->expects($this->once())
             ->method('dispatch')

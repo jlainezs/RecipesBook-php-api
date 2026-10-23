@@ -4,6 +4,7 @@ namespace App\Tests\Unit\UnitOfMeasure\Presentation\Http\Controller;
 use App\Shared\Application\Bus\QueryBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\UnitOfMeasure\Application\Query\UnitOfMeasure\GetUnitOfMeasure\GetUnitOfMeasureQuery;
 use App\UnitOfMeasure\Domain\Exceptions\UnitOfMeasureSymbolLengthException;
 use App\UnitOfMeasure\Domain\Model\UnitOfMeasure;
@@ -31,6 +32,7 @@ class GetUniOfMeasureControllerTest extends TestCase
     public function it_validates_dispatches_query_and_returns_200(): void
     {
         $uom = UnitOfMeasure::create(
+            id: AggregateRootId::generateId()->toString(),
             name: 'test',
             symbol: 't',
             unitOfMeasureType: UnitOfMeasureEnum::Units

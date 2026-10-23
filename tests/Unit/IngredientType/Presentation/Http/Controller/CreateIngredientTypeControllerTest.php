@@ -2,15 +2,15 @@
 namespace App\Tests\Unit\IngredientType\Presentation\Http\Controller;
 
 use App\IngredientType\Application\Command\IngredientType\CreateIngredientType\CreateIngredientTypeCommand;
+use App\IngredientType\Application\Command\IngredientType\CreateIngredientType\CreateIngredientTypeCommandFactory;
 use App\IngredientType\Application\Command\IngredientType\CreateIngredientType\CreateIngredientTypeDto;
-use App\IngredientType\Domain\Model\IngredientType;
 use App\IngredientType\Presentation\Http\Controller\CreateIngredientTypeController;
 use App\Shared\Application\Bus\CommandBus;
-use App\Shared\Application\Service\ApplicationDataValidator;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CreateIngredientTypeControllerTest extends TestCase
 {
@@ -21,30 +21,36 @@ class CreateIngredientTypeControllerTest extends TestCase
     public function it_dispatches_command_and_returns_201(): void
     {
         $commandBus = $this->createMock(CommandBus::class);
-        $validator = $this->createMock(ApplicationDataValidator::class);
-        $ingredientType = IngredientType::create('name');
+        $createCmdFactory = $this->createMock(CreateIngredientTypeCommandFactory::class);
+        $urlGenerator = $this->createMock(UrlGeneratorInterface::class);
 
-        $validator
-            ->expects($this->once())
-            ->method('validate')
-            ->with(
-                $this->callback(
-                function (CreateIngredientTypeCommand $cmd) use ($ingredientType) {
-                    return $cmd->name === $ingredientType->getName()->value();
-                }
-            ));
-        $commandBus
-            ->expects($this->once())
+        $id = AggregateRootId::generateId()->toString();
+        $ingredientTypeName = 'test name';
+        $request = new CreateIngredientTypeDto(
+            name: $ingredientTypeName
+        );
+
+        $createCmdFactory->expects($this->once())
+            ->method('createFromDto')
+            ->with($request)
+            ->willReturn(new CreateIngredientTypeCommand(
+                $id, $request->name
+            )
+        );
+
+        $commandBus->expects($this->once())
             ->method('dispatch')
             ->with($this->callback(
-                function(CreateIngredientTypeCommand $cmd) use ($ingredientType) {
-                    return $cmd->name === $ingredientType->getName()->value();
+                function(CreateIngredientTypeCommand $cmd) use ($id, $ingredientTypeName) {
+                    return (($id === $cmd->id) && ($cmd->name === $ingredientTypeName));
                 }
             ));
-        $controller = new CreateIngredientTypeController($commandBus, $validator);
-        $request = new CreateIngredientTypeDto(
-            name: $ingredientType->getName()->value()
-        );
+
+        $urlGenerator->expects($this->once())
+            ->method('generate')
+            ->withAnyParameters();
+
+        $controller = new CreateIngredientTypeController($commandBus, $createCmdFactory, $urlGenerator);
         $response = $controller($request);
 
         $this->assertEquals(201, $response->getStatusCode());

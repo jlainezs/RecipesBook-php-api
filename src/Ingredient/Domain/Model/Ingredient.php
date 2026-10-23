@@ -29,13 +29,14 @@ final class Ingredient extends AggregateRoot
      * @throws EmptyIdNotAllowedException
      */
     public static function create(
-        string          $name,
-        ?string         $description = null,
+        string $id,
+        string $name,
+        ?string $description = null,
         ?IngredientTypeReference $ingredientType = null,
     ): Ingredient
     {
         return new self(
-            id: AggregateRootId::generateId(),
+            id: new AggregateRootId($id),
             name: new RequiredName($name),
             description: $description,
             ingredientTypeReference: $ingredientType,

@@ -5,6 +5,8 @@ use App\Security\Application\Query\User\GetUsers\GetUsersQuery;
 use App\Security\Application\Query\User\GetUsers\GetUsersQueryHandler;
 use App\Security\Application\Service\UserItemsPager;
 use App\Security\Domain\Model\User;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
@@ -20,10 +22,14 @@ class GetUsersQueryHandlerTest extends TestCase
         $this->handler = new GetUsersQueryHandler($this->pager);
     }
 
+    /**
+     * @throws EmptyIdNotAllowedException
+     */
     #[Test]
     public function it_returns_a_response_with_mapped_dtos(): void
     {
         $user1 = User::create(
+            AggregateRootId::generateId()->toString(),
             email: 'eml1@eml.com',
             password: 'password1',
             firstName: 'firstName1',
@@ -31,6 +37,7 @@ class GetUsersQueryHandlerTest extends TestCase
             roles: []
         );
         $user2 = User::create(
+            AggregateRootId::generateId()->toString(),
             email: 'eml2@eml.com',
             password: 'password2',
             firstName: 'firstName2',

@@ -7,6 +7,7 @@ use App\Recipe\Domain\Exceptions\RecipeNotFoundException;
 use App\Recipe\Domain\Model\Recipe;
 use App\Recipe\Domain\Repository\RecipeRepositoryInterface;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -17,11 +18,15 @@ class RecipeInstanceQueryHandlerTest extends TestCase
     private RecipeRepositoryInterface&MockObject $repository;
     private Recipe $testRecipe;
 
+    /**
+     * @throws EmptyIdNotAllowedException
+     */
     protected function setUp(): void
     {
         $this->repository = $this->createMock(RecipeRepositoryInterface::class);
         $this->handler = new GetRecipeQueryHandler($this->repository);
         $this->testRecipe = Recipe::create(
+            AggregateRootId::generateId()->toString(),
             name: 'Test Recipe',
             servings: 1,
             rating: 5,

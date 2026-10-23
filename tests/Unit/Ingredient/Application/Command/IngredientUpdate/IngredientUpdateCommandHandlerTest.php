@@ -40,7 +40,8 @@ class IngredientUpdateCommandHandlerTest extends TestCase
     {
         $ingredientTypeId = "b4bac84a-9193-4405-98b7-7e53a65cc9a8";
         $ingredientTypeRef = new IngredientTypeReference($ingredientTypeId);
-        $ingredient = Ingredient::create('test', 'test desc', $ingredientTypeRef);
+        $ingredientId = AggregateRootId::generateId()->toString();
+        $ingredient = Ingredient::create($ingredientId, 'test', 'test desc', $ingredientTypeRef);
 
         $this->repository
             ->expects($this->once())
@@ -74,7 +75,8 @@ class IngredientUpdateCommandHandlerTest extends TestCase
     {
         $ingredientTypeId = "b4bac84a-9193-4405-98b7-7e53a65cc9a8";
         $ingredientTypeRef = new IngredientTypeReference($ingredientTypeId);
-        $ingredient = Ingredient::create('test', 'test desc', $ingredientTypeRef);
+        $ingredientId = AggregateRootId::generateId()->toString();
+        $ingredient = Ingredient::create($ingredientId,'test', 'test desc', $ingredientTypeRef);
 
         $this->repository
             ->expects($this->once())
@@ -111,7 +113,8 @@ class IngredientUpdateCommandHandlerTest extends TestCase
     {
         $ingredientTypeId = "b4bac84a-9193-4405-98b7-7e53a65cc9a8";
         $ingredientTypeRef = new IngredientTypeReference($ingredientTypeId);
-        $ingredient = Ingredient::create('test', 'test desc', $ingredientTypeRef);
+        $ingredientId = AggregateRootId::generateId()->toString();
+        $ingredient = Ingredient::create($ingredientId, 'test', 'test desc', $ingredientTypeRef);
 
         $this->repository
             ->expects($this->once())

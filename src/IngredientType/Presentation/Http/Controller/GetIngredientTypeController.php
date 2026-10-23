@@ -15,7 +15,7 @@ final class GetIngredientTypeController extends AbstractController
         private readonly ApplicationDataValidator $validator
     ){}
 
-    #[Route('/api/v1/ingredient-types/{id}', name: 'ingredient_types_get_instance', methods: ['GET'])]
+    #[Route('/api/v1/ingredient-types/{id}', name: 'get_ingredient_type', methods: ['GET'])]
     public function __invoke(string $id):JsonResponse
     {
         $query = new GetIngredientTypeQuery($id);

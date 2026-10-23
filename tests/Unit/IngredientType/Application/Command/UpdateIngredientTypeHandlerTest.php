@@ -8,6 +8,7 @@ use App\IngredientType\Domain\Exceptions\IngredientTypeNotFoundException;
 use App\IngredientType\Domain\Model\IngredientType;
 use App\IngredientType\Domain\Repository\IngredientTypeRepositoryInterface;
 use App\Shared\Domain\Exceptions\EmptyRequiredNameException;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -26,7 +27,7 @@ class UpdateIngredientTypeHandlerTest extends TestCase
     #[Test]
     public function it_renames_and_saves_when_ingredient_type_is_found(): void
     {
-        $ingredientType = IngredientType::create('Vegetable');
+        $ingredientType = IngredientType::create(AggregateRootId::generateId()->toString(),'Vegetable');
         $id = $ingredientType->getId()->toString();
 
         $this->repository
@@ -68,7 +69,7 @@ class UpdateIngredientTypeHandlerTest extends TestCase
     #[Test]
     public function it_throws_and_does_not_save_when_new_name_is_empty(): void
     {
-        $ingredientType = IngredientType::create('Vegetable');
+        $ingredientType = IngredientType::create(AggregateRootId::generateId()->toString(),'Vegetable');
         $id = $ingredientType->getId()->toString();
 
         $this->repository

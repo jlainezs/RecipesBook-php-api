@@ -11,6 +11,7 @@ use App\Recipe\Domain\Model\Recipe;
 use App\Recipe\Domain\Repository\RecipeRepositoryInterface;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\Exceptions\EmptyRequiredNameException;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\UnitOfMeasure\Domain\Repository\UnitOfMeasureRepositoryInterface;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\Test;
@@ -50,8 +51,8 @@ class RecipeUpdateCommandHandlerTest extends TestCase
     #[Test]
     public function it_should_update_recipe(): void
     {
-        $recipe = Recipe::create('a recipe', 20, 4, '', '', [], []);
-        $id = $recipe->getId()->toString();
+        $id = AggregateRootId::generateId()->toString();
+        $recipe = Recipe::create($id, 'a recipe', 20, 4, '', '', [], []);
 
         $this->repository
             ->expects($this->once())
@@ -90,8 +91,8 @@ class RecipeUpdateCommandHandlerTest extends TestCase
     #[Test]
     public function it_throws_when_setting_empty_name(): void
     {
-        $recipe = Recipe::create('a recipe', 20, 4, '', '', [], []);
-        $id = $recipe->getId()->toString();
+        $id = AggregateRootId::generateId()->toString();
+        $recipe = Recipe::create($id, 'a recipe', 20, 4, '', '', [], []);
 
         $this->repository
             ->expects($this->once())
@@ -125,8 +126,8 @@ class RecipeUpdateCommandHandlerTest extends TestCase
     #[Test]
     public function it_throws_when_setting_whitespace_only__name(): void
     {
-        $recipe = Recipe::create('a recipe', 20, 4, '', '', [], []);
-        $id = $recipe->getId()->toString();
+        $id = AggregateRootId::generateId()->toString();
+        $recipe = Recipe::create($id, 'a recipe', 20, 4, '', '', [], []);
 
         $this->repository
             ->expects($this->once())
@@ -159,8 +160,8 @@ class RecipeUpdateCommandHandlerTest extends TestCase
     #[Test]
     public function it_throws_when_setting_invalid_upper_rating(): void
     {
-        $recipe = Recipe::create('a recipe', 20, 4, '', '', [], []);
-        $id = $recipe->getId()->toString();
+        $id = AggregateRootId::generateId()->toString();
+        $recipe = Recipe::create($id, 'a recipe', 20, 4, '', '', [], []);
 
         $this->repository
             ->expects($this->once())
@@ -193,8 +194,8 @@ class RecipeUpdateCommandHandlerTest extends TestCase
     #[Test]
     public function it_throws_when_setting_invalid_lower_rating(): void
     {
-        $recipe = Recipe::create('a recipe', 20, 4, '', '', [], []);
-        $id = $recipe->getId()->toString();
+        $id = AggregateRootId::generateId()->toString();
+        $recipe = Recipe::create($id, 'a recipe', 20, 4, '', '', [], []);
 
         $this->repository
             ->expects($this->once())
@@ -227,8 +228,8 @@ class RecipeUpdateCommandHandlerTest extends TestCase
     #[Test]
     public function it_throws_when_setting_invalid_servings(): void
     {
-        $recipe = Recipe::create('a recipe', 20, 4, '', '', [], []);
-        $id = $recipe->getId()->toString();
+        $id = AggregateRootId::generateId()->toString();
+        $recipe = Recipe::create($id, 'a recipe', 20, 4, '', '', [], []);
 
         $this->repository
             ->expects($this->once())

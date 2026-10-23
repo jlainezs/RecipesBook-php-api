@@ -11,6 +11,7 @@ use App\IngredientType\Domain\Exceptions\IngredientTypeNotFoundException;
 use App\Shared\Application\Bus\QueryBus;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\Exceptions\EmptyRequiredNameException;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -49,6 +50,7 @@ class CreateIngredientCommandHandlerTest extends TestCase
             ->willReturn($ingredientTypeRef);
 
         ($this->handler)(new CreateIngredientCommand(
+            id: AggregateRootId::generateId()->toString(),
             name: "ingredient 1",
             description: "tastes yummy",
             ingredientTypeId: $ingredientTypeId
@@ -62,10 +64,8 @@ class CreateIngredientCommandHandlerTest extends TestCase
     #[Test]
     public function it_throws_when_name_is_empty(): void
     {
-        //$ingredient = Ingredient::create("ingredient 1", "tastes yummy");
         $ingredientTypeId = "b4bac84a-9193-4405-98b7-7e53a65cc9a8";
         $ingredientTypeRef = new IngredientTypeReference($ingredientTypeId);
-        //$ingredient->changeIngredientType($ingredientTypeRef);
         $this->repository
             ->expects($this->never())
             ->method('save');
@@ -76,6 +76,7 @@ class CreateIngredientCommandHandlerTest extends TestCase
             ->willReturn($ingredientTypeRef);
         $this->expectException(EmptyRequiredNameException::class);
         ($this->handler)(new CreateIngredientCommand(
+            id: AggregateRootId::generateId()->toString(),
             name: "",
             description: "tastes yummy",
             ingredientTypeId: $ingredientTypeId

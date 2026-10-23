@@ -6,6 +6,7 @@ use App\MealCourse\Application\Command\MealCourse\DeleteMealCourse\DeleteMealCou
 use App\MealCourse\Domain\Exceptions\MealCourseNotFoundException;
 use App\MealCourse\Domain\Model\MealCourse;
 use App\MealCourse\Domain\Repository\MealCourseRepositoryInterface;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
@@ -23,7 +24,8 @@ class DeleteMealCourseHandlerCommandTest extends TestCase
     #[Test]
     public function it_deletes_the_meal_course(): void
     {
-        $mealCourse = MealCourse::create("Starter");
+        $id = AggregateRootId::generateId()->toString();
+        $mealCourse = MealCourse::create($id, "Starter");
         $id = $mealCourse->getId()->toString();
 
         $this->repository
@@ -43,7 +45,9 @@ class DeleteMealCourseHandlerCommandTest extends TestCase
     #[Test]
     public function it_throws_the_meal_course_is_not_found(): void
     {
-        $mealCourse = MealCourse::create("Starter");
+        $mealCourse = MealCourse::create(
+            AggregateRootId::generateId()->toString(),
+            "Starter");
         $id = $mealCourse->getId()->toString();
 
         $this->repository

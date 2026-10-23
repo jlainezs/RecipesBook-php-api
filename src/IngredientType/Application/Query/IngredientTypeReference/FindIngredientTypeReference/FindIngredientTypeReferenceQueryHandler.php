@@ -25,7 +25,7 @@ readonly final class FindIngredientTypeReferenceQueryHandler
 
         if (is_null($ingredientType))
         {
-            throw new IngredientTypeNotFoundException();
+            throw new IngredientTypeNotFoundException($query->ingredientTypeId);
         }
 
         return new IngredientTypeReference($ingredientType->getId()->toString());

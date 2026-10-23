@@ -4,6 +4,7 @@ namespace App\Security\Infrastructure\Repository;
 use App\Security\Domain\Model\User;
 use App\Security\Domain\Repository\UserRepositoryInterface;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
+use App\Shared\Domain\ValueObjects\Email;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -17,6 +18,21 @@ final class UserRepository extends ServiceEntityRepository implements UserReposi
     public function findOne(AggregateRootId $id): ?User
     {
         return $this->find($id);
+    }
+
+    public function findOneByEmail(Email $email): ?User
+    {
+        return $this->findOneBy([
+            'email' => $email->value()
+        ]);
+    }
+
+    public function findOneByEmailExceptUser(Email $email, AggregateRootId $excludeUserId): ?User
+    {
+        return $this->findOneBy([
+            'email' => $email,
+            'id' => ['!=' => $excludeUserId],
+        ]);
     }
 
     public function findAll(?int $limit = null, ?int $offset = null): array

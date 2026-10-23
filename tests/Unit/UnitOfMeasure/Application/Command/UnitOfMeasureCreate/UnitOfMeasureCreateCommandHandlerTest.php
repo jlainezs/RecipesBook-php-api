@@ -3,6 +3,7 @@ namespace App\Tests\Unit\UnitOfMeasure\Application\Command\UnitOfMeasureCreate;
 
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\Exceptions\EmptyRequiredNameException;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\UnitOfMeasure\Application\Command\UnitOfMeasure\CreateUnitOfMeasure\CreateUnitOfMeasureCommand;
 use App\UnitOfMeasure\Application\Command\UnitOfMeasure\CreateUnitOfMeasure\CreateUnitOfMeasureCommandHandler;
 use App\UnitOfMeasure\Domain\Model\UnitOfMeasure;
@@ -33,6 +34,7 @@ class UnitOfMeasureCreateCommandHandlerTest extends TestCase
             ->method('save')
             ->with($this->isInstanceOf(UnitOfMeasure::class));
         ($this->handler)(new CreateUnitOfMeasureCommand(
+            id: AggregateRootId::generateId()->toString(),
             name: 'unit',
             symbol: 'u',
             unitOfMeasureEnum: UnitOfMeasureEnum::Units
@@ -51,6 +53,7 @@ class UnitOfMeasureCreateCommandHandlerTest extends TestCase
             ->with($this->isInstanceOf(UnitOfMeasure::class));
         $this->expectException(EmptyRequiredNameException::class);
         ($this->handler)(new CreateUnitOfMeasureCommand(
+            id: AggregateRootId::generateId()->toString(),
             name: '',
             symbol: 'u',
             unitOfMeasureEnum: UnitOfMeasureEnum::Units

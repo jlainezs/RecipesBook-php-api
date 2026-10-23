@@ -1,13 +1,16 @@
 <?php
 namespace App\Tests\Unit\Recipe\Presentation\Http\Controller;
 
-use App\Recipe\Application\Command\RecipeCreate\RecipeCreateCommand;
-use App\Recipe\Application\Command\RecipeCreate\RecipeCreateDto;
+use App\Recipe\Application\Command\CreateRecipe\CreateRecipeCommand;
+use App\Recipe\Application\Command\CreateRecipe\CreateRecipeCommandFactory;
+use App\Recipe\Application\Command\CreateRecipe\CreateRecipeDto;
 use App\Recipe\Presentation\Http\Controller\CreateRecipeController;
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CreateRecipeControllerTest extends TestCase
 {
@@ -16,7 +19,9 @@ class CreateRecipeControllerTest extends TestCase
     {
         $commandBus = $this->createMock(CommandBus::class);
         $validator = $this->createMock(ApplicationDataValidator::class);
-        $recipe = new RecipeCreateDto(
+        $cmdFactory = new CreateRecipeCommandFactory($validator);
+        $urlGeneratorInterface = $this->createMock(UrlGeneratorInterface::class);
+        $recipe = new CreateRecipeDto(
             name: 'test',
             servings: 4,
             rating: 5,
@@ -29,16 +34,19 @@ class CreateRecipeControllerTest extends TestCase
         $validator->expects($this->once())
             ->method('validate')
             ->with($this->callback(
-                fn (RecipeCreateCommand $cmd) => $cmd->name === $recipe->name
+                fn (CreateRecipeCommand $cmd) => $cmd->name === $recipe->name
             ));
         $commandBus->expects($this->once())
             ->method('dispatch')
             ->with($this->callback(
-                fn (RecipeCreateCommand $cmd) => $cmd->name === $recipe->name
+                fn (CreateRecipeCommand $cmd) => $cmd->name === $recipe->name
             ));
-        $controller = new CreateRecipeController($commandBus, $validator);
+        $urlGeneratorInterface->expects($this->once())
+            ->method('generate')
+            ->withAnyParameters();
+        $controller = new CreateRecipeController($commandBus, $cmdFactory, $urlGeneratorInterface);
 
         $response = $controller($recipe);
-        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
     }
 }

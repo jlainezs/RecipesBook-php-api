@@ -1,0 +1,3 @@
+GET http://localhost:8000/api/v1/ingredient-types/2f0715ca-c21e-477b-8c64-98a36456ca16
+Accept: application/json
+Authorization: Bearer {{auth_token}}

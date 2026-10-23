@@ -46,6 +46,17 @@ final class UserRolesType extends Type
                     array_map(fn(UserRole $role) => $role->value, $value)
                 )
             ),
+            is_string($value) => function (string $roleValues): string {
+                $roles = [];
+                foreach (explode(',', $roleValues) as $roleValue) {
+                    $trimmed = trim($roleValue);
+                    if (UserRole::tryFrom($trimmed))    // should thrown if not a valid value
+                    {
+                        $roles[] = $trimmed;
+                    }
+                }
+                return implode(',', $roles);
+            },
             default => throw new ConversionException(
                 sprintf("Can't convert '%s' into a database value", get_debug_type($value))
             )

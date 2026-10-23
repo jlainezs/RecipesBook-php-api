@@ -34,6 +34,7 @@ class UnitOfMeasureInstanceQueryHandlerTest extends TestCase
     public function it_should_return_the_unit_of_measure(): void
     {
         $uom = UnitOfMeasure::create(
+            id: AggregateRootId::generateId()->toString(),
             name: 'test',
             symbol: 't',
             unitOfMeasureType: UnitOfMeasureEnum::Units

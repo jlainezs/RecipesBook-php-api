@@ -5,6 +5,7 @@ use App\Recipe\Application\Query\Recipe\GetRecipes\GetRecipesQuery;
 use App\Recipe\Application\Query\Recipe\GetRecipes\GetRecipesQueryHandler;
 use App\Recipe\Application\Service\RecipeItemsPager;
 use App\Recipe\Domain\Model\Recipe;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -20,6 +21,7 @@ class RecipesQueryHandlerTest extends TestCase
         $this->pager = $this->createMock(RecipeItemsPager::class);
         $this->handler = new GetRecipesQueryHandler($this->pager);
         $this->testRecipe = Recipe::create(
+            id: AggregateRootId::generateId()->toString(),
             name: 'Test Recipe',
             servings: 1,
             rating: 5,

@@ -2,6 +2,7 @@
 namespace App\Tests\Unit\UnitOfMeasure\Application\Command\UnitOfMeasureDelete;
 
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\UnitOfMeasure\Application\Command\UnitOfMeasure\DeleteUnitOfMeasure\DeleteUnitOfMeasureCommand;
 use App\UnitOfMeasure\Application\Command\UnitOfMeasure\DeleteUnitOfMeasure\DeleteUnitOfMeasureCommandHandler;
 use App\UnitOfMeasure\Domain\Exceptions\UnitOfMeasureNotFoundException;
@@ -32,6 +33,7 @@ class UnitOfMeasureDeleteCommandHandlerTest extends TestCase
     public function it_deletes_the_unit_of_measure(): void
     {
         $uom = UnitOfMeasure::create(
+            AggregateRootId::generateId()->toString(),
             name: 'test',
             symbol: 't',
             unitOfMeasureType: UnitOfMeasureEnum::Units
@@ -60,6 +62,7 @@ class UnitOfMeasureDeleteCommandHandlerTest extends TestCase
     public function it_throws_when_the_unit_of_measure_not_found(): void
     {
         $uom = UnitOfMeasure::create(
+            AggregateRootId::generateId()->toString(),
             name: 'test',
             symbol: 't',
             unitOfMeasureType: UnitOfMeasureEnum::Units

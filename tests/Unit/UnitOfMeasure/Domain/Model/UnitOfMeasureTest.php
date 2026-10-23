@@ -22,6 +22,7 @@ class UnitOfMeasureTest extends TestCase
     public function it_creates_with_a_valid_name(): void
     {
         $uom = UnitOfMeasure::create(
+            id: AggregateRootId::generateId()->toString(),
             name: 'test',
             symbol: 't',
             unitOfMeasureType: UnitOfMeasureEnum::Units
@@ -39,6 +40,7 @@ class UnitOfMeasureTest extends TestCase
     public function it_creates_with_a_valid_id(): void
     {
         $uom = UnitOfMeasure::create(
+            id: AggregateRootId::generateId()->toString(),
             name: 'test',
             symbol: 't',
             unitOfMeasureType: UnitOfMeasureEnum::Units
@@ -54,11 +56,13 @@ class UnitOfMeasureTest extends TestCase
     public function it_generates_a_unique_id_on_each_creation(): void
     {
         $uom1 = UnitOfMeasure::create(
+            id: AggregateRootId::generateId()->toString(),
             name: 'test',
             symbol: 't',
             unitOfMeasureType: UnitOfMeasureEnum::Units
         );
         $uom2 = UnitOfMeasure::create(
+            id: AggregateRootId::generateId()->toString(),
             name: 'test1',
             symbol: 't1',
             unitOfMeasureType: UnitOfMeasureEnum::Units
@@ -76,6 +80,7 @@ class UnitOfMeasureTest extends TestCase
     {
         $this->expectException(EmptyRequiredNameException::class);
         UnitOfMeasure::create(
+            id: AggregateRootId::generateId()->toString(),
             name: $invalidName,
             symbol: 't',
             unitOfMeasureType: UnitOfMeasureEnum::Units
@@ -90,6 +95,7 @@ class UnitOfMeasureTest extends TestCase
     public function it_renames_successfully(): void
     {
         $uom = UnitOfMeasure::create(
+            id: AggregateRootId::generateId()->toString(),
             name: 'test',
             symbol: 't',
             unitOfMeasureType: UnitOfMeasureEnum::Units
@@ -108,6 +114,7 @@ class UnitOfMeasureTest extends TestCase
     {
         $this->expectException(EmptyRequiredNameException::class);
         UnitOfMeasure::create(
+            id: AggregateRootId::generateId()->toString(),
             name: $invalidName,
             symbol: 't',
             unitOfMeasureType: UnitOfMeasureEnum::Units

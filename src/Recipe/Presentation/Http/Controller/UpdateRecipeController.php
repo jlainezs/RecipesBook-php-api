@@ -21,7 +21,7 @@ final class UpdateRecipeController extends AbstractController
         private readonly LoggerInterface $logger
     ){}
 
-    #[Route('/api/v1/recipes/{id}', name: 'put_recipe', methods: ['PUT'])]
+    #[Route('/api/v1/recipes/{id}', name: 'update_recipe', methods: ['PUT'])]
     public function __invoke(
         string $id,
         #[MapRequestPayload]

@@ -2,12 +2,14 @@
 namespace App\Tests\Unit\Ingredient\Presentation\Http\Controller;
 
 use App\Ingredient\Application\Command\Ingredient\CreateIngredient\CreateIngredientCommand;
+use App\Ingredient\Application\Command\Ingredient\CreateIngredient\CreateIngredientCommandFactory;
 use App\Ingredient\Presentation\Http\Controller\CreateIngredientController;
 use App\Ingredient\Application\Command\Ingredient\CreateIngredient\CreateIngredientDto;
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 
 class CreateIngredientControllerTest extends TestCase
@@ -17,6 +19,8 @@ class CreateIngredientControllerTest extends TestCase
     {
         $commandBus = $this->createMock(CommandBus::class);
         $validator = $this->createMock(ApplicationDataValidator::class);
+        $urlGeneratorInterface = $this->createMock(UrlGeneratorInterface::class);
+        $cmdFactory = new CreateIngredientCommandFactory($validator);
 
         $ingredientName = 'test';
         $ingredientTypeId = 'ce1c5c7b-3566-476c-951e-95d984fba7f6';
@@ -34,7 +38,12 @@ class CreateIngredientControllerTest extends TestCase
             ->with($this->callback(function(CreateIngredientCommand $cmd) use ($ingredientName): bool {
                 return $cmd->name === $ingredientName;
             }));
-        $controller = new CreateIngredientController($commandBus, $validator);
+        $urlGeneratorInterface
+            ->expects($this->once())
+            ->method('generate')
+            ->withAnyParameters();
+
+        $controller = new CreateIngredientController($commandBus, $cmdFactory, $urlGeneratorInterface);
         $request = new CreateIngredientDto($ingredientName, $ingredientTypeId, $ingredientDescription);
         $response = $controller($request);
 

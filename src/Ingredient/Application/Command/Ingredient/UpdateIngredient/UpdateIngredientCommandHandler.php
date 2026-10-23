@@ -38,7 +38,6 @@ readonly final class UpdateIngredientCommandHandler
         return $envelope;
     }
 
-
     /**
      * @throws IngredientTypeNotFoundException
      * @throws IngredientNotFoundException
@@ -49,7 +48,8 @@ readonly final class UpdateIngredientCommandHandler
     {
         $ingredient = $this->ingredientRepository->findOne(new AggregateRootId($command->id));
 
-        if (!$ingredient) {
+        if (!$ingredient)
+        {
             throw new IngredientNotFoundException($command->id);
         }
 

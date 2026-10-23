@@ -3,6 +3,8 @@ namespace App\Tests\Unit\ShoppingList\Presentation\Http\Controller;
 
 use App\Shared\Application\Bus\QueryBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\ShoppingList\Application\Query\ShoppingList\ShoppingListQuery;
 use App\ShoppingList\Domain\Model\ShoppingList;
 use App\ShoppingList\Presentation\Http\Controller\GetShoppingList;
@@ -11,12 +13,15 @@ use PHPUnit\Framework\TestCase;
 
 class GetShoppingListTest extends TestCase
 {
+    /**
+     * @throws EmptyIdNotAllowedException
+     */
     #[Test]
     public function it_validates_dispatches_query_and_returns_200(): void
     {
         $queryBus = $this->createMock(QueryBus::class);
         $validator = $this->createMock(ApplicationDataValidator::class);
-        $shoppingList = ShoppingList::create('Shopping List', []);
+        $shoppingList = ShoppingList::create(AggregateRootId::generateId()->toString(), 'Shopping List', []);
 
         $queryBus->expects($this->once())
             ->method('ask')

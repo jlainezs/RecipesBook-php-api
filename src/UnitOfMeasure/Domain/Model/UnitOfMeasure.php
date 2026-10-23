@@ -28,10 +28,10 @@ final class UnitOfMeasure extends AggregateRoot
      * @throws UnitOfMeasureEmptySymbolException
      * @throws UnitOfMeasureSymbolLengthException
      */
-    public static function create(string $name, string $symbol, UnitOfMeasureEnum $unitOfMeasureType): self
+    public static function create(string $id, string $name, string $symbol, UnitOfMeasureEnum $unitOfMeasureType): self
     {
         return new self(
-            AggregateRootId::generateId(),
+            new AggregateRootId($id),
             new RequiredName($name),
             new UnitOfMeasureSymbol($symbol),
             $unitOfMeasureType,

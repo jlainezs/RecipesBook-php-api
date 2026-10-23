@@ -6,6 +6,7 @@ use App\Security\Application\Service\ApplicationPasswordHasher;
 use App\Security\Domain\Exceptions\UserNotFoundException;
 use App\Security\Domain\Model\User;
 use App\Security\Domain\Repository\UserRepositoryInterface;
+use App\Security\Domain\Service\UserEmailUniquenessChecker;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
 use PHPUnit\Framework\Attributes\Test;
@@ -18,14 +19,15 @@ class UpdateUserCommandHandlerTest extends TestCase
     private UpdateUserCommandHandler $handler;
     private ApplicationPasswordHasher $passwordHasher;
     private UserPasswordHasherInterface $userPasswordHasherInterface;
-
+    private UserEmailUniquenessChecker $emailUniquenessChecker;
 
     protected function setUp(): void
     {
         $this->repository = $this->createMock(UserRepositoryInterface::class);
         $this->userPasswordHasherInterface = $this->createMock(UserPasswordHasherInterface::class);
         $this->passwordHasher = new ApplicationPasswordHasher($this->userPasswordHasherInterface);
-        $this->handler = new UpdateUserCommandHandler($this->repository, $this->passwordHasher);
+        $this->emailUniquenessChecker = $this->createMock(UserEmailUniquenessChecker::class);
+        $this->handler = new UpdateUserCommandHandler($this->repository, $this->passwordHasher, $this->emailUniquenessChecker);
     }
 
     /**
@@ -35,7 +37,12 @@ class UpdateUserCommandHandlerTest extends TestCase
     #[Test]
     public function it_creates_an_user(): void
     {
+        $this->emailUniquenessChecker
+            ->expects($this->once())
+            ->method('isEmailUniqueExceptUser')
+            ->withAnyParameters();
         $user = User::create(
+            AggregateRootId::generateId()->toString(),
             'eml@eml.com',
             'password',
             'first',
@@ -78,6 +85,7 @@ class UpdateUserCommandHandlerTest extends TestCase
     public function it_does_not_change_password_if_it_is_not_provided(): void
     {
         $user = User::create(
+            AggregateRootId::generateId()->toString(),
             'eml@eml.com',
             'password',
             'first',
@@ -90,7 +98,10 @@ class UpdateUserCommandHandlerTest extends TestCase
             ->expects($this->once())
             ->method('save')
             ->with($user);
-
+        $this->emailUniquenessChecker
+            ->expects($this->once())
+            ->method('isEmailUniqueExceptUser')
+            ->withAnyParameters();
         $this->repository
             ->expects($this->once())
             ->method('findOne')
@@ -124,7 +135,10 @@ class UpdateUserCommandHandlerTest extends TestCase
             ->method('findOne')
             ->with($id)
             ->willReturn(null);
-
+        $this->emailUniquenessChecker
+            ->expects($this->once())
+            ->method('isEmailUniqueExceptUser')
+            ->withAnyParameters();
         $this->repository
             ->expects($this->never())
             ->method('save');

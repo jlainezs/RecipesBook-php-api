@@ -34,6 +34,7 @@ final class Recipe extends AggregateRoot
      * @throws RecipeInvalidServingsException
      */
     public static function create(
+        string $id,
         string $name,
         int $servings,
         int $rating,
@@ -44,7 +45,7 @@ final class Recipe extends AggregateRoot
     ) : self
     {
         $recipe = new self(
-            AggregateRootId::generateId(),
+            new AggregateRootId($id),
             new RequiredName($name),
             new RecipeServings($servings),
             new RecipeRating($rating),

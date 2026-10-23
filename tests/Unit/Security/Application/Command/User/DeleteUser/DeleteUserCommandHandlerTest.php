@@ -26,6 +26,7 @@ class DeleteUserCommandHandlerTest extends TestCase
     public function it_deletes_the_user(): void
     {
         $user = User::create(
+            AggregateRootId::generateId()->toString(),
             'eml@example.com',
             'password',
             'First',

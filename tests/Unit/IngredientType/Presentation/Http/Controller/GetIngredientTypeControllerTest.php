@@ -6,6 +6,7 @@ use App\IngredientType\Domain\Model\IngredientType;
 use App\IngredientType\Presentation\Http\Controller\GetIngredientTypeController;
 use App\Shared\Application\Bus\QueryBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
@@ -16,7 +17,7 @@ class GetIngredientTypeControllerTest extends TestCase
     {
         $queryBus = $this->createMock(QueryBus::class);
         $validator = $this->createMock(ApplicationDataValidator::class);
-        $ingredientType = IngredientType::create('test');
+        $ingredientType = IngredientType::create(AggregateRootId::generateId()->toString(),'test');
 
         $validator
             ->expects($this->once())

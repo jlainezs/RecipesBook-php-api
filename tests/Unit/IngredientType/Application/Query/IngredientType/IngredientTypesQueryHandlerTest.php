@@ -8,6 +8,7 @@ use App\IngredientType\Application\Query\IngredientType\GetIngredientTypes\GetIn
 use App\IngredientType\Application\Service\IngredientTypeItemsPager;
 use App\IngredientType\Domain\Model\IngredientType;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -31,8 +32,8 @@ class IngredientTypesQueryHandlerTest extends TestCase
     #[Test]
     public function it_returns_a_response_with_mapped_dtos(): void
     {
-        $vegetable = IngredientType::create('Vegetable');
-        $fruit = IngredientType::create('Fruit');
+        $vegetable = IngredientType::create(AggregateRootId::generateId()->toString(),'Vegetable');
+        $fruit = IngredientType::create(AggregateRootId::generateId()->toString(),'Fruit');
 
         $this->pager
             ->expects($this->once())

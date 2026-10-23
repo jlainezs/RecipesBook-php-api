@@ -3,6 +3,7 @@ namespace App\Security\Presentation\Http\Controller;
 
 use App\Security\Application\Command\User\UpdateUser\UpdateUserCommand;
 use App\Security\Application\Command\User\UpdateUser\UpdateUserDto;
+use App\Security\Domain\Model\UserRole;
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,7 +28,7 @@ final class UpdateUserController extends AbstractController
             $dto->password,
             $dto->firstName,
             $dto->lastName,
-            $dto->roles,
+            array_map(fn(string $role): UserRole => UserRole::tryFrom($role), $dto->roles),
         );
         $this->validator->validate($cmd);
         $this->commandBus->dispatch($cmd);

@@ -1,0 +1,26 @@
+POST http://localhost:8000/api/v1/users/create
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{auth_token}}
+
+{
+    "email": "test@test1.com",
+    "password": "lolo",
+    "firstName": "test",
+    "lastName": "more test",
+    "roles": ["ROLE_USER"]
+}
+
+###
+
+POST http://localhost:8000/api/v1/users/create
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{auth_token}}
+
+{
+    "email": "test@test.com",
+    "password": "password",
+    "firstName": "test",
+    "lastName": "more test"
+}
