@@ -8,7 +8,7 @@ use App\UnitOfMeasure\Domain\Model\UnitOfMeasureEnum;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-class UnitOfMeasureControllerTest extends AppApiTestCase
+class CreateUnitOfMeasureControllerTest extends AppApiTestCase
 {
     public function setUp(): void
     {
