@@ -8,6 +8,7 @@ use App\UnitOfMeasure\Application\Command\UnitOfMeasure\UpdateUnitOfMeasure\Upda
 use App\UnitOfMeasure\Domain\Model\UnitOfMeasureEnum;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class UpdateUnitOfMeasureController extends AbstractController
@@ -18,7 +19,11 @@ final class UpdateUnitOfMeasureController extends AbstractController
     ){}
 
     #[Route('/api/v1/units-of-measure/{id}', name: 'unit_of_measure_update', methods: ['PUT'])]
-    public function __invoke(string $id, UpdateUnitOfMeasureDto $request): JsonResponse
+    public function __invoke(
+        string $id,
+        #[MapRequestPayload]
+        UpdateUnitOfMeasureDto $request
+    ): JsonResponse
     {
         $cmd = new UpdateUnitOfMeasureCommand(
             $id, $request->name, $request->symbol, UnitOfMeasureEnum::from($request->unitOfMeasureType)

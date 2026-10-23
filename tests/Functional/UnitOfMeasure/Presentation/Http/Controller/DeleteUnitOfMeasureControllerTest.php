@@ -14,7 +14,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 class DeleteUnitOfMeasureControllerTest extends AppApiTestCase
 {
     public UnitOfMeasureFixture $unitOfMeasureFixture;
-    public UnitOfMeasureRepositoryInterface $unitOfMeasureRepository;
+    public UnitOfMeasureRepositoryInterface $repository;
     public function setUp(): void
     {
         parent::setUp();
@@ -22,7 +22,7 @@ class DeleteUnitOfMeasureControllerTest extends AppApiTestCase
         $this->loginWithUser(LoginFixtures::USER_NAME, LoginFixtures::PASSWORD);
         $this->unitOfMeasureFixture = new UnitOfMeasureFixture();
         $this->loadFixture($this->unitOfMeasureFixture);
-        $this->unitOfMeasureRepository = $this->container->get(UnitOfMeasureRepositoryInterface::class);
+        $this->repository = $this->container->get(UnitOfMeasureRepositoryInterface::class);
     }
 
     #[Test]
@@ -42,7 +42,7 @@ class DeleteUnitOfMeasureControllerTest extends AppApiTestCase
         $this->assertResponseStatusCodeSame(Response::HTTP_NO_CONTENT);
 
         //ensure deleted
-        $unit = $this->unitOfMeasureRepository->findOne($toDelete);
+        $unit = $this->repository->findOne($toDelete);
         $this->assertNull($unit);
     }
 
