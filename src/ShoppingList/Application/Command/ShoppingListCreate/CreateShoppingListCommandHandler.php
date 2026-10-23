@@ -16,7 +16,7 @@ use App\UnitOfMeasure\Domain\Repository\UnitOfMeasureRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final readonly class ShoppingListCreateCommandHandler
+final readonly class CreateShoppingListCommandHandler
 {
     public function __construct(
         private ShoppingListRepositoryInterface $repository,
@@ -27,9 +27,13 @@ final readonly class ShoppingListCreateCommandHandler
     /**
      * @throws EmptyIdNotAllowedException
      */
-    public function __invoke(ShoppingListCreateCommand $command): void
+    public function __invoke(CreateShoppingListCommand $command): void
     {
-        $shoppingList = ShoppingList::create($command->name, []);
+        $shoppingList = ShoppingList::create(
+            $command->id,
+            $command->name,
+            []
+        );
 
         foreach ($command->items as $reqItem)
         {

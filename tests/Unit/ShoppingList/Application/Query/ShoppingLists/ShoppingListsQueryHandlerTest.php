@@ -1,6 +1,7 @@
 <?php
 namespace App\Tests\Unit\ShoppingList\Application\Query\ShoppingLists;
 
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\ShoppingList\Application\Query\SoppingLists\ShoppingListsQuery;
 use App\ShoppingList\Application\Query\SoppingLists\ShoppingListsQueryHandler;
 use App\ShoppingList\Application\Service\ShoppingListItemsPager;
@@ -22,8 +23,8 @@ class ShoppingListsQueryHandlerTest extends TestCase
     #[Test]
     public function it_returns_a_response_with_mapped_dto(): void
     {
-        $sl1 = ShoppingList::create('list 1', []);
-        $sl2 = ShoppingList::create('list 2', []);
+        $sl1 = ShoppingList::create(AggregateRootId::generateId()->toString(),'list 1', []);
+        $sl2 = ShoppingList::create(AggregateRootId::generateId()->toString(),'list 2', []);
         $this->pager
             ->expects($this->once())
             ->method('items')

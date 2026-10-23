@@ -19,7 +19,7 @@ class ShoppingListTest extends TestCase
     #[Test]
     public function it_creates_with_a_valid_name(): void
     {
-        $sl = ShoppingList::create('Shopping List', []);
+        $sl = ShoppingList::create(AggregateRootId::generateId()->toString(),'Shopping List', []);
         $this->assertSame('Shopping List', $sl->getName()->value());
         $this->assertInstanceOf(DateTimeImmutable::class, $sl->getCreatedAt());
         $this->assertInstanceOf(DateTimeImmutable::class, $sl->getUpdatedAt());
@@ -29,15 +29,15 @@ class ShoppingListTest extends TestCase
     #[Test]
     public function it_creates_with_a_valid_id(): void
     {
-        $sl = ShoppingList::create('Shopping List', []);
+        $sl = ShoppingList::create(AggregateRootId::generateId()->toString(),'Shopping List', []);
         $this->assertInstanceOf(AggregateRootId::class, $sl->getId());
     }
 
     #[Test]
     public function it_generates_a_unique_id_on_each_creation(): void
     {
-        $sl1 = ShoppingList::create('Shopping List', []);
-        $sl2 = ShoppingList::create('Shopping List', []);
+        $sl1 = ShoppingList::create(AggregateRootId::generateId()->toString(),'Shopping List', []);
+        $sl2 = ShoppingList::create(AggregateRootId::generateId()->toString(),'Shopping List', []);
         $this->assertNotSame($sl1->getId()->toString(), $sl2->getId()->toString());
     }
 
@@ -45,20 +45,20 @@ class ShoppingListTest extends TestCase
     public function it_throws_on_empty_name(): void
     {
         $this->expectException(EmptyRequiredNameException::class);
-        ShoppingList::create('', []);
+        ShoppingList::create(AggregateRootId::generateId()->toString(),'', []);
     }
 
     #[Test]
     public function it_throws_on_whitespace_only_name(): void
     {
         $this->expectException(EmptyRequiredNameException::class);
-        ShoppingList::create('  ', []);
+        ShoppingList::create(AggregateRootId::generateId()->toString(),'  ', []);
     }
 
     #[Test]
     public function it_renames_successfully(): void
     {
-        $sl = ShoppingList::create('Shopping List', []);
+        $sl = ShoppingList::create(AggregateRootId::generateId()->toString(),'Shopping List', []);
         $sl->rename('New Name');
         $this->assertSame('New Name', $sl->getName()->value());
     }
@@ -67,7 +67,7 @@ class ShoppingListTest extends TestCase
     public function it_throws_on_rename_with_whitespace(): void
     {
         $this->expectException(EmptyRequiredNameException::class);
-        $sl = ShoppingList::create('Shopping List', []);
+        $sl = ShoppingList::create(AggregateRootId::generateId()->toString(),'Shopping List', []);
         $this->expectException(EmptyRequiredNameException::class);
         $sl->rename(' ');
     }
@@ -76,7 +76,7 @@ class ShoppingListTest extends TestCase
     public function it_throws_on_rename_with_empty_name(): void
     {
         $this->expectException(EmptyRequiredNameException::class);
-        $sl = ShoppingList::create('Shopping List', []);
+        $sl = ShoppingList::create(AggregateRootId::generateId()->toString(),'Shopping List', []);
         $this->expectException(EmptyRequiredNameException::class);
         $sl->rename('');
     }
@@ -88,7 +88,7 @@ class ShoppingListTest extends TestCase
     public function it_adds_an_item_to_the_list():void
     {
         $ingredient = new IngredientReference('f21832a7-26dd-49d3-9323-d9e28df2c6c8');
-        $shoppingList = ShoppingList::create('test', []);
+        $shoppingList = ShoppingList::create(AggregateRootId::generateId()->toString(),'test', []);
         $unitOfMeasure = new UnitOfMeasureReference('f21832a7-26dd-49d3-9323-d9e28df2c6c8');
         $quantity = new ShoppingListItemQuantity(10);
         $shoppingListItem = ShoppingListItem::create(
@@ -112,7 +112,7 @@ class ShoppingListTest extends TestCase
     {
         $ingredient1 = new IngredientReference('f21832a7-26dd-49d3-9323-d9e28df2c6c8');
         $ingredient2 = new IngredientReference('68f099d2-5348-4e33-ac48-6b0b46768c9a');
-        $shoppingList = ShoppingList::create('test', []);
+        $shoppingList = ShoppingList::create(AggregateRootId::generateId()->toString(),'test', []);
         $unitOfMeasure = new UnitOfMeasureReference('f21832a7-26dd-49d3-9323-d9e28df2c6c8');
         $quantity = new ShoppingListItemQuantity(10);
         $shoppingListItem1 = ShoppingListItem::create(

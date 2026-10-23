@@ -29,7 +29,11 @@ class ShoppingListUpdateCommandHandlerTest extends TestCase
     #[Test]
     public function it_should_update_shopping_list():void
     {
-        $shoppingList = ShoppingList::create('test', []);
+        $shoppingList = ShoppingList::create(
+            AggregateRootId::generateId()->toString(),
+            'test',
+            []
+        );
         $id = $shoppingList->getId();
         $this->repository
             ->expects($this->once())
@@ -52,7 +56,11 @@ class ShoppingListUpdateCommandHandlerTest extends TestCase
     #[Test]
     public function it_throws_when_setting_empty_name(): void
     {
-        $shoppingList = ShoppingList::create('test', []);
+        $shoppingList = ShoppingList::create(
+            AggregateRootId::generateId()->toString(),
+            'test',
+            []
+        );
         $id = $shoppingList->getId();
         $this->repository
             ->expects($this->once())

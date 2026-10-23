@@ -2,6 +2,7 @@
 namespace App\Tests\Unit\ShoppingList\Domain\Model;
 
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\Shared\Domain\ValueObjects\IngredientReference;
 use App\Shared\Domain\ValueObjects\UnitOfMeasureReference;
 use App\ShoppingList\Domain\Model\ShoppingList;
@@ -19,7 +20,7 @@ class ShoppingListItemTest extends TestCase
     public function it_can_be_created(): void
     {
         $ingredient = new IngredientReference('f21832a7-26dd-49d3-9323-d9e28df2c6c8');
-        $shoppingList = ShoppingList::create('test', []);
+        $shoppingList = ShoppingList::create(AggregateRootId::generateId()->toString(),'test', []);
         $unitOfMeasure = new UnitOfMeasureReference('f21832a7-26dd-49d3-9323-d9e28df2c6c8');
         $quantity = new ShoppingListItemQuantity(10);
         $shoppingListItem = ShoppingListItem::create(
@@ -40,7 +41,7 @@ class ShoppingListItemTest extends TestCase
     public function it_generates_a_unique_id_on_each_creation(): void
     {
         $ingredient = new IngredientReference('f21832a7-26dd-49d3-9323-d9e28df2c6c8');
-        $shoppingList = ShoppingList::create('test', []);
+        $shoppingList = ShoppingList::create(AggregateRootId::generateId()->toString(),'test', []);
         $quantity = new ShoppingListItemQuantity(10);
         $unitOfMeasure = new UnitOfMeasureReference('f21832a7-26dd-49d3-9323-d9e28df2c6c8');
         $shoppingListItem1 = ShoppingListItem::create(
@@ -65,7 +66,7 @@ class ShoppingListItemTest extends TestCase
     public function it_changes_ingredient(): void
     {
         $ingredient = new IngredientReference('f21832a7-26dd-49d3-9323-d9e28df2c6c8');
-        $shoppingList = ShoppingList::create('test', []);
+        $shoppingList = ShoppingList::create(AggregateRootId::generateId()->toString(),'test', []);
         $quantity = new ShoppingListItemQuantity(10);
         $unitOfMeasure = new UnitOfMeasureReference('f21832a7-26dd-49d3-9323-d9e28df2c6c8');
         $shoppingListItem = ShoppingListItem::create(
@@ -86,7 +87,7 @@ class ShoppingListItemTest extends TestCase
     public function it_changes_quantity(): void
     {
         $ingredient = new IngredientReference('f21832a7-26dd-49d3-9323-d9e28df2c6c8');
-        $shoppingList = ShoppingList::create('test', []);
+        $shoppingList = ShoppingList::create(AggregateRootId::generateId()->toString(),'test', []);
         $quantity = new ShoppingListItemQuantity(10);
         $unitOfMeasure = new UnitOfMeasureReference('f21832a7-26dd-49d3-9323-d9e28df2c6c8');
         $shoppingListItem = ShoppingListItem::create(

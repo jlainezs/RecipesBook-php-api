@@ -2,6 +2,7 @@
 namespace App\Tests\Unit\ShoppingList\Application\Command\ShoppingListDelete;
 
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\ShoppingList\Application\Command\ShoppingListDelete\ShoppingListDeleteCommand;
 use App\ShoppingList\Application\Command\ShoppingListDelete\ShoppingListDeleteCommandHandler;
 use App\ShoppingList\Domain\Exceptions\ShoppingListNotFoundException;
@@ -28,7 +29,11 @@ class ShoppingListDeleteCommandHandlerTest extends TestCase
     #[Test]
     public function it_deletes_the_shopping_list(): void
     {
-        $shoppingList = ShoppingList::create('shopping list', []);
+        $shoppingList = ShoppingList::create(
+            AggregateRootId::generateId()->toString(),
+            'shopping list',
+            []
+        );
         $id = $shoppingList->getId()->toString();
 
         $this->repository
@@ -52,7 +57,11 @@ class ShoppingListDeleteCommandHandlerTest extends TestCase
     #[Test]
     public function it_throws_when_the_shopping_list_is_not_found(): void
     {
-        $shoppingList = ShoppingList::create('shopping list', []);
+        $shoppingList = ShoppingList::create(
+            AggregateRootId::generateId()->toString(),
+            'shopping list',
+            []
+        );
         $id = $shoppingList->getId()->toString();
 
         $this->repository

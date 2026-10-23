@@ -33,7 +33,11 @@ class ShoppingListQueryHandlerTest extends TestCase
     #[Test]
     public function it_should_return_the_shopping_list(): void
     {
-        $shoppingList = ShoppingList::create('test', []);
+        $shoppingList = ShoppingList::create(
+            AggregateRootId::generateId()->toString(),
+            'test',
+            []
+        );
         $id = $shoppingList->getId();
         $this->repository
             ->expects($this->once())

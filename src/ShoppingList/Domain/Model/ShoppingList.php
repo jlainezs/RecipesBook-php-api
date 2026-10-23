@@ -1,6 +1,7 @@
 <?php
 namespace App\ShoppingList\Domain\Model;
 
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\Model\AggregateRoot;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\Shared\Domain\ValueObjects\RequiredName;
@@ -18,10 +19,13 @@ final class ShoppingList extends AggregateRoot
         private DateTimeImmutable $updatedAt,
     ){}
 
-    public static function create(string $name, iterable $items): self
+    /**
+     * @throws EmptyIdNotAllowedException
+     */
+    public static function create(string $id, string $name, iterable $items): self
     {
         return new self(
-            id: AggregateRootId::generateId(),
+            id: new AggregateRootId($id),
             name: new RequiredName($name),
             items: $items,
             scheduledFor: null,

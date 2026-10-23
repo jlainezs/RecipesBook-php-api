@@ -4,8 +4,9 @@ namespace App\Tests\Unit\ShoppingList\Application\Command\ShoppingListCreate;
 use App\Ingredient\Domain\Repository\IngredientRepositoryInterface;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\Exceptions\EmptyRequiredNameException;
-use App\ShoppingList\Application\Command\ShoppingListCreate\ShoppingListCreateCommand;
-use App\ShoppingList\Application\Command\ShoppingListCreate\ShoppingListCreateCommandHandler;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
+use App\ShoppingList\Application\Command\ShoppingListCreate\CreateShoppingListCommand;
+use App\ShoppingList\Application\Command\ShoppingListCreate\CreateShoppingListCommandHandler;
 use App\ShoppingList\Domain\Model\ShoppingList;
 use App\ShoppingList\Domain\Repository\ShoppingListRepositoryInterface;
 use App\UnitOfMeasure\Domain\Repository\UnitOfMeasureRepositoryInterface;
@@ -18,14 +19,14 @@ class ShoppingListCreateCommandHandlerTest extends TestCase
     private ShoppingListRepositoryInterface&MockObject $repository;
     private IngredientRepositoryInterface $ingredientRepository;
     private UnitOfMeasureRepositoryInterface $unitOfMeasureRepository;
-    private ShoppingListCreateCommandHandler $handler;
+    private CreateShoppingListCommandHandler $handler;
 
     public function setUp(): void
     {
         $this->repository = $this->createMock(ShoppingListRepositoryInterface::class);
         $this->ingredientRepository = $this->createStub(IngredientRepositoryInterface::class);
         $this->unitOfMeasureRepository = $this->createStub(UnitOfMeasureRepositoryInterface::class);
-        $this->handler = new ShoppingListCreateCommandHandler(
+        $this->handler = new CreateShoppingListCommandHandler(
             $this->repository,
             $this->ingredientRepository,
             $this->unitOfMeasureRepository
@@ -42,7 +43,8 @@ class ShoppingListCreateCommandHandlerTest extends TestCase
             ->expects($this->once())
             ->method('save')
             ->with($this->isInstanceOf(ShoppingList::class));
-        ($this->handler)(new ShoppingListCreateCommand(
+        ($this->handler)(new CreateShoppingListCommand(
+            id: AggregateRootId::generateId()->toString(),
             name: 'a shopping list',
             items: []
         ));
@@ -58,7 +60,8 @@ class ShoppingListCreateCommandHandlerTest extends TestCase
             ->expects($this->never())
             ->method('save');
         $this->expectException(EmptyRequiredNameException::class);
-        ($this->handler)(new ShoppingListCreateCommand(
+        ($this->handler)(new CreateShoppingListCommand(
+            id: AggregateRootId::generateId()->toString(),
             name: '',
             items: []
         ));

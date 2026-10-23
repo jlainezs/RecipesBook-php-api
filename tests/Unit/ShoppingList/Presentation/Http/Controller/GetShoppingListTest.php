@@ -3,6 +3,7 @@ namespace App\Tests\Unit\ShoppingList\Presentation\Http\Controller;
 
 use App\Shared\Application\Bus\QueryBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\ShoppingList\Application\Query\ShoppingList\ShoppingListQuery;
 use App\ShoppingList\Domain\Model\ShoppingList;
 use App\ShoppingList\Presentation\Http\Controller\GetShoppingList;
@@ -16,7 +17,7 @@ class GetShoppingListTest extends TestCase
     {
         $queryBus = $this->createMock(QueryBus::class);
         $validator = $this->createMock(ApplicationDataValidator::class);
-        $shoppingList = ShoppingList::create('Shopping List', []);
+        $shoppingList = ShoppingList::create(AggregateRootId::generateId()->toString(), 'Shopping List', []);
 
         $queryBus->expects($this->once())
             ->method('ask')
