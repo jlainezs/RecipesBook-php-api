@@ -1,6 +1,7 @@
 <?php
 namespace App\Tests\Unit\ShoppingList\Application\Query\ShoppingLists;
 
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\ShoppingList\Application\Query\SoppingLists\ShoppingListsQuery;
 use App\ShoppingList\Application\Query\SoppingLists\ShoppingListsQueryHandler;
@@ -20,6 +21,9 @@ class ShoppingListsQueryHandlerTest extends TestCase
         $this->handler = new ShoppingListsQueryHandler($this->pager);
     }
 
+    /**
+     * @throws EmptyIdNotAllowedException
+     */
     #[Test]
     public function it_returns_a_response_with_mapped_dto(): void
     {

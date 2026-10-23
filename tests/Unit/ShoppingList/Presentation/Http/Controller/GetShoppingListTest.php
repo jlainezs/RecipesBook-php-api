@@ -3,6 +3,7 @@ namespace App\Tests\Unit\ShoppingList\Presentation\Http\Controller;
 
 use App\Shared\Application\Bus\QueryBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\ShoppingList\Application\Query\ShoppingList\ShoppingListQuery;
 use App\ShoppingList\Domain\Model\ShoppingList;
@@ -12,6 +13,9 @@ use PHPUnit\Framework\TestCase;
 
 class GetShoppingListTest extends TestCase
 {
+    /**
+     * @throws EmptyIdNotAllowedException
+     */
     #[Test]
     public function it_validates_dispatches_query_and_returns_200(): void
     {

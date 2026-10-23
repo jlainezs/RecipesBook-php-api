@@ -47,7 +47,6 @@ class ShoppingListDeleteCommandHandlerTest extends TestCase
             ->method('delete')
             ->with($shoppingList);
 
-        $command = new ShoppingListDeleteCommand($id);
         ($this->handler)(new ShoppingListDeleteCommand($id));
     }
 

@@ -5,6 +5,7 @@ use App\Shared\Domain\Exceptions\EmptyRequiredNameException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\ShoppingList\Application\Command\ShoppingListUpdate\ShoppingListUpdateCommand;
 use App\ShoppingList\Application\Command\ShoppingListUpdate\ShoppingListUpdateCommandHandler;
+use App\ShoppingList\Domain\Exceptions\ShoppingListItemNotFoundException;
 use App\ShoppingList\Domain\Exceptions\ShoppingListNotFoundException;
 use App\ShoppingList\Domain\Model\ShoppingList;
 use App\ShoppingList\Infrastructure\Repository\ShoppingListRepository;
@@ -25,6 +26,7 @@ class ShoppingListUpdateCommandHandlerTest extends TestCase
     /**
      * @throws EmptyIdNotAllowedException
      * @throws ShoppingListNotFoundException
+     * @throws ShoppingListItemNotFoundException
      */
     #[Test]
     public function it_should_update_shopping_list():void
@@ -52,6 +54,7 @@ class ShoppingListUpdateCommandHandlerTest extends TestCase
     /**
      * @throws ShoppingListNotFoundException
      * @throws EmptyIdNotAllowedException
+     * @throws ShoppingListItemNotFoundException
      */
     #[Test]
     public function it_throws_when_setting_empty_name(): void
@@ -77,6 +80,7 @@ class ShoppingListUpdateCommandHandlerTest extends TestCase
     /**
      * @throws EmptyIdNotAllowedException
      * @throws ShoppingListNotFoundException
+     * @throws ShoppingListItemNotFoundException
      */
     #[Test]
     public function it_throws_when_shopping_list_is_not_found(): void

@@ -16,6 +16,9 @@ use PHPUnit\Framework\TestCase;
 
 class ShoppingListTest extends TestCase
 {
+    /**
+     * @throws EmptyIdNotAllowedException
+     */
     #[Test]
     public function it_creates_with_a_valid_name(): void
     {
@@ -26,6 +29,9 @@ class ShoppingListTest extends TestCase
         $this->assertNull($sl->getScheduledFor());
     }
 
+    /**
+     * @throws EmptyIdNotAllowedException
+     */
     #[Test]
     public function it_creates_with_a_valid_id(): void
     {
@@ -33,6 +39,9 @@ class ShoppingListTest extends TestCase
         $this->assertInstanceOf(AggregateRootId::class, $sl->getId());
     }
 
+    /**
+     * @throws EmptyIdNotAllowedException
+     */
     #[Test]
     public function it_generates_a_unique_id_on_each_creation(): void
     {
@@ -41,6 +50,9 @@ class ShoppingListTest extends TestCase
         $this->assertNotSame($sl1->getId()->toString(), $sl2->getId()->toString());
     }
 
+    /**
+     * @throws EmptyIdNotAllowedException
+     */
     #[Test]
     public function it_throws_on_empty_name(): void
     {
@@ -48,6 +60,9 @@ class ShoppingListTest extends TestCase
         ShoppingList::create(AggregateRootId::generateId()->toString(),'', []);
     }
 
+    /**
+     * @throws EmptyIdNotAllowedException
+     */
     #[Test]
     public function it_throws_on_whitespace_only_name(): void
     {
@@ -55,6 +70,9 @@ class ShoppingListTest extends TestCase
         ShoppingList::create(AggregateRootId::generateId()->toString(),'  ', []);
     }
 
+    /**
+     * @throws EmptyIdNotAllowedException
+     */
     #[Test]
     public function it_renames_successfully(): void
     {
@@ -63,6 +81,9 @@ class ShoppingListTest extends TestCase
         $this->assertSame('New Name', $sl->getName()->value());
     }
 
+    /**
+     * @throws EmptyIdNotAllowedException
+     */
     #[Test]
     public function it_throws_on_rename_with_whitespace(): void
     {
@@ -72,6 +93,9 @@ class ShoppingListTest extends TestCase
         $sl->rename(' ');
     }
 
+    /**
+     * @throws EmptyIdNotAllowedException
+     */
     #[Test]
     public function it_throws_on_rename_with_empty_name(): void
     {
