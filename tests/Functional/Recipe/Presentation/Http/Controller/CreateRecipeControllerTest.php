@@ -41,13 +41,13 @@ class CreateRecipeControllerTest extends AppApiTestCase
                 [
                     'ingredientId' => $this->ingredientFixtures->testIngredients[0]->getId()->toString(),
                     'quantity' => 20,
-                    'unitOfMeasureId' => $this->unitOfMeasureFixtures->testUnitOfMeasures[0]->getId()->toString(),
+                    'unitOfMeasureId' => $this->unitOfMeasureFixtures->testData[0]->getId()->toString(),
                     'ordering' => 1,
                 ],
                 [
                     'ingredientId' => $this->ingredientFixtures->testIngredients[1]->getId()->toString(),
                     'quantity' => 10,
-                    'unitOfMeasureId' => $this->unitOfMeasureFixtures->testUnitOfMeasures[1]->getId()->toString(),
+                    'unitOfMeasureId' => $this->unitOfMeasureFixtures->testData[1]->getId()->toString(),
                     'ordering' => 2,
                 ],
             ],

@@ -11,11 +11,11 @@ use Doctrine\Persistence\ObjectManager;
 
 class UnitOfMeasureFixture extends Fixture
 {
-    public array $testUnitOfMeasures;
+    public array $testData;
 
     public function __construct()
     {
-        $this->testUnitOfMeasures = [];
+        $this->testData = [];
     }
 
     /**
@@ -35,7 +35,7 @@ class UnitOfMeasureFixture extends Fixture
             $unit = UnitOfMeasure::create(
                 $uom[0], $uom[1], $uom[2], $uom[3]
             );
-            $this->testUnitOfMeasures[] = $unit;
+            $this->testData[] = $unit;
             $manager->persist($unit);
         }
 
