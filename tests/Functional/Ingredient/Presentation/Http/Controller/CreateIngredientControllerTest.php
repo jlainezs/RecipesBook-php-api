@@ -77,6 +77,28 @@ class CreateIngredientControllerTest extends  AppApiTestCase
         $this->assertProblemDetailsResponse(Response::HTTP_BAD_REQUEST);
     }
 
+    #[Test]
+    public function it_fails_when_no_authorized(): void
+    {
+        $ingredientToCreateData = [
+            'name' => 'test',
+            'ingredientTypeId' => $this->fixture->testData[0]->getId()->toString(),
+            'description' =>'no description available'
+        ];
+        $this->client->request(
+            'POST',
+            $this->getDefinedUrl('ingredient_create'),
+            [],
+            [],
+            [
+                'CONTENT_TYPE' => 'application/json',
+                'HTTP_ACCEPT' => 'application/json'
+            ],
+            json_encode($ingredientToCreateData)
+        );
+        $this->assertProblemDetailsResponse(Response::HTTP_UNAUTHORIZED);
+    }
+
     public static function invalidNames(): iterable
     {
         yield 'empty' => [''];
