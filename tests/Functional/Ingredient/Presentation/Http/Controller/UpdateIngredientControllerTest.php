@@ -39,7 +39,7 @@ class UpdateIngredientControllerTest extends AppApiTestCase
         $updatedData = [
             'name' => 'updated name',
             'description' => 'updated description',
-            'ingredientTypeId' => $this->ingredientTypeFixtures->testIngredientTypes[0]->getId()->toString(),
+            'ingredientTypeId' => $this->ingredientTypeFixtures->testData[0]->getId()->toString(),
         ];
 
         $this->assertNotEmpty($updatedData['ingredientTypeId']);
@@ -73,7 +73,7 @@ class UpdateIngredientControllerTest extends AppApiTestCase
             $updatedData = [
                 'name' => 'updated name',
                 'description' => 'updated description',
-                'ingredientTypeId' => $this->ingredientTypeFixtures->testIngredientTypes[0]->getId()->toString(),
+                'ingredientTypeId' => $this->ingredientTypeFixtures->testData[0]->getId()->toString(),
             ];
 
             $this->assertNotEmpty($updatedData['ingredientTypeId']);
@@ -103,7 +103,7 @@ class UpdateIngredientControllerTest extends AppApiTestCase
             $updatedData = [
                 'name' => 'updated name',
                 'description' => 'updated description',
-                'ingredientTypeId' => $this->ingredientTypeFixtures->testIngredientTypes[0]->getId()->toString(),
+                'ingredientTypeId' => $this->ingredientTypeFixtures->testData[0]->getId()->toString(),
             ];
 
             $this->assertNotEmpty($updatedData['ingredientTypeId']);

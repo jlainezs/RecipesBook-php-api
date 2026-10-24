@@ -9,11 +9,11 @@ use Doctrine\Persistence\ObjectManager;
 
 class IngredientTypeFixtures extends Fixture
 {
-    public array $testIngredientTypes;
+    public array $testData;
 
     public function __construct()
     {
-        $this->testIngredientTypes = [];
+        $this->testData = [];
     }
 
     /**
@@ -30,7 +30,7 @@ class IngredientTypeFixtures extends Fixture
         foreach ($toCreate as $ingredientType)
         {
             $ingredientType = IngredientType::create($ingredientType[0], $ingredientType[1]);
-            $this->testIngredientTypes[] = $ingredientType;
+            $this->testData[] = $ingredientType;
             $manager->persist($ingredientType);
         }
 

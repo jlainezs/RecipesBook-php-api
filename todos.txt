@@ -1,4 +1,5 @@
 TODO: Move validation rules from query/command to DTOs to keep query/command framework agnostic.
-TODO: Add roles to check access
+TODO: Introduce command/query factories to simplify controllers.
+TODO: Add roles to check access.
 TODO: Add account management. Need to bind users with accounts.
 TODO: Add entities account owner: create a entity reference value object and add it the aggregate root items.

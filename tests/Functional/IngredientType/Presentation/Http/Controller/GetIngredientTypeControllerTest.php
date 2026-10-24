@@ -26,7 +26,7 @@ class GetIngredientTypeControllerTest extends AppApiTestCase
     {
         $this->client->request(
             'GET',
-            $this->getDefinedUrl('get_ingredient_type', ['id' => $this->additionalIngredientTypeFixtures->testIngredientTypes[0]->getId()->toString()]),
+            $this->getDefinedUrl('get_ingredient_type', ['id' => $this->additionalIngredientTypeFixtures->testData[0]->getId()->toString()]),
             [],
             [],
             [
@@ -37,7 +37,7 @@ class GetIngredientTypeControllerTest extends AppApiTestCase
         $this->assertResponseIsSuccessful();
         $ingredientTypeDto = json_decode($this->client->getResponse()->getContent(), true);
         $this->assertEquals(
-            $this->additionalIngredientTypeFixtures->testIngredientTypes[0]->getId()->toString(),
+            $this->additionalIngredientTypeFixtures->testData[0]->getId()->toString(),
             $ingredientTypeDto['ingredientType']['id']
         );
     }

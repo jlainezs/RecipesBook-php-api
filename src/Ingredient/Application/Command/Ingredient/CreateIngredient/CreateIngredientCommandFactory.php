@@ -1,15 +1,13 @@
 <?php
 namespace App\Ingredient\Application\Command\Ingredient\CreateIngredient;
 
-use App\Shared\Application\Service\ApplicationDataValidator;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
 
 readonly class CreateIngredientCommandFactory
 {
-    public function __construct(
-        public ApplicationDataValidator $validator
-    ){}
+    public function __construct()
+    {}
 
     /**
      * @throws EmptyIdNotAllowedException
@@ -23,7 +21,6 @@ readonly class CreateIngredientCommandFactory
             $dto->description,
             $dto->ingredientTypeId
         );
-        $this->validator->validate($cmd);
 
         return $cmd;
     }

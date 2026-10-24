@@ -31,7 +31,7 @@ class DeleteIngredientTypeControllerTest extends AppApiTestCase
     {
         $this->client->request(
             'DELETE',
-            $this->getDefinedUrl('ingredient_types_delete_instance', ['id' => $this->additionalIngredientTypeFixtures->testIngredientTypes[0]->getId()->toString()]),
+            $this->getDefinedUrl('ingredient_types_delete_instance', ['id' => $this->additionalIngredientTypeFixtures->testData[0]->getId()->toString()]),
             [],
             [],
             [
@@ -44,7 +44,7 @@ class DeleteIngredientTypeControllerTest extends AppApiTestCase
         // ensure the ingredient type was not deleted
         $this->client->request(
             'GET',
-            $this->getDefinedUrl('get_ingredient_type', ['id' => $this->additionalIngredientTypeFixtures->testIngredientTypes[0]->getId()->toString()]),
+            $this->getDefinedUrl('get_ingredient_type', ['id' => $this->additionalIngredientTypeFixtures->testData[0]->getId()->toString()]),
             [],
             [],
             [

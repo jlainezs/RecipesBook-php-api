@@ -5,13 +5,14 @@ use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Tests\DataFixtures\Ingredient\IngredientTypeFixtures;
 use App\Tests\DataFixtures\Security\LoginFixtures;
 use App\Tests\Functional\AppApiTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class CreateIngredientControllerTest extends  AppApiTestCase
 {
-    private IngredientTypeFixtures $additionalIngredientTypeFixtures;
+    private IngredientTypeFixtures $fixture;
 
     /**
      * @throws EmptyIdNotAllowedException
@@ -21,17 +22,17 @@ class CreateIngredientControllerTest extends  AppApiTestCase
         parent::setUp();
         $this->loadFixture(new LoginFixtures($this->container->get(UserPasswordHasherInterface::class)));
         $this->loginWithUser(LoginFixtures::USER_NAME, LoginFixtures::PASSWORD);
-        $this->additionalIngredientTypeFixtures = new IngredientTypeFixtures();
-        $this->loadFixture($this->additionalIngredientTypeFixtures);
+        $this->fixture = new IngredientTypeFixtures();
+        $this->loadFixture($this->fixture);
     }
 
     #[Test]
-    public function testCreateIngredient()
+    public function it_creates_ingredient()
     {
-        $this->assertNotEmpty($this->additionalIngredientTypeFixtures->testIngredientTypes);
+        $this->assertNotEmpty($this->fixture->testData);
         $ingredientToCreateData = [
             'name' =>'an ingredient',
-            'ingredientTypeId' => $this->additionalIngredientTypeFixtures->testIngredientTypes[0]->getId()->toString(),
+            'ingredientTypeId' => $this->fixture->testData[0]->getId()->toString(),
             'description' =>'no description available'
         ];
         $this->client->request(
@@ -50,5 +51,35 @@ class CreateIngredientControllerTest extends  AppApiTestCase
         $ingredientResponse = json_decode($this->client->getResponse()->getContent(), true);
         $this->assertIsArray($ingredientResponse);
         $this->assertArrayHasKey('id', $ingredientResponse);
+    }
+
+    #[Test]
+    #[DataProvider('invalidNames')]
+    public function it_fails_when_invalid_ingredient_name(string $invalidName): void
+    {
+        $ingredientToCreateData = [
+            'name' => $invalidName,
+            'ingredientTypeId' => $this->fixture->testData[0]->getId()->toString(),
+            'description' =>'no description available'
+        ];
+        $this->client->request(
+            'POST',
+            $this->getDefinedUrl('ingredient_create'),
+            [],
+            [],
+            [
+                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
+                'CONTENT_TYPE' => 'application/json',
+                'HTTP_ACCEPT' => 'application/json'
+            ],
+            json_encode($ingredientToCreateData)
+        );
+        $this->assertProblemDetailsResponse(Response::HTTP_BAD_REQUEST);
+    }
+
+    public static function invalidNames(): iterable
+    {
+        yield 'empty' => [''];
+        yield 'spaces' => ['   '];
     }
 }

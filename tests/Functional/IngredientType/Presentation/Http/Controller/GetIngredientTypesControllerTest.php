@@ -42,13 +42,13 @@ class GetIngredientTypesControllerTest extends AppApiTestCase
         $this->assertIsArray($responseData);
         $this->assertNotEmpty($responseData);
         $this->assertArrayHasKey('items', $responseData);
-        $this->assertSameSize($this->additionalIngredientTypeFixtures->testIngredientTypes, $responseData['items']);
+        $this->assertSameSize($this->additionalIngredientTypeFixtures->testData, $responseData['items']);
 
         for ($i = 0; $i < count($responseData['items']); $i++) {
             $this->assertArrayHasKey('id', $responseData['items'][$i]);
             $this->assertArrayHasKey('name', $responseData['items'][$i]);
-            $this->assertEquals($this->additionalIngredientTypeFixtures->testIngredientTypes[$i]->getId()->toString(), $responseData['items'][$i]['id']);
-            $this->assertEquals($this->additionalIngredientTypeFixtures->testIngredientTypes[$i]->getName()->value(), $responseData['items'][$i]['name']);
+            $this->assertEquals($this->additionalIngredientTypeFixtures->testData[$i]->getId()->toString(), $responseData['items'][$i]['id']);
+            $this->assertEquals($this->additionalIngredientTypeFixtures->testData[$i]->getName()->value(), $responseData['items'][$i]['name']);
         }
     }
 

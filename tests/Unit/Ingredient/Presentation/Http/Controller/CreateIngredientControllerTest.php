@@ -18,20 +18,13 @@ class CreateIngredientControllerTest extends TestCase
     public function it_dispatches_command_and_returns_201(): void
     {
         $commandBus = $this->createMock(CommandBus::class);
-        $validator = $this->createMock(ApplicationDataValidator::class);
         $urlGeneratorInterface = $this->createMock(UrlGeneratorInterface::class);
-        $cmdFactory = new CreateIngredientCommandFactory($validator);
+        $cmdFactory = new CreateIngredientCommandFactory();
 
         $ingredientName = 'test';
         $ingredientTypeId = 'ce1c5c7b-3566-476c-951e-95d984fba7f6';
         $ingredientDescription = 'ingredient description';
 
-        $validator
-            ->expects($this->once())
-            ->method('validate')
-            ->with($this->callback(function(CreateIngredientCommand $cmd) use ($ingredientName): bool {
-                return $cmd->name === $ingredientName;
-            }));
         $commandBus
             ->expects($this->once())
             ->method('dispatch')

@@ -32,13 +32,13 @@ class IngredientFixtures extends Fixture
                 "id" => AggregateRootId::generateId()->toString(),
                 "name" => "An ingredient test",
                 "description" =>"The description of this test ingredient",
-                "ingredientTypeId" => $this->ingredientTypeFixtures->testIngredientTypes[0]->getId()->toString()
+                "ingredientTypeId" => $this->ingredientTypeFixtures->testData[0]->getId()->toString()
             ],
             [
                 "id" => AggregateRootId::generateId()->toString(),
                 "name" => "An ingredient test 2",
                 "description" =>"The description of this test ingredient 2",
-                "ingredientTypeId" => $this->ingredientTypeFixtures->testIngredientTypes[1]->getId()->toString()
+                "ingredientTypeId" => $this->ingredientTypeFixtures->testData[1]->getId()->toString()
             ]
         ];
 

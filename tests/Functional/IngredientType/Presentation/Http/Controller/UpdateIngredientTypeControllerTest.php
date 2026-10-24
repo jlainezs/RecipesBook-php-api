@@ -32,7 +32,7 @@ class UpdateIngredientTypeControllerTest extends AppApiTestCase
     #[Test]
     public function update_ingredient_type(): void
     {
-        $toUpdate = $this->ingredientTypeRepository->findOne($this->additionalIngredientTypeFixtures->testIngredientTypes[0]->getId());
+        $toUpdate = $this->ingredientTypeRepository->findOne($this->additionalIngredientTypeFixtures->testData[0]->getId());
         $this->assertNotNull($toUpdate);
 
         $this->client->request(
