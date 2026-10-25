@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Tests\Unit\Ingredient\Presentation\Http\Controller;
 
 use App\Ingredient\Application\Command\Ingredient\UpdateIngredient\UpdateIngredientCommand;
@@ -10,7 +9,6 @@ use App\Ingredient\Domain\Model\Ingredient;
 use App\Ingredient\Domain\ValueObjects\IngredientTypeReference;
 use App\Ingredient\Presentation\Http\Controller\UpdateIngredientController;
 use App\Shared\Application\Bus\CommandBus;
-use App\Shared\Application\Service\ApplicationDataValidator;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
 use PHPUnit\Framework\Attributes\Test;
