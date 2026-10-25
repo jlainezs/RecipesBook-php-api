@@ -1,6 +1,7 @@
 <?php
 namespace App\Shared\Presentation\Http\EventListener;
 
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\Exceptions\EmptyRequiredNameException;
 use App\Shared\Domain\Exceptions\EntityNotFoundException;
 use App\Shared\Presentation\Http\Response\JsonErrorResponse;
@@ -19,14 +20,14 @@ final class ApiExceptionListener
 {
     public function __construct(
         #[Autowire('%kernel.debug%')]
-        private bool $isDebug
+        private readonly bool $isDebug
     ){}
 
     public function onKernelException(ExceptionEvent $event): void
     {
         $exception = $event->getThrowable();
 
-        if ($exception instanceof HandlerFailedException && $exception->getPrevious() !== null) {
+        while ($exception instanceof HandlerFailedException && $exception->getPrevious() !== null) {
             $exception = $exception->getPrevious();
         }
 
@@ -34,7 +35,8 @@ final class ApiExceptionListener
             $exception instanceof ValidationFailedException,
             $exception instanceof UnprocessableEntityHttpException,
             $exception instanceof InvalidParameterException,
-            $exception instanceof EmptyRequiredNameException
+            $exception instanceof EmptyRequiredNameException,
+                $exception instanceof EmptyIdNotAllowedException
             =>
                 Response::HTTP_BAD_REQUEST,
 

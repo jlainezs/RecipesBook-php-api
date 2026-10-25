@@ -78,6 +78,30 @@ class CreateIngredientControllerTest extends  AppApiTestCase
     }
 
     #[Test]
+    #[DataProvider('invalidUuids')]
+    public function it_fails_when_invalid_ingredient_type(string $invalidUuid): void
+    {
+        $ingredientToCreateData = [
+            'name' => 'test',
+            'ingredientTypeId' => $invalidUuid,
+            'description' =>'no description available'
+        ];
+        $this->client->request(
+            'POST',
+            $this->getDefinedUrl('ingredient_create'),
+            [],
+            [],
+            [
+                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
+                'CONTENT_TYPE' => 'application/json',
+                'HTTP_ACCEPT' => 'application/json'
+            ],
+            json_encode($ingredientToCreateData)
+        );
+        $this->assertProblemDetailsResponse(Response::HTTP_BAD_REQUEST);
+    }
+
+    #[Test]
     public function it_fails_when_no_authorized(): void
     {
         $ingredientToCreateData = [
@@ -103,5 +127,12 @@ class CreateIngredientControllerTest extends  AppApiTestCase
     {
         yield 'empty' => [''];
         yield 'spaces' => ['   '];
+    }
+
+    public static function invalidUuids(): iterable
+    {
+        yield 'empty' => [''];
+        yield 'spaces' => ['   '];
+        yield 'invalid' => ['123abcde-0000-0000-0000-000000000000'];
     }
 }

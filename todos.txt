@@ -1,4 +1,5 @@
 TODO: Move validation rules from query/command to DTOs to keep query/command framework agnostic.
+TODO: Some HTTP_BAD_REQUEST response must be replaced with HTTP_UNPROCESSABLE_ENTITY
 TODO: Introduce command/query factories to simplify controllers.
 TODO: Add roles to check access.
 TODO: Add account management. Need to bind users with accounts.
