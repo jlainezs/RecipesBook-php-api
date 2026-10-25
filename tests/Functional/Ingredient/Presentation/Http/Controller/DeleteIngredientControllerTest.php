@@ -30,7 +30,7 @@ class DeleteIngredientControllerTest extends AppApiTestCase
     }
 
     #[Test]
-    public function shouldDeleteIngredient(): void
+    public function it_deletes_ingredient(): void
     {
         $ingredientId = $this->ingredientFixtures->testIngredients[0]->getId()->toString();
         $this->client->request(
