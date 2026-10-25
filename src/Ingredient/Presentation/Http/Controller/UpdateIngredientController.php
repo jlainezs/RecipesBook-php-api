@@ -1,13 +1,14 @@
 <?php
 namespace App\Ingredient\Presentation\Http\Controller;
 
-use App\Ingredient\Application\Command\Ingredient\UpdateIngredient\UpdateIngredientCommand;
+use App\Ingredient\Application\Command\Ingredient\UpdateIngredient\UpdateIngredientCommandFactory;
 use App\Ingredient\Application\Command\Ingredient\UpdateIngredient\UpdateIngredientDto;
+use App\Ingredient\Application\Command\Ingredient\UpdateIngredient\UpdateIngredientRouteDto;
 use App\Shared\Application\Bus\CommandBus;
-use App\Shared\Application\Service\ApplicationDataValidator;
+use App\Shared\Presentation\Http\ValueResolver\MapRouteParameter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -15,22 +16,20 @@ final class UpdateIngredientController extends AbstractController
 {
     function __construct(
         private readonly CommandBus $commandBus,
-        private readonly ApplicationDataValidator $validator
+        private readonly UpdateIngredientCommandFactory $cmdFactory
     ){}
 
     #[Route('/api/v1/ingredients/{id}', name: 'ingredient_update_instance', methods: ['PUT'])]
     public function __invoke(
-        string $id,
+        #[MapRouteParameter]
+        UpdateIngredientRouteDto $routeDto,
         #[MapRequestPayload]
         UpdateIngredientDto $dto
     ): JsonResponse
     {
-        $cmd = new UpdateIngredientCommand(
-            $id, $dto->name, $dto->description, $dto->ingredientTypeId
-        );
-        $this->validator->validate($cmd);
+        $cmd = $this->cmdFactory->createFromRequest($routeDto, $dto);
         $this->commandBus->dispatch($cmd);
 
-        return new JsonResponse(null, 204);
+        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 }
