@@ -16,8 +16,7 @@ final readonly class ShoppingListQueryHandler
      * @param LoggerInterface $logger
      */
     public function __construct(
-        private ShoppingListRepositoryInterface $repository,
-        private LoggerInterface $logger
+        private ShoppingListRepositoryInterface $repository
     )
     {}
 
@@ -55,9 +54,7 @@ final readonly class ShoppingListQueryHandler
         }
         else
         {
-            $e = new ShoppingListNotFoundException($id);
-            $this->logger->error($e->getMessage());
-            throw $e;
+            throw new ShoppingListNotFoundException($id);
         }
     }
 }
