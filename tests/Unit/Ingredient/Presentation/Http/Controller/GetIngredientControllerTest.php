@@ -1,10 +1,11 @@
 <?php
 namespace App\Tests\Unit\Ingredient\Presentation\Http\Controller;
 
+use App\Ingredient\Application\Query\Ingredient\GetIngredient\GetIngredientDto;
 use App\Ingredient\Application\Query\Ingredient\GetIngredient\GetIngredientQuery;
+use App\Ingredient\Application\Query\Ingredient\GetIngredient\GetIngredientQueryFactory;
 use App\Ingredient\Presentation\Http\Controller\GetIngredientController;
 use App\Shared\Application\Bus\QueryBus;
-use App\Shared\Application\Service\ApplicationDataValidator;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
@@ -14,17 +15,14 @@ class GetIngredientControllerTest extends TestCase
     function it_validates_dispatches_query_and_returns_200(): void
     {
         $queryBus = $this->createMock(QueryBus::class);
-        $validator = $this->createMock(ApplicationDataValidator::class);
+        $queryFactory = $this->createMock(GetIngredientQueryFactory::class);
         $id = '792ffc6a-cc7c-4dfa-8118-24e9bce3409b';
 
-        $validator
+        $queryFactory
             ->expects($this->once())
-            ->method('validate')
-            ->with($this->callback(
-                function (GetIngredientQuery $query) use ($id) {
-                    return $query->id === $id;
-                }
-            ));
+            ->method('createFromDto')
+            ->withAnyParameters()
+            ->willReturn(new GetIngredientQuery($id));
 
         $queryBus
             ->expects($this->once())
@@ -35,8 +33,8 @@ class GetIngredientControllerTest extends TestCase
                 }
             ));
 
-        $controller = new GetIngredientController($queryBus, $validator);
-        $response = $controller($id);
+        $controller = new GetIngredientController($queryBus, $queryFactory);
+        $response = $controller(new GetIngredientDto($id));
 
         $this->assertEquals(200, $response->getStatusCode());
     }
