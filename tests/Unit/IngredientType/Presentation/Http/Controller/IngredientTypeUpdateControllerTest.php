@@ -3,7 +3,9 @@ namespace App\Tests\Unit\IngredientType\Presentation\Http\Controller;
 
 use App\Ingredient\Application\Command\Ingredient\UpdateIngredient\UpdateIngredientDto;
 use App\IngredientType\Application\Command\IngredientType\UpdateIngredientType\UpdateIngredientTypeCommand;
+use App\IngredientType\Application\Command\IngredientType\UpdateIngredientType\UpdateIngredientTypeCommandFactory;
 use App\IngredientType\Application\Command\IngredientType\UpdateIngredientType\UpdateIngredientTypeDto;
+use App\IngredientType\Application\Command\IngredientType\UpdateIngredientType\UpdateIngredientTypeRouteDto;
 use App\IngredientType\Domain\Model\IngredientType;
 use App\IngredientType\Presentation\Http\Controller\UpdateIngredientTypeController;
 use App\Shared\Application\Bus\CommandBus;
@@ -13,16 +15,17 @@ use App\Shared\Domain\ValueObjects\AggregateRootId;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class IngredientTypeUpdateControllerTest extends TestCase
 {
     private CommandBus $commandBus;
-    private ApplicationDataValidator $validator;
+    private UpdateIngredientTypeCommandFactory $cmdFactory;
 
     public function setUp(): void
     {
         $this->commandBus = $this->createMock(CommandBus::class);
-        $this->validator = $this->createMock(ApplicationDataValidator::class);
+        $this->cmdFactory = $this->createMock(UpdateIngredientTypeCommandFactory::class);
     }
 
     /**
@@ -40,21 +43,26 @@ class IngredientTypeUpdateControllerTest extends TestCase
                     return $cmd->name === $ingredientType->getName()->value();
                 }
             ));
-        $this->validator
+        $this->cmdFactory
             ->expects($this->once())
-            ->method('validate')
-            ->with($this->callback(
-                function (UpdateIngredientTypeCommand $cmd) use ($ingredientType) {
-                    return $cmd->id === $ingredientType->getId()->toString();
-                }
-            ));
-        $controller = new UpdateIngredientTypeController($this->commandBus, $this->validator);
-        $payload = ['name' => $ingredientType->getName()->value()];
-        $request = new UpdateIngredientTypeDto($ingredientType->getName()->value());
+            ->method('createFromRequest')
+            ->withAnyParameters()
+            ->willReturn(
+                new UpdateIngredientTypeCommand(
+                    $ingredientType->getId()->toString(),
+                    $ingredientType->getName()->value()
+                )
+            );
+        $controller = new UpdateIngredientTypeController($this->commandBus, $this->cmdFactory);
+        $paramRoute = new UpdateIngredientTypeRouteDto($ingredientType->getId()->toString());
+        $requestBody = new UpdateIngredientTypeDto($ingredientType->getName()->value());
         $id = $ingredientType->getId()->toString();
 
-        $response = $controller($id, $request);
+        $response = $controller(
+            $paramRoute,
+            $requestBody
+        );
 
-        $this->assertEquals(204, $response->getStatusCode());
+        $this->assertEquals(Response::HTTP_NO_CONTENT, $response->getStatusCode());
     }
 }
