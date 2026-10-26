@@ -1,7 +1,6 @@
 <?php
 namespace App\Tests\Unit\IngredientType\Presentation\Http\Controller;
 
-use App\Ingredient\Application\Command\Ingredient\UpdateIngredient\UpdateIngredientDto;
 use App\IngredientType\Application\Command\IngredientType\UpdateIngredientType\UpdateIngredientTypeCommand;
 use App\IngredientType\Application\Command\IngredientType\UpdateIngredientType\UpdateIngredientTypeCommandFactory;
 use App\IngredientType\Application\Command\IngredientType\UpdateIngredientType\UpdateIngredientTypeDto;
@@ -9,12 +8,10 @@ use App\IngredientType\Application\Command\IngredientType\UpdateIngredientType\U
 use App\IngredientType\Domain\Model\IngredientType;
 use App\IngredientType\Presentation\Http\Controller\UpdateIngredientTypeController;
 use App\Shared\Application\Bus\CommandBus;
-use App\Shared\Application\Service\ApplicationDataValidator;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class IngredientTypeUpdateControllerTest extends TestCase
@@ -56,7 +53,6 @@ class IngredientTypeUpdateControllerTest extends TestCase
         $controller = new UpdateIngredientTypeController($this->commandBus, $this->cmdFactory);
         $paramRoute = new UpdateIngredientTypeRouteDto($ingredientType->getId()->toString());
         $requestBody = new UpdateIngredientTypeDto($ingredientType->getName()->value());
-        $id = $ingredientType->getId()->toString();
 
         $response = $controller(
             $paramRoute,
