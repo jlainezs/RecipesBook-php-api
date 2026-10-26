@@ -1,10 +1,8 @@
 <?php
 namespace App\Ingredient\Application\Query\Ingredient\GetIngredients;
 
-final readonly class GetIngredientsQueryDto
+use App\Shared\Application\Query\PaginatedList\PaginatedListQueryDto;
+
+final readonly class GetIngredientsQueryDto extends PaginatedListQueryDto
 {
-    public function __construct(
-        public int $offset = 0,
-        public int $limit = 20
-    ){}
 }

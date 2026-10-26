@@ -1,11 +1,10 @@
 <?php
 namespace App\Ingredient\Presentation\Http\Controller;
 
-use App\Ingredient\Application\Query\Ingredient\GetIngredients\GetIngredientsQuery;
 use App\Ingredient\Application\Query\Ingredient\GetIngredients\GetIngredientsQueryDto;
+use App\Ingredient\Application\Query\Ingredient\GetIngredients\GetIngredientsQueryFactory;
 use App\Ingredient\Presentation\Http\Response\IngredientListJsonResponse;
 use App\Shared\Application\Bus\QueryBus;
-use App\Shared\Application\Service\ApplicationDataValidator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
@@ -15,7 +14,7 @@ final class GetIngredientsController extends AbstractController
 {
     public function __construct(
         private readonly QueryBus $queryBus,
-        private readonly ApplicationDataValidator $validator
+        private readonly GetIngredientsQueryFactory $queryFactory
     ){}
 
     #[Route('/api/v1/ingredients', name: 'ingredient_list', methods: ['GET'])]
@@ -23,11 +22,7 @@ final class GetIngredientsController extends AbstractController
         #[MapQueryString] GetIngredientsQueryDto $queryDto
     ): JsonResponse
     {
-        $query = new GetIngredientsQuery(
-            offset: $queryDto->offset,
-            limit: $queryDto->limit,
-        );
-        $this->validator->validate($query);
+        $query = $this->queryFactory->createFromDto($queryDto);
         $response = $this->queryBus->ask($query);
 
         return IngredientListJsonResponse::create($response->items);

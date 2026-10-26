@@ -4,6 +4,7 @@ namespace App\Tests\Unit\Ingredient\Presentation\Http\Controller;
 
 use App\Ingredient\Application\Query\Ingredient\GetIngredients\GetIngredientsQuery;
 use App\Ingredient\Application\Query\Ingredient\GetIngredients\GetIngredientsQueryDto;
+use App\Ingredient\Application\Query\Ingredient\GetIngredients\GetIngredientsQueryFactory;
 use App\Ingredient\Application\Query\Ingredient\GetIngredients\GetIngredientsQueryResponse;
 use App\Ingredient\Presentation\Http\Controller\GetIngredientsController;
 use App\Shared\Application\Bus\QueryBus;
@@ -14,12 +15,12 @@ use PHPUnit\Framework\TestCase;
 class GetIngredientsControllerTest extends TestCase
 {
     private QueryBus $queryBus;
-    private ApplicationDataValidator $validator;
+    private GetIngredientsQueryFactory $queryFactory;
 
     public function setUp(): void
     {
         $this->queryBus = $this->createMock(QueryBus::class);
-        $this->validator = $this->createMock(ApplicationDataValidator::class);
+        $this->queryFactory = $this->createMock(GetIngredientsQueryFactory::class);
     }
 
     #[Test]
@@ -35,13 +36,15 @@ class GetIngredientsControllerTest extends TestCase
                 }
             ))
             ->willReturn(new GetIngredientsQueryResponse([]));
-        $this->validator
-            ->expects($this->once())
-            ->method('validate')
-            ->with($this->isInstanceOf(GetIngredientsQuery::class));
 
-        $controller = new GetIngredientsController($this->queryBus, $this->validator);
         $request = new GetIngredientsQueryDto(0, 20);
+        $this->queryFactory
+            ->expects($this->once())
+            ->method('createFromDto')
+            ->withAnyParameters()
+            ->willReturn(new GetIngredientsQuery($request->offset, $request->limit));
+
+        $controller = new GetIngredientsController($this->queryBus, $this->queryFactory);
         $response = $controller($request);
         $this->assertEquals(200, $response->getStatusCode());
     }
