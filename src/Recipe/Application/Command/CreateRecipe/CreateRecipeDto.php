@@ -17,6 +17,8 @@ readonly final class CreateRecipeDto
         public int $rating,
 
         public ?string $description,
+
+        #[Assert\Length(max: 500)]
         public ?string $source,
 
         public iterable $steps,
