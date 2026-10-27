@@ -5,6 +5,7 @@ use App\MealCourse\Application\Command\MealCourse\CreateMealCourse\CreateMealCou
 use App\MealCourse\Application\Command\MealCourse\CreateMealCourse\CreateMealCourseDto;
 use App\MealCourse\Application\Command\MealCourse\CreateMealCourse\CreateMealCourseResponse;
 use App\Shared\Application\Bus\CommandBus;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,6 +21,9 @@ final class CreateMealCourseController extends AbstractController
         private readonly UrlGeneratorInterface $urlGenerator,
     ){}
 
+    /**
+     * @throws EmptyIdNotAllowedException
+     */
     #[Route('/api/v1/meal-courses', name: 'meal_courses_create', methods: ['POST'])]
     public function __invoke(#[MapRequestPayload] CreateMealCourseDto $dto): JsonResponse
     {
