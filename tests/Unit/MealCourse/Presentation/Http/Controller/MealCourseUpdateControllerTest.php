@@ -1,27 +1,28 @@
 <?php
 namespace App\Tests\Unit\MealCourse\Presentation\Http\Controller;
 
-use App\MealCourse\Application\Command\MealCourse\UpdateMealCourse\MealCourseUpdateCommand;
-use App\MealCourse\Application\Command\MealCourse\UpdateMealCourse\MealCourseUpdateDto;
+use App\MealCourse\Application\Command\MealCourse\UpdateMealCourse\UpdateMealCourseCommand;
+use App\MealCourse\Application\Command\MealCourse\UpdateMealCourse\UpdateMealCourseCommandFactory;
+use App\MealCourse\Application\Command\MealCourse\UpdateMealCourse\UpdateMealCourseDto;
+use App\MealCourse\Application\Command\MealCourse\UpdateMealCourse\UpdateMealCourseRouteDto;
 use App\MealCourse\Domain\Model\MealCourse;
 use App\MealCourse\Presentation\Http\Controller\UpdateMealCourseController;
 use App\Shared\Application\Bus\CommandBus;
-use App\Shared\Application\Service\ApplicationDataValidator;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class MealCourseUpdateControllerTest extends TestCase
 {
     private CommandBus $commandBus;
-    private ApplicationDataValidator $validator;
+    private UpdateMealCourseCommandFactory $cmdFactory;
 
     public function setUp(): void
     {
         $this->commandBus = $this->createMock(CommandBus::class);
-        $this->validator = $this->createMock(ApplicationDataValidator::class);
+        $this->cmdFactory = $this->createMock(UpdateMealCourseCommandFactory::class);
     }
 
     /**
@@ -32,28 +33,33 @@ class MealCourseUpdateControllerTest extends TestCase
     {
         $id = AggregateRootId::generateId()->toString();
         $mealCourse = MealCourse::create($id, 'test');
+        $requestRoute = new UpdateMealCourseRouteDto($mealCourse->getId()->toString());
+        $requestBody = new UpdateMealCourseDto($mealCourse->getName());
+
         $this->commandBus
             ->expects($this->once())
             ->method('dispatch')
             ->with($this->callback(
-                function (MealCourseUpdateCommand $cmd) use ($mealCourse)
+                function (UpdateMealCourseCommand $cmd) use ($mealCourse)
                 {
                     return $cmd->id === $mealCourse->getId()->toString();
                 }
             ));
-        $this->validator
+        $this->cmdFactory
             ->expects($this->once())
-            ->method('validate')
+            ->method('createFromRequest')
+            ->withAnyParameters()
+            ->willReturn(new UpdateMealCourseCommand($requestRoute->id, $requestBody->name));
+        /*
             ->with($this->callback(
-                function (MealCourseUpdateCommand $cmd) use ($mealCourse)
+                function (UpdateMealCourseCommand $cmd) use ($mealCourse)
                 {
                     return $cmd->id === $mealCourse->getId()->toString();
                 }
-            ));
-        $controller = new UpdateMealCourseController($this->commandBus, $this->validator);
-        $request = new MealCourseUpdateDto($mealCourse->getName());
-        $response = $controller($mealCourse->getId()->toString(), $request);
+            ));*/
+        $controller = new UpdateMealCourseController($this->commandBus, $this->cmdFactory);
+        $response = $controller($requestRoute, $requestBody);
 
-        $this->assertEquals(204, $response->getStatusCode());
+        $this->assertEquals(Response::HTTP_NO_CONTENT, $response->getStatusCode());
     }
 }

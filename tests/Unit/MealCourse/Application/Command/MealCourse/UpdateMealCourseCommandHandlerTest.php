@@ -2,8 +2,8 @@
 
 namespace App\Tests\Unit\MealCourse\Application\Command\MealCourse;
 
-use App\MealCourse\Application\Command\MealCourse\UpdateMealCourse\MealCourseUpdateCommand;
-use App\MealCourse\Application\Command\MealCourse\UpdateMealCourse\MealCourseUpdateCommandHandler;
+use App\MealCourse\Application\Command\MealCourse\UpdateMealCourse\UpdateMealCourseCommand;
+use App\MealCourse\Application\Command\MealCourse\UpdateMealCourse\UpdateMealCourseCommandHandler;
 use App\MealCourse\Domain\Model\MealCourse;
 use App\MealCourse\Domain\Repository\MealCourseRepositoryInterface;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
@@ -14,12 +14,12 @@ use PHPUnit\Framework\TestCase;
 class UpdateMealCourseCommandHandlerTest extends TestCase
 {
     private MealCourseRepositoryInterface&MockObject $repository;
-    private MealCourseUpdateCommandHandler $handler;
+    private UpdateMealCourseCommandHandler $handler;
 
     public function setUp(): void
     {
         $this->repository = $this->createMock(MealCourseRepositoryInterface::class);
-        $this->handler = new MealCourseUpdateCommandHandler($this->repository);
+        $this->handler = new UpdateMealCourseCommandHandler($this->repository);
     }
 
     #[Test]
@@ -40,7 +40,7 @@ class UpdateMealCourseCommandHandlerTest extends TestCase
             ->method('save')
             ->with($mealCourse);
 
-        ($this->handler)(new MealCourseUpdateCommand($id, 'Main course'));
+        ($this->handler)(new UpdateMealCourseCommand($id, 'Main course'));
         $this->assertSame('Main course', $mealCourse->getName());
     }
 }

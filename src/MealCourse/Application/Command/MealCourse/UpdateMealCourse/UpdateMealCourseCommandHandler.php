@@ -9,7 +9,7 @@ use App\Shared\Domain\ValueObjects\AggregateRootId;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-readonly final class MealCourseUpdateCommandHandler
+readonly final class UpdateMealCourseCommandHandler
 {
     public function __construct(private MealCourseRepositoryInterface $repository)
     {}
@@ -19,7 +19,7 @@ readonly final class MealCourseUpdateCommandHandler
      * @throws MealCourseEmptyNameException
      * @throws EmptyIdNotAllowedException
      */
-    public function __invoke(MealCourseUpdateCommand $command): void
+    public function __invoke(UpdateMealCourseCommand $command): void
     {
         if ($mealCourse = $this->repository->findOne(new AggregateRootId($command->id)))
         {
