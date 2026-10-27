@@ -2,24 +2,23 @@
 namespace App\Tests\Unit\IngredientType\Presentation\Http\Controller;
 
 use App\IngredientType\Application\Query\IngredientType\GetIngredientTypes\GetIngredientTypesQuery;
-use App\IngredientType\Application\Query\IngredientType\GetIngredientTypes\GetIngredientTypesQueryDto;
+use App\IngredientType\Application\Query\IngredientType\GetIngredientTypes\GetIngredientTypesDto;
+use App\IngredientType\Application\Query\IngredientType\GetIngredientTypes\GetIngredientTypesQueryFactory;
 use App\IngredientType\Application\Query\IngredientType\GetIngredientTypes\GetIngredientTypesQueryResponse;
 use App\IngredientType\Presentation\Http\Controller\GetIngredientTypesController;
 use App\Shared\Application\Bus\QueryBus;
-use App\Shared\Application\Service\ApplicationDataValidator;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\Request;
 
 class IngredientTypesListControllerTest extends TestCase
 {
     private QueryBus $queryBus;
-    private ApplicationDataValidator $validator;
+    private GetIngredientTypesQueryFactory $queryFactory;
 
     public function setUp(): void
     {
         $this->queryBus = $this->createMock(QueryBus::class);
-        $this->validator = $this->createMock(ApplicationDataValidator::class);
+        $this->queryFactory = $this->createMock(GetIngredientTypesQueryFactory::class);
     }
 
     #[Test]
@@ -35,8 +34,14 @@ class IngredientTypesListControllerTest extends TestCase
                 }
             ))
             ->willReturn(new GetIngredientTypesQueryResponse([]));
-        $controller = new GetIngredientTypesController($this->queryBus, $this->validator);
-        $request = new GetIngredientTypesQueryDto(0, 10);
+        $this->queryFactory->
+            expects($this->once())
+            ->method('createFromDto')
+            ->withAnyParameters()
+            ->willReturn(new GetIngredientTypesQuery(0, 10));
+
+        $controller = new GetIngredientTypesController($this->queryBus, $this->queryFactory);
+        $request = new GetIngredientTypesDto(0, 10);
 
         $response = $controller($request);
 
