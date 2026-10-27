@@ -6,7 +6,7 @@ use App\MealCourse\Application\Command\MealCourse\DeleteMealCourse\DeleteMealCou
 use App\MealCourse\Application\Command\MealCourse\DeleteMealCourse\DeleteMealCourseDto;
 use App\MealCourse\Presentation\Http\Controller\DeleteMealCourseController;
 use App\Shared\Application\Bus\CommandBus;
-use App\Shared\Application\Service\ApplicationDataValidator;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -14,6 +14,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class DeleteMealCourseControllerTest extends TestCase
 {
+    /**
+     * @throws EmptyIdNotAllowedException
+     */
     #[Test]
     public function it_validates_the_request_and_returns_204(): void
     {
