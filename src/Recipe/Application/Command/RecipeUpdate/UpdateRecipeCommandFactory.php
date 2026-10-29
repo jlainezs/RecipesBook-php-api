@@ -26,7 +26,7 @@ class UpdateRecipeCommandFactory
         {
             $ingredients[] = new UpdateRecipeIngredientDto(
                 id: $ingredient['id'] ?? null,
-                recipeId: $routeId->id,
+                recipeId: $routeDto->id,
                 ingredientId: $ingredient['ingredientId'] ?? null,
                 unitOfMeasureId: $ingredient['unitOfMeasureId'] ?? null,
                 ordering: $ingredient['ordering'],

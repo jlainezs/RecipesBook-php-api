@@ -2,13 +2,9 @@
 namespace App\Recipe\Presentation\Http\Controller;
 
 use App\Recipe\Application\Command\RecipeUpdate\UpdateRecipeCommandFactory;
-use App\Recipe\Application\Command\RecipeUpdate\UpdateRecipeIngredientDto;
 use App\Recipe\Application\Command\RecipeUpdate\UpdateRecipeRouteDto;
-use App\Recipe\Application\Command\RecipeUpdate\UpdateRecipeStepDto;
-use App\Recipe\Application\Command\RecipeUpdate\UpdateRecipeCommand;
 use App\Recipe\Application\Command\RecipeUpdate\UpdateRecipeDto;
 use App\Shared\Application\Bus\CommandBus;
-use App\Shared\Application\Service\ApplicationDataValidator;
 use App\Shared\Presentation\Http\ValueResolver\MapRouteParameter;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -34,7 +30,7 @@ final class UpdateRecipeController extends AbstractController
         $cmd = $this->commandFactory->createFromRequestDto($routeId, $request);
         $this->commandBus->dispatch($cmd);
 
-        $this->logger->info("Recipe $id updated");
+        $this->logger->info("Recipe {$routeId->id} updated");
 
         return new JsonResponse(null, 204);
     }
