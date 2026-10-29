@@ -8,7 +8,7 @@ use App\Shared\Domain\ValueObjects\AggregateRootId;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final readonly class SeasonDeleteCommandHandler
+final readonly class DeleteSeasonCommandHandler
 {
     public function __construct(private SeasonRepositoryInterface $repository)
     {}
@@ -17,7 +17,7 @@ final readonly class SeasonDeleteCommandHandler
      * @throws SeasonNotFoundException
      * @throws EmptyIdNotAllowedException
      */
-    public function __invoke(SeasonDeleteCommand $command): void
+    public function __invoke(DeleteSeasonCommand $command): void
     {
         $season = $this->repository->findOne(new AggregateRootId($command->id));
         if ($season)

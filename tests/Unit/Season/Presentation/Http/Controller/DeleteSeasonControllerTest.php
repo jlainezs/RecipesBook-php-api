@@ -2,14 +2,16 @@
 
 namespace App\Tests\Unit\Season\Presentation\Http\Controller;
 
+use App\Season\Application\Command\Season\DeleteSeason\DeleteSeasonCommand;
+use App\Season\Application\Command\Season\DeleteSeason\DeleteSeasonCommandFactory;
+use App\Season\Application\Command\Season\DeleteSeason\DeleteSeasonDto;
 use App\Season\Presentation\Http\Controller\DeleteSeasonController;
 use App\Shared\Application\Bus\CommandBus;
-use App\Shared\Application\Service\ApplicationDataValidator;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class DeleteSeasonControllerTest extends TestCase
 {
@@ -20,24 +22,21 @@ class DeleteSeasonControllerTest extends TestCase
     public function it_validates_the_request_and_returns_204(): void
     {
         $commandBus = $this->createMock(CommandBus::class);
-        $validator = $this->createMock(ApplicationDataValidator::class);
+        $cmdFactory = $this->createMock(DeleteSeasonCommandFactory::class);
         $id = AggregateRootId::generateId()->toString();
+        $request = new DeleteSeasonDto($id);
+
         $commandBus->expects($this->once())
             ->method('dispatch')
             ->withAnyParameters();
-        $validator->expects($this->once())
-            ->method('validate')
-            ->withAnyParameters();
-        $controller = new DeleteSeasonController($commandBus, $validator);
-        $request = Request::create(
-            uri: '/api/v1/seasons/' . $id,
-            method: 'DELETE',
-            server: ['Content-Type' => 'application/json']
-        );
-        $request->attributes->add(['id' => $id]);
+        $cmdFactory->expects($this->once())
+            ->method('createFromDto')
+            ->withAnyParameters()
+            ->willReturn(new DeleteSeasonCommand($request->id));
 
+        $controller = new DeleteSeasonController($commandBus, $cmdFactory);
         $response = $controller($request);
 
-        $this->assertEquals(204, $response->getStatusCode());
+        $this->assertEquals(Response::HTTP_NO_CONTENT, $response->getStatusCode());
     }
 }

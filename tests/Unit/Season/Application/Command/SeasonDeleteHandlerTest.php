@@ -1,8 +1,8 @@
 <?php
 namespace App\Tests\Unit\Season\Application\Command;
 
-use App\Season\Application\Command\Season\DeleteSeason\SeasonDeleteCommand;
-use App\Season\Application\Command\Season\DeleteSeason\SeasonDeleteCommandHandler;
+use App\Season\Application\Command\Season\DeleteSeason\DeleteSeasonCommand;
+use App\Season\Application\Command\Season\DeleteSeason\DeleteSeasonCommandHandler;
 use App\Season\Domain\Exceptions\SeasonNotFoundException;
 use App\Season\Domain\Model\Season;
 use App\Season\Domain\Repository\SeasonRepositoryInterface;
@@ -13,12 +13,12 @@ use PHPUnit\Framework\TestCase;
 class SeasonDeleteHandlerTest extends TestCase
 {
     private SeasonRepositoryInterface&MockObject $repository;
-    private SeasonDeleteCommandHandler $handler;
+    private DeleteSeasonCommandHandler $handler;
 
     protected function setUp(): void
     {
         $this->repository = $this->createMock(SeasonRepositoryInterface::class);
-        $this->handler = new SeasonDeleteCommandHandler($this->repository);
+        $this->handler = new DeleteSeasonCommandHandler($this->repository);
     }
 
     #[Test]
@@ -38,7 +38,7 @@ class SeasonDeleteHandlerTest extends TestCase
             ->method('delete')
             ->with($season);
 
-        ($this->handler)(new SeasonDeleteCommand($id));
+        ($this->handler)(new DeleteSeasonCommand($id));
     }
 
     #[Test]
@@ -58,6 +58,6 @@ class SeasonDeleteHandlerTest extends TestCase
 
         $this->expectException(SeasonNotFoundException::class);
 
-        ($this->handler)(new SeasonDeleteCommand($id));
+        ($this->handler)(new DeleteSeasonCommand($id));
     }
 }
