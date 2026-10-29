@@ -1,7 +1,9 @@
 <?php
 namespace App\Tests\Unit\Recipe\Presentation\Http\Controller;
 
+use App\Recipe\Application\Query\Recipe\GetRecipe\GetRecipeDto;
 use App\Recipe\Application\Query\Recipe\GetRecipe\GetRecipeQuery;
+use App\Recipe\Application\Query\Recipe\GetRecipe\GetRecipeQueryFactory;
 use App\Recipe\Domain\Model\Recipe;
 use App\Recipe\Presentation\Http\Controller\GetRecipeController;
 use App\Shared\Application\Bus\QueryBus;
@@ -10,6 +12,7 @@ use App\Shared\Domain\ValueObjects\AggregateRootId;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class GetRecipeControllerTest extends TestCase
 {
@@ -17,7 +20,7 @@ class GetRecipeControllerTest extends TestCase
     public function it_validates_dispatches_query_and_returns_200(): void
     {
         $queryBus = $this->createMock(QueryBus::class);
-        $validator = $this->createMock(ApplicationDataValidator::class);
+        $queryFactory = $this->createMock(GetRecipeQueryFactory::class);
         $recipe = Recipe::create(
             id: AggregateRootId::generateId()->toString(),
             name: 'test',
@@ -28,25 +31,18 @@ class GetRecipeControllerTest extends TestCase
             steps: [],
             ingredients: []
         );
-        $validator->expects($this->once())
-            ->method('validate')
-            ->with($this->callback(
-                fn (GetRecipeQuery $command) => $command->id === $recipe->getId()->toString()
-            ));
+        $queryFactory->expects($this->once())
+            ->method('createFromDto')
+            ->withAnyParameters()
+            ->willReturn(new GetRecipeQuery($recipe->getId()->toString()));
         $queryBus->expects($this->once())
             ->method('ask')
             ->with($this->callback(
-                fn (GetRecipeQuery $command) => $command->id === $recipe->getId()->toString()
+                fn (GetRecipeQuery $query) => $query->id === $recipe->getId()->toString()
             ));
-        $controller = new GetRecipeController($queryBus, $validator);
-        $request = Request::create(
-            uri: '/api/v1//recipes/' . $recipe->getId()->toString(),
-            server: ['Content-Type' => 'application/json']
-        );
-        $request->attributes->set('id', $recipe->getId()->toString());
+        $controller = new GetRecipeController($queryBus, $queryFactory);
+        $response = $controller(new GetRecipeDto($recipe->getId()->toString()));
 
-        $response = $controller($request);
-
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
     }
 }
