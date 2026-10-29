@@ -8,7 +8,7 @@ use App\Shared\Domain\ValueObjects\AggregateRootId;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final readonly class RecipeDeleteCommandHandler
+final readonly class DeleteRecipeCommandHandler
 {
     function __construct(
         private RecipeRepositoryInterface $repository
@@ -18,7 +18,7 @@ final readonly class RecipeDeleteCommandHandler
      * @throws RecipeNotFoundException
      * @throws EmptyIdNotAllowedException
      */
-    public function __invoke(RecipeDeleteCommand $command): void
+    public function __invoke(DeleteRecipeCommand $command): void
     {
         if ($recipe = $this->repository->findOne(new AggregateRootId($command->id)))
         {

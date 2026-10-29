@@ -2,8 +2,8 @@
 
 namespace App\Tests\Unit\Recipe\Application\Command\Recipe\RecipeDelete;
 
-use App\Recipe\Application\Command\RecipeDelete\RecipeDeleteCommand;
-use App\Recipe\Application\Command\RecipeDelete\RecipeDeleteCommandHandler;
+use App\Recipe\Application\Command\RecipeDelete\DeleteRecipeCommand;
+use App\Recipe\Application\Command\RecipeDelete\DeleteRecipeCommandHandler;
 use App\Recipe\Domain\Exceptions\RecipeNotFoundException;
 use App\Recipe\Domain\Model\Recipe;
 use App\Recipe\Domain\Repository\RecipeRepositoryInterface;
@@ -16,12 +16,12 @@ use PHPUnit\Framework\TestCase;
 class RecipeDeleteCommandTest extends TestCase
 {
     private RecipeRepositoryInterface&MockObject $repository;
-    private RecipeDeleteCommandHandler $handler;
+    private DeleteRecipeCommandHandler $handler;
 
     protected function setUp(): void
     {
         $this->repository = $this->createMock(RecipeRepositoryInterface::class);
-        $this->handler = new RecipeDeleteCommandHandler($this->repository);
+        $this->handler = new DeleteRecipeCommandHandler($this->repository);
     }
 
     /**
@@ -47,7 +47,7 @@ class RecipeDeleteCommandTest extends TestCase
             ->expects($this->once())
             ->method("delete")
             ->with($recipe);
-        ($this->handler)(new RecipeDeleteCommand($id));
+        ($this->handler)(new DeleteRecipeCommand($id));
     }
 
     /**
@@ -72,6 +72,6 @@ class RecipeDeleteCommandTest extends TestCase
             ->method("delete");
 
         $this->expectException(RecipeNotFoundException::class);
-        ($this->handler)(new RecipeDeleteCommand($id));
+        ($this->handler)(new DeleteRecipeCommand($id));
     }
 }

@@ -1,12 +1,9 @@
 <?php
 namespace App\Recipe\Application\Command\RecipeDelete;
 
-use Symfony\Component\Validator\Constraints as Assert;
-
-final readonly class RecipeDeleteCommand
+final readonly class DeleteRecipeCommand
 {
     public function __construct(
-        #[Assert\Uuid]
         public string $id
     ){}
 }
