@@ -1,10 +1,9 @@
 <?php
-
 namespace App\Recipe\Application\Command\RecipeUpdate;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class RecipeUpdateDto
+class UpdateRecipeDto
 {
     public function __construct(
         #[Assert\NotBlank]

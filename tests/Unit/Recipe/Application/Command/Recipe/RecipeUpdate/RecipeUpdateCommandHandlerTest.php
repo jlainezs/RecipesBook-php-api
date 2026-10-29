@@ -2,7 +2,7 @@
 namespace App\Tests\Unit\Recipe\Application\Command\Recipe\RecipeUpdate;
 
 use App\Ingredient\Domain\Repository\IngredientRepositoryInterface;
-use App\Recipe\Application\Command\RecipeUpdate\RecipeUpdateCommand;
+use App\Recipe\Application\Command\RecipeUpdate\UpdateRecipeCommand;
 use App\Recipe\Application\Command\RecipeUpdate\RecipeUpdateCommandHandler;
 use App\Recipe\Domain\Exceptions\RecipeInvalidRatingException;
 use App\Recipe\Domain\Exceptions\RecipeInvalidServingsException;
@@ -64,7 +64,7 @@ class RecipeUpdateCommandHandlerTest extends TestCase
             ->expects($this->once())
             ->method('save')
             ->with($recipe);
-        ($this->handler)(new RecipeUpdateCommand(
+        ($this->handler)(new UpdateRecipeCommand(
             $id,
             'modified recipe',
             4,
@@ -105,7 +105,7 @@ class RecipeUpdateCommandHandlerTest extends TestCase
             ->method('save');
 
         $this->expectException(EmptyRequiredNameException::class);
-        ($this->handler)(new RecipeUpdateCommand(
+        ($this->handler)(new UpdateRecipeCommand(
             $id,
             '',
             4,
@@ -140,7 +140,7 @@ class RecipeUpdateCommandHandlerTest extends TestCase
             ->method('save');
 
         $this->expectException(EmptyRequiredNameException::class);
-        ($this->handler)(new RecipeUpdateCommand(
+        ($this->handler)(new UpdateRecipeCommand(
             $id,
             ' ',
             4,
@@ -174,7 +174,7 @@ class RecipeUpdateCommandHandlerTest extends TestCase
             ->method('save');
 
         $this->expectException(RecipeInvalidRatingException::class);
-        ($this->handler)(new RecipeUpdateCommand(
+        ($this->handler)(new UpdateRecipeCommand(
             $id,
             'a modified name',
             4,
@@ -208,7 +208,7 @@ class RecipeUpdateCommandHandlerTest extends TestCase
             ->method('save');
 
         $this->expectException(RecipeInvalidRatingException::class);
-        ($this->handler)(new RecipeUpdateCommand(
+        ($this->handler)(new UpdateRecipeCommand(
             $id,
             'a modified name',
             4,
@@ -242,7 +242,7 @@ class RecipeUpdateCommandHandlerTest extends TestCase
             ->method('save');
 
         $this->expectException(RecipeInvalidServingsException::class);
-        ($this->handler)(new RecipeUpdateCommand(
+        ($this->handler)(new UpdateRecipeCommand(
             $id,
             'a modified name',
             0,

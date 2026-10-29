@@ -36,7 +36,7 @@ final readonly class RecipeUpdateCommandHandler
      * @throws UnitOfMeasureNotFoundException
      * @throws Exception
      */
-    public function __invoke(RecipeUpdateCommand $command): void
+    public function __invoke(UpdateRecipeCommand $command): void
     {
         if ($recipe = $this->repository->findOne(new AggregateRootId($command->id)))
         {

@@ -7,6 +7,7 @@ use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Presentation\Http\ValueResolver\MapRouteParameter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class DeleteRecipeController extends AbstractController
@@ -22,6 +23,6 @@ final class DeleteRecipeController extends AbstractController
         $cmd = $this->cmdFactory->createFromDto($request);
         $this->commandBus->dispatch($cmd);
 
-        return new JsonResponse(null, 204);
+        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 }

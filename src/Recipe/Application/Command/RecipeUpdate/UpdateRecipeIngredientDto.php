@@ -3,7 +3,7 @@ namespace App\Recipe\Application\Command\RecipeUpdate;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-final readonly class RecipeIngredientUpdateDto
+final readonly class UpdateRecipeIngredientDto
 {
     public function __construct(
         public ?string $id,

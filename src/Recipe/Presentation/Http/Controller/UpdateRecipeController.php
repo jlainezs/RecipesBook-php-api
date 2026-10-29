@@ -1,12 +1,15 @@
 <?php
 namespace App\Recipe\Presentation\Http\Controller;
 
-use App\Recipe\Application\Command\RecipeUpdate\RecipeIngredientUpdateDto;
-use App\Recipe\Application\Command\RecipeUpdate\RecipeStepUpdateDto;
-use App\Recipe\Application\Command\RecipeUpdate\RecipeUpdateCommand;
-use App\Recipe\Application\Command\RecipeUpdate\RecipeUpdateDto;
+use App\Recipe\Application\Command\RecipeUpdate\UpdateRecipeCommandFactory;
+use App\Recipe\Application\Command\RecipeUpdate\UpdateRecipeIngredientDto;
+use App\Recipe\Application\Command\RecipeUpdate\UpdateRecipeRouteDto;
+use App\Recipe\Application\Command\RecipeUpdate\UpdateRecipeStepDto;
+use App\Recipe\Application\Command\RecipeUpdate\UpdateRecipeCommand;
+use App\Recipe\Application\Command\RecipeUpdate\UpdateRecipeDto;
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
+use App\Shared\Presentation\Http\ValueResolver\MapRouteParameter;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -17,55 +20,18 @@ final class UpdateRecipeController extends AbstractController
 {
     function __construct(
         private readonly CommandBus $commandBus,
-        private readonly ApplicationDataValidator $validator,
+        private readonly UpdateRecipeCommandFactory $commandFactory,
         private readonly LoggerInterface $logger
     ){}
 
     #[Route('/api/v1/recipes/{id}', name: 'update_recipe', methods: ['PUT'])]
     public function __invoke(
-        string $id,
+        #[MapRouteParameter] UpdateRecipeRouteDto $routeId,
         #[MapRequestPayload]
-        RecipeUpdateDto $request
+        UpdateRecipeDto $request
     ): JsonResponse
     {
-        $name = $request->name;
-        $description = $request->description;
-        $source = $request->source;
-        $servings = $request->servings;
-        $rating = $request->rating;
-        $steps = [];
-        $ingredients = [];
-
-        foreach ($request->steps as $step) {
-            $steps[] = new RecipeStepUpdateDto(
-                id: $step['id'] ?? null,
-                description: $step['description'],
-                ordering: $step['ordering']
-            );
-        }
-
-        foreach ($request->ingredients as $ingredient) {
-            $ingredients[] = new RecipeIngredientUpdateDto(
-                id: $ingredient['id'] ?? null,
-                recipeId: $id,
-                ingredientId: $ingredient['ingredientId'] ?? null,
-                unitOfMeasureId: $ingredient['unitOfMeasureId'] ?? null,
-                ordering: $ingredient['ordering'],
-                quantity: $ingredient['quantity']
-            );
-        }
-
-        $cmd = new RecipeUpdateCommand(
-            id: $id,
-            name: $name,
-            servings: $servings,
-            rating: $rating,
-            description: $description,
-            source: $source,
-            steps: $steps,
-            ingredients: $ingredients
-        );
-        $this->validator->validate($cmd);
+        $cmd = $this->commandFactory->createFromRequestDto($routeId, $request);
         $this->commandBus->dispatch($cmd);
 
         $this->logger->info("Recipe $id updated");
