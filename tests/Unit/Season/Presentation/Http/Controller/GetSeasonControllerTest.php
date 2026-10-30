@@ -1,7 +1,9 @@
 <?php
 namespace App\Tests\Unit\Season\Presentation\Http\Controller;
 
+use App\Season\Application\Query\Season\GetSeason\GetSeasonDto;
 use App\Season\Application\Query\Season\GetSeason\GetSeasonQuery;
+use App\Season\Application\Query\Season\GetSeason\GetSeasonQueryFactory;
 use App\Season\Domain\Model\Season;
 use App\Season\Presentation\Http\Controller\GetSeasonController;
 use App\Shared\Application\Bus\QueryBus;
@@ -20,7 +22,7 @@ class GetSeasonControllerTest extends TestCase
     public function it_validates_dispatches_query_and_returns_200(): void
     {
         $queryBus = $this->createMock(QueryBus::class);
-        $validator = $this->createMock(ApplicationDataValidator::class);
+        $queryFactory = $this->createMock(GetSeasonQueryFactory::class);
         $season = Season::create('test');
 
         $queryBus->expects($this->once())
@@ -28,18 +30,12 @@ class GetSeasonControllerTest extends TestCase
             ->with($this->callback(
                 fn(GetSeasonQuery $query) => $query->id === $season->getId()->toString()
             ))->willReturn($season);
-        $validator->expects($this->once())
-            ->method('validate')
-            ->with($this->callback(
-                fn(GetSeasonQuery $query) => $query->id === $season->getId()->toString()
-            ));
-        $controller = new GetSeasonController($queryBus, $validator);
-        $request = Request::create(
-            uri: '/api/v1/seasons/' . $season->getId()->toString(),
-            server: ['Content-Type' => 'application/json']
-        );
-        $request->attributes->add(['id' => $season->getId()->toString()]);
-
+        $queryFactory->expects($this->once())
+            ->method('createFromDto')
+            ->withAnyParameters()
+            ->willReturn(new GetSeasonQuery($season->getId()->toString()));
+        $controller = new GetSeasonController($queryBus, $queryFactory);
+        $request = new GetSeasonDto($season->getId()->toString());
         $response = $controller($request);
 
         $this->assertEquals(200, $response->getStatusCode());
