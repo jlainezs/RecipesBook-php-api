@@ -1,14 +1,15 @@
 <?php
 namespace App\Tests\Unit\Security\Preserntation\Http\Controller;
 
+use App\Security\Application\Command\User\DeleteUser\DeleteUserCommand;
+use App\Security\Application\Command\User\DeleteUser\DeleteUserCommandFactory;
+use App\Security\Application\Command\User\DeleteUser\DeleteUserDto;
 use App\Security\Presentation\Http\Controller\DeleteUserController;
 use App\Shared\Application\Bus\CommandBus;
-use App\Shared\Application\Service\ApplicationDataValidator;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\Request;
 
 class DeleteUserControllerTest extends TestCase
 {
@@ -19,22 +20,18 @@ class DeleteUserControllerTest extends TestCase
     public function it_validates_the_request_and_returns_204(): void
     {
         $commandBus = $this->createMock(CommandBus::class);
-        $validator = $this->createMock(ApplicationDataValidator::class);
+        $cmdFactory = $this->createMock(DeleteUserCommandFactory::class);
         $id = AggregateRootId::generateId()->toString();
+        $request = new DeleteUserDto($id);
+
         $commandBus->expects($this->once())
             ->method('dispatch')
             ->withAnyParameters();
-        $validator->expects($this->once())
-            ->method('validate')
-            ->withAnyParameters();
-        $controller = new DeleteUserController($commandBus, $validator);
-        $request = Request::create(
-            '/api/v1/users/' . $id,
-            'DELETE',
-            server: ['Content-Type' => 'application/json']
-        );
-        $request->attributes->add(['id', $id]);
-
+        $cmdFactory->expects($this->once())
+            ->method('createFromDto')
+            ->withAnyParameters()
+            ->willReturn(new DeleteUserCommand($request->id));
+        $controller = new DeleteUserController($commandBus, $cmdFactory);
         $response = $controller($request);
 
         $this->assertEquals(204, $response->getStatusCode());
