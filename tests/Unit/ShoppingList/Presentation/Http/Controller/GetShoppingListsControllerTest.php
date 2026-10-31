@@ -2,14 +2,14 @@
 namespace App\Tests\Unit\ShoppingList\Presentation\Http\Controller;
 
 use App\Shared\Application\Bus\QueryBus;
-use App\Shared\Application\Service\ApplicationDataValidator;
-use App\ShoppingList\Application\Query\SoppingLists\ShoppingListsDto;
-use App\ShoppingList\Application\Query\SoppingLists\ShoppingListsQuery;
-use App\ShoppingList\Application\Query\SoppingLists\ShoppingListsQueryResponse;
+use App\ShoppingList\Application\Query\GetSoppingLists\GetShoppingListsQueryDto;
+use App\ShoppingList\Application\Query\GetSoppingLists\GetShoppingListsQuery;
+use App\ShoppingList\Application\Query\GetSoppingLists\GetShoppingListsQueryFactory;
+use App\ShoppingList\Application\Query\GetSoppingLists\GetShoppingListsQueryResponse;
 use App\ShoppingList\Presentation\Http\Controller\GetShoppingListsController;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class GetShoppingListsControllerTest extends TestCase
 {
@@ -17,28 +17,31 @@ class GetShoppingListsControllerTest extends TestCase
     public function test_it_validates_dispatches_command_and_returns_200_response(): void
     {
         $queryBus = $this->createMock(QueryBus::class);
-        $validator = $this->createMock(ApplicationDataValidator::class);
+        $queryFactory = $this->createMock(GetShoppingListsQueryFactory::class);
+        $request = new GetShoppingListsQueryDto(
+            offset: 0,
+            limit: 10
+        );
 
         $queryBus
             ->expects($this->once())
             ->method('ask')
             ->with($this->callback(
-                function(ShoppingListsQuery $query){
+                function(GetShoppingListsQuery $query){
                     return $query->offset >= 0
                         && $query->limit > 0;
                 }))
-            ->willReturn(new ShoppingListsQueryResponse([]));
-        $validator->expects($this->once())
-            ->method('validate')
-            ->withAnyParameters();
+            ->willReturn(new GetShoppingListsQueryResponse([]));
+        $queryFactory->expects($this->once())
+            ->method('createFromDto')
+            ->withAnyParameters()
+            ->willReturn(new GetShoppingListsQuery(
+                $request->offset, $request->limit
+            ));
 
-        $controller = new GetShoppingListsController($queryBus, $validator);
-        $request = new ShoppingListsDto(
-            offset: 0,
-            limit: 10
-        );
+        $controller = new GetShoppingListsController($queryBus, $queryFactory);
 
         $response = $controller($request);
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
     }
 }

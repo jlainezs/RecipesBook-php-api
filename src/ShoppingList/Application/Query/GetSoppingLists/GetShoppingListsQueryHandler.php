@@ -1,5 +1,5 @@
 <?php
-namespace App\ShoppingList\Application\Query\SoppingLists;
+namespace App\ShoppingList\Application\Query\GetSoppingLists;
 
 use App\ShoppingList\Application\Query\GetShoppingList\ShoppingListDto;
 use App\ShoppingList\Application\Service\ShoppingListItemsPager;
@@ -7,12 +7,12 @@ use App\ShoppingList\Domain\Model\ShoppingList;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final readonly class ShoppingListsQueryHandler
+final readonly class GetShoppingListsQueryHandler
 {
     public function __construct(private ShoppingListItemsPager $list)
     {}
 
-    public function __invoke(ShoppingListsQuery $query): ShoppingListsQueryResponse
+    public function __invoke(GetShoppingListsQuery $query): GetShoppingListsQueryResponse
     {
         $itemsDto = array_map(
             fn(ShoppingList $item) => new ShoppingListDto(
@@ -26,6 +26,6 @@ final readonly class ShoppingListsQueryHandler
             $this->list->items($query->offset, $query->limit)
         );
 
-        return new ShoppingListsQueryResponse($itemsDto);
+        return new GetShoppingListsQueryResponse($itemsDto);
     }
 }

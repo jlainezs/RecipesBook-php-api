@@ -3,8 +3,8 @@ namespace App\Tests\Unit\ShoppingList\Application\Query\ShoppingLists;
 
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
-use App\ShoppingList\Application\Query\SoppingLists\ShoppingListsQuery;
-use App\ShoppingList\Application\Query\SoppingLists\ShoppingListsQueryHandler;
+use App\ShoppingList\Application\Query\GetSoppingLists\GetShoppingListsQuery;
+use App\ShoppingList\Application\Query\GetSoppingLists\GetShoppingListsQueryHandler;
 use App\ShoppingList\Application\Service\ShoppingListItemsPager;
 use App\ShoppingList\Domain\Model\ShoppingList;
 use PHPUnit\Framework\Attributes\Test;
@@ -13,12 +13,12 @@ use PHPUnit\Framework\TestCase;
 class ShoppingListsQueryHandlerTest extends TestCase
 {
     private ShoppingListItemsPager $pager;
-    private ShoppingListsQueryHandler $handler;
+    private GetShoppingListsQueryHandler $handler;
 
     protected function setUp(): void
     {
         $this->pager = $this->createMock(ShoppingListItemsPager::class);
-        $this->handler = new ShoppingListsQueryHandler($this->pager);
+        $this->handler = new GetShoppingListsQueryHandler($this->pager);
     }
 
     /**
@@ -35,7 +35,7 @@ class ShoppingListsQueryHandlerTest extends TestCase
             ->with(0, 20)
             ->willReturn([$sl1, $sl2]);
 
-        $response = ($this->handler)(new ShoppingListsQuery(0, 20));
+        $response = ($this->handler)(new GetShoppingListsQuery(0, 20));
 
         $this->assertCount(2, $response->items);
         $this->assertSame($sl1->getId()->toString(), $response->items[0]->id);
@@ -51,7 +51,7 @@ class ShoppingListsQueryHandlerTest extends TestCase
             ->expects($this->once())
             ->method('items')
             ->willReturn([]);
-        $response = ($this->handler)(new ShoppingListsQuery(0, 20));
+        $response = ($this->handler)(new GetShoppingListsQuery(0, 20));
         $this->assertCount(0, $response->items);
     }
 
@@ -63,6 +63,6 @@ class ShoppingListsQueryHandlerTest extends TestCase
             ->method('items')
             ->with(10, 5)
             ->willReturn([]);
-        ($this->handler)(new ShoppingListsQuery(10, 5));
+        ($this->handler)(new GetShoppingListsQuery(10, 5));
     }
 }
