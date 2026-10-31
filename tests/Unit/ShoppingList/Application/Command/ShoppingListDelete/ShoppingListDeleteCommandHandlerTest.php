@@ -3,8 +3,8 @@ namespace App\Tests\Unit\ShoppingList\Application\Command\ShoppingListDelete;
 
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
-use App\ShoppingList\Application\Command\ShoppingListDelete\ShoppingListDeleteCommand;
-use App\ShoppingList\Application\Command\ShoppingListDelete\ShoppingListDeleteCommandHandler;
+use App\ShoppingList\Application\Command\ShoppingListDelete\DeleteShoppingListCommand;
+use App\ShoppingList\Application\Command\ShoppingListDelete\DeleteShoppingListCommandHandler;
 use App\ShoppingList\Domain\Exceptions\ShoppingListNotFoundException;
 use App\ShoppingList\Domain\Model\ShoppingList;
 use App\ShoppingList\Domain\Repository\ShoppingListRepositoryInterface;
@@ -14,12 +14,12 @@ use PHPUnit\Framework\TestCase;
 class ShoppingListDeleteCommandHandlerTest extends TestCase
 {
     private ShoppingListRepositoryInterface $repository;
-    private ShoppingListDeleteCommandHandler $handler;
+    private DeleteShoppingListCommandHandler $handler;
 
     protected function setUp(): void
     {
         $this->repository = $this->createMock(ShoppingListRepositoryInterface::class);
-        $this->handler = new ShoppingListDeleteCommandHandler($this->repository);
+        $this->handler = new DeleteShoppingListCommandHandler($this->repository);
     }
 
     /**
@@ -47,7 +47,7 @@ class ShoppingListDeleteCommandHandlerTest extends TestCase
             ->method('delete')
             ->with($shoppingList);
 
-        ($this->handler)(new ShoppingListDeleteCommand($id));
+        ($this->handler)(new DeleteShoppingListCommand($id));
     }
 
     /**
@@ -72,6 +72,6 @@ class ShoppingListDeleteCommandHandlerTest extends TestCase
             ->expects($this->never())
             ->method('delete');
         $this->expectException(ShoppingListNotFoundException::class);
-        ($this->handler)(new ShoppingListDeleteCommand($id));
+        ($this->handler)(new DeleteShoppingListCommand($id));
     }
 }

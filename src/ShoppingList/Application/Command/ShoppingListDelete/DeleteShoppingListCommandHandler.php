@@ -9,7 +9,7 @@ use App\ShoppingList\Domain\Repository\ShoppingListRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final readonly class ShoppingListDeleteCommandHandler
+final readonly class DeleteShoppingListCommandHandler
 {
     public function __construct(
         private ShoppingListRepositoryInterface $repository
@@ -19,7 +19,7 @@ final readonly class ShoppingListDeleteCommandHandler
      * @throws EmptyIdNotAllowedException
      * @throws ShoppingListNotFoundException
      */
-    public function __invoke(ShoppingListDeleteCommand $command): void
+    public function __invoke(DeleteShoppingListCommand $command): void
     {
         $id = new AggregateRootId($command->id);
         $shoppingList = $this->repository->findOne($id);
