@@ -2,9 +2,7 @@
 namespace App\ShoppingList\Presentation\Http\Controller;
 
 use App\Shared\Application\Bus\QueryBus;
-use App\Shared\Application\Service\ApplicationDataValidator;
 use App\Shared\Presentation\Http\ValueResolver\MapRouteParameter;
-use App\ShoppingList\Application\Query\GetShoppingList\GetShoppingListQuery;
 use App\ShoppingList\Application\Query\GetShoppingList\GetShoppingListQueryFactory;
 use App\ShoppingList\Application\Query\GetShoppingList\GetShoppingListQueryRouteDto;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

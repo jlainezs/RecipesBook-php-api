@@ -5,7 +5,6 @@ use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\ShoppingList\Domain\Exceptions\ShoppingListNotFoundException;
 use App\ShoppingList\Domain\Repository\ShoppingListRepositoryInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
@@ -13,7 +12,6 @@ final readonly class GetShoppingListQueryHandler
 {
     /**
      * @param ShoppingListRepositoryInterface $repository
-     * @param LoggerInterface $logger
      */
     public function __construct(
         private ShoppingListRepositoryInterface $repository

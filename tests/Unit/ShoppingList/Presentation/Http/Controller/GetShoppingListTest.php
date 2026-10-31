@@ -2,7 +2,6 @@
 namespace App\Tests\Unit\ShoppingList\Presentation\Http\Controller;
 
 use App\Shared\Application\Bus\QueryBus;
-use App\Shared\Application\Service\ApplicationDataValidator;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\ShoppingList\Application\Query\GetShoppingList\GetShoppingListQuery;
