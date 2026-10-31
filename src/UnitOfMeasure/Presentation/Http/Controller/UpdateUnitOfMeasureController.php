@@ -2,12 +2,13 @@
 namespace App\UnitOfMeasure\Presentation\Http\Controller;
 
 use App\Shared\Application\Bus\CommandBus;
-use App\Shared\Application\Service\ApplicationDataValidator;
-use App\UnitOfMeasure\Application\Command\UnitOfMeasure\UpdateUnitOfMeasure\UpdateUnitOfMeasureCommand;
+use App\Shared\Presentation\Http\ValueResolver\MapRouteParameter;
+use App\UnitOfMeasure\Application\Command\UnitOfMeasure\UpdateUnitOfMeasure\UpdateUnitOfMeasureCommandFactory;
 use App\UnitOfMeasure\Application\Command\UnitOfMeasure\UpdateUnitOfMeasure\UpdateUnitOfMeasureDto;
-use App\UnitOfMeasure\Domain\Model\UnitOfMeasureEnum;
+use App\UnitOfMeasure\Application\Command\UnitOfMeasure\UpdateUnitOfMeasure\UpdateUnitOfMeasureRouteDto;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -15,23 +16,21 @@ final class UpdateUnitOfMeasureController extends AbstractController
 {
     public function __construct(
         private readonly CommandBus $commandBus,
-        private readonly ApplicationDataValidator $validator
+        private readonly UpdateUnitOfMeasureCommandFactory $commandFactory
     ){}
 
     #[Route('/api/v1/units-of-measure/{id}', name: 'unit_of_measure_update', methods: ['PUT'])]
     public function __invoke(
-        string $id,
+        #[MapRouteParameter]
+        UpdateUnitOfMeasureRouteDto $routeDto,
         #[MapRequestPayload]
-        UpdateUnitOfMeasureDto $request
+        UpdateUnitOfMeasureDto      $request
     ): JsonResponse
     {
-        $cmd = new UpdateUnitOfMeasureCommand(
-            $id, $request->name, $request->symbol, UnitOfMeasureEnum::from($request->unitOfMeasureType)
-        );
-        $this->validator->validate($cmd);
+        $cmd = $this->commandFactory->createFromRequest($routeDto, $request);
         $this->commandBus->dispatch($cmd);
 
-        return new JsonResponse(null, 204);
+        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 
 }
