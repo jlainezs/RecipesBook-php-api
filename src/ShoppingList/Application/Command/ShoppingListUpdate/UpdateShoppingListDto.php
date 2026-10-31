@@ -3,12 +3,13 @@ namespace App\ShoppingList\Application\Command\ShoppingListUpdate;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-final readonly class ShoppingListUpdateCommand
+final readonly class UpdateShoppingListDto
 {
+    /**
+     * @param string $name
+     * @param iterable $items
+     */
     public function __construct(
-        #[Assert\Uuid]
-        public string $id,
-
         #[Assert\NotBlank]
         public string $name,
 

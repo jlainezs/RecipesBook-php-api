@@ -2,12 +2,14 @@
 namespace App\ShoppingList\Presentation\Http\Controller;
 
 use App\Shared\Application\Bus\CommandBus;
-use App\Shared\Application\Service\ApplicationDataValidator;
-use App\ShoppingList\Application\Command\ShoppingListUpdate\ShoppingListUpdateCommand;
-use App\ShoppingList\Application\Command\ShoppingListUpdate\ShoppingListUpdateDto;
+use App\Shared\Presentation\Http\ValueResolver\MapRouteParameter;
+use App\ShoppingList\Application\Command\ShoppingListUpdate\UpdateShoppingListCommandFactory;
+use App\ShoppingList\Application\Command\ShoppingListUpdate\UpdateShoppingListDto;
+use App\ShoppingList\Application\Command\ShoppingListUpdate\UpdateShoppingListRouteDto;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -15,24 +17,21 @@ final class UpdateShoppingListController extends AbstractController
 {
     function __construct(
         private readonly CommandBus $commandBus,
-        private readonly ApplicationDataValidator $validator,
+        private readonly UpdateShoppingListCommandFactory $commandFactory,
         private readonly LoggerInterface $logger
     ){}
 
     #[Route('/api/v1/shopping-lists/{id}', name: 'put_shopping-list', methods: ['PUT'])]
     public function __invoke(
-        string $id,
+        #[MapRouteParameter] UpdateShoppingListRouteDto $requestId,
         #[MapRequestPayload]
-        ShoppingListUpdateDto $request
+        UpdateShoppingListDto $request
     ): JsonResponse
     {
-        $this->logger->info('Updating shopping list', ['id' => $id]);
-        $name = $request->name;
-        $items = $request->items;
-        $cmd = new ShoppingListUpdateCommand($id, $name, $items);
-        $this->validator->validate($cmd);
+        $this->logger->info('Updating shopping list', ['id' => $requestId->id]);
+        $cmd = $this->commandFactory->createFromRequest($requestId, $request);
         $this->commandBus->dispatch($cmd);
 
-        return new JsonResponse(null, 204);
+        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 }

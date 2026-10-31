@@ -3,8 +3,8 @@ namespace App\Tests\Unit\ShoppingList\Application\Command\ShoppingListUpdate;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\Exceptions\EmptyRequiredNameException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
-use App\ShoppingList\Application\Command\ShoppingListUpdate\ShoppingListUpdateCommand;
-use App\ShoppingList\Application\Command\ShoppingListUpdate\ShoppingListUpdateCommandHandler;
+use App\ShoppingList\Application\Command\ShoppingListUpdate\UpdateShoppingListCommand;
+use App\ShoppingList\Application\Command\ShoppingListUpdate\UpdateShoppingListCommandHandler;
 use App\ShoppingList\Domain\Exceptions\ShoppingListItemNotFoundException;
 use App\ShoppingList\Domain\Exceptions\ShoppingListNotFoundException;
 use App\ShoppingList\Domain\Model\ShoppingList;
@@ -14,13 +14,13 @@ use PHPUnit\Framework\TestCase;
 
 class ShoppingListUpdateCommandHandlerTest extends TestCase
 {
-    private ShoppingListUpdateCommandHandler $handler;
+    private UpdateShoppingListCommandHandler $handler;
     private ShoppingListRepository $repository;
 
     protected function setUp(): void
     {
         $this->repository = $this->createMock(ShoppingListRepository::class);
-        $this->handler = new ShoppingListUpdateCommandHandler($this->repository);
+        $this->handler = new UpdateShoppingListCommandHandler($this->repository);
     }
 
     /**
@@ -46,7 +46,7 @@ class ShoppingListUpdateCommandHandlerTest extends TestCase
             ->expects($this->once())
             ->method('save')
             ->with($shoppingList);
-        ($this->handler)(new ShoppingListUpdateCommand($id, 'new name', []));
+        ($this->handler)(new UpdateShoppingListCommand($id, 'new name', []));
 
         $this->assertSame('new name', $shoppingList->getName()->value());
     }
@@ -74,7 +74,7 @@ class ShoppingListUpdateCommandHandlerTest extends TestCase
             ->expects($this->never())
             ->method('save');
         $this->expectException(EmptyRequiredNameException::class);
-        ($this->handler)(new ShoppingListUpdateCommand($id, '', []));
+        ($this->handler)(new UpdateShoppingListCommand($id, '', []));
     }
 
     /**
@@ -95,6 +95,6 @@ class ShoppingListUpdateCommandHandlerTest extends TestCase
             ->expects($this->never())
             ->method('save');
         $this->expectException(ShoppingListNotFoundException::class);
-        ($this->handler)(new ShoppingListUpdateCommand($id, 'new name', []));
+        ($this->handler)(new UpdateShoppingListCommand($id, 'new name', []));
     }
 }

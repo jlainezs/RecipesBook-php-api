@@ -13,7 +13,7 @@ use App\ShoppingList\Domain\ValueObjects\ShoppingListItemQuantity;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final readonly class ShoppingListUpdateCommandHandler
+final readonly class UpdateShoppingListCommandHandler
 {
     public function __construct(
         private ShoppingListRepositoryInterface $repository
@@ -24,7 +24,7 @@ final readonly class ShoppingListUpdateCommandHandler
      * @throws ShoppingListNotFoundException
      * @throws ShoppingListItemNotFoundException
      */
-    public function __invoke(ShoppingListUpdateCommand $command):void
+    public function __invoke(UpdateShoppingListCommand $command):void
     {
         $id = new AggregateRootId($command->id);
         $items = [];
