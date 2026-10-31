@@ -2,6 +2,8 @@
 namespace App\Tests\Unit\Security\Preserntation\Http\Controller;
 
 use App\Security\Application\Query\User\GetUser\GetUserQuery;
+use App\Security\Application\Query\User\GetUser\GetUserQueryFactory;
+use App\Security\Application\Query\User\GetUser\GetUserRouteDto;
 use App\Security\Domain\Model\User;
 use App\Security\Presentation\Http\Controller\GetUserController;
 use App\Shared\Application\Bus\QueryBus;
@@ -10,6 +12,7 @@ use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\Response;
 
 class GetUserControllerTest extends TestCase
 {
@@ -20,7 +23,7 @@ class GetUserControllerTest extends TestCase
     public function it_validates_dispatches_query_and_returns_200(): void
     {
         $queryBus = $this->createMock(QueryBus::class);
-        $validator = $this->createMock(ApplicationDataValidator::class);
+        $queryFactory = $this->createMock(GetUserQueryFactory::class);
         $user = User::create(
             AggregateRootId::generateId()->toString(),
             'eml@eml.com',
@@ -36,14 +39,16 @@ class GetUserControllerTest extends TestCase
                 fn(GetUserQuery $query) => $query->id === $user->getId()->toString()
             ))->willReturn($user);
 
-        $validator->expects($this->once())
-            ->method('validate')
-            ->with($this->callback(
-                fn(GetUserQuery $query) =>  $query->id === $user->getId()->toString()
-            ));
-        $controller = new GetUserController($queryBus, $validator);
+        $queryFactory->expects($this->once())
+            ->method('createFromDto')
+            ->withAnyParameters()
+            ->willReturn(
+                new GetUserQuery($user->getId()->toString())
+            );
+        $controller = new GetUserController($queryBus, $queryFactory);
+        $request = new GetUserRouteDto($user->getId()->toString());
 
-        $response = $controller($user->getId()->toString());
-        $this->assertEquals(200, $response->getStatusCode());
+        $response = $controller($request);
+        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
     }
 }
