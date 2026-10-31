@@ -1,14 +1,11 @@
 <?php
-namespace App\ShoppingList\Application\Query\ShoppingList;
+namespace App\ShoppingList\Application\Query\GetShoppingList;
 
 use Symfony\Component\Validator\Constraints as Assert;
-
-final readonly class ShoppingListQuery
+class GetShoppingListQueryRouteDto
 {
-    /**
-     * @param string $id
-     */
     public function __construct(
+        #[Assert\NotBlank]
         #[Assert\Uuid]
         public string $id
     ){}

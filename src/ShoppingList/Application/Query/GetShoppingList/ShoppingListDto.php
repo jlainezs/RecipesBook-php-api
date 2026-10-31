@@ -1,5 +1,5 @@
 <?php
-namespace App\ShoppingList\Application\Query\ShoppingList;
+namespace App\ShoppingList\Application\Query\GetShoppingList;
 
 use DateTimeImmutable;
 use Symfony\Component\Validator\Constraints as Assert;

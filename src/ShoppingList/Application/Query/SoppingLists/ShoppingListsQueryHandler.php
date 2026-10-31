@@ -1,7 +1,7 @@
 <?php
 namespace App\ShoppingList\Application\Query\SoppingLists;
 
-use App\ShoppingList\Application\Query\ShoppingList\ShoppingListDto;
+use App\ShoppingList\Application\Query\GetShoppingList\ShoppingListDto;
 use App\ShoppingList\Application\Service\ShoppingListItemsPager;
 use App\ShoppingList\Domain\Model\ShoppingList;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
