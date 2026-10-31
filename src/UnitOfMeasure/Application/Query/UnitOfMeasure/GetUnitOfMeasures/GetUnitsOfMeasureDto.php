@@ -1,10 +1,7 @@
 <?php
 namespace App\UnitOfMeasure\Application\Query\UnitOfMeasure\GetUnitOfMeasures;
 
-final readonly class GetUnitsOfMeasureDto
-{
-    public function __construct(
-        public int $offset = 0,
-        public int $limit = 20,
-    ){}
-}
+use App\Shared\Application\Query\PaginatedList\PaginatedListQueryDto;
+
+final readonly class GetUnitsOfMeasureDto extends PaginatedListQueryDto
+{}
