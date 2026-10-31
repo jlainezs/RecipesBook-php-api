@@ -1,0 +1,13 @@
+<?php
+namespace App\UnitOfMeasure\Application\Query\UnitOfMeasure\GetUnitOfMeasure;
+
+use Symfony\Component\Validator\Constraints as Assert;
+
+final readonly class GetUnitOfMeasureRouteQueryDto
+{
+    public function __construct(
+        #[Assert\NotBlank]
+        #[Assert\Uuid]
+        public string $id
+    ) {}
+}

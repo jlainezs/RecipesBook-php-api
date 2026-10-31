@@ -6,22 +6,25 @@ use App\Shared\Application\Service\ApplicationDataValidator;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\UnitOfMeasure\Application\Query\UnitOfMeasure\GetUnitOfMeasure\GetUnitOfMeasureQuery;
+use App\UnitOfMeasure\Application\Query\UnitOfMeasure\GetUnitOfMeasure\GetUnitOfMeasureQueryFactory;
+use App\UnitOfMeasure\Application\Query\UnitOfMeasure\GetUnitOfMeasure\GetUnitOfMeasureRouteQueryDto;
 use App\UnitOfMeasure\Domain\Exceptions\UnitOfMeasureSymbolLengthException;
 use App\UnitOfMeasure\Domain\Model\UnitOfMeasure;
 use App\UnitOfMeasure\Domain\Model\UnitOfMeasureEnum;
 use App\UnitOfMeasure\Presentation\Http\Controller\GetUnitOfMeasureController;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\Response;
 
 class GetUniOfMeasureControllerTest extends TestCase
 {
     private QueryBus $queryBus;
-    private ApplicationDataValidator $validator;
+    private GetUnitOfMeasureQueryFactory $queryFactory;
 
     protected function setUp(): void
     {
         $this->queryBus = $this->createMock(QueryBus::class);
-        $this->validator = $this->createMock(ApplicationDataValidator::class);
+        $this->queryFactory = $this->createMock(GetUnitOfMeasureQueryFactory::class);
     }
 
     /**
@@ -38,18 +41,20 @@ class GetUniOfMeasureControllerTest extends TestCase
             unitOfMeasureType: UnitOfMeasureEnum::Units
         );
         $query = new GetUnitOfMeasureQuery($uom->getId()->toString());
-        $this->validator
+        $request = new GetUnitOfMeasureRouteQueryDto($uom->getId()->toString());
+        $this->queryFactory
             ->expects($this->once())
-            ->method('validate')
-            ->with($query);
+            ->method('createFromDto')
+            ->withAnyParameters()
+            ->willReturn($query);
         $this->queryBus
             ->expects($this->once())
             ->method('ask')
             ->with($query)
             ->willReturn($uom);
-        $controller = new GetUnitOfMeasureController($this->queryBus, $this->validator);
-        $response = $controller($uom->getId()->toString());
+        $controller = new GetUnitOfMeasureController($this->queryBus, $this->queryFactory);
+        $response = $controller($request);
 
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
     }
 }
