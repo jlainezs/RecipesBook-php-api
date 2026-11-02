@@ -33,17 +33,57 @@ class GetUnitOfMeasureControllerTest extends AppApiTestCase
             [],
             [
                 'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'HTTP_ACCEPT' => 'application/json'
+                'HTTP_ACCEPT' => 'application/vnd.api+json'
             ]
         );
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+        $this->assertResponseHeaderSame('Content-Type', 'application/vnd.api+json');
         $response = json_decode($this->client->getResponse()->getContent());
         $this->assertNotNull($response);
         $this->assertIsObject($response);
-        $this->assertObjectHasProperty('unitOfMeasure', $response);
-        $this->assertIsObject($response->unitOfMeasure);
-        $this->assertObjectHasProperty('id', $response->unitOfMeasure);
-        $this->assertEquals($this->unitOfMeasureFixture->testData[0]->getId()->toString(), $response->unitOfMeasure->id);
+        $this->assertSame('1.1', $response->jsonapi->version);
+        $this->assertObjectHasProperty('data', $response);
+        $this->assertIsObject($response->data);
+        $this->assertSame('units-of-measure', $response->data->type);
+        $this->assertEquals($this->unitOfMeasureFixture->testData[0]->getId()->toString(), $response->data->id);
+        $this->assertSame($this->unitOfMeasureFixture->testData[0]->getName(), $response->data->attributes->name);
+        $this->assertObjectHasProperty('symbol', $response->data->attributes);
+        $this->assertObjectHasProperty('unitOfMeasureType', $response->data->attributes);
+        $this->assertObjectHasProperty('createdAt', $response->data->attributes);
+        $this->assertObjectHasProperty('updatedAt', $response->data->attributes);
+        $this->assertObjectHasProperty('self', $response->links);
+    }
+
+    #[Test]
+    public function it_fails_when_accept_has_only_unsupported_media_type_parameters(): void
+    {
+        $this->client->request(
+            'GET',
+            $this->getDefinedUrl('unit_of_measure_get_instance', ['id' => $this->unitOfMeasureFixture->testData[0]->getId()->toString()]),
+            [],
+            [],
+            [
+                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
+                'HTTP_ACCEPT' => 'application/vnd.api+json; charset=utf-8'
+            ]
+        );
+        $this->assertJsonApiErrorResponse(Response::HTTP_NOT_ACCEPTABLE, ['header' => 'Accept']);
+    }
+
+    #[Test]
+    public function it_fails_with_unsupported_include_parameter(): void
+    {
+        $this->client->request(
+            'GET',
+            $this->getDefinedUrl('unit_of_measure_get_instance', ['id' => $this->unitOfMeasureFixture->testData[0]->getId()->toString(), 'include' => 'ingredients']),
+            [],
+            [],
+            [
+                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
+                'HTTP_ACCEPT' => 'application/vnd.api+json'
+            ]
+        );
+        $this->assertJsonApiErrorResponse(Response::HTTP_BAD_REQUEST, ['parameter' => 'include']);
     }
 
     /**
@@ -60,10 +100,10 @@ class GetUnitOfMeasureControllerTest extends AppApiTestCase
             [],
             [
                 'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'HTTP_ACCEPT' => 'application/json'
+                'HTTP_ACCEPT' => 'application/vnd.api+json'
             ]
         );
-        $this->assertProblemDetailsResponse(Response::HTTP_NOT_FOUND);
+        $this->assertJsonApiErrorResponse(Response::HTTP_NOT_FOUND);
     }
 
     /**
@@ -79,9 +119,9 @@ class GetUnitOfMeasureControllerTest extends AppApiTestCase
             [],
             [],
             [
-                'HTTP_ACCEPT' => 'application/json'
+                'HTTP_ACCEPT' => 'application/vnd.api+json'
             ]
         );
-        $this->assertProblemDetailsResponse(Response::HTTP_UNAUTHORIZED);
+        $this->assertJsonApiErrorResponse(Response::HTTP_UNAUTHORIZED, ['header' => 'Authorization']);
     }
 }

@@ -121,4 +121,32 @@ abstract class AppApiTestCase extends WebTestCase
 
         return $data;
     }
+
+    /**
+     * Validate that response is a JSON:API error document
+     */
+    protected function assertJsonApiErrorResponse(int $expectedStatusCode, ?array $expectedSource = null): array
+    {
+        $this->assertResponseStatusCodeSame($expectedStatusCode);
+        $this->assertResponseHeaderSame('Content-Type', 'application/vnd.api+json');
+        $content = $this->client->getResponse()->getContent();
+        $this->assertJson($content, 'Invalid JSON response.');
+
+        $data = json_decode($content, true);
+        $this->assertArrayNotHasKey('data', $data, 'JSON:API: "data" and "errors" must not coexist.');
+        $this->assertArrayHasKey('errors', $data, 'JSON:API: missing "errors" key.');
+        $this->assertNotEmpty($data['errors'], 'JSON:API: empty "errors".');
+
+        foreach ($data['errors'] as $error) {
+            $this->assertArrayHasKey('status', $error, 'JSON:API: missing error "status".');
+            $this->assertSame((string) $expectedStatusCode, $error['status'], 'JSON:API: error "status" must be the HTTP status code as a string.');
+            $this->assertArrayHasKey('title', $error, 'JSON:API: missing error "title".');
+        }
+
+        if (null !== $expectedSource) {
+            $this->assertContains($expectedSource, array_column($data['errors'], 'source'));
+        }
+
+        return $data;
+    }
 }

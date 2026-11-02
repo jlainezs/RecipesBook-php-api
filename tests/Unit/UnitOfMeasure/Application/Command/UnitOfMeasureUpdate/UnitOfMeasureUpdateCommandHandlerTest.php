@@ -65,6 +65,42 @@ class UnitOfMeasureUpdateCommandHandlerTest extends TestCase
      * @throws EmptyIdNotAllowedException
      */
     #[Test]
+    public function it_keeps_current_values_for_null_fields(): void
+    {
+        $unitOfMeasure = UnitOfMeasure::create(
+            AggregateRootId::generateId()->toString(),
+            name: 'test',
+            symbol: 't',
+            unitOfMeasureType: UnitOfMeasureEnum::Units
+        );
+        $id = $unitOfMeasure->getId();
+        $this->repository
+            ->expects($this->once())
+            ->method('findOne')
+            ->with($id)
+            ->willReturn($unitOfMeasure);
+        $this->repository
+            ->expects($this->once())
+            ->method('save')
+            ->with($unitOfMeasure);
+        $cmd = new UpdateUnitOfMeasureCommand(
+            id: $id->toString(),
+            name: null,
+            symbol: 'n',
+            unitOfMeasureEnum: null
+        );
+        ($this->handler)($cmd);
+        $this->assertSame('test', $unitOfMeasure->getName());
+        $this->assertSame('n', $unitOfMeasure->getSymbol()->value());
+        $this->assertSame(UnitOfMeasureEnum::Units, $unitOfMeasure->getUomType());
+    }
+
+    /**
+     * @throws UnitOfMeasureSymbolLengthException
+     * @throws UnitOfMeasureNotFoundException
+     * @throws EmptyIdNotAllowedException
+     */
+    #[Test]
     public function it_throws_when_setting_empty_name(): void
     {
         $unitOfMeasure = UnitOfMeasure::create(

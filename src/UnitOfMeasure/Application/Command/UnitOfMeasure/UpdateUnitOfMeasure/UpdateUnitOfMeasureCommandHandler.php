@@ -29,9 +29,18 @@ readonly final class UpdateUnitOfMeasureCommandHandler
     {
         if ($uom = $this->repository->findOne(new AggregateRootId($command->id)))
         {
-            $uom->rename($command->name);
-            $uom->changeSymbol($command->symbol);
-            $uom->setUomType($command->unitOfMeasureEnum);
+            if (null !== $command->name)
+            {
+                $uom->rename($command->name);
+            }
+            if (null !== $command->symbol)
+            {
+                $uom->changeSymbol($command->symbol);
+            }
+            if (null !== $command->unitOfMeasureEnum)
+            {
+                $uom->setUomType($command->unitOfMeasureEnum);
+            }
             $this->repository->save($uom);
         }
         else

@@ -8,7 +8,10 @@ class UpdateUnitOfMeasureCommandFactory
     public function createFromRequest(UpdateUnitOfMeasureRouteDto $routeDto, UpdateUnitOfMeasureDto $dto): UpdateUnitOfMeasureCommand
     {
         return new UpdateUnitOfMeasureCommand(
-            $routeDto->id, $dto->name, $dto->symbol, UnitOfMeasureEnum::from($dto->unitOfMeasureType)
+            $routeDto->id,
+            $dto->name,
+            $dto->symbol,
+            null !== $dto->unitOfMeasureType ? UnitOfMeasureEnum::from($dto->unitOfMeasureType) : null
         );
     }
 }

@@ -2,19 +2,21 @@
 namespace App\Tests\Unit\UnitOfMeasure\Presentation\Http\Controller;
 
 use App\Shared\Application\Bus\QueryBus;
-use App\Shared\Application\Service\ApplicationDataValidator;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\UnitOfMeasure\Application\Query\UnitOfMeasure\GetUnitOfMeasure\GetUnitOfMeasureQuery;
 use App\UnitOfMeasure\Application\Query\UnitOfMeasure\GetUnitOfMeasure\GetUnitOfMeasureQueryFactory;
+use App\UnitOfMeasure\Application\Query\UnitOfMeasure\GetUnitOfMeasure\GetUnitOfMeasureResponse;
 use App\UnitOfMeasure\Application\Query\UnitOfMeasure\GetUnitOfMeasure\GetUnitOfMeasureRouteQueryDto;
-use App\UnitOfMeasure\Domain\Exceptions\UnitOfMeasureSymbolLengthException;
-use App\UnitOfMeasure\Domain\Model\UnitOfMeasure;
+use App\UnitOfMeasure\Application\Query\UnitOfMeasure\UnitOfMeasureDto;
 use App\UnitOfMeasure\Domain\Model\UnitOfMeasureEnum;
 use App\UnitOfMeasure\Presentation\Http\Controller\GetUnitOfMeasureController;
+use App\UnitOfMeasure\Presentation\Http\Resource\UnitOfMeasureResource;
+use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class GetUniOfMeasureControllerTest extends TestCase
 {
@@ -28,20 +30,15 @@ class GetUniOfMeasureControllerTest extends TestCase
     }
 
     /**
-     * @throws UnitOfMeasureSymbolLengthException
      * @throws EmptyIdNotAllowedException
      */
     #[Test]
     public function it_validates_dispatches_query_and_returns_200(): void
     {
-        $uom = UnitOfMeasure::create(
-            id: AggregateRootId::generateId()->toString(),
-            name: 'test',
-            symbol: 't',
-            unitOfMeasureType: UnitOfMeasureEnum::Units
-        );
-        $query = new GetUnitOfMeasureQuery($uom->getId()->toString());
-        $request = new GetUnitOfMeasureRouteQueryDto($uom->getId()->toString());
+        $id = AggregateRootId::generateId()->toString();
+        $uom = new UnitOfMeasureDto($id, 'test', 't', UnitOfMeasureEnum::Units->value, new DateTimeImmutable(), new DateTimeImmutable());
+        $query = new GetUnitOfMeasureQuery($id);
+        $request = new GetUnitOfMeasureRouteQueryDto($id);
         $this->queryFactory
             ->expects($this->once())
             ->method('createFromDto')
@@ -51,10 +48,16 @@ class GetUniOfMeasureControllerTest extends TestCase
             ->expects($this->once())
             ->method('ask')
             ->with($query)
-            ->willReturn($uom);
-        $controller = new GetUnitOfMeasureController($this->queryBus, $this->queryFactory);
+            ->willReturn(new GetUnitOfMeasureResponse($uom));
+        $controller = new GetUnitOfMeasureController(
+            $this->queryBus,
+            $this->queryFactory,
+            new UnitOfMeasureResource($this->createStub(UrlGeneratorInterface::class))
+        );
         $response = $controller($request);
 
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
+        $document = json_decode($response->getContent(), true);
+        $this->assertSame($id, $document['data']['id']);
     }
 }

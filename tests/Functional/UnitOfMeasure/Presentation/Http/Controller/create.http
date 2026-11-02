@@ -1,12 +1,12 @@
-POST http://localhost:8000/api/v1/units-of-measure/create
-Content-Type: application/json
-Accept: application/json
+POST http://localhost:8000/api/v1/units-of-measure
+Content-Type: application/vnd.api+json
+Accept: application/vnd.api+json
 
-{"name": "Kilogram", "symbol": "Kg", "unitOfMeasureType": 0}
+{"data": {"type": "units-of-measure", "attributes": {"name": "Kilogram", "symbol": "Kg", "unitOfMeasureType": 0}}}
 
 ###
-POST http://localhost:8000/api/v1/units-of-measure/create
-Content-Type: application/json
-Accept: application/json
+POST http://localhost:8000/api/v1/units-of-measure
+Content-Type: application/vnd.api+json
+Accept: application/vnd.api+json
 
-{"name": "LitreYYYY", "symbol": "ly", "unitOfMeasureType": 1}
+{"data": {"type": "units-of-measure", "attributes": {"name": "LitreYYYY", "symbol": "ly", "unitOfMeasureType": 1}}}

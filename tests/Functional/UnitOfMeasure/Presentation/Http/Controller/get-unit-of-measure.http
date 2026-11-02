@@ -1,2 +1,2 @@
 GET http://localhost:8000/api/v1/units-of-measure/647bfd95-ba44-47bd-a745-2a7b4e9c055b
-Accept: application/json
+Accept: application/vnd.api+json

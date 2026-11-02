@@ -1,6 +1,9 @@
 <?php
 namespace App\Shared\Infrastructure\EventListener;
 
+use App\Shared\Presentation\Http\JsonApi\JsonApi;
+use App\Shared\Presentation\Http\JsonApi\JsonApiErrorsException;
+use App\Shared\Presentation\Http\JsonApi\JsonApiResponse;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\AuthenticationFailureEvent;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTExpiredEvent;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTInvalidEvent;
@@ -12,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * This class handles JWT authentication failure events
- * to follow RFC9457
+ * to follow RFC9457, or the JSON:API error format on JSON:API routes
  */
 final readonly class JwtAuthenticationFailureListener
 {
@@ -20,6 +23,7 @@ final readonly class JwtAuthenticationFailureListener
     public function onJWTInvalid(JWTInvalidEvent $event): void
     {
         $response = $this->createProblemResponse(
+            $event,
             'https://example.com/errors/invalid-token',
             'Invalid JWT Token',
             Response::HTTP_UNAUTHORIZED,
@@ -34,6 +38,7 @@ final readonly class JwtAuthenticationFailureListener
     public function onJWTExpired(JWTExpiredEvent $event): void
     {
         $response = $this->createProblemResponse(
+            $event,
             'https://example.com/errors/expired-token',
             'Expired JWT Token',
             Response::HTTP_UNAUTHORIZED,
@@ -48,6 +53,7 @@ final readonly class JwtAuthenticationFailureListener
     public function onJWTNotFound(JWTNotFoundEvent $event): void
     {
         $response = $this->createProblemResponse(
+            $event,
             'https://example.com/errors/missing-token',
             'Missing JWT Token',
             Response::HTTP_UNAUTHORIZED,
@@ -62,6 +68,7 @@ final readonly class JwtAuthenticationFailureListener
     public function onAuthenticationFailureResponse(AuthenticationFailureEvent $event): void
     {
         $response = $this->createProblemResponse(
+            $event,
             'https://example.com/errors/invalid-credentials',
             'Bad credentials',
             Response::HTTP_UNAUTHORIZED,
@@ -72,8 +79,15 @@ final readonly class JwtAuthenticationFailureListener
         $event->setResponse($response);
     }
 
-    private function createProblemResponse(string $type, string $title, int $status, string $detail): JsonResponse
+    private function createProblemResponse(AuthenticationFailureEvent $event, string $type, string $title, int $status, string $detail): JsonResponse
     {
+        if (JsonApi::isJsonApiRequest($event->getRequest())) {
+            $error = JsonApiErrorsException::error($status, $detail, ['header' => 'Authorization']);
+            $error['title'] = $title;
+
+            return JsonApiResponse::errors([$error], $status);
+        }
+
         $data = [
             'type' => $type,
             'title' => $title,

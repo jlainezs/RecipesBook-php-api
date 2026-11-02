@@ -36,7 +36,7 @@ class DeleteUnitOfMeasureControllerTest extends AppApiTestCase
             [],
             [
                 'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'HTTP_ACCEPT' => 'application/json'
+                'HTTP_ACCEPT' => 'application/vnd.api+json'
             ],
         );
         $this->assertResponseStatusCodeSame(Response::HTTP_NO_CONTENT);
@@ -60,10 +60,10 @@ class DeleteUnitOfMeasureControllerTest extends AppApiTestCase
             [],
             [
                 'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'HTTP_ACCEPT' => 'application/json'
+                'HTTP_ACCEPT' => 'application/vnd.api+json'
             ],
         );
-        $this->assertProblemDetailsResponse(Response::HTTP_NOT_FOUND);
+        $this->assertJsonApiErrorResponse(Response::HTTP_NOT_FOUND);
     }
 
     /**
@@ -79,9 +79,9 @@ class DeleteUnitOfMeasureControllerTest extends AppApiTestCase
             [],
             [],
             [
-                'HTTP_ACCEPT' => 'application/json'
+                'HTTP_ACCEPT' => 'application/vnd.api+json'
             ],
         );
-        $this->assertProblemDetailsResponse(Response::HTTP_UNAUTHORIZED);
+        $this->assertJsonApiErrorResponse(Response::HTTP_UNAUTHORIZED, ['header' => 'Authorization']);
     }
 }

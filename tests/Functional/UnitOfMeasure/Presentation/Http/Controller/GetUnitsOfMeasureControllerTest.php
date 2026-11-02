@@ -31,14 +31,84 @@ class GetUnitsOfMeasureControllerTest extends AppApiTestCase
             [],
             [
                 'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'HTTP_ACCEPT' => 'application/json'
+                'HTTP_ACCEPT' => 'application/vnd.api+json'
+            ]
+        );
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+        $this->assertResponseHeaderSame('Content-Type', 'application/vnd.api+json');
+        $response = json_decode($this->client->getResponse()->getContent());
+        $this->assertNotEmpty($response);
+        $this->assertObjectHasProperty('data', $response);
+        $this->assertSameSize($this->fixtures->testData, $response->data);
+        foreach ($response->data as $resource) {
+            $this->assertSame('units-of-measure', $resource->type);
+            $this->assertObjectHasProperty('id', $resource);
+            $this->assertObjectHasProperty('attributes', $resource);
+        }
+        $this->assertSame(
+            $this->getDefinedUrl('unit_of_measure_list', ['page' => ['offset' => 0, 'limit' => 20]]),
+            $response->links->first
+        );
+        $this->assertNull($response->links->prev);
+        $this->assertNull($response->links->next);
+    }
+
+    #[Test]
+    public function it_paginates_with_page_parameters(): void
+    {
+        $this->client->request(
+            'GET',
+            $this->getDefinedUrl('unit_of_measure_list', ['page' => ['offset' => 1, 'limit' => 1]]),
+            [],
+            [],
+            [
+                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
+                'HTTP_ACCEPT' => 'application/vnd.api+json'
             ]
         );
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
         $response = json_decode($this->client->getResponse()->getContent());
-        $this->assertNotEmpty($response);
-        $this->assertObjectHasProperty('items', $response);
-        $this->assertSameSize($this->fixtures->testData, $response->items);
+        $this->assertCount(1, $response->data);
+        $this->assertSame(
+            $this->getDefinedUrl('unit_of_measure_list', ['page' => ['offset' => 0, 'limit' => 1]]),
+            $response->links->prev
+        );
+        $this->assertSame(
+            $this->getDefinedUrl('unit_of_measure_list', ['page' => ['offset' => 2, 'limit' => 1]]),
+            $response->links->next
+        );
+    }
+
+    #[Test]
+    public function it_fails_with_invalid_page_parameters(): void
+    {
+        $this->client->request(
+            'GET',
+            $this->getDefinedUrl('unit_of_measure_list', ['page' => ['limit' => 500]]),
+            [],
+            [],
+            [
+                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
+                'HTTP_ACCEPT' => 'application/vnd.api+json'
+            ]
+        );
+        $this->assertJsonApiErrorResponse(Response::HTTP_BAD_REQUEST, ['parameter' => 'page[limit]']);
+    }
+
+    #[Test]
+    public function it_fails_with_non_json_api_query_parameters(): void
+    {
+        $this->client->request(
+            'GET',
+            $this->getDefinedUrl('unit_of_measure_list', ['offset' => 0, 'limit' => 10]),
+            [],
+            [],
+            [
+                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
+                'HTTP_ACCEPT' => 'application/vnd.api+json'
+            ]
+        );
+        $this->assertJsonApiErrorResponse(Response::HTTP_BAD_REQUEST, ['parameter' => 'offset']);
     }
 
     #[Test]
@@ -50,9 +120,9 @@ class GetUnitsOfMeasureControllerTest extends AppApiTestCase
             [],
             [],
             [
-                'HTTP_ACCEPT' => 'application/json'
+                'HTTP_ACCEPT' => 'application/vnd.api+json'
             ]
         );
-        $this->assertProblemDetailsResponse(Response::HTTP_UNAUTHORIZED);
+        $this->assertJsonApiErrorResponse(Response::HTTP_UNAUTHORIZED, ['header' => 'Authorization']);
     }
 }

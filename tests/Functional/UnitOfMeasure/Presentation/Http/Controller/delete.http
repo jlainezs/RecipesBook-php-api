@@ -1,2 +1,2 @@
 DELETE http://localhost:8000/api/v1/units-of-measure/a0cc5259-e742-45ae-8dbc-d875c4354e48
-Content-Type: application/json
+Accept: application/vnd.api+json

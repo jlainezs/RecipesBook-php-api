@@ -7,8 +7,8 @@ final readonly class UpdateUnitOfMeasureCommand
 {
     public function __construct(
         public string $id,
-        public string $name,
-        public string $symbol,
-        public UnitOfMeasureEnum $unitOfMeasureEnum
+        public ?string $name,
+        public ?string $symbol,
+        public ?UnitOfMeasureEnum $unitOfMeasureEnum
     ){}
 }
