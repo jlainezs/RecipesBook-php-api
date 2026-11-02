@@ -1,5 +1,5 @@
-TODO: Responses should follow JSON:API v1.1 specification
-TODO: Some HTTP_BAD_REQUEST response must be replaced with HTTP_UNPROCESSABLE_ENTITY
+TODO: **DOING** Follow JSON:API v1.1 specification
+TODO: **DOING** Some HTTP_BAD_REQUEST response must be replaced with HTTP_UNPROCESSABLE_ENTITY. Follows JsonAPI resolves it.
 TODO: Add roles to check access.
 TODO: Add account management. Need to bind users with accounts.
 TODO: Add an owner for entities: each entity will be bound to an account.
