@@ -11,12 +11,12 @@ use Doctrine\Persistence\ObjectManager;
 
 class IngredientFixtures extends Fixture
 {
-    public array $testIngredients;
+    public array $testData;
     public IngredientTypeFixtures $ingredientTypeFixtures;
 
     public function __construct()
     {
-        $this->testIngredients = [];
+        $this->testData = [];
     }
 
     /**
@@ -50,7 +50,7 @@ class IngredientFixtures extends Fixture
                 $rawIngredient["description"],
                 new IngredientTypeReference($rawIngredient["ingredientTypeId"])
             );
-            $this->testIngredients[] = $ingredient;
+            $this->testData[] = $ingredient;
             $manager->persist($ingredient);
         }
 

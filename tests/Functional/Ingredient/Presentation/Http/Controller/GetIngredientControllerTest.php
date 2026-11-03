@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Tests\Functional\Ingredient\Presentation\Http\Controller;
 
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
@@ -30,7 +29,7 @@ class GetIngredientControllerTest extends AppApiTestCase
     #[Test]
     public function get_ingredient():void
     {
-        $id = $this->ingredientFixtures->testIngredients[0]->getId()->toString();
+        $id = $this->ingredientFixtures->testData[0]->getId()->toString();
         $this->client->request(
             'GET',
             $this->getDefinedUrl('ingredient_get_instance', ['id' => $id]),
@@ -42,10 +41,22 @@ class GetIngredientControllerTest extends AppApiTestCase
             ]
         );
         $this->assertResponseIsSuccessful();
-        $ingredientDto = json_decode($this->client->getResponse()->getContent(), true);
-        $this->assertEquals($id, $ingredientDto['ingredientDto']['id']);
+        $response = json_decode($this->client->getResponse()->getContent());
+        $this->assertNotNull($response);
+        $this->assertIsObject($response);
+        $this->assertSame('1.1', $response->jsonapi->version);
+        $this->assertObjectHasProperty('data', $response);
+        $this->assertIsObject($response->data);
+        $this->assertSame('ingredient', $response->data->type);
+        $this->assertEquals($this->ingredientFixtures->testData[0]->getId()->toString(), $response->data->id);
+        $this->assertEquals($this->ingredientFixtures->testData[0]->getName(), $response->data->attributes->name);
+        $this->assertObjectHasProperty('ingredientTypeId', $response->data->attributes);
+        $this->assertObjectHasProperty('description', $response->data->attributes);
     }
 
+    /**
+     * @throws EmptyIdNotAllowedException
+     */
     #[Test]
     public function get_ingredient_fails_when_id_is_not_found():void
     {
@@ -60,13 +71,13 @@ class GetIngredientControllerTest extends AppApiTestCase
                 'HTTP_ACCEPT' => 'application/json'
             ]
         );
-        $this->assertProblemDetailsResponse(Response::HTTP_NOT_FOUND);
+        $this->assertJsonApiErrorResponse(Response::HTTP_NOT_FOUND);
     }
 
     #[Test]
     public function get_ingredient_fails_when_no_token_present():void
     {
-        $id = $this->ingredientFixtures->testIngredients[0]->getId()->toString();
+        $id = $this->ingredientFixtures->testData[0]->getId()->toString();
         $this->client->request(
             'GET',
             $this->getDefinedUrl('ingredient_get_instance', ['id' => $id]),
@@ -76,6 +87,6 @@ class GetIngredientControllerTest extends AppApiTestCase
                 'HTTP_ACCEPT' => 'application/json'
             ]
         );
-        $this->assertProblemDetailsResponse(Response::HTTP_UNAUTHORIZED);
+        $this->assertJsonApiErrorResponse(Response::HTTP_UNAUTHORIZED);
     }
 }

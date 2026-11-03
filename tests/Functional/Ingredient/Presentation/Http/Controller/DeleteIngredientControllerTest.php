@@ -32,7 +32,7 @@ class DeleteIngredientControllerTest extends AppApiTestCase
     #[Test]
     public function it_deletes_ingredient(): void
     {
-        $ingredientId = $this->ingredientFixtures->testIngredients[0]->getId()->toString();
+        $ingredientId = $this->ingredientFixtures->testData[0]->getId()->toString();
         $this->client->request(
             'DELETE',
             $this->getDefinedUrl('ingredient_delete', ['id' => $ingredientId]),
@@ -57,6 +57,6 @@ class DeleteIngredientControllerTest extends AppApiTestCase
                 'HTTP_ACCEPT' => 'application/json'
             ]
         );
-        $this->assertProblemDetailsResponse(Response::HTTP_NOT_FOUND);
+        $this->assertJsonApiErrorResponse(Response::HTTP_NOT_FOUND);
     }
 }

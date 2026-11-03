@@ -19,7 +19,7 @@ final class GetUnitOfMeasureController extends AbstractController
         private readonly UnitOfMeasureResource $resource,
     ){}
 
-    #[Route('/api/v1/units-of-measure/{id}', name: 'unit_of_measure_get_instance', methods: ['GET'], defaults: [JsonApi::ROUTE_FLAG => true])]
+    #[Route('/api/v1/units-of-measure/{id}', name: 'unit_of_measure_get_instance', defaults: [JsonApi::ROUTE_FLAG => true], methods: ['GET'])]
     public function __invoke(#[MapRouteParameter] GetUnitOfMeasureRouteQueryDto $routeDto): JsonApiResponse
     {
         $query = $this->queryFactory->createFromDto($routeDto);

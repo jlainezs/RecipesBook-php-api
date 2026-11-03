@@ -55,12 +55,12 @@ class ShoppingListFixtures extends Fixture
                 'name' => 'Test Shopping List',
                 'items' => [
                     [
-                        'ingredient' => $this->ingredientFixtures->testIngredients[0]->getId()->toString(),
+                        'ingredient' => $this->ingredientFixtures->testData[0]->getId()->toString(),
                         'unitOfMeasure' => $this->unitOfMeasureFixtures->testData[0]->getId()->toString(),
                         'quantity' => 1
                     ],
                     [
-                        'ingredient' => $this->ingredientFixtures->testIngredients[1]->getId()->toString(),
+                        'ingredient' => $this->ingredientFixtures->testData[1]->getId()->toString(),
                         'unitOfMeasure' => $this->unitOfMeasureFixtures->testData[1]->getId()->toString(),
                         'quantity' => 1
                     ]

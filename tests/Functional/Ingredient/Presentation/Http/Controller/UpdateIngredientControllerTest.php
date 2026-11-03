@@ -32,7 +32,7 @@ class UpdateIngredientControllerTest extends AppApiTestCase
     #[Test]
     public function updateIngredient(): void
     {
-        $id = $this->ingredientFixtures->testIngredients[0]->getId();
+        $id = $this->ingredientFixtures->testData[0]->getId();
         $ingredient = $this->ingredientRepository->findOne($id);
         $this->assertNotNull($ingredient);
 

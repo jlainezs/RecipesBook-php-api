@@ -29,13 +29,13 @@ class UpdateRecipeControllerTest extends AppApiTestCase
             'servings' => 4,
             'ingredients' => [
                 [
-                    'ingredientId' => $this->ingredientFixtures->testIngredients[0]->getId()->toString(),
+                    'ingredientId' => $this->ingredientFixtures->testData[0]->getId()->toString(),
                     'quantity' => 20,
                     'unitOfMeasureId' => $this->unitOfMeasureFixtures->testData[0]->getId()->toString(),
                     'ordering' => 1,
                 ],
                 [
-                    'ingredientId' => $this->ingredientFixtures->testIngredients[1]->getId()->toString(),
+                    'ingredientId' => $this->ingredientFixtures->testData[1]->getId()->toString(),
                     'quantity' => 10,
                     'unitOfMeasureId' => $this->unitOfMeasureFixtures->testData[1]->getId()->toString(),
                     'ordering' => 2,

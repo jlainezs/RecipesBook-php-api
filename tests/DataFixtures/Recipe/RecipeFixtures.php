@@ -62,12 +62,12 @@ class RecipeFixtures extends Fixture
                 ],
                 "ingredients" => [
                     [
-                        "ingredientId" => $this->ingredientFixtures->testIngredients[0]->getId()->toString(),
+                        "ingredientId" => $this->ingredientFixtures->testData[0]->getId()->toString(),
                         "unitOfMeasureId" => $this->unitOfMeasureFixtures->testData[0]->getId()->toString(),
                         "quantity" => 1, "ordering" => 1
                     ],
                     [
-                        "ingredientId" => $this->ingredientFixtures->testIngredients[0]->getId()->toString(),
+                        "ingredientId" => $this->ingredientFixtures->testData[0]->getId()->toString(),
                         "unitOfMeasureId" => $this->unitOfMeasureFixtures->testData[1]->getId()->toString(),
                         "quantity" => 5, "ordering" => 2
                     ],
@@ -86,12 +86,12 @@ class RecipeFixtures extends Fixture
                 ],
                 "ingredients" => [
                     [
-                        "ingredientId" => $this->ingredientFixtures->testIngredients[0]->getId()->toString(),
+                        "ingredientId" => $this->ingredientFixtures->testData[0]->getId()->toString(),
                         "unitOfMeasureId" => $this->unitOfMeasureFixtures->testData[0]->getId()->toString(),
                         "quantity" => 2, "ordering" => 1
                     ],
                     [
-                        "ingredientId" => $this->ingredientFixtures->testIngredients[0]->getId()->toString(),
+                        "ingredientId" => $this->ingredientFixtures->testData[0]->getId()->toString(),
                         "unitOfMeasureId" => $this->unitOfMeasureFixtures->testData[1]->getId()->toString(),
                         "quantity" => 8, "ordering" => 2
                     ],
