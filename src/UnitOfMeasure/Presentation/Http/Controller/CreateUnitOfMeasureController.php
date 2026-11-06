@@ -38,9 +38,9 @@ final class CreateUnitOfMeasureController extends AbstractController
         $response = $this->queryBus->ask(new GetUnitOfMeasureQuery($cmd->id));
 
         return new JsonApiResponse(
-            $this->resource->item($response->unitOfMeasure),
-            Response::HTTP_CREATED,
-            [
+            document:$this->resource->item($response->unitOfMeasure),
+            status:Response::HTTP_CREATED,
+            headers:[
                 'Location' => $this->resource->selfUrl($cmd->id),
                 'Cache-Control' => 'no-cache, no-store, must-revalidate',
             ]

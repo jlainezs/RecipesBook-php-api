@@ -61,4 +61,19 @@ final readonly class IngredientResource
             'data' => $this->resourceObject($ingredientDto),
         ];
     }
+
+    public function itemReference(string $id): array
+    {
+        return [
+            'links' => ['self' => $this->selfUrl($id)],
+            'data' => [
+                'type' => self::TYPE,
+                'id' => $id,
+                'links' => ['self' => $this->selfUrl($id)],
+                'attributes' => [
+                    'id' => $id,
+                ]
+            ],
+        ];
+    }
 }

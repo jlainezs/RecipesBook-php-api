@@ -5,15 +5,20 @@ use App\Ingredient\Application\Command\Ingredient\CreateIngredient\CreateIngredi
 use App\Ingredient\Application\Command\Ingredient\CreateIngredient\CreateIngredientCommandFactory;
 use App\Ingredient\Presentation\Http\Controller\CreateIngredientController;
 use App\Ingredient\Application\Command\Ingredient\CreateIngredient\CreateIngredientDto;
+use App\Ingredient\Presentation\Http\Resoource\IngredientResource;
 use App\Shared\Application\Bus\CommandBus;
-use App\Shared\Application\Service\ApplicationDataValidator;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 
 class CreateIngredientControllerTest extends TestCase
 {
+    /**
+     * @throws EmptyIdNotAllowedException
+     */
     #[Test]
     public function it_dispatches_command_and_returns_201(): void
     {
@@ -32,14 +37,14 @@ class CreateIngredientControllerTest extends TestCase
                 return $cmd->name === $ingredientName;
             }));
         $urlGeneratorInterface
-            ->expects($this->once())
+            ->expects($this->atLeastOnce())
             ->method('generate')
             ->withAnyParameters();
 
-        $controller = new CreateIngredientController($commandBus, $cmdFactory, $urlGeneratorInterface);
+        $controller = new CreateIngredientController($commandBus, $cmdFactory, new IngredientResource($urlGeneratorInterface));
         $request = new CreateIngredientDto($ingredientName, $ingredientTypeId, $ingredientDescription);
         $response = $controller($request);
 
-        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
     }
 }

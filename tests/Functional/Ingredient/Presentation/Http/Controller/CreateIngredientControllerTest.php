@@ -26,31 +26,51 @@ class CreateIngredientControllerTest extends  AppApiTestCase
         $this->loadFixture($this->fixture);
     }
 
-    #[Test]
-    public function it_creates_ingredient()
+    private function postDocument(array $document, bool $sendAuth = true, string $contentType = 'application/vnd.api+json'): void
     {
-        $this->assertNotEmpty($this->fixture->testData);
-        $ingredientToCreateData = [
-            'name' =>'an ingredient',
-            'ingredientTypeId' => $this->fixture->testData[0]->getId()->toString(),
-            'description' =>'no description available'
+        $headers = [
+            'CONTENT_TYPE' => $contentType,
+            'HTTP_ACCEPT' => 'application/vnd.api+json'
         ];
+
+        if ($sendAuth) {
+            $headers['HTTP_AUTHORIZATION'] = 'Bearer ' . $this->userToken;
+        }
+
         $this->client->request(
             'POST',
             $this->getDefinedUrl('ingredient_create'),
             [],
             [],
-            [
-                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'CONTENT_TYPE' => 'application/json',
-                'HTTP_ACCEPT' => 'application/json'
-            ],
-            json_encode($ingredientToCreateData)
+            $headers,
+            json_encode($document)
         );
+    }
+
+    #[Test]
+    public function it_creates_ingredient()
+    {
+        $this->assertNotEmpty($this->fixture->testData);
+        $ingredientToCreateData = [
+            'data' => [
+                'type' => 'ingredient',
+                'attributes' => [
+                    'name' =>'an ingredient',
+                    'ingredientTypeId' => $this->fixture->testData[0]->getId()->toString(),
+                    'description' =>'no description available'
+                ]
+            ]
+        ];
+        $this->postDocument($ingredientToCreateData);
         $this->assertResponseStatusCodeSame(Response::HTTP_CREATED);
-        $ingredientResponse = json_decode($this->client->getResponse()->getContent(), true);
-        $this->assertIsArray($ingredientResponse);
-        $this->assertArrayHasKey('id', $ingredientResponse);
+        $response = json_decode($this->client->getResponse()->getContent());
+
+        $this->assertIsObject($response);
+        $this->assertObjectHasProperty('data', $response);
+        $this->assertObjectHasProperty('id', $response->data);
+        $this->assertIsString($response->data->id);
+        $this->assertNotEmpty($response->data->id);
+        $this->assertObjectHasProperty('type', $response->data);
     }
 
     #[Test]
@@ -62,19 +82,8 @@ class CreateIngredientControllerTest extends  AppApiTestCase
             'ingredientTypeId' => $this->fixture->testData[0]->getId()->toString(),
             'description' =>'no description available'
         ];
-        $this->client->request(
-            'POST',
-            $this->getDefinedUrl('ingredient_create'),
-            [],
-            [],
-            [
-                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'CONTENT_TYPE' => 'application/json',
-                'HTTP_ACCEPT' => 'application/json'
-            ],
-            json_encode($ingredientToCreateData)
-        );
-        $this->assertProblemDetailsResponse(Response::HTTP_BAD_REQUEST);
+        $this->postDocument($ingredientToCreateData);
+        $this->assertJsonApiErrorResponse(Response::HTTP_BAD_REQUEST);
     }
 
     #[Test]
@@ -86,19 +95,8 @@ class CreateIngredientControllerTest extends  AppApiTestCase
             'ingredientTypeId' => $invalidUuid,
             'description' =>'no description available'
         ];
-        $this->client->request(
-            'POST',
-            $this->getDefinedUrl('ingredient_create'),
-            [],
-            [],
-            [
-                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'CONTENT_TYPE' => 'application/json',
-                'HTTP_ACCEPT' => 'application/json'
-            ],
-            json_encode($ingredientToCreateData)
-        );
-        $this->assertProblemDetailsResponse(Response::HTTP_BAD_REQUEST);
+        $this->postDocument($ingredientToCreateData);
+        $this->assertJsonApiErrorResponse(Response::HTTP_BAD_REQUEST);
     }
 
     #[Test]
@@ -109,18 +107,8 @@ class CreateIngredientControllerTest extends  AppApiTestCase
             'ingredientTypeId' => $this->fixture->testData[0]->getId()->toString(),
             'description' =>'no description available'
         ];
-        $this->client->request(
-            'POST',
-            $this->getDefinedUrl('ingredient_create'),
-            [],
-            [],
-            [
-                'CONTENT_TYPE' => 'application/json',
-                'HTTP_ACCEPT' => 'application/json'
-            ],
-            json_encode($ingredientToCreateData)
-        );
-        $this->assertProblemDetailsResponse(Response::HTTP_UNAUTHORIZED);
+        $this->postDocument($ingredientToCreateData, false);
+        $this->assertJsonApiErrorResponse(Response::HTTP_UNAUTHORIZED);
     }
 
     public static function invalidNames(): iterable
