@@ -17,7 +17,7 @@ final class DeleteUnitOfMeasureController extends AbstractController
         private readonly DeleteUnitOfMeasureCommandFactory $commandFactory
     ){}
 
-    #[Route('/api/v1/units-of-measure/{id}', name: 'unit_of_measure_delete', methods: ['DELETE'], defaults: [JsonApi::ROUTE_FLAG => true])]
+    #[Route('/api/v1/units-of-measure/{id}', name: 'unit_of_measure_delete', defaults: [JsonApi::ROUTE_FLAG => true], methods: ['DELETE'])]
     function __invoke(#[MapRouteParameter] DeleteUnitOfMeasureRouteDto $request): Response
     {
         $cmd = $this->commandFactory->createFromRequest($request);
