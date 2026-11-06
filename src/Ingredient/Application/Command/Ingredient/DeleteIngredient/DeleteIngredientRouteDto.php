@@ -2,7 +2,7 @@
 namespace App\Ingredient\Application\Command\Ingredient\DeleteIngredient;
 
 use Symfony\Component\Validator\Constraints as Assert;
-readonly class DeleteIngredientDto
+readonly class DeleteIngredientRouteDto
 {
     public function __construct(
         #[Assert\NotBlank]
