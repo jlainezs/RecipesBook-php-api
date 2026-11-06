@@ -26,11 +26,14 @@ class CreateIngredientControllerTest extends  AppApiTestCase
         $this->loadFixture($this->fixture);
     }
 
-    private function postDocument(array $document, bool $sendAuth = true, string $contentType = 'application/vnd.api+json'): void
+    private function postDocument(array $document, bool $sendAuth = true): void
     {
+        $contentType = 'application/vnd.api+json';
+        $accept = 'application/vnd.api+json';
+
         $headers = [
             'CONTENT_TYPE' => $contentType,
-            'HTTP_ACCEPT' => 'application/vnd.api+json'
+            'HTTP_ACCEPT' => $accept
         ];
 
         if ($sendAuth) {
