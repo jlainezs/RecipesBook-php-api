@@ -21,7 +21,7 @@ final class GetUnitsOfMeasureController extends AbstractController
         private readonly UnitOfMeasureResource $resource,
     ){}
 
-    #[Route('/units-of-measure', name: 'unit_of_measure_list', methods: ['GET'], defaults: [JsonApi::ROUTE_FLAG => true])]
+    #[Route('/units-of-measure', name: 'unit_of_measure_list', defaults: [JsonApi::ROUTE_FLAG => true], methods: ['GET'])]
     public function __invoke(
         #[MapQueryString(validationFailedStatusCode: Response::HTTP_BAD_REQUEST)]
         GetUnitsOfMeasureDto $dto
