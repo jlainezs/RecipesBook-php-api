@@ -18,12 +18,12 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class GetUnitsOfMeasureListControllerTest extends TestCase
 {
     private QueryBus $queryBus;
-    private GetUnitsOfMeasureQueryFactory $queryFActory;
+    private GetUnitsOfMeasureQueryFactory $queryFactory;
 
     protected function setUp(): void
     {
         $this->queryBus = $this->createMock(QueryBus::class);
-        $this->queryFActory = $this->createMock(GetUnitsOfMeasureQueryFactory::class);
+        $this->queryFactory = $this->createMock(GetUnitsOfMeasureQueryFactory::class);
     }
 
     #[Test]
@@ -39,14 +39,14 @@ class GetUnitsOfMeasureListControllerTest extends TestCase
                 fn (GetUnitsOfMeasureQuery $query) => ($query->offset >= 0 && $query->limit > 0)
             ))
             ->willReturn(new GetUnitsOfMeasureQueryResponse([]));
-        $this->queryFActory
+        $this->queryFactory
             ->expects($this->once())
             ->method('createFromDto')
             ->withAnyParameters()
             ->willReturn(new GetUnitsOfMeasureQuery($request->page->offset, $request->page->limit));
         $controller = new GetUnitsOfMeasureController(
             $this->queryBus,
-            $this->queryFActory,
+            $this->queryFactory,
             new UnitOfMeasureResource($this->createStub(UrlGeneratorInterface::class))
         );
 
