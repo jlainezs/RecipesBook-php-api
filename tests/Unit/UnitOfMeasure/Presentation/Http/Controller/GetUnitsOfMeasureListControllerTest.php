@@ -47,7 +47,9 @@ class GetUnitsOfMeasureListControllerTest extends TestCase
         $controller = new GetUnitsOfMeasureController(
             $this->queryBus,
             $this->queryFactory,
-            new UnitOfMeasureResource($this->createStub(UrlGeneratorInterface::class))
+            new UnitOfMeasureResource(
+                $this->createStub(UrlGeneratorInterface::class)
+            )
         );
 
         $response = $controller($request);

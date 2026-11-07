@@ -2,13 +2,14 @@
 
 namespace App\Tests\Unit\Ingredient\Presentation\Http\Controller;
 
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use App\Ingredient\Application\Query\Ingredient\GetIngredients\GetIngredientsQuery;
 use App\Ingredient\Application\Query\Ingredient\GetIngredients\GetIngredientsQueryDto;
 use App\Ingredient\Application\Query\Ingredient\GetIngredients\GetIngredientsQueryFactory;
 use App\Ingredient\Application\Query\Ingredient\GetIngredients\GetIngredientsQueryResponse;
 use App\Ingredient\Presentation\Http\Controller\GetIngredientsController;
+use App\Ingredient\Presentation\Http\Resoource\IngredientResource;
 use App\Shared\Application\Bus\QueryBus;
-use App\Shared\Application\Service\ApplicationDataValidator;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
@@ -44,7 +45,13 @@ class GetIngredientsControllerTest extends TestCase
             ->withAnyParameters()
             ->willReturn(new GetIngredientsQuery($request->offset, $request->limit));
 
-        $controller = new GetIngredientsController($this->queryBus, $this->queryFactory);
+        $controller = new GetIngredientsController(
+            $this->queryBus,
+            $this->queryFactory,
+            new IngredientResource(
+                $this->createStub(UrlGeneratorInterface::class)
+            )
+        );
         $response = $controller($request);
         $this->assertEquals(200, $response->getStatusCode());
     }
