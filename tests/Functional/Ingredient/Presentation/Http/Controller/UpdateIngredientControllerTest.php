@@ -2,6 +2,8 @@
 namespace App\Tests\Functional\Ingredient\Presentation\Http\Controller;
 
 use App\Ingredient\Domain\Repository\IngredientRepositoryInterface;
+use App\Ingredient\Presentation\Http\Resoource\IngredientResource;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\Tests\DataFixtures\Ingredient\IngredientFixtures;
 use App\Tests\DataFixtures\Ingredient\IngredientTypeFixtures;
@@ -37,33 +39,30 @@ class UpdateIngredientControllerTest extends AppApiTestCase
         $this->assertNotNull($ingredient);
 
         $updatedData = [
-            'name' => 'updated name',
-            'description' => 'updated description',
-            'ingredientTypeId' => $this->ingredientTypeFixtures->testData[0]->getId()->toString(),
+            'data' => [
+                'type' => IngredientResource::TYPE,
+                'id' => $id->toString(),
+                'attributes' => [
+                    'name' => 'updated name',
+                    'description' => 'updated description',
+                    'ingredientTypeId' => $this->ingredientTypeFixtures->testData[0]->getId()->toString(),
+                ]
+            ]
         ];
 
-        $this->assertNotEmpty($updatedData['ingredientTypeId']);
+        $this->patchDocument($id, $updatedData);
 
-        $this->client->request(
-            'PUT',
-            $this->getDefinedUrl('ingredient_update_instance', ['id' => $id->toString()]),
-            [],
-            [],
-            [
-                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'CONTENT_TYPE' => 'application/json',
-                'HTTP_ACCEPT' => 'application/json',
-            ],
-            json_encode($updatedData)
-        );
         $this->assertResponseStatusCodeSame(Response::HTTP_NO_CONTENT);
 
         // ensure updated
         $ingredient = $this->ingredientRepository->findOne($id);
-        $this->assertEquals($updatedData['name'], $ingredient->getName());
-        $this->assertEquals($updatedData['description'], $ingredient->getDescription());
+        $this->assertEquals($updatedData['data']['attributes']['name'], $ingredient->getName());
+        $this->assertEquals($updatedData['data']['attributes']['description'], $ingredient->getDescription());
     }
 
+    /**
+     * @throws EmptyIdNotAllowedException
+     */
     #[Test]
     public function updateIngredientFailsWhenIngredientIsNotFound()
     {
@@ -71,29 +70,26 @@ class UpdateIngredientControllerTest extends AppApiTestCase
             $id = AggregateRootId::generateId();
 
             $updatedData = [
-                'name' => 'updated name',
-                'description' => 'updated description',
-                'ingredientTypeId' => $this->ingredientTypeFixtures->testData[0]->getId()->toString(),
+                'data' => [
+                    'type' => IngredientResource::TYPE,
+                    'id' => $id->toString(),
+                    'attributes' => [
+                        'name' => 'updated name',
+                        'description' => 'updated description',
+                        'ingredientTypeId' => $this->ingredientTypeFixtures->testData[0]->getId()->toString(),
+                    ]
+                ]
             ];
 
-            $this->assertNotEmpty($updatedData['ingredientTypeId']);
+            $this->patchDocument($id, $updatedData);
 
-            $this->client->request(
-                'PUT',
-                $this->getDefinedUrl('ingredient_update_instance', ['id' => $id->toString()]),
-                [],
-                [],
-                [
-                    'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                    'CONTENT_TYPE' => 'application/json',
-                    'HTTP_ACCEPT' => 'application/json',
-                ],
-                json_encode($updatedData)
-            );
-            $this->assertProblemDetailsResponse(Response::HTTP_NOT_FOUND);
+            $this->assertJsonApiErrorResponse(Response::HTTP_NOT_FOUND);
         }
     }
 
+    /**
+     * @throws EmptyIdNotAllowedException
+     */
     #[Test]
     public function updateIngredientFailsWhenNoAuthorization()
     {
@@ -101,25 +97,46 @@ class UpdateIngredientControllerTest extends AppApiTestCase
             $id = AggregateRootId::generateId();
 
             $updatedData = [
-                'name' => 'updated name',
-                'description' => 'updated description',
-                'ingredientTypeId' => $this->ingredientTypeFixtures->testData[0]->getId()->toString(),
+                'data' => [
+                    'type' => IngredientResource::TYPE,
+                    'id' => $id->toString(),
+                    'attributes' => [
+                        'name' => 'updated name',
+                        'description' => 'updated description',
+                        'ingredientTypeId' => $this->ingredientTypeFixtures->testData[0]->getId()->toString(),
+                    ]
+                ]
             ];
 
-            $this->assertNotEmpty($updatedData['ingredientTypeId']);
+            $this->patchDocument($id, $updatedData, false);
 
-            $this->client->request(
-                'PUT',
-                $this->getDefinedUrl('ingredient_update_instance', ['id' => $id->toString()]),
-                [],
-                [],
-                [
-                    'CONTENT_TYPE' => 'application/json',
-                    'HTTP_ACCEPT' => 'application/json',
-                ],
-                json_encode($updatedData)
-            );
-            $this->assertProblemDetailsResponse(Response::HTTP_UNAUTHORIZED);
+            $this->assertJsonApiErrorResponse(Response::HTTP_UNAUTHORIZED);
         }
+    }
+
+
+    private function patchDocument(AggregateRootId $id, array $document, bool $sendAuth = true): void
+    {
+        $contentType = 'application/vnd.api+json';
+        $accept = 'application/vnd.api+json';
+        $route =$this->getDefinedUrl('ingredient_update_instance', ['id' => $id->toString()]);
+
+        $headers = [
+            'CONTENT_TYPE' => $contentType,
+            'HTTP_ACCEPT' => $accept
+        ];
+
+        if ($sendAuth) {
+            $headers['HTTP_AUTHORIZATION'] = 'Bearer ' . $this->userToken;
+        }
+
+        $this->client->request(
+            'PATCH',
+            $route,
+            [],
+            [],
+            $headers,
+            json_encode($document)
+        );
     }
 }

@@ -27,7 +27,7 @@ final class UpdateUnitOfMeasureController extends AbstractController
     /**
      * Returns 200 with the resource instead of 204: updatedAt is changed by the server.
      */
-    #[Route('/api/v1/units-of-measure/{id}', name: 'unit_of_measure_update', methods: ['PATCH'], defaults: [JsonApi::ROUTE_FLAG => true])]
+    #[Route('/api/v1/units-of-measure/{id}', name: 'unit_of_measure_update', defaults: [JsonApi::ROUTE_FLAG => true], methods: ['PATCH'])]
     public function __invoke(
         #[MapRouteParameter]
         UpdateUnitOfMeasureRouteDto $routeDto,
