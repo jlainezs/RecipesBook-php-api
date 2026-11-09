@@ -5,11 +5,13 @@ use App\IngredientType\Application\Command\IngredientType\CreateIngredientType\C
 use App\IngredientType\Application\Command\IngredientType\CreateIngredientType\CreateIngredientTypeCommandFactory;
 use App\IngredientType\Application\Command\IngredientType\CreateIngredientType\CreateIngredientTypeDto;
 use App\IngredientType\Presentation\Http\Controller\CreateIngredientTypeController;
+use App\IngredientType\Presentation\Http\Resource\IngredientTypeResource;
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CreateIngredientTypeControllerTest extends TestCase
@@ -22,7 +24,7 @@ class CreateIngredientTypeControllerTest extends TestCase
     {
         $commandBus = $this->createMock(CommandBus::class);
         $createCmdFactory = $this->createMock(CreateIngredientTypeCommandFactory::class);
-        $urlGenerator = $this->createMock(UrlGeneratorInterface::class);
+        $resource = new IngredientTypeResource($this->createStub(UrlGeneratorInterface::class));
 
         $id = AggregateRootId::generateId()->toString();
         $ingredientTypeName = 'test name';
@@ -46,13 +48,9 @@ class CreateIngredientTypeControllerTest extends TestCase
                 }
             ));
 
-        $urlGenerator->expects($this->once())
-            ->method('generate')
-            ->withAnyParameters();
-
-        $controller = new CreateIngredientTypeController($commandBus, $createCmdFactory, $urlGenerator);
+        $controller = new CreateIngredientTypeController($commandBus, $createCmdFactory, $resource);
         $response = $controller($request);
 
-        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
     }
 }

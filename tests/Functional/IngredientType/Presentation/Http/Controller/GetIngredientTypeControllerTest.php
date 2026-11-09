@@ -7,6 +7,7 @@ use App\Tests\DataFixtures\Ingredient\IngredientTypeFixtures;
 use App\Tests\DataFixtures\Security\LoginFixtures;
 use App\Tests\Functional\AppApiTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -22,7 +23,8 @@ class GetIngredientTypeControllerTest extends AppApiTestCase
         $this->loadFixture($this->additionalIngredientTypeFixtures);
     }
 
-    public function testGetIngredientType()
+    #[Test]
+    public function it_gets_the_required_ingredient_type()
     {
         $this->client->request(
             'GET',
@@ -34,18 +36,22 @@ class GetIngredientTypeControllerTest extends AppApiTestCase
                 'HTTP_ACCEPT' => 'application/json'
             ]
         );
-        $this->assertResponseIsSuccessful();
-        $ingredientTypeDto = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+        $response = json_decode($this->client->getResponse()->getContent());
+        $this->assertNotNull($response->data);
+        $this->assertIsObject($response->data);
+
         $this->assertEquals(
             $this->additionalIngredientTypeFixtures->testData[0]->getId()->toString(),
-            $ingredientTypeDto['ingredientType']['id']
+            $response->data->id
         );
     }
 
     /**
      * @throws EmptyIdNotAllowedException
      */
-    public function testGetIngredientTypeNotFound()
+    #[Test]
+    public function it_fails_when_ingredient_type_not_found()
     {
         $this->client->request(
             'GET',
@@ -60,7 +66,8 @@ class GetIngredientTypeControllerTest extends AppApiTestCase
         $this->assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
     }
 
-    public function testGetIngredientTypeUnauthorizedFails()
+    #[Test]
+    public function it_fails_when_unauthorized()
     {
         $this->client->request(
             'GET',

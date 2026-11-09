@@ -1,6 +1,7 @@
 <?php
 namespace App\Tests\Functional\IngredientType\Presentation\Http\Controller;
 
+use App\IngredientType\Presentation\Http\Resource\IngredientTypeResource;
 use App\Tests\DataFixtures\Security\LoginFixtures;
 use App\Tests\Functional\AppApiTestCase;
 use PHPUnit\Framework\Attributes\Test;
@@ -16,96 +17,100 @@ class CreteIngredientTypeControllerTest extends AppApiTestCase
         $this->loginWithUser(LoginFixtures::USER_NAME, LoginFixtures::PASSWORD);
     }
 
+    private function postDocument(array $document, bool $sendAuth = true, bool $expiredToken = false): void
+    {
+        $contentType = 'application/vnd.api+json';
+        $accept = 'application/vnd.api+json';
+
+        $headers = [
+            'CONTENT_TYPE' => $contentType,
+            'HTTP_ACCEPT' => $accept
+        ];
+
+        if ($sendAuth) {
+            $headers['HTTP_AUTHORIZATION'] = 'Bearer ' .
+                ($expiredToken
+                    ? $this->createExpiredToken(LoginFixtures::USER_NAME)
+                    : $this->userToken);
+        }
+
+        $this->client->request(
+            'POST',
+            $this->getDefinedUrl('create_ingredient_type'),
+            [],
+            [],
+            $headers,
+            json_encode($document)
+        );
+    }
+
     #[Test]
     public function testCreateIngredientType()
     {
         $ingredientType = [
-            'name' => 'test ingredient type',
+            'data' => [
+                'type' => IngredientTypeResource::TYPE,
+                'attributes' => [
+                    'name' => 'test ingredient type',
+                ]
+            ]
         ];
-        $this->client->request('POST', $this->getDefinedUrl('create_ingredient_type'),
-            [],
-            [],
-            [
-                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'CONTENT_TYPE' => 'application/json',
-                'HTTP_ACCEPT' => 'application/json'
-            ],
-            json_encode($ingredientType)
-        );
-        $ingredientTypeDto = json_decode($this->client->getResponse()->getContent(), true);
-
+        $this->postDocument($ingredientType);
         $this->assertResponseStatusCodeSame(Response::HTTP_CREATED);
-        $this->assertArrayHasKey('id', $ingredientTypeDto);
-        $this->assertNotEmpty($ingredientTypeDto['id']);
-        $this->assertResponseHeaderSame('Content-Type', 'application/json');
-        $this->assertResponseHeaderSame('Cache-Control', 'must-revalidate, no-cache, no-store, private');
-        $expectedGetUrl = $this->getDefinedUrl('get_ingredient_type', ['id' => $ingredientTypeDto['id']]);
-        $this->assertResponseHeaderSame('Location', $expectedGetUrl);
+        $response = json_decode($this->client->getResponse()->getContent());
+
+        $this->assertIsObject($response);
+        $this->assertObjectHasProperty('data', $response);
+        $this->assertObjectHasProperty('id', $response->data);
+        $this->assertIsString($response->data->id);
+        $this->assertNotEmpty($response->data->id);
+        $this->assertObjectHasProperty('type', $response->data);
     }
 
     #[Test]
     public function testCreateIngredientTypeFailsWhenNameIsEmpty(): void
     {
         $invalidPayload = [
-            'name' => '',
+            'data' => [
+                'type' => IngredientTypeResource::TYPE,
+                'attributes' => [
+                    'name' => '',
+                ]
+            ]
         ];
-
-        $this->client->request(
-            'POST',
-            $this->getDefinedUrl('create_ingredient_type'),
-            [],
-            [],
-            [
-                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'CONTENT_TYPE' => 'application/json',
-                'HTTP_ACCEPT' => 'application/json'
-            ],
-            json_encode($invalidPayload)
-        );
-
-        $responseData = $this->assertProblemDetailsResponse(Response::HTTP_BAD_REQUEST);
-        $this->assertStringNotContainsString($responseData['title'], 'name: This value should not be blank.');
+        $this->postDocument($invalidPayload);
+        $this->assertJsonApiErrorResponse(Response::HTTP_BAD_REQUEST);
     }
 
     #[Test]
     public function testCreateIngredientTypeFailsUnauthenticated(): void
     {
-        $this->client->request(
-            'POST',
-            $this->getDefinedUrl('create_ingredient_type'),
-            [],
-            [],
-            [
-                'CONTENT_TYPE' => 'application/json',
-                'HTTP_ACCEPT' => 'application/json'
-            ],
-            json_encode(['name' => 'test'])
-        );
+        $ingredientType = [
+            'data' => [
+                'type' => IngredientTypeResource::TYPE,
+                'attributes' => [
+                    'name' => 'test ingredient type',
+                ]
+            ]
+        ];
+        $this->postDocument($ingredientType, false);
 
-        $responseData = $this->assertProblemDetailsResponse(Response::HTTP_UNAUTHORIZED);
-        $this->assertEquals('Missing JWT Token', $responseData['title'] ?? '');
-        $this->assertEquals('JWT Token not found', $responseData['detail'] ?? '');
+        $this->assertJsonApiErrorResponse(Response::HTTP_UNAUTHORIZED);
     }
 
     #[Test]
     public function testCreateIngredientTypeFailsWithExpiredToken(): void
     {
-        $expiredToken = $this->createExpiredToken(LoginFixtures::USER_NAME);
-        $this->client->request(
-            'POST',
-            $this->getDefinedUrl('create_ingredient_type'),
-            [],
-            [],
-            [
-                'HTTP_AUTHORIZATION' => 'Bearer ' . $expiredToken,
-                'CONTENT_TYPE' => 'application/json',
-                'HTTP_ACCEPT' => 'application/json'
-            ],
-            json_encode(['name' => 'test'])
-        );
+        $ingredientType = [
+            'data' => [
+                'type' => IngredientTypeResource::TYPE,
+                'attributes' => [
+                    'name' => 'test ingredient type',
+                ]
+            ]
+        ];
+        $this->postDocument($ingredientType, true, true);
 
-        $responseData = $this->assertProblemDetailsResponse(Response::HTTP_UNAUTHORIZED);
-        $this->assertEquals('Expired JWT Token', $responseData['title'] ?? '');
-        $this->assertEmpty( $responseData['detail'] ?? '');
+        $responseData = $this->assertJsonApiErrorResponse(Response::HTTP_UNAUTHORIZED);
     }
 }

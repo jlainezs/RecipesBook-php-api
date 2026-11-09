@@ -1,6 +1,8 @@
 <?php
 namespace App\Tests\Functional\IngredientType\Presentation\Http\Controller;
 
+use App\Ingredient\Presentation\Http\Resoource\IngredientResource;
+use App\IngredientType\Presentation\Http\Resource\IngredientTypeResource;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Tests\DataFixtures\Ingredient\IngredientTypeFixtures;
 use App\Tests\DataFixtures\Security\LoginFixtures;
@@ -11,7 +13,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class GetIngredientTypesControllerTest extends AppApiTestCase
 {
-    private IngredientTypeFixtures $additionalIngredientTypeFixtures;
+    private IngredientTypeFixtures $fixtures;
 
     /**
      * @throws EmptyIdNotAllowedException
@@ -21,12 +23,12 @@ class GetIngredientTypesControllerTest extends AppApiTestCase
         parent::setUp();
         $this->loadFixture(new LoginFixtures($this->container->get(UserPasswordHasherInterface::class)));
         $this->loginWithUser(LoginFixtures::USER_NAME, LoginFixtures::PASSWORD);
-        $this->additionalIngredientTypeFixtures = new IngredientTypeFixtures();
-        $this->loadFixture($this->additionalIngredientTypeFixtures);
+        $this->fixtures = new IngredientTypeFixtures();
+        $this->loadFixture($this->fixtures);
     }
 
     #[Test]
-    public function getIngredientTypes(): void
+    public function it_gets_the_ingredients_types(): void
     {
         $this->client->request(
             'GET', $this->getDefinedUrl('ingredient_types_list'),
@@ -37,23 +39,26 @@ class GetIngredientTypesControllerTest extends AppApiTestCase
                 'HTTP_ACCEPT' => 'application/json'
             ],
         );
-        $this->assertResponseIsSuccessful();
-        $responseData = json_decode($this->client->getResponse()->getContent(), true);
-        $this->assertIsArray($responseData);
-        $this->assertNotEmpty($responseData);
-        $this->assertArrayHasKey('items', $responseData);
-        $this->assertSameSize($this->additionalIngredientTypeFixtures->testData, $responseData['items']);
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+        $this->assertResponseHeaderSame('Content-Type', 'application/vnd.api+json');
+        $response = json_decode($this->client->getResponse()->getContent());
+        $this->assertNotEmpty($response);
+        $this->assertObjectHasProperty('data', $response);
+        $this->assertSameSize($this->fixtures->testData, $response->data);
+        $this->assertSameSize($this->fixtures->testData, $response->data);
 
-        for ($i = 0; $i < count($responseData['items']); $i++) {
-            $this->assertArrayHasKey('id', $responseData['items'][$i]);
-            $this->assertArrayHasKey('name', $responseData['items'][$i]);
-            $this->assertEquals($this->additionalIngredientTypeFixtures->testData[$i]->getId()->toString(), $responseData['items'][$i]['id']);
-            $this->assertEquals($this->additionalIngredientTypeFixtures->testData[$i]->getName()->value(), $responseData['items'][$i]['name']);
+        for ($i = 0; $i < count($response->data); $i++)
+        {
+            $this->assertSame(IngredientTypeResource::TYPE, $response->data[$i]->type);
+            $this->assertObjectHasProperty('id', $response->data[$i]);
+            $this->assertObjectHasProperty('name', $response->data[$i]->attributes);
+            $this->assertEquals($this->fixtures->testData[$i]->getId()->toString(), $response->data[$i]->id);
+            $this->assertEquals($this->fixtures->testData[$i]->getName()->value(), $response->data[$i]->attributes->name);
         }
     }
 
     #[Test]
-    public function getIngredientTypesWithoutAuthorizationFails(): void
+    public function it_fails_when_not_authorized(): void
     {
         $this->client->request(
             'GET', $this->getDefinedUrl('ingredient_types_list'),
@@ -63,6 +68,6 @@ class GetIngredientTypesControllerTest extends AppApiTestCase
                 'HTTP_ACCEPT' => 'application/json'
             ],
         );
-        $this->assertProblemDetailsResponse(Response::HTTP_UNAUTHORIZED);
+        $this->assertJsonApiErrorResponse(Response::HTTP_UNAUTHORIZED, ['header' => 'Authorization']);
     }
 }

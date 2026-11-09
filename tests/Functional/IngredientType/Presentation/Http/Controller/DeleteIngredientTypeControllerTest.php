@@ -12,7 +12,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class DeleteIngredientTypeControllerTest extends AppApiTestCase
 {
-    private IngredientTypeFixtures $additionalIngredientTypeFixtures;
+    private IngredientTypeFixtures $fixtures;
 
     /**
      * @throws EmptyIdNotAllowedException
@@ -22,29 +22,38 @@ class DeleteIngredientTypeControllerTest extends AppApiTestCase
         parent::setUp();
         $this->loadFixture(new LoginFixtures($this->container->get(UserPasswordHasherInterface::class)));
         $this->loginWithUser(LoginFixtures::USER_NAME, LoginFixtures::PASSWORD);
-        $this->additionalIngredientTypeFixtures = new IngredientTypeFixtures();
-        $this->loadFixture($this->additionalIngredientTypeFixtures);
+        $this->fixtures = new IngredientTypeFixtures();
+        $this->loadFixture($this->fixtures);
+    }
+
+    private function deleteDocument(string $id, bool $useAuth = true): void
+    {
+        $headers = [
+            'HTTP_ACCEPT' => 'application/vnd.api+json'
+        ];
+        if ($useAuth) {
+            $headers['HTTP_AUTHORIZATION'] = 'Bearer ' . $this->userToken;
+        }
+
+        $this->client->request(
+            'DELETE',
+            $this->getDefinedUrl('ingredient_types_delete_instance', ['id' => $id]),
+            [],
+            [],
+            $headers
+        );
     }
 
     #[Test]
-    public function deleteIngredientType(): void
+    public function it_deletes_ingredient_type(): void
     {
-        $this->client->request(
-            'DELETE',
-            $this->getDefinedUrl('ingredient_types_delete_instance', ['id' => $this->additionalIngredientTypeFixtures->testData[0]->getId()->toString()]),
-            [],
-            [],
-            [
-                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'HTTP_ACCEPT' => 'application/json'
-            ]
-        );
+        $this->deleteDocument($this->fixtures->testData[0]->getId()->toString());
         $this->assertResponseStatusCodeSame(Response::HTTP_NO_CONTENT);
 
         // ensure the ingredient type was not deleted
         $this->client->request(
             'GET',
-            $this->getDefinedUrl('get_ingredient_type', ['id' => $this->additionalIngredientTypeFixtures->testData[0]->getId()->toString()]),
+            $this->getDefinedUrl('get_ingredient_type', ['id' => $this->fixtures->testData[0]->getId()->toString()]),
             [],
             [],
             [
@@ -52,38 +61,23 @@ class DeleteIngredientTypeControllerTest extends AppApiTestCase
                 'HTTP_ACCEPT' => 'application/json'
             ]
         );
-        $this->assertProblemDetailsResponse(Response::HTTP_NOT_FOUND);
+        $this->assertJsonApiErrorResponse(Response::HTTP_NOT_FOUND);
+    }
+
+    /**
+     * @throws EmptyIdNotAllowedException
+     */
+    #[Test]
+    public function it_fails_when_ingredient_type_does_not_exist(): void
+    {
+        $this->deleteDocument(AggregateRootId::generateId()->toString());
+        $this->assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
     }
 
     #[Test]
-    public function deleteIngredientTypeNotFound(): void
+    public function it_fails_when_ingredient_type_id_is_wrong(): void
     {
-        $this->client->request(
-            'DELETE',
-            $this->getDefinedUrl('ingredient_types_delete_instance', ['id' => AggregateRootId::generateId()->toString()]),
-            [],
-            [],
-            [
-                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'HTTP_ACCEPT' => 'application/json'
-            ]
-        );
-        $this->assertProblemDetailsResponse(Response::HTTP_NOT_FOUND);
-    }
-
-    #[Test]
-    public function deleteIngredientTypeWrongId(): void
-    {
-        $this->client->request(
-            'DELETE',
-            $this->getDefinedUrl('ingredient_types_delete_instance', ['id' => 'Wrong-Id-Passed']),
-            [],
-            [],
-            [
-                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'HTTP_ACCEPT' => 'application/json'
-            ]
-        );
-        $this->assertProblemDetailsResponse(Response::HTTP_BAD_REQUEST);
+        $this->deleteDocument('wrong id');
+        $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
     }
 }

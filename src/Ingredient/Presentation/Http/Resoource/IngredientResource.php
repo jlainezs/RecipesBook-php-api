@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Ingredient\Presentation\Http\Resoource;
 
 use App\Ingredient\Application\Query\Ingredient\IngredientDto;
