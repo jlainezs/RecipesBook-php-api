@@ -1,7 +1,7 @@
 <?php
 namespace App\Tests\Functional\Ingredient\Presentation\Http\Controller;
 
-use App\Ingredient\Presentation\Http\Resoource\IngredientResource;
+use App\Ingredient\Presentation\Http\Resource\IngredientResource;
 use App\Tests\DataFixtures\Ingredient\IngredientFixtures;
 use App\Tests\DataFixtures\Security\LoginFixtures;
 use App\Tests\Functional\AppApiTestCase;

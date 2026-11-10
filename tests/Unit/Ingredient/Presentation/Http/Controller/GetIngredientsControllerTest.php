@@ -8,7 +8,7 @@ use App\Ingredient\Application\Query\Ingredient\GetIngredients\GetIngredientsQue
 use App\Ingredient\Application\Query\Ingredient\GetIngredients\GetIngredientsQueryFactory;
 use App\Ingredient\Application\Query\Ingredient\GetIngredients\GetIngredientsQueryResponse;
 use App\Ingredient\Presentation\Http\Controller\GetIngredientsController;
-use App\Ingredient\Presentation\Http\Resoource\IngredientResource;
+use App\Ingredient\Presentation\Http\Resource\IngredientResource;
 use App\Shared\Application\Bus\QueryBus;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
