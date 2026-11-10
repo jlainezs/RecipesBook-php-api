@@ -3,7 +3,7 @@ namespace App\Ingredient\Presentation\Http\Controller;
 
 use App\Ingredient\Application\Query\Ingredient\GetIngredients\GetIngredientsQueryDto;
 use App\Ingredient\Application\Query\Ingredient\GetIngredients\GetIngredientsQueryFactory;
-use App\Ingredient\Presentation\Http\Resoource\IngredientResource;
+use App\Ingredient\Presentation\Http\Resource\IngredientResource;
 use App\Shared\Application\Bus\QueryBus;
 use App\Shared\Presentation\Http\JsonApi\JsonApi;
 use App\Shared\Presentation\Http\JsonApi\JsonApiResponse;

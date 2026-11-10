@@ -7,7 +7,7 @@ use App\Ingredient\Application\Query\Ingredient\GetIngredient\GetIngredientQuery
 use App\Ingredient\Application\Query\Ingredient\GetIngredient\GetIngredientResponse;
 use App\Ingredient\Application\Query\Ingredient\IngredientDto;
 use App\Ingredient\Presentation\Http\Controller\GetIngredientController;
-use App\Ingredient\Presentation\Http\Resoource\IngredientResource;
+use App\Ingredient\Presentation\Http\Resource\IngredientResource;
 use App\Shared\Application\Bus\QueryBus;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
