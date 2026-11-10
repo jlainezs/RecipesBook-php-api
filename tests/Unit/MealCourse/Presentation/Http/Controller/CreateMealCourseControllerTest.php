@@ -7,6 +7,7 @@ use App\MealCourse\Application\Command\MealCourse\CreateMealCourse\CreateMealCou
 use App\MealCourse\Application\Command\MealCourse\CreateMealCourse\CreateMealCourseDto;
 use App\MealCourse\Domain\Model\MealCourse;
 use App\MealCourse\Presentation\Http\Controller\CreateMealCourseController;
+use App\MealCourse\Presentation\Http\Resource\MealCourseResource;
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
@@ -28,7 +29,7 @@ class CreateMealCourseControllerTest extends TestCase
         $commandBus = $this->createMock(CommandBus::class);
         $validator = $this->createMock(ApplicationDataValidator::class);
         $cmdFactory = new CreateMealCourseCommandFactory($validator);
-        $urlGeneratorInterface = $this->createMock(UrlGeneratorInterface::class);
+        $resource = new MealCourseResource($this->createStub(UrlGeneratorInterface::class));
 
         $id = AggregateRootId::generateId()->toString();
         $mealCourse = MealCourse::create(id:$id, name:'test');
@@ -49,11 +50,8 @@ class CreateMealCourseControllerTest extends TestCase
                     return $cmd->name === $mealCourse->getName();
                 }
             ));
-        $urlGeneratorInterface->expects($this->once())
-            ->method('generate')
-            ->withAnyParameters();
 
-        $controller = new CreateMealCourseController($commandBus, $cmdFactory, $urlGeneratorInterface);
+        $controller = new CreateMealCourseController($commandBus, $cmdFactory, $resource);
         $request = new CreateMealCourseDto($mealCourse->getName());
 
         $response = $controller($request);
