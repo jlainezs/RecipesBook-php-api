@@ -3,7 +3,7 @@ namespace App\MealCourse\Application\Query\MealCourse\GetMealCourse;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class GetMealCourseDto
+class GetMealCourseRouteDto
 {
     public function __construct(
         #[Assert\NotBlank]

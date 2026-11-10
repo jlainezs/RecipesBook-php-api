@@ -1,6 +1,7 @@
 <?php
 namespace App\Tests\Functional\MealCourse\Presentation\Http\Controller;
 
+use App\MealCourse\Domain\Repository\MealCourseRepositoryInterface;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\Tests\DataFixtures\MealCourse\MealCourseFixtures;
 use App\Tests\DataFixtures\Security\LoginFixtures;
@@ -11,73 +12,59 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class DeleteMealCourseControllerTest extends AppApiTestCase
 {
-    private MealCourseFixtures $mealCourseFixtures;
+    private MealCourseFixtures $fixtures;
+    private MealCourseRepositoryInterface $respository;
 
     public function setUp(): void
     {
         parent::setUp();
         $this->loadFixture(new LoginFixtures($this->container->get(UserPasswordHasherInterface::class)));
         $this->loginWithUser(LoginFixtures::USER_NAME, LoginFixtures::PASSWORD);
-        $this->mealCourseFixtures = new MealCourseFixtures();
-        $this->loadFixture($this->mealCourseFixtures);
+        $this->fixtures = new MealCourseFixtures();
+        $this->loadFixture($this->fixtures);
+        $this->respository = $this->container->get(MealCourseRepositoryInterface::class);
+    }
+
+    private function deleteDocument(string $id, bool $useAuth = true): void
+    {
+        $headers = [
+            'HTTP_ACCEPT' => 'application/vnd.api+json'
+        ];
+        if ($useAuth) {
+            $headers['HTTP_AUTHORIZATION'] = 'Bearer ' . $this->userToken;
+        }
+
+        $this->client->request(
+            'DELETE',
+            $this->getDefinedUrl('meal_courses_delete_instance', ['id' => $id]),
+            [],
+            [],
+            $headers
+        );
     }
 
     #[Test]
     public function it_should_delete_meal_course(): void
     {
-        $this->client->request(
-            'DELETE',
-            $this->getDefinedUrl('meal_courses_delete_instance', ['id' => $this->mealCourseFixtures->testMealCourses[0]->getId()->toString()]),
-            [],
-            [],
-            [
-                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'HTTP_ACCEPT' => 'application/json'
-            ]
-        );
+        $this->deleteDocument($this->fixtures->testMealCourses[0]->getId()->toString());
         $this->assertResponseStatusCodeSame(Response::HTTP_NO_CONTENT);
 
         // ensure the meal course was deleted
-        $this->client->request(
-            'GET',
-            $this->getDefinedUrl('meal_courses_get_instance', ['id' => $this->mealCourseFixtures->testMealCourses[0]->getId()->toString()]),
-            [],
-            [],
-            [
-                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'HTTP_ACCEPT' => 'application/json'
-            ]
-        );
-        $this->assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
+        $mealCourse = $this->respository->findOne($this->fixtures->testMealCourses[0]->getId());
+        $this->assertNull($mealCourse);
     }
 
     #[Test]
     public function it_should_fail_when_meal_course_does_not_exists(): void
     {
-        $this->client->request(
-            'DELETE',
-            $this->getDefinedUrl('meal_courses_delete_instance', ['id' => AggregateRootId::generateId()->toString()]),
-            [],
-            [],
-            [
-                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'HTTP_ACCEPT' => 'application/json'
-            ]
-        );
-        $this->assertProblemDetailsResponse(Response::HTTP_NOT_FOUND);
+        $this->deleteDocument(AggregateRootId::generateId()->toString());
+        $this->assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
     }
+
     #[Test]
     public function it_should_fail_when_not_authorized(): void
     {
-        $this->client->request(
-            'DELETE',
-            $this->getDefinedUrl('meal_courses_get_instance', ['id' => $this->mealCourseFixtures->testMealCourses[0]->getId()->toString()]),
-            [],
-            [],
-            [
-                'HTTP_ACCEPT' => 'application/json'
-            ]
-        );
-        $this->assertProblemDetailsResponse(Response::HTTP_UNAUTHORIZED);
+        $this->deleteDocument($this->fixtures->testMealCourses[0]->getId()->toString(), false);
+        $this->assertResponseStatusCodeSame(Response::HTTP_UNAUTHORIZED);
     }
 }
