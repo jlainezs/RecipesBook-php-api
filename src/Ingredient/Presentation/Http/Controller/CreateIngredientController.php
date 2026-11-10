@@ -4,7 +4,7 @@ namespace App\Ingredient\Presentation\Http\Controller;
 use App\Ingredient\Application\Command\Ingredient\CreateIngredient\CreateIngredientCommandFactory;
 use App\Ingredient\Application\Command\Ingredient\CreateIngredient\CreateIngredientDto;
 use App\Ingredient\Application\Command\Ingredient\CreateIngredient\CreateIngredientResponse;
-use App\Ingredient\Presentation\Http\Resoource\IngredientResource;
+use App\Ingredient\Presentation\Http\Resource\IngredientResource;
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Presentation\Http\JsonApi\JsonApi;

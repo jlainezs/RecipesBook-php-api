@@ -5,7 +5,7 @@ use App\Ingredient\Application\Command\Ingredient\CreateIngredient\CreateIngredi
 use App\Ingredient\Application\Command\Ingredient\CreateIngredient\CreateIngredientCommandFactory;
 use App\Ingredient\Presentation\Http\Controller\CreateIngredientController;
 use App\Ingredient\Application\Command\Ingredient\CreateIngredient\CreateIngredientDto;
-use App\Ingredient\Presentation\Http\Resoource\IngredientResource;
+use App\Ingredient\Presentation\Http\Resource\IngredientResource;
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use PHPUnit\Framework\Attributes\Test;

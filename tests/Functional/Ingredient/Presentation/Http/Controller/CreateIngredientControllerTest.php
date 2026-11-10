@@ -1,6 +1,7 @@
 <?php
 namespace App\Tests\Functional\Ingredient\Presentation\Http\Controller;
 
+use App\Ingredient\Presentation\Http\Resource\IngredientResource;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Tests\DataFixtures\Ingredient\IngredientTypeFixtures;
 use App\Tests\DataFixtures\Security\LoginFixtures;
@@ -56,7 +57,7 @@ class CreateIngredientControllerTest extends  AppApiTestCase
         $this->assertNotEmpty($this->fixture->testData);
         $ingredientToCreateData = [
             'data' => [
-                'type' => 'ingredient',
+                'type' => IngredientResource::TYPE,
                 'attributes' => [
                     'name' =>'an ingredient',
                     'ingredientTypeId' => $this->fixture->testData[0]->getId()->toString(),
