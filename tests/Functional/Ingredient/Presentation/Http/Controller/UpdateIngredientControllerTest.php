@@ -2,7 +2,7 @@
 namespace App\Tests\Functional\Ingredient\Presentation\Http\Controller;
 
 use App\Ingredient\Domain\Repository\IngredientRepositoryInterface;
-use App\Ingredient\Presentation\Http\Resoource\IngredientResource;
+use App\Ingredient\Presentation\Http\Resource\IngredientResource;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\Tests\DataFixtures\Ingredient\IngredientFixtures;

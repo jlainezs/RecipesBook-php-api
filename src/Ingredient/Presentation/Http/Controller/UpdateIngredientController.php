@@ -4,7 +4,7 @@ namespace App\Ingredient\Presentation\Http\Controller;
 use App\Ingredient\Application\Command\Ingredient\UpdateIngredient\UpdateIngredientCommandFactory;
 use App\Ingredient\Application\Command\Ingredient\UpdateIngredient\UpdateIngredientDto;
 use App\Ingredient\Application\Command\Ingredient\UpdateIngredient\UpdateIngredientRouteDto;
-use App\Ingredient\Presentation\Http\Resoource\IngredientResource;
+use App\Ingredient\Presentation\Http\Resource\IngredientResource;
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Presentation\Http\JsonApi\JsonApi;
 use App\Shared\Presentation\Http\ValueResolver\MapJsonApiPayload;
