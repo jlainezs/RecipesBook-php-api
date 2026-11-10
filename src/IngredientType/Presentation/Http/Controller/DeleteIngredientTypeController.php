@@ -4,6 +4,7 @@ namespace App\IngredientType\Presentation\Http\Controller;
 use App\IngredientType\Application\Command\IngredientType\DeleteIngredientType\DeleteIngredientTypeCommandFactory;
 use App\IngredientType\Application\Command\IngredientType\DeleteIngredientType\DeleteIngredientTypeDto;
 use App\Shared\Application\Bus\CommandBus;
+use App\Shared\Presentation\Http\JsonApi\JsonApi;
 use App\Shared\Presentation\Http\JsonApi\JsonApiResponse;
 use App\Shared\Presentation\Http\ValueResolver\MapRouteParameter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,7 +18,7 @@ final class DeleteIngredientTypeController extends AbstractController
         private readonly DeleteIngredientTypeCommandFactory $commandFactory
     ){}
 
-    #[Route('/api/v1/ingredient-types/{id}', name: 'ingredient_types_delete_instance', methods: ['DELETE'])]
+    #[Route('/api/v1/ingredient-types/{id}', name: 'ingredient_types_delete_instance', defaults: [JsonApi::ROUTE_FLAG => true], methods: ['DELETE'])]
     public function __invoke(#[MapRouteParameter] DeleteIngredientTypeDto $dto): Response
     {
         $cmd = $this->commandFactory->createFromDto($dto);
