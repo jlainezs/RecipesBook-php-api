@@ -1,5 +1,5 @@
 <?php
-namespace App\Ingredient\Presentation\Http\Resoource;
+namespace App\Ingredient\Presentation\Http\Resource;
 
 use App\Ingredient\Application\Query\Ingredient\IngredientDto;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;

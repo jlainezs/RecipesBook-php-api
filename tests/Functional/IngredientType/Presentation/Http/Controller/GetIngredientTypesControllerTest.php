@@ -1,7 +1,7 @@
 <?php
 namespace App\Tests\Functional\IngredientType\Presentation\Http\Controller;
 
-use App\Ingredient\Presentation\Http\Resoource\IngredientResource;
+use App\Ingredient\Presentation\Http\Resource\IngredientResource;
 use App\IngredientType\Presentation\Http\Resource\IngredientTypeResource;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Tests\DataFixtures\Ingredient\IngredientTypeFixtures;
