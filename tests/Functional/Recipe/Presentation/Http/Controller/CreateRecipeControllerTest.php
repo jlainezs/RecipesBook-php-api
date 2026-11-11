@@ -2,6 +2,7 @@
 namespace App\Tests\Functional\Recipe\Presentation\Http\Controller;
 
 use App\Recipe\Domain\Repository\RecipeRepositoryInterface;
+use App\Recipe\Presentation\Http\Resource\RecipeResource;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\Tests\DataFixtures\Ingredient\IngredientFixtures;
@@ -16,7 +17,7 @@ class CreateRecipeControllerTest extends AppApiTestCase
 {
     private IngredientFixtures $ingredientFixtures;
     private UnitOfMeasureFixture $unitOfMeasureFixtures;
-    private RecipeRepositoryInterface $recipeRepository;
+    private RecipeRepositoryInterface $repository;
 
     public function setUp(): void
     {
@@ -27,7 +28,7 @@ class CreateRecipeControllerTest extends AppApiTestCase
         $this->loadFixture($this->ingredientFixtures);
         $this->unitOfMeasureFixtures = new UnitOfMeasureFixture();
         $this->loadFixture($this->unitOfMeasureFixtures);
-        $this->recipeRepository = $this->container->get(RecipeRepositoryInterface::class);
+        $this->repository = $this->container->get(RecipeRepositoryInterface::class);
     }
 
     private function testRecipe(): array
@@ -55,6 +56,35 @@ class CreateRecipeControllerTest extends AppApiTestCase
         ];
     }
 
+    private function postDocument(array $document, bool $sendAuth = true): void
+    {
+        $headers = [
+            'CONTENT_TYPE' => 'application/vnd.api+json',
+            'HTTP_ACCEPT' => 'application/vnd.api+json'
+        ];
+
+        if ($sendAuth)
+        {
+            $headers['HTTP_AUTHORIZATION'] = 'Bearer ' . $this->userToken;
+        }
+
+        $newRecipe = [
+            'data' => [
+                'type' => RecipeResource::TYPE,
+                'attributes' => $document
+            ]
+        ];
+        $this->client->request(
+            'POST',
+            $this->getDefinedUrl('post_recipe'),
+            [],
+            [],
+            $headers,
+            json_encode($newRecipe)
+        );
+
+    }
+
     /**
      * @throws EmptyIdNotAllowedException
      */
@@ -62,30 +92,26 @@ class CreateRecipeControllerTest extends AppApiTestCase
     public function it_creates_a_recipe(): void
     {
         $newRecipe = $this->testRecipe();
+        $this->postDocument($newRecipe);
 
-        $this->client->request(
-            'POST',
-            $this->getDefinedUrl('post_recipe'),
-            [],
-            [],
-            [
-                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'CONTENT_TYPE' => 'application/json',
-                'HTTP_ACCEPT' => 'application/json'
-            ],
-            json_encode($newRecipe)
-        );
-
-        $response = json_decode($this->client->getResponse()->getContent(), true);
         $this->assertResponseStatusCodeSame(Response::HTTP_CREATED);
-        $this->assertArrayHasKey('id', $response);
-        $this->assertResponseHeaderSame('Content-Type', 'application/json');
+        $response = json_decode($this->client->getResponse()->getContent());
+        $this->assertNotNull($response);
+        $this->assertIsObject($response);
+        $this->assertObjectHasProperty('data', $response);
+        $this->assertSame(RecipeResource::TYPE, $response->data->type);
+
+        $this->assertObjectHasProperty('id', $response->data);
+        $this->assertIsString($response->data->id);
+        $this->assertNotEmpty($response->data->id);
+
+        $this->assertResponseHeaderSame('Content-Type', 'application/vnd.api+json');
         $this->assertResponseHeaderSame('Cache-Control', 'must-revalidate, no-cache, no-store, private');
-        $expectedGetUrl = $this->getDefinedUrl('get_recipe', ['id' => $response['id']]);
+        $expectedGetUrl = $this->getDefinedUrl('get_recipe', ['id' => $response->data->id]);
         $this->assertResponseHeaderSame('Location', $expectedGetUrl);
 
         // ensure created recipe exists
-        $recipe = $this->recipeRepository->findOne(new AggregateRootId($response['id']));
+        $recipe = $this->repository->findOne(new AggregateRootId($response->data->id));
         $this->assertNotNull($recipe);
         $this->assertEquals($newRecipe['name'], $recipe->getName());
     }
@@ -94,20 +120,8 @@ class CreateRecipeControllerTest extends AppApiTestCase
     public function it_fails_when_not_authorized(): void
     {
         $newRecipe = $this->testRecipe();
-
-        $this->client->request(
-            'POST',
-            $this->getDefinedUrl('post_recipe'),
-            [],
-            [],
-            [
-                'CONTENT_TYPE' => 'application/json',
-                'HTTP_ACCEPT' => 'application/json'
-            ],
-            json_encode($newRecipe)
-        );
-
-        $this->assertProblemDetailsResponse(Response::HTTP_UNAUTHORIZED);
+        $this->postDocument($newRecipe, false);
+        $this->assertJsonApiErrorResponse(Response::HTTP_UNAUTHORIZED, ['header' => 'Authorization']);
     }
 
     /**
@@ -117,22 +131,9 @@ class CreateRecipeControllerTest extends AppApiTestCase
     public function it_fails_when_ingredient_not_found(): void
     {
         $newRecipe = $this->testRecipe();
+        // add a non existent ingredient to force an error
         $newRecipe['ingredients'][0]['ingredientId'] = AggregateRootId::generateId()->toString();
-
-        $this->client->request(
-            'POST',
-            $this->getDefinedUrl('post_recipe'),
-            [],
-            [],
-            [
-                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'CONTENT_TYPE' => 'application/json',
-                'HTTP_ACCEPT' => 'application/json'
-            ],
-            json_encode($newRecipe)
-        );
-        $response = json_decode($this->client->getResponse()->getContent(), true);
-
-        $this->assertProblemDetailsResponse(Response::HTTP_NOT_FOUND);
+        $this->postDocument($newRecipe);
+        $this->assertJsonApiErrorResponse(Response::HTTP_NOT_FOUND);
     }
 }

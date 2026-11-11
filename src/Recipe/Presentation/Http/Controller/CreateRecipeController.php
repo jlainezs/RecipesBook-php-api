@@ -4,8 +4,12 @@ namespace App\Recipe\Presentation\Http\Controller;
 use App\Recipe\Application\Command\CreateRecipe\CreateRecipeResponse;
 use App\Recipe\Application\Command\CreateRecipe\CreateRecipeCommandFactory;
 use App\Recipe\Application\Command\CreateRecipe\CreateRecipeDto;
+use App\Recipe\Presentation\Http\Resource\RecipeResource;
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
+use App\Shared\Presentation\Http\JsonApi\JsonApi;
+use App\Shared\Presentation\Http\JsonApi\JsonApiResponse;
+use App\Shared\Presentation\Http\ValueResolver\MapJsonApiPayload;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,32 +22,27 @@ final class CreateRecipeController extends AbstractController
     public function __construct(
         private readonly CommandBus                 $commandBus,
         private readonly CreateRecipeCommandFactory $commandFactory,
-        private readonly UrlGeneratorInterface      $urlGenerator
+        private readonly RecipeResource $resource
     ){}
 
     /**
      * @throws EmptyIdNotAllowedException
      */
-    #[Route('/api/v1/recipes', name: 'post_recipe', methods: ['POST'])]
+    #[Route('/api/v1/recipes', name: 'post_recipe', defaults: [JsonApi::ROUTE_FLAG => true], methods: ['POST'])]
     public function __invoke(
-        #[MapRequestPayload]
+        #[MapJsonApiPayload(RecipeResource::TYPE)]
         CreateRecipeDto $request
-    ): JsonResponse
+    ): JsonApiResponse
     {
         $command = $this->commandFactory->createFromDto($request);
         $this->commandBus->dispatch($command);
-        $result = new CreateRecipeResponse($command->id);
 
-        return new JsonResponse(
-            $result,
+        return new JsonApiResponse(
+            $this->resource->itemReference($command->id),
             Response::HTTP_CREATED,
-            [
-                'Content-Type' => 'application/json',
-                'Location' => $this->urlGenerator->generate(
-                    'get_recipe',
-                    ['id' => $command->id],
-                    UrlGeneratorInterface::ABSOLUTE_URL),
-                'Cache-Control' => 'must-revalidate, no-cache, no-store, private',
+            headers: [
+                'Location' => $this->resource->selfUrl($command->id),
+                'Cache-Control' => 'no-cache, no-store, must-revalidate',
             ]
         );
     }
