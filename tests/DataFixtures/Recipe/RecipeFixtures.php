@@ -16,7 +16,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class RecipeFixtures extends Fixture
 {
-    public array $testRecipes;
+    public array $testData;
     public IngredientFixtures $ingredientFixtures;
     public UnitOfMeasureFixture $unitOfMeasureFixtures;
 
@@ -135,7 +135,7 @@ class RecipeFixtures extends Fixture
 
             $recipe->setSteps($recipeSteps);
             $recipe->setIngredients($recipeIngredients);
-            $this->testRecipes[] = $recipe;
+            $this->testData[] = $recipe;
             $manager->persist($recipe);
         }
 

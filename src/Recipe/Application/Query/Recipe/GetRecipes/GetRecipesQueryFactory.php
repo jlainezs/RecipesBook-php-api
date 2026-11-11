@@ -5,6 +5,6 @@ class GetRecipesQueryFactory
 {
     public function createFromDto(GetRecipesDto $dto): GetRecipesQuery
     {
-        return new GetRecipesQuery($dto->offset, $dto->limit);
+        return new GetRecipesQuery($dto->page->offset, $dto->page->limit);
     }
 }

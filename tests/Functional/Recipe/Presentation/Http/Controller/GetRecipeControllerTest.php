@@ -49,7 +49,7 @@ class GetRecipeControllerTest extends AppApiTestCase
     #[Test]
     public function it_gets_the_recipe():void
     {
-        $id = $this->recipeFixtures->testRecipes[0]->getId();
+        $id = $this->recipeFixtures->testData[0]->getId();
         $this->getDocument($id);
 
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);

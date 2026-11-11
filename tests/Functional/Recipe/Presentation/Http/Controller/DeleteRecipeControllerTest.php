@@ -52,7 +52,7 @@ class DeleteRecipeControllerTest extends AppApiTestCase
     #[Test]
     public function it_should_delete_recipe():void
     {
-        $recipeToDelete = $this->fixtures->testRecipes[0];
+        $recipeToDelete = $this->fixtures->testData[0];
         $this->deleteDocument($recipeToDelete->getId());
         $this->assertResponseStatusCodeSame(Response::HTTP_NO_CONTENT);
 
