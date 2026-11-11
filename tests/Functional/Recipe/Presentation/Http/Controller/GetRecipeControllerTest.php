@@ -2,6 +2,7 @@
 namespace App\Tests\Functional\Recipe\Presentation\Http\Controller;
 
 use App\Recipe\Domain\Repository\RecipeRepositoryInterface;
+use App\Recipe\Presentation\Http\Resource\RecipeResource;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\Tests\DataFixtures\Recipe\RecipeFixtures;
@@ -27,28 +28,47 @@ class GetRecipeControllerTest extends AppApiTestCase
         $this->recipeRepository = $this->container->get(RecipeRepositoryInterface::class);
     }
 
-    #[Test]
-    public function it_gets_the_recipe():void
+    private function getDocument(AggregateRootId $id, bool $sendAuth = true): void
     {
-        $id = $this->recipeFixtures->testRecipes[0]->getId();
+        $headers = ['HTTP_ACCEPT' => 'application/vnd.api+json'];
 
-        $response = $this->client->request(
+        if ($sendAuth)
+        {
+            $headers['HTTP_AUTHORIZATION'] = 'Bearer ' . $this->userToken;
+        }
+
+        $this->client->request(
             'GET',
             $this->getDefinedUrl('get_recipe', ['id' => $id]),
             [],
             [],
-            [
-                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'HTTP_ACCEPT' => 'application/json',
-            ]
+            $headers
         );
-        $this->assertResponseIsSuccessful();
+    }
+
+    #[Test]
+    public function it_gets_the_recipe():void
+    {
+        $id = $this->recipeFixtures->testRecipes[0]->getId();
+        $this->getDocument($id);
+
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+        $this->assertResponseHeaderSame('Content-Type', 'application/vnd.api+json');
         $response = json_decode($this->client->getResponse()->getContent());
-        $this->assertObjectHasProperty('recipeDto', $response);
-        $recipeResponse = $response->recipeDto;
+        $this->assertNotNull($response);
+        $this->assertIsObject($response);
+        $this->assertSame('1.1', $response->jsonapi->version);
+        $this->assertObjectHasProperty('data', $response);
+        $this->assertIsObject($response->data);
+        $this->assertObjectHasProperty('type', $response->data);
+        $this->assertSame(RecipeResource::TYPE, $response->data->type);
+        $this->assertObjectHasProperty('id', $response->data);
+        $this->assertEquals($id, $response->data->id);
+        $this->assertObjectHasProperty('attributes', $response->data);
+        $recipeResponse = $response->data->attributes;
+        var_dump($response->data);
         $this->assertIsObject($recipeResponse);
-        $this->assertObjectHasProperty('id', $recipeResponse);
-        $this->assertEquals($id, $recipeResponse->id);
+        $this->assertObjectHasProperty('self', $response->links);
     }
 
     /**
@@ -58,18 +78,8 @@ class GetRecipeControllerTest extends AppApiTestCase
     public function it_fails_when_id_is_not_found():void
     {
         $id = AggregateRootId::generateId();
-
-        $response = $this->client->request(
-            'GET',
-            $this->getDefinedUrl('get_recipe', ['id' => $id->toString()]),
-            [],
-            [],
-            [
-                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'HTTP_ACCEPT' => 'application/json',
-            ]
-        );
-        $this->assertProblemDetailsResponse(Response::HTTP_NOT_FOUND);
+        $this->getDocument($id);
+        $this->assertJsonApiErrorResponse(Response::HTTP_NOT_FOUND);
     }
 
     /**
@@ -79,16 +89,7 @@ class GetRecipeControllerTest extends AppApiTestCase
     public function it_fails_when_not_authorized():void
     {
         $id = AggregateRootId::generateId();
-
-        $response = $this->client->request(
-            'GET',
-            $this->getDefinedUrl('get_recipe', ['id' => $id->toString()]),
-            [],
-            [],
-            [
-                'HTTP_ACCEPT' => 'application/json',
-            ]
-        );
-        $this->assertProblemDetailsResponse(Response::HTTP_UNAUTHORIZED);
+        $this->getDocument($id, false);
+        $this->assertJsonApiErrorResponse(Response::HTTP_UNAUTHORIZED);
     }
 }
