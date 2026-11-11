@@ -2,6 +2,7 @@
 namespace App\Tests\Functional\MealCourse\Presentation\Http\Controller;
 
 use App\MealCourse\Domain\Repository\MealCourseRepositoryInterface;
+use App\MealCourse\Presentation\Http\Resource\MealCourseResource;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\Tests\DataFixtures\MealCourse\MealCourseFixtures;
@@ -26,24 +27,42 @@ class UpdateMealCourseControllerTest extends AppApiTestCase
         $this->mealCourseRepository = $this->container->get(MealCourseRepositoryInterface::class);
     }
 
+    private function patchDocument(AggregateRootId $id, array $document, bool $sendAuth = true): void
+    {
+        $requestData = [
+            'data' => [
+                'type' => MealCourseResource::TYPE,
+                'id' => $id->toString(),
+                'attributes' => $document,
+            ]
+        ];
+        $headers = [
+            'CONTENT_TYPE' => 'application/vnd.api+json',
+            'HTTP_ACCEPT' => 'application/vnd.api+json',
+        ];
+
+        if ($sendAuth)
+        {
+            $headers['HTTP_AUTHORIZATION'] = 'Bearer ' . $this->userToken;
+        }
+
+        $this->client->request(
+            'PATCH',
+            $this->getDefinedUrl('meal_course_update', ['id' => $id->toString()]),
+            [],
+            [],
+            $headers,
+            json_encode($requestData)
+        );
+    }
+
     #[Test]
     public function it_should_update_meal_course()
     {
         $id = $this->mealCourseFixtures->testData[0]->getId();
         $updatedData = ['name' => 'Updated Name'];
-        $this->client->request(
-            'PUT',
-            $this->getDefinedUrl('meal_course_update', ['id' => $id->toString()]),
-            [],
-            [],
-            [
-                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'CONTENT_TYPE' => 'application/json',
-                'HTTP_ACCEPT' => 'application/json',
-            ],
-            json_encode($updatedData)
-        );
-        $this->assertResponseIsSuccessful();
+        $this->patchDocument($id, $updatedData);
+        $this->assertResponseStatusCodeSame(Response::HTTP_NO_CONTENT);
         $mealCourse = $this->mealCourseRepository->findOne($id);
         $this->assertNotNull($mealCourse);
         $this->assertEquals($updatedData['name'], $mealCourse->getName());
@@ -55,20 +74,10 @@ class UpdateMealCourseControllerTest extends AppApiTestCase
     #[Test]
     public function it_fails_when_not_found()
     {
+        $data = ['name' => 'Updated Name'];
         $id = AggregateRootId::generateId();
-        $this->client->request(
-            'PUT',
-            $this->getDefinedUrl('meal_course_update', ['id' => $id->toString()]),
-            [],
-            [],
-            [
-                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'CONTENT_TYPE' => 'application/json',
-                'HTTP_ACCEPT' => 'application/json',
-            ],
-            json_encode(['name' => 'Updated Name'])
-        );
-        $this->assertProblemDetailsResponse(Response::HTTP_NOT_FOUND);
+        $this->patchDocument($id, $data);
+        $this->assertJsonApiErrorResponse(Response::HTTP_NOT_FOUND);
     }
 
     /**
@@ -77,18 +86,9 @@ class UpdateMealCourseControllerTest extends AppApiTestCase
     #[Test]
     public function it_fails_when_not_authenticated()
     {
+        $data = ['name' => 'Updated Name'];
         $id = AggregateRootId::generateId();
-        $this->client->request(
-            'PUT',
-            $this->getDefinedUrl('meal_course_update', ['id' => $id->toString()]),
-            [],
-            [],
-            [
-                'CONTENT_TYPE' => 'application/json',
-                'HTTP_ACCEPT' => 'application/json',
-            ],
-            json_encode(['name' => 'Updated Name'])
-        );
-        $this->assertProblemDetailsResponse(Response::HTTP_UNAUTHORIZED);
+        $this->patchDocument($id, $data, false);
+        $this->assertJsonApiErrorResponse(Response::HTTP_UNAUTHORIZED);
     }
 }
