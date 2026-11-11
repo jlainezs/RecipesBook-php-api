@@ -6,10 +6,12 @@ use App\MealCourse\Application\Query\MealCourse\GetMealCourses\GetMealCoursesQue
 use App\MealCourse\Application\Query\MealCourse\GetMealCourses\GetMealCoursesQueryFactory;
 use App\MealCourse\Application\Query\MealCourse\GetMealCourses\GetMealCoursesQueryResponse;
 use App\MealCourse\Presentation\Http\Controller\GetMealCoursesController;
+use App\MealCourse\Presentation\Http\Resource\MealCourseResource;
 use App\Shared\Application\Bus\QueryBus;
-use App\Shared\Application\Service\ApplicationDataValidator;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class GetMealCoursesControllerTest extends TestCase
 {
@@ -44,11 +46,18 @@ class GetMealCoursesControllerTest extends TestCase
             ->method('createFromDto')
             ->withAnyParameters()
             ->willReturn(new GetMealCoursesQuery(offset: $request->offset, limit: $request->limit));
-        $controller = new GetMealCoursesController($this->queryBus, $this->queryFactory);
+        $controller = new GetMealCoursesController(
+            $this->queryBus,
+            $this->queryFactory,
+            new MealCourseResource(
+                $this->createStub(UrlGeneratorInterface::class)
+            )
+        );
 
         $response = $controller($request);
 
-        $this->assertEquals(200, $response->getStatusCode());
-
+        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
+        $document = json_decode($response->getContent(), true);
+        $this->assertSame([], $document['data']);
     }
 }

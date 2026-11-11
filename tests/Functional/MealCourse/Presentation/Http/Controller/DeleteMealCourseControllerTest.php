@@ -46,11 +46,11 @@ class DeleteMealCourseControllerTest extends AppApiTestCase
     #[Test]
     public function it_should_delete_meal_course(): void
     {
-        $this->deleteDocument($this->fixtures->testMealCourses[0]->getId()->toString());
+        $this->deleteDocument($this->fixtures->testData[0]->getId()->toString());
         $this->assertResponseStatusCodeSame(Response::HTTP_NO_CONTENT);
 
         // ensure the meal course was deleted
-        $mealCourse = $this->respository->findOne($this->fixtures->testMealCourses[0]->getId());
+        $mealCourse = $this->respository->findOne($this->fixtures->testData[0]->getId());
         $this->assertNull($mealCourse);
     }
 
@@ -64,7 +64,7 @@ class DeleteMealCourseControllerTest extends AppApiTestCase
     #[Test]
     public function it_should_fail_when_not_authorized(): void
     {
-        $this->deleteDocument($this->fixtures->testMealCourses[0]->getId()->toString(), false);
+        $this->deleteDocument($this->fixtures->testData[0]->getId()->toString(), false);
         $this->assertResponseStatusCodeSame(Response::HTTP_UNAUTHORIZED);
     }
 }

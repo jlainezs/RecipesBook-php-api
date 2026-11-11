@@ -29,7 +29,7 @@ class UpdateMealCourseControllerTest extends AppApiTestCase
     #[Test]
     public function it_should_update_meal_course()
     {
-        $id = $this->mealCourseFixtures->testMealCourses[0]->getId();
+        $id = $this->mealCourseFixtures->testData[0]->getId();
         $updatedData = ['name' => 'Updated Name'];
         $this->client->request(
             'PUT',

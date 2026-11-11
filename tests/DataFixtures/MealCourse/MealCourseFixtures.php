@@ -9,11 +9,11 @@ use Doctrine\Persistence\ObjectManager;
 
 class MealCourseFixtures extends Fixture
 {
-    public array $testMealCourses;
+    public array $testData;
 
     public function __construct()
     {
-        $this->testMealCourses = [];
+        $this->testData = [];
     }
 
     /**
@@ -37,7 +37,7 @@ class MealCourseFixtures extends Fixture
                 $rawObject["id"],
                 $rawObject["name"]
             );
-            $this->testMealCourses[] = $mealCourse;
+            $this->testData[] = $mealCourse;
             $manager->persist($mealCourse);
         }
 

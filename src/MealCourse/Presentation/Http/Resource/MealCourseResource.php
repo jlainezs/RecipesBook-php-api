@@ -41,7 +41,7 @@ final readonly class MealCourseResource
         ];
     }
 
-    private function collection(array $items, int $offset, int $limit): array
+    public function collection(array $items, int $offset, int $limit): array
     {
         return [
             'links' => [

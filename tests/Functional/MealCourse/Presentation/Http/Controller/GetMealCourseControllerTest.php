@@ -47,21 +47,21 @@ class GetMealCourseControllerTest extends AppApiTestCase
     #[Test]
     public function it_should_return_the_required_meal_course()
     {
-        $this->getDocument($this->fixtures->testMealCourses[0]->getId());
+        $this->getDocument($this->fixtures->testData[0]->getId());
         $this->assertResponseHeaderSame('Content-Type', 'application/vnd.api+json');
         $response = json_decode($this->client->getResponse()->getContent());
         $this->assertNotNull($response);
         $this->assertIsObject($response);
         $this->assertSame('1.1', $response->jsonapi->version);
-        var_dump($response);
+
         $this->assertObjectHasProperty('data', $response);
         $this->assertIsObject($response->data);
         $this->assertSame(MealCourseResource::TYPE, $response->data->type);
-        //$this->assertIsArray($mealCourse);
-        //$this->assertArrayHasKey('id', $mealCourse);
-        //$this->assertArrayHasKey('name', $mealCourse);
-        //$this->assertEquals($mealCourse["id"], $this->fixtures->testMealCourses[0]->getId()->toString());
-        //$this->assertEquals($mealCourse["name"], $this->fixtures->testMealCourses[0]->getName());
+        $this->assertObjectHasProperty('id', $response->data);
+        $this->assertObjectHasProperty('attributes', $response->data);
+        $this->assertObjectHasProperty('name', $response->data->attributes);
+        $this->assertEquals($response->data->id, $this->fixtures->testData[0]->getId()->toString());
+        $this->assertEquals($response->data->attributes->name, $this->fixtures->testData[0]->getName());
     }
 
     /**
@@ -76,7 +76,7 @@ class GetMealCourseControllerTest extends AppApiTestCase
     #[Test]
     public function it_should_fail_if_not_authorized()
     {
-        $this->getDocument($this->fixtures->testMealCourses[0]->getId(), false);
+        $this->getDocument($this->fixtures->testData[0]->getId(), false);
         $this->assertJsonApiErrorResponse(Response::HTTP_UNAUTHORIZED);
     }
 }
