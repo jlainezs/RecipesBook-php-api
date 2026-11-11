@@ -66,7 +66,6 @@ class GetRecipeControllerTest extends AppApiTestCase
         $this->assertEquals($id, $response->data->id);
         $this->assertObjectHasProperty('attributes', $response->data);
         $recipeResponse = $response->data->attributes;
-        var_dump($response->data);
         $this->assertIsObject($recipeResponse);
         $this->assertObjectHasProperty('self', $response->links);
     }
