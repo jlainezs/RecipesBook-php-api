@@ -13,6 +13,7 @@ use App\UnitOfMeasure\Application\Command\UnitOfMeasure\UpdateUnitOfMeasure\Upda
 use App\UnitOfMeasure\Application\Query\UnitOfMeasure\GetUnitOfMeasure\GetUnitOfMeasureQuery;
 use App\UnitOfMeasure\Presentation\Http\Resource\UnitOfMeasureResource;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class UpdateUnitOfMeasureController extends AbstractController
