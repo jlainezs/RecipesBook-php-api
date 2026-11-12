@@ -4,34 +4,34 @@ namespace App\Recipe\Presentation\Http\Controller;
 use App\Recipe\Application\Command\RecipeUpdate\UpdateRecipeCommandFactory;
 use App\Recipe\Application\Command\RecipeUpdate\UpdateRecipeRouteDto;
 use App\Recipe\Application\Command\RecipeUpdate\UpdateRecipeDto;
+use App\Recipe\Presentation\Http\Resource\RecipeResource;
 use App\Shared\Application\Bus\CommandBus;
+use App\Shared\Presentation\Http\JsonApi\JsonApi;
+use App\Shared\Presentation\Http\JsonApi\JsonApiResponse;
+use App\Shared\Presentation\Http\ValueResolver\MapJsonApiPayload;
 use App\Shared\Presentation\Http\ValueResolver\MapRouteParameter;
-use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class UpdateRecipeController extends AbstractController
 {
     function __construct(
         private readonly CommandBus $commandBus,
-        private readonly UpdateRecipeCommandFactory $commandFactory,
-        private readonly LoggerInterface $logger
+        private readonly UpdateRecipeCommandFactory $commandFactory
     ){}
 
-    #[Route('/api/v1/recipes/{id}', name: 'update_recipe', methods: ['PUT'])]
+    #[Route('/api/v1/recipes/{id}', name: 'update_recipe', defaults: [JsonApi::ROUTE_FLAG => true], methods: ['PATCH'])]
     public function __invoke(
-        #[MapRouteParameter] UpdateRecipeRouteDto $routeId,
-        #[MapRequestPayload]
+        #[MapRouteParameter]
+        UpdateRecipeRouteDto $routeId,
+        #[MapJsonApiPayload(RecipeResource::TYPE)]
         UpdateRecipeDto $request
-    ): JsonResponse
+    ): JsonApiResponse
     {
         $cmd = $this->commandFactory->createFromRequestDto($routeId, $request);
         $this->commandBus->dispatch($cmd);
 
-        $this->logger->info("Recipe {$routeId->id} updated");
-
-        return new JsonResponse(null, 204);
+        return new JsonApiResponse([], Response::HTTP_NO_CONTENT);
     }
 }

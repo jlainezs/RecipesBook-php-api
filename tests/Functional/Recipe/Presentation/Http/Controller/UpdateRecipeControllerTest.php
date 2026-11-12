@@ -2,6 +2,7 @@
 namespace App\Tests\Functional\Recipe\Presentation\Http\Controller;
 
 use App\Recipe\Domain\Repository\RecipeRepositoryInterface;
+use App\Recipe\Presentation\Http\Resource\RecipeResource;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\Tests\DataFixtures\Ingredient\IngredientFixtures;
@@ -59,21 +60,41 @@ class UpdateRecipeControllerTest extends AppApiTestCase
         $this->recipeRepository = $this->container->get(RecipeRepositoryInterface::class);
     }
 
+    public function patchDocument(AggregateRootId $id, array $document, bool $sendAuth = true): void
+    {
+        $headers = [
+            'CONTENT_TYPE' => 'application/vnd.api+json',
+            'HTTP_ACCEPT' => 'application/vnd.api+json',
+        ];
+
+        if ($sendAuth)
+        {
+            $headers['HTTP_AUTHORIZATION'] = 'Bearer ' . $this->userToken;
+        }
+
+        $this->client->request(
+            'PATCH',
+            $this->getDefinedUrl('update_recipe', ['id' => $id->toString()]),
+            [],[],
+            $headers,
+            json_encode($document)
+        );
+
+    }
+
     #[Test]
     public function it_updates_the_recipe(): void
     {
         $id = $this->recipeFixtures->testData[0]->getId();
-        $this->client->request(
-            'PUT',
-            $this->getDefinedUrl('update_recipe', ['id' => $id->toString()]),
-            [],[],
-            [
-                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'CONTENT_TYPE' => 'application/json',
-                'HTTP_ACCEPT' => 'application/json',
-            ],
-            json_encode($this->testRecipe())
-        );
+        $updatedData = [
+            'data' => [
+                'type' => RecipeResource::TYPE,
+                'id' => $id->toString(),
+                'attributes' => $this->testRecipe(),
+            ]
+        ];
+
+        $this->patchDocument($id, $updatedData);
         $this->assertResponseStatusCodeSame(Response::HTTP_NO_CONTENT);
 
         // ensure updated
@@ -88,18 +109,16 @@ class UpdateRecipeControllerTest extends AppApiTestCase
     public function it_fails_when_recipe_does_not_exist(): void
     {
         $id = AggregateRootId::generateId();
-        $this->client->request(
-            'PUT',
-            $this->getDefinedUrl('update_recipe', ['id' => $id->toString()]),
-            [],[],
-            [
-                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'CONTENT_TYPE' => 'application/json',
-                'HTTP_ACCEPT' => 'application/json',
-            ],
-            json_encode($this->testRecipe())
-        );
-        $this->assertProblemDetailsResponse(Response::HTTP_NOT_FOUND);
+        $updatedData = [
+            'data' => [
+                'type' => RecipeResource::TYPE,
+                'id' => $id->toString(),
+                'attributes' => $this->testRecipe(),
+            ]
+        ];
+
+        $this->patchDocument($id, $updatedData);
+        $this->assertJsonApiErrorResponse(Response::HTTP_NOT_FOUND);
     }
 
     /**
@@ -109,16 +128,15 @@ class UpdateRecipeControllerTest extends AppApiTestCase
     public function it_fails_when_not_authorized(): void
     {
         $id = AggregateRootId::generateId();
-        $this->client->request(
-            'PUT',
-            $this->getDefinedUrl('update_recipe', ['id' => $id->toString()]),
-            [],[],
-            [
-                'CONTENT_TYPE' => 'application/json',
-                'HTTP_ACCEPT' => 'application/json',
-            ],
-            json_encode($this->testRecipe())
-        );
-        $this->assertProblemDetailsResponse(Response::HTTP_UNAUTHORIZED);
+        $updatedData = [
+            'data' => [
+                'type' => RecipeResource::TYPE,
+                'id' => $id->toString(),
+                'attributes' => $this->testRecipe(),
+            ]
+        ];
+
+        $this->patchDocument($id, $updatedData, false);
+        $this->assertJsonApiErrorResponse(Response::HTTP_UNAUTHORIZED);
     }
 }

@@ -19,13 +19,11 @@ class UpdateRecipeControllerTest extends TestCase
 {
     private CommandBus $commandBus;
     private UpdateRecipeCommandFactory $cmdFactory;
-    private LoggerInterface $logger;
 
     public function setUp(): void
     {
         $this->commandBus = $this->createMock(CommandBus::class);
         $this->cmdFactory = $this->createMock(UpdateRecipeCommandFactory::class);
-        $this->logger = $this->createMock(LoggerInterface::class);
     }
 
     /**
@@ -64,12 +62,8 @@ class UpdateRecipeControllerTest extends TestCase
                 steps: $recipe->steps,
                 ingredients: $recipe->ingredients
             ));
-        $this->logger
-            ->expects($this->never())
-            ->method('error')
-            ->withAnyParameters();
 
-        $controller = new UpdateRecipeController($this->commandBus, $this->cmdFactory, $this->logger);
+        $controller = new UpdateRecipeController($this->commandBus, $this->cmdFactory);
         $response = $controller(new UpdateRecipeRouteDto($id->toString()), $recipe);
         $this->assertEquals(Response::HTTP_NO_CONTENT, $response->getStatusCode());
     }
