@@ -1,6 +1,7 @@
 TODO: **DOING** Follow JSON:API v1.1 specification
-TODO: CreateUnitOfMeasure does not respects CQSR
 TODO: **DOING** Some HTTP_BAD_REQUEST response must be replaced with HTTP_UNPROCESSABLE_ENTITY. Follows JsonAPI resolves it.
+TODO: CreateUnitOfMeasure does not respects CQRS
+TODO: Ensure that the signatures of the controllers' responses are consistent with each other.
 TODO: Pagination lacks of last and meta.total: need a count() in the pager. next is computed supposing there are more pages when current page is full.
 TODO: Add roles to check access.
 TODO: Add account management. Need to bind users with accounts.

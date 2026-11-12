@@ -2,6 +2,7 @@
 
 namespace App\Tests\Unit\Ingredient\Presentation\Http\Controller;
 
+use App\Shared\Application\Query\PaginatedList\PageDto;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use App\Ingredient\Application\Query\Ingredient\GetIngredients\GetIngredientsQuery;
 use App\Ingredient\Application\Query\Ingredient\GetIngredients\GetIngredientsQueryDto;
@@ -27,6 +28,7 @@ class GetIngredientsControllerTest extends TestCase
     #[Test]
     public function test_it_validates_dispatches_command_and_returns_200_response(): void
     {
+        $request = new GetIngredientsQueryDto(new PageDto(0, 20));
         $this->queryBus
             ->expects($this->once())
             ->method('ask')
@@ -37,13 +39,11 @@ class GetIngredientsControllerTest extends TestCase
                 }
             ))
             ->willReturn(new GetIngredientsQueryResponse([]));
-
-        $request = new GetIngredientsQueryDto(0, 20);
         $this->queryFactory
             ->expects($this->once())
             ->method('createFromDto')
             ->withAnyParameters()
-            ->willReturn(new GetIngredientsQuery($request->offset, $request->limit));
+            ->willReturn(new GetIngredientsQuery($request->page->offset, $request->page->limit));
 
         $controller = new GetIngredientsController(
             $this->queryBus,

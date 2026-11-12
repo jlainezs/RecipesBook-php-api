@@ -6,8 +6,8 @@ class GetIngredientsQueryFactory
     public function createFromDto(GetIngredientsQueryDto $dto): GetIngredientsQuery
     {
         return new GetIngredientsQuery(
-            $dto->offset,
-            $dto->limit
+            $dto->page->offset,
+            $dto->page->limit
         );
     }
 }

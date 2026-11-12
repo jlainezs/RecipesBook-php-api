@@ -22,19 +22,36 @@ class GetIngredientsControllerTest extends AppApiTestCase
         $this->loadFixture($this->fixtures);
     }
 
-    #[Test]
-    public function getIngredients(): void
+    private function getDocument(int $offset = 0, int $limit = 10, bool $sendAuth = true): void
     {
+        $headers = [
+            'HTTP_ACCEPT' => 'application/vnd.api+json'
+        ];
+        $params = [
+            'page' => [
+                'offset' => $offset,
+                'limit' => $limit,
+            ],
+        ];
+
+        if ($sendAuth)
+        {
+            $headers['HTTP_AUTHORIZATION'] = 'Bearer ' . $this->userToken;
+        }
+
         $this->client->request(
             'GET',
-            $this->getDefinedUrl('ingredient_list'),
+            $this->getDefinedUrl('ingredient_list', $params),
             [],
             [],
-            [
-                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'HTTP_ACCEPT' => 'application/vnd.api+json'
-            ],
+            $headers,
         );
+    }
+
+    #[Test]
+    public function it_returns_a_list_of_ingredients(): void
+    {
+        $this->getDocument();
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
         $this->assertResponseHeaderSame('Content-Type', 'application/vnd.api+json');
         $response = json_decode($this->client->getResponse()->getContent());
@@ -49,8 +66,9 @@ class GetIngredientsControllerTest extends AppApiTestCase
             $this->assertObjectHasProperty('name', $resource->attributes);
             $this->assertObjectHasProperty('description', $resource->attributes);
         }
+
         $this->assertSame(
-            $this->getDefinedUrl('ingredient_list', ['page' => ['offset' => 0, 'limit' => 20]]),
+            $this->getDefinedUrl('ingredient_list', ['page' => ['offset' => 0, 'limit' => 10]]),
             $response->links->first
         );
         $this->assertNull($response->links->prev);
@@ -60,15 +78,7 @@ class GetIngredientsControllerTest extends AppApiTestCase
     #[Test]
     public function getIngredientsFailsWhenNoToken(): void
     {
-        $this->client->request(
-            'GET',
-            $this->getDefinedUrl('ingredient_list'),
-            [],
-            [],
-            [
-                'HTTP_ACCEPT' => 'application/vnd.api+json'
-            ],
-        );
+        $this->getDocument(0, 10, false);
         $this->assertJsonApiErrorResponse(Response::HTTP_UNAUTHORIZED, ['header' => 'Authorization']);
     }
 }
