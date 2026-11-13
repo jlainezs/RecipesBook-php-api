@@ -6,12 +6,15 @@ use App\Season\Application\Query\Season\GetSeasons\GetSeasonsQuery;
 use App\Season\Application\Query\Season\GetSeasons\GetSeasonsQueryFactory;
 use App\Season\Application\Query\Season\GetSeasons\GetSeasonsQueryResponse;
 use App\Season\Presentation\Http\Controller\GetSeasonsController;
+use App\Season\Presentation\Http\Resource\SeasonResource;
 use App\Shared\Application\Bus\QueryBus;
+use App\Shared\Application\Query\PaginatedList\PageDto;
 use App\Shared\Application\Service\ApplicationDataValidator;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class SeasonsListControllerTest extends TestCase
 {
@@ -27,7 +30,7 @@ class SeasonsListControllerTest extends TestCase
     #[Test]
     public function it_returns_seasons_list(): void
     {
-        $request = new GetSeasonsDto(offset: 0, limit: 10);
+        $request = new GetSeasonsDto(new PageDto(offset: 0, limit: 10));
         $this->queryBus->expects($this->once())
             ->method('ask')
             ->with($this->callback(
@@ -38,9 +41,13 @@ class SeasonsListControllerTest extends TestCase
             ->expects($this->once())
             ->method('createFromDto')
             ->withAnyParameters()
-            ->willReturn(new GetSeasonsQuery($request->offset, $request->limit));
+            ->willReturn(new GetSeasonsQuery($request->page->offset, $request->page->limit));
 
-        $controller = new GetSeasonsController($this->queryBus, $this->queryFactory);
+        $controller = new GetSeasonsController(
+            $this->queryBus,
+            $this->queryFactory,
+            new SeasonResource($this->createStub(UrlGeneratorInterface::class))
+        );
         $response = $controller($request);
 
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
