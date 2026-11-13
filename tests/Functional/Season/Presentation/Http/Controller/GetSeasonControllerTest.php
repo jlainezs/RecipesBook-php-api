@@ -2,6 +2,7 @@
 
 namespace App\Tests\Functional\Season\Presentation\Http\Controller;
 
+use App\Season\Presentation\Http\Resource\SeasonResource;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\Tests\DataFixtures\Season\SeasonFixtures;
@@ -40,9 +41,13 @@ class GetSeasonControllerTest extends AppApiTestCase
         $this->assertResponseIsSuccessful();
         $response = json_decode($this->client->getResponse()->getContent());
         $this->assertNotEmpty($response);
-        $this->assertIsObject($response->season);
-        $this->assertEquals($this->seasonFixtures->testData[0]->getId()->toString(), $response->season->id);
-        $this->assertEquals($this->seasonFixtures->testData[0]->getName(), $response->season->name);
+        $this->assertIsObject($response);
+        $this->assertSame('1.1', $response->jsonapi->version);
+        $this->assertObjectHasProperty('data', $response);
+        $this->assertIsObject($response->data);
+        $this->assertSame(SeasonResource::TYPE, $response->data->type);
+        $this->assertEquals($this->seasonFixtures->testData[0]->getId()->toString(), $response->data->id);
+        $this->assertEquals($this->seasonFixtures->testData[0]->getName(), $response->data->attributes->name);
     }
 
     /**
@@ -62,7 +67,7 @@ class GetSeasonControllerTest extends AppApiTestCase
                 'HTTP_ACCEPT' => 'application/json'
             ]
         );
-        $this->assertProblemDetailsResponse(Response::HTTP_NOT_FOUND);
+        $this->assertJsonApiErrorResponse(Response::HTTP_NOT_FOUND);
     }
 
     /**
@@ -81,6 +86,6 @@ class GetSeasonControllerTest extends AppApiTestCase
                 'HTTP_ACCEPT' => 'application/json'
             ]
         );
-        $this->assertProblemDetailsResponse(Response::HTTP_UNAUTHORIZED);
+        $this->assertJsonApiErrorResponse(Response::HTTP_UNAUTHORIZED);
     }
 }
