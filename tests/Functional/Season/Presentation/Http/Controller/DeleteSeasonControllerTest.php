@@ -23,19 +23,28 @@ class DeleteSeasonControllerTest extends AppApiTestCase
         $this->loadFixture($this->seasonFixtures);
     }
 
+    private function deleteDocument(AggregateRootId $id, bool $sendAuth = true): void
+    {
+        $headers = ['HTTP_ACCEPT' => 'application/json'];
+
+        if ($sendAuth)
+        {
+            $headers['HTTP_AUTHORIZATION'] = 'Bearer ' . $this->userToken;
+        }
+
+        $this->client->request(
+            'DELETE',
+            $this->getDefinedUrl('seasons_delete_instance', ['id' => $id->toString()]),
+            [],
+            [],
+            $headers
+        );
+    }
+
     #[Test]
     public function it_should_delete_a_season(): void
     {
-        $this->client->request(
-            'DELETE',
-            $this->getDefinedUrl('seasons_delete_instance', ['id' => $this->seasonFixtures->testData[0]->getId()->toString()]),
-            [],
-            [],
-            [
-                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'HTTP_ACCEPT' => 'application/json'
-            ]
-        );
+        $this->deleteDocument($this->seasonFixtures->testData[0]->getId());
         $this->assertResponseStatusCodeSame(Response::HTTP_NO_CONTENT);
 
         // ensure is deleted
@@ -59,17 +68,8 @@ class DeleteSeasonControllerTest extends AppApiTestCase
     public function it_fails_when_season_does_not_exist(): void
     {
         $id = AggregateRootId::generateId();
-        $this->client->request(
-            'DELETE',
-            $this->getDefinedUrl('seasons_delete_instance', ['id' => $id->toString()]),
-            [],
-            [],
-            [
-                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'HTTP_ACCEPT' => 'application/json'
-            ]
-        );
-        $this->assertProblemDetailsResponse(Response::HTTP_NOT_FOUND);
+        $this->deleteDocument($id);
+        $this->assertJsonApiErrorResponse(Response::HTTP_NOT_FOUND);
     }
 
     /**
@@ -79,15 +79,7 @@ class DeleteSeasonControllerTest extends AppApiTestCase
     public function it_fails_when_not_authorized(): void
     {
         $id = AggregateRootId::generateId();
-        $this->client->request(
-            'DELETE',
-            $this->getDefinedUrl('seasons_delete_instance', ['id' => $id->toString()]),
-            [],
-            [],
-            [
-                'HTTP_ACCEPT' => 'application/json'
-            ]
-        );
-        $this->assertProblemDetailsResponse(Response::HTTP_UNAUTHORIZED);
+        $this->deleteDocument($id, false);
+        $this->assertJsonApiErrorResponse(Response::HTTP_UNAUTHORIZED);
     }
 }
