@@ -2,6 +2,7 @@
 namespace App\Tests\Functional\Season\Presentation\Http\Controller;
 
 use App\Season\Domain\Repository\SeasonRepositoryInterface;
+use App\Season\Presentation\Http\Resource\SeasonResource;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\Tests\DataFixtures\Security\LoginFixtures;
@@ -22,6 +23,29 @@ class CreateSeasonControllerTest extends AppApiTestCase
         $this->seasonRepository = $this->container->get(SeasonRepositoryInterface::class);
     }
 
+    private function postDocument(array $document, bool $sendAuth = true): void
+    {
+        $contentType = 'application/vnd.api+json';
+        $accept = 'application/vnd.api+json';
+
+        $headers = [
+            'CONTENT_TYPE' => $contentType,
+            'HTTP_ACCEPT' => $accept
+        ];
+
+        if ($sendAuth) {
+            $headers['HTTP_AUTHORIZATION'] = 'Bearer ' . $this->userToken;
+        }
+
+        $this->client->request(
+            'POST',
+            $this->getDefinedUrl('seasons_create'),
+            [],[],
+            $headers,
+            json_encode($document)
+        );
+    }
+
     /**
      * @throws EmptyIdNotAllowedException
      */
@@ -29,27 +53,25 @@ class CreateSeasonControllerTest extends AppApiTestCase
     public function it_creates_a_season(): void
     {
         $rawData = [
-            'name' => 'Season 1',
-        ];
-        $this->client->request(
-            'POST',
-            $this->getDefinedUrl('seasons_create'),
-            [],[],
-            [
-                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'HTTP_ACCEPT' => 'application/json',
-                'CONTENT_TYPE' => 'application/json',
+            'data' => [
+                'type' => SeasonResource::TYPE,
+                'attributes' => [
+                    'name' => 'Season 1',
+                ],
             ],
-            json_encode($rawData)
-        );
+        ];
+        $this->postDocument($rawData);
 
         $this->assertResponseStatusCodeSame(Response::HTTP_CREATED);
         $response = json_decode($this->client->getResponse()->getContent());
-        $this->assertObjectHasProperty('id', $response);
-        $this->assertNotEmpty($response->id);
-        $this->assertResponseHeaderSame('Content-Type', 'application/json');
-        $this->assertResponseHeaderSame('Cache-Control', 'must-revalidate, no-cache, no-store, private');
-        $expectedGetUrl = $this->getDefinedUrl('seasons_get_instance', ['id' => $response->id]);
+
+        $this->assertIsObject($response);
+        $this->assertObjectHasProperty('data', $response);
+        $this->assertObjectHasProperty('id', $response->data);
+        $this->assertIsString($response->data->id);
+        $this->assertNotEmpty($response->data->id);
+        $this->assertObjectHasProperty('type', $response->data);
+        $expectedGetUrl = $this->getDefinedUrl('seasons_get_instance', ['id' => $response->data->id]);
         $this->assertResponseHeaderSame('Location', $expectedGetUrl);
     }
 
@@ -57,20 +79,16 @@ class CreateSeasonControllerTest extends AppApiTestCase
     public function it_fails_when_not_authorized(): void
     {
         $rawData = [
-            'name' => 'Season 1',
-        ];
-        $this->client->request(
-            'POST',
-            $this->getDefinedUrl('seasons_create'),
-            [],[],
-            [
-                'HTTP_ACCEPT' => 'application/json',
-                'CONTENT_TYPE' => 'application/json',
+            'data' => [
+                'type' => SeasonResource::TYPE,
+                'attributes' => [
+                    'name' => 'Season 1',
+                ],
             ],
-            json_encode($rawData)
-        );
+        ];
+        $this->postDocument($rawData, false);
 
-        $this->assertProblemDetailsResponse(Response::HTTP_UNAUTHORIZED);
+        $this->assertJsonApiErrorResponse(Response::HTTP_UNAUTHORIZED);
     }
 
     #[Test]
@@ -78,21 +96,16 @@ class CreateSeasonControllerTest extends AppApiTestCase
     public function it_fails_when_invalid_name(string $name): void
     {
         $rawData = [
-            'name' => $name,
-        ];
-        $this->client->request(
-            'POST',
-            $this->getDefinedUrl('seasons_create'),
-            [],[],
-            [
-                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'HTTP_ACCEPT' => 'application/json',
-                'CONTENT_TYPE' => 'application/json',
+            'data' => [
+                'type' => SeasonResource::TYPE,
+                'attributes' => [
+                    'name' => $name,
+                ],
             ],
-            json_encode($rawData)
-        );
+        ];
+        $this->postDocument($rawData);
 
-        $this->assertProblemDetailsResponse(Response::HTTP_BAD_REQUEST);
+        $this->assertJsonApiErrorResponse(Response::HTTP_BAD_REQUEST);
     }
 
     public static function invalidNames(): iterable

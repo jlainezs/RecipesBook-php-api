@@ -1,11 +1,11 @@
 <?php
 namespace App\Tests\Unit\Season\Presentation\Http\Controller;
 
-use App\IngredientType\Application\Command\IngredientType\CreateIngredientType\CreateIngredientTypeCommand;
 use App\Season\Application\Command\Season\CreateSeason\CreateSeasonCommand;
 use App\Season\Application\Command\Season\CreateSeason\CreateSeasonCommandFactory;
 use App\Season\Application\Command\Season\CreateSeason\CreateSeasonDto;
 use App\Season\Presentation\Http\Controller\CreateSeasonController;
+use App\Season\Presentation\Http\Resource\SeasonResource;
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
@@ -24,7 +24,8 @@ class CreateSeasonControllerTest extends TestCase
     {
         $commandBus = $this->createMock(CommandBus::class);
         $createCmdFactory = $this->createMock(CreateSeasonCommandFactory::class);
-        $urlGenerator = $this->createMock(UrlGeneratorInterface::class);
+        $resource = new SeasonResource($this->createStub(UrlGeneratorInterface::class));
+
         $id = AggregateRootId::generateId()->toString();
 
         $request = new CreateSeasonDto(
@@ -44,11 +45,7 @@ class CreateSeasonControllerTest extends TestCase
                 fn (CreateSeasonCommand $cmd) => $cmd->name === $request->name
             ));
 
-        $urlGenerator->expects($this->once())
-            ->method('generate')
-            ->withAnyParameters();
-
-        $controller = new CreateSeasonController($commandBus, $createCmdFactory, $urlGenerator);
+        $controller = new CreateSeasonController($commandBus, $createCmdFactory, $resource);
         $response = $controller($request);
 
         $this->assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
