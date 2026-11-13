@@ -8,6 +8,7 @@ use App\MealCourse\Application\Query\MealCourse\GetMealCourses\GetMealCoursesQue
 use App\MealCourse\Presentation\Http\Controller\GetMealCoursesController;
 use App\MealCourse\Presentation\Http\Resource\MealCourseResource;
 use App\Shared\Application\Bus\QueryBus;
+use App\Shared\Application\Query\PaginatedList\PageDto;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,10 +28,10 @@ class GetMealCoursesControllerTest extends TestCase
     #[Test]
     public function it_returns_meal_course_list(): void
     {
-        $request = new GetMealCoursesDto(
+        $request = new GetMealCoursesDto(new PageDto(
             offset: 0,
             limit: 10
-        );
+        ));
         $this->queryBus
             ->expects($this->once())
             ->method('ask')
@@ -45,7 +46,7 @@ class GetMealCoursesControllerTest extends TestCase
             ->expects($this->once())
             ->method('createFromDto')
             ->withAnyParameters()
-            ->willReturn(new GetMealCoursesQuery(offset: $request->offset, limit: $request->limit));
+            ->willReturn(new GetMealCoursesQuery(offset: $request->page->offset, limit: $request->page->limit));
         $controller = new GetMealCoursesController(
             $this->queryBus,
             $this->queryFactory,

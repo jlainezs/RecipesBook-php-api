@@ -5,6 +5,6 @@ class GetMealCoursesQueryFactory
 {
     public function createFromDto(GetMealCoursesDto $dto): GetMealCoursesQuery
     {
-        return new GetMealCoursesQuery($dto->offset, $dto->limit);
+        return new GetMealCoursesQuery($dto->page->offset, $dto->page->limit);
     }
 }
