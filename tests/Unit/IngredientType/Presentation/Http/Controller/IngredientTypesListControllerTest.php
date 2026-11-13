@@ -8,6 +8,7 @@ use App\IngredientType\Application\Query\IngredientType\GetIngredientTypes\GetIn
 use App\IngredientType\Presentation\Http\Controller\GetIngredientTypesController;
 use App\IngredientType\Presentation\Http\Resource\IngredientTypeResource;
 use App\Shared\Application\Bus\QueryBus;
+use App\Shared\Application\Query\PaginatedList\PageDto;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,7 +30,7 @@ class IngredientTypesListControllerTest extends TestCase
     #[Test]
     public function it_returns_an_ingredient_types_list(): void
     {
-        $request = new GetIngredientTypesDto(0, 10);
+        $request = new GetIngredientTypesDto(new PageDto(0, 10));
         $this->queryBus->
             expects($this->once())
             ->method('ask')
@@ -44,7 +45,7 @@ class IngredientTypesListControllerTest extends TestCase
             expects($this->once())
             ->method('createFromDto')
             ->withAnyParameters()
-            ->willReturn(new GetIngredientTypesQuery($request->offset, $request->limit));
+            ->willReturn(new GetIngredientTypesQuery($request->page->offset, $request->page->limit));
 
         $controller = new GetIngredientTypesController($this->queryBus, $this->queryFactory, $this->resource);
         $response = $controller($request);
