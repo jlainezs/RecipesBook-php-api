@@ -3,6 +3,7 @@
 namespace App\Tests\Functional\Season\Presentation\Http\Controller;
 
 use App\Season\Domain\Repository\SeasonRepositoryInterface;
+use App\Season\Presentation\Http\Resource\SeasonResource;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\Tests\DataFixtures\Season\SeasonFixtures;
@@ -28,27 +29,46 @@ class UpdateSeasonControllerTest extends AppApiTestCase
         $this->seasonRepository = $this->container->get(SeasonRepositoryInterface::class);
     }
 
+    private function patchDocument(AggregateRootId $id, array $document, bool $sendAuth = true): void
+    {
+        $headers = [
+            'CONTENT_TYPE' => 'application/vnd.api+json',
+            'HTTP_ACCEPT' => 'application/vnd.api+json',
+        ];
+
+        if ($sendAuth)
+        {
+            $headers['HTTP_AUTHORIZATION'] = 'Bearer ' . $this->userToken;
+        }
+
+        $this->client->request(
+            'PATCH',
+            $this->getDefinedUrl('seasons_update_instance', ['id' => $id->getId()]),
+            [],
+            [],
+            $headers,
+            json_encode($document)
+        );
+    }
+
     #[Test]
     public function it_updates_a_season(): void
     {
         $toUpdate = $this->seasonRepository->findOne($this->seasonFixtures->testData[0]->getId());
         $this->assertNotNull($toUpdate);
+        $updatedData = [
+            'data' => [
+                'type' => SeasonResource::TYPE,
+                'id' => $toUpdate->getId()->toString(),
+                'attributes' => [
+                    'name' => 'updated',
+                ]
+            ]
+        ];
 
-        $this->client->request(
-            'PUT',
-            $this->getDefinedUrl('seasons_update_instance', ['id' => $toUpdate->getId()]),
-            [],
-            [],
-            [
-                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'CONTENT_TYPE' => 'application/json',
-                'HTTP_ACCEPT' => 'application/json',
-            ],
-            json_encode([
-                'name' => 'updated',
-            ])
-        );
-        $this->assertResponseIsSuccessful();
+        $this->patchDocument($toUpdate->getId(), $updatedData);
+        $this->assertResponseStatusCodeSame(Response::HTTP_NO_CONTENT);
+
         $updated = $this->seasonRepository->findOne($toUpdate->getId());
         $this->assertNotNull($updated);
         $this->assertEquals('updated', $updated->getName());
@@ -61,22 +81,23 @@ class UpdateSeasonControllerTest extends AppApiTestCase
         $toUpdate = $this->seasonRepository->findOne($this->seasonFixtures->testData[0]->getId());
         $this->assertNotNull($toUpdate);
 
-        $this->client->request(
-            'PUT',
-            $this->getDefinedUrl('seasons_update_instance', ['id' => $toUpdate->getId()]),
-            [],
-            [],
-            [
-                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'CONTENT_TYPE' => 'application/json',
-                'HTTP_ACCEPT' => 'application/json',
-            ],
-            json_encode([
-                'name' => $name,
-            ])
-        );
+        $updatedData = [
+            'data' => [
+                'type' => SeasonResource::TYPE,
+                'id' => $toUpdate->getId()->toString(),
+                'attributes' => [
+                    'name' => $name,
+                ]
+            ]
+        ];
 
-        $this->assertProblemDetailsResponse(Response::HTTP_BAD_REQUEST);
+        $this->patchDocument($toUpdate->getId(), $updatedData);
+
+        $this->assertJsonApiErrorResponse(
+                empty($name)
+                    ? Response::HTTP_UNPROCESSABLE_ENTITY
+                    : Response::HTTP_BAD_REQUEST
+        );
     }
 
     /**
@@ -85,21 +106,21 @@ class UpdateSeasonControllerTest extends AppApiTestCase
     #[Test]
     public function it_fails_when_not_authorized(): void
     {
-        $id = AggregateRootId::generateId();
-        $this->client->request(
-            'PUT',
-            $this->getDefinedUrl('seasons_update_instance', ['id' => $id->getId()->toString()]),
-            [],
-            [],
-            [
-                'CONTENT_TYPE' => 'application/json',
-                'HTTP_ACCEPT' => 'application/json',
-            ],
-            json_encode([
-                'name' => 'updated',
-            ])
-        );
-        $this->assertProblemDetailsResponse(Response::HTTP_UNAUTHORIZED);
+        $toUpdate = $this->seasonRepository->findOne($this->seasonFixtures->testData[0]->getId());
+        $this->assertNotNull($toUpdate);
+
+        $updatedData = [
+            'data' => [
+                'type' => SeasonResource::TYPE,
+                'id' => $toUpdate->getId()->toString(),
+                'attributes' => [
+                    'name' => 'someName',
+                ]
+            ]
+        ];
+
+        $this->patchDocument($toUpdate->getId(), $updatedData, false);
+        $this->assertJsonApiErrorResponse(Response::HTTP_UNAUTHORIZED);
     }
 
     public static function invalidNames(): iterable
