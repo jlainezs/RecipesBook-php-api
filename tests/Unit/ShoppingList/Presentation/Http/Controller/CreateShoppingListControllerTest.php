@@ -8,8 +8,10 @@ use App\ShoppingList\Application\Command\ShoppingListCreate\CreateShoppingListCo
 use App\ShoppingList\Application\Command\ShoppingListCreate\CreateShoppingListCommandFactory;
 use App\ShoppingList\Application\Command\ShoppingListCreate\CreateShoppingListDto;
 use App\ShoppingList\Presentation\Http\Controller\CreateShoppingListController;
+use App\ShoppingList\Presentation\Http\Resource\ShoppingListResource;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final class CreateShoppingListControllerTest extends TestCase
@@ -23,7 +25,7 @@ final class CreateShoppingListControllerTest extends TestCase
         // 1. Arrange
         $commandBus = $this->createMock(CommandBus::class);
         $cmdFactory = $this->createMock(CreateShoppingListCommandFactory::class);
-        $urlGenerator = $this->createMock(UrlGeneratorInterface::class);
+        $resource = new ShoppingListResource($this->createStub(UrlGeneratorInterface::class));
 
         $request = new CreateShoppingListDto('Llista Setmanal', []);
 
@@ -45,17 +47,23 @@ final class CreateShoppingListControllerTest extends TestCase
                 fn (CreateShoppingListCommand $cmd) => $cmd->name === $request->name)
             );
 
-        $urlGenerator->expects($this->once())
-            ->method('generate')
-            ->withAnyParameters();
-
-        $controller = new CreateShoppingListController($commandBus, $cmdFactory, $urlGenerator);
+        $controller = new CreateShoppingListController($commandBus, $cmdFactory, $resource);
 
         // 2. Act
         $response = $controller($request);
+        $document = json_decode($response->getContent());
 
         // 3. Assert
-        // $this->assertInstanceOf(JsonResponse::class, $response);
-        $this->assertSame(201, $response->getStatusCode());
+        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
+        $this->assertSame('application/vnd.api+json', $response->headers->get('Content-Type'));
+        $this->assertIsObject($response);
+        $this->assertObjectHasProperty('jsonapi', $document);
+        $this->assertObjectHasProperty('data', $document);
+        $this->assertObjectHasProperty('links', $document);
+        $this->assertObjectHasProperty('attributes', $document->data);
+        $this->assertObjectHasProperty('id', $document->data);
+        $this->assertObjectHasProperty('type', $document->data);
+        $this->assertObjectHasProperty('links', $document->data);
+        $this->assertObjectHasProperty('id', $document->data->attributes);
     }
 }
