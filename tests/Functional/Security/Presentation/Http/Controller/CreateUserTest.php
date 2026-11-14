@@ -5,7 +5,6 @@ namespace App\Tests\Functional\Security\Presentation\Http\Controller;
 use App\Security\Domain\Model\UserRole;
 use App\Security\Presentation\Http\Resource\UserResource;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
-use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\Tests\DataFixtures\Security\AdditionalUsersFixtures;
 use App\Tests\DataFixtures\Security\LoginFixtures;
 use App\Tests\Functional\AppApiTestCase;
@@ -78,6 +77,28 @@ class CreateUserTest extends AppApiTestCase
         $this->assertIsString($response->data->id);
         $this->assertNotEmpty($response->data->id);
         $this->assertObjectHasProperty('type', $response->data);
+    }
+    /**
+     * @throws EmptyIdNotAllowedException
+     */
+    #[Test]
+    public function it_fails_when_not_authorized()
+    {
+        $userToCreateData = [
+            'email' => 'john.doe@example.com',
+            'password' => 'password',
+            'firstName' => 'John',
+            'lastName' => 'Doe',
+            'roles' => [UserRole::USER],
+        ];
+        $document = [
+            'data' => [
+                'type' => UserResource::TYPE,
+                'attributes' => $userToCreateData
+            ]
+        ];
+        $this->postDocument($document, false);
+        $this->assertJsonApiErrorResponse(Response::HTTP_UNAUTHORIZED);
     }
 
     /**
