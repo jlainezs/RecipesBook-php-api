@@ -11,6 +11,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 final class LoginFixtures extends Fixture
 {
+    public User $user;
     public function __construct(
         private readonly UserPasswordHasherInterface $userPasswordHasher
     ){}
@@ -36,5 +37,6 @@ final class LoginFixtures extends Fixture
         $user->changePassword($this->userPasswordHasher->hashPassword($user, self::PASSWORD));
         $manager->persist($user);
         $manager->flush();
+        $this->user = $user;
     }
 }
