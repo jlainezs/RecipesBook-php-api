@@ -5,6 +5,9 @@ class GetUsersQueryFactory
 {
     public function createFromDto(GetUsersDto $dto): GetUsersQuery
     {
-        return new GetUsersQuery($dto->offset, $dto->limit);
+        return new GetUsersQuery(
+            $dto->page->offset,
+            $dto->page->limit
+        );
     }
 }
