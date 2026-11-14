@@ -10,6 +10,8 @@ final readonly class HealthCheckQueryHandler
     public function __construct(private HealthChecker $healthChecker) {}
     public function __invoke(HealthCheckQuery $query): HealthCheckQueryResponse
     {
-        return new HealthCheckQueryResponse($this->healthChecker->isDatabaseAlive());
+        return new HealthCheckQueryResponse(
+            new HealthCheckDto($this->healthChecker->isDatabaseAlive())
+        );
     }
 }

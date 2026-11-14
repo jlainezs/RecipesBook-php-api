@@ -17,35 +17,37 @@ class HealthCheckControllerTest extends AppApiTestCase
         $this->loginWithUser(LoginFixtures::USER_NAME, LoginFixtures::PASSWORD);
     }
 
-    #[Test]
-    public function it_should_respond_ok(): void
+    private function getDocument(bool $sendAuth = true): void
     {
+        $headers = [
+            'HTTP_ACCEPT' => 'application/vnd.api+json'
+        ];
+
+        if ($sendAuth)
+        {
+            $headers['HTTP_AUTHORIZATION'] = 'Bearer ' . $this->userToken;
+        }
+
         $this->client->request(
             'GET',
             $this->getDefinedUrl('api_v1_healthcheck'),
             [],
             [],
-            [
-                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'HTTP_ACCEPT' => 'application/json'
-            ]
+            $headers
         );
+    }
 
+    #[Test]
+    public function it_should_respond_ok(): void
+    {
+        $this->getDocument();
         $this->assertResponseIsSuccessful();
     }
 
     #[Test]
     public function it_fails_when_not_authorized(): void
     {
-        $this->client->request(
-            'GET',
-            $this->getDefinedUrl('api_v1_healthcheck'),
-            [],
-            [],
-            [
-                'HTTP_ACCEPT' => 'application/json'
-            ]
-        );
-        $this->assertProblemDetailsResponse(Response::HTTP_UNAUTHORIZED);
+        $this->getDocument(false);
+        $this->assertJsonApiErrorResponse(Response::HTTP_UNAUTHORIZED);
     }
 }
