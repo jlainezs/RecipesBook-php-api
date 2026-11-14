@@ -1,10 +1,10 @@
 <?php
 namespace App\Security\Domain\Exceptions;
 
-use Exception;
+use App\Shared\Domain\Exceptions\ConflictException;
 use Throwable;
 
-final class UserEmailAlreadyInUseException extends Exception
+final class UserEmailAlreadyInUseException extends ConflictException
 {
     public function __construct(string $email = "", int $code = 0, ?Throwable $previous = null)
     {

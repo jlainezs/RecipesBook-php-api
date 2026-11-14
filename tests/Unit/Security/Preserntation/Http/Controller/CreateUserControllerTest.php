@@ -6,6 +6,7 @@ use App\Security\Application\Command\User\CreateUser\CreateUserCommandFactory;
 use App\Security\Application\Command\User\CreateUser\CreateUserDto;
 use App\Security\Domain\Model\UserRole;
 use App\Security\Presentation\Http\Controller\CreateUserController;
+use App\Security\Presentation\Http\Resource\UserResource;
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
@@ -25,7 +26,7 @@ class CreateUserControllerTest extends TestCase
     {
         $commandBus = $this->createMock(CommandBus::class);
         $commandFactory = $this->createMock(CreateUserCommandFactory::class);
-        $urlGenerator = $this->createMock(UrlGeneratorInterface::class);
+        $resource = new UserResource($this->createStub(UrlGeneratorInterface::class));
 
         $id = AggregateRootId::generateId()->toString();
         $request = new CreateUserDto(
@@ -54,11 +55,7 @@ class CreateUserControllerTest extends TestCase
                 fn(CreateUserCommand $cmd) => $cmd->email === $request->email
             ));
 
-        $urlGenerator->expects($this->once())
-            ->method('generate')
-            ->withAnyParameters();
-
-        $controller = new CreateUserController($commandBus, $commandFactory, $urlGenerator);
+        $controller = new CreateUserController($commandBus, $commandFactory, $resource);
         $response = $controller($request);
 
         $this->assertEquals(Response::HTTP_CREATED, $response->getStatusCode());

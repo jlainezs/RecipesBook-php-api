@@ -1,6 +1,7 @@
 <?php
 namespace App\Shared\Presentation\Http\EventListener;
 
+use App\Shared\Domain\Exceptions\ConflictException;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\Exceptions\EmptyRequiredNameException;
 use App\Shared\Domain\Exceptions\EntityNotFoundException;
@@ -50,6 +51,10 @@ final class ApiExceptionListener
             $exception instanceof EntityNotFoundException
              =>
                  Response::HTTP_NOT_FOUND,
+
+            $exception instanceof ConflictException
+            =>
+                Response::HTTP_CONFLICT,
 
             $exception instanceof HttpExceptionInterface
             =>
