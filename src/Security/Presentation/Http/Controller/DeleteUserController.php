@@ -6,10 +6,12 @@ use App\Security\Application\Command\User\DeleteUser\DeleteUserCommandFactory;
 use App\Security\Application\Command\User\DeleteUser\DeleteUserDto;
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Application\Service\ApplicationDataValidator;
+use App\Shared\Presentation\Http\JsonApi\JsonApi;
 use App\Shared\Presentation\Http\ValueResolver\MapRouteParameter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class DeleteUserController extends AbstractController
@@ -19,12 +21,12 @@ final class DeleteUserController extends AbstractController
         private readonly DeleteUserCommandFactory $commandFactory,
     ){}
 
-    #[Route('/api/v1/users/{id}', name: 'users_delete_instance', methods: ['DELETE'])]
-    public function __invoke(#[MapRouteParameter] DeleteUserDto $request): JsonResponse
+    #[Route('/api/v1/users/{id}', name: 'users_delete_instance', defaults: [JsonApi::ROUTE_FLAG => true], methods: ['DELETE'])]
+    public function __invoke(#[MapRouteParameter] DeleteUserDto $request): Response
     {
         $cmd = $this->commandFactory->createFromDto($request);
         $this->commandBus->dispatch($cmd);
 
-        return new JsonResponse(null, 204);
+        return new Response(null, 204);
     }
 }

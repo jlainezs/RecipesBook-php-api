@@ -28,16 +28,32 @@ class DeleteUserTest extends AppApiTestCase
         $this->loginWithUser(LoginFixtures::USER_NAME, LoginFixtures::PASSWORD);
     }
 
+    private function deleteDocument(string $id, bool $useAuth = true): void
+    {
+        $headers = [
+            'HTTP_ACCEPT' => 'application/vnd.api+json'
+        ];
+        if ($useAuth) {
+            $headers['HTTP_AUTHORIZATION'] = 'Bearer ' . $this->userToken;
+        }
+
+        $this->client->request(
+            'DELETE',
+            $this->getDefinedUrl('users_delete_instance', ['id' => $id]),
+            [],
+            [],
+            $headers
+        );
+    }
+
+
     #[Test]
     public function Delete_user_removes_it(): void
     {
         $userToDelete = $this->userRepository->findOneByEmail($this->additionalUsersFixtures->testUsers[0]->getEmail())->getId()->toString();
         $userToKeep = $this->userRepository->findOneByEmail($this->additionalUsersFixtures->testUsers[1]->getEmail())->getId()->toString();
         // delete one user
-        $this->client->request(
-            method: 'DELETE', uri: '/api/v1/users/' . $userToDelete,
-            server: ['HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken],
-        );
+        $this->deleteDocument($userToDelete);
         $this->assertResponseStatusCodeSame(Response::HTTP_NO_CONTENT);
 
         // check the required user is deleted
@@ -58,9 +74,7 @@ class DeleteUserTest extends AppApiTestCase
     #[Test]
     public function Delete_user_with_invalid_token_fails(): void
     {
-        $this->client->request(
-            method: 'DELETE', uri: '/api/v1/users/' . $this->additionalUsersFixtures->testUsers[0]->getId()->toString(),
-        );
+        $this->deleteDocument($this->additionalUsersFixtures->testUsers[0]->getId()->toString(), false);
         $this->assertResponseStatusCodeSame(Response::HTTP_UNAUTHORIZED);
     }
 
@@ -71,10 +85,7 @@ class DeleteUserTest extends AppApiTestCase
     public function Delete_user_with_invalid_id_fail(): void
     {
         $id = AggregateRootId::generateId()->toString();
-        $this->client->request(
-            method: 'DELETE', uri: '/api/v1/users/' . $id,
-            server: ['HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken],
-        );
+        $this->deleteDocument($id);
         $this->assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
     }
 }
