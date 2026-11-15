@@ -4,6 +4,7 @@ namespace App\Tests\Functional\ShoppingList\Presentation\Http\Controller;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\ShoppingList\Domain\Repository\ShoppingListRepositoryInterface;
+use App\ShoppingList\Presentation\Http\Resource\ShoppingListResource;
 use App\Tests\DataFixtures\Security\LoginFixtures;
 use App\Tests\DataFixtures\ShoppingList\ShoppingListFixtures;
 use App\Tests\Functional\AppApiTestCase;
@@ -27,23 +28,48 @@ class UpdateShoppingListControllerTest extends AppApiTestCase
         $this->repository = $this->container->get(ShoppingListRepositoryInterface::class);
     }
 
+    public function patchDocument(AggregateRootId $id, array $document, bool $sendAuth = true): void
+    {
+        $headers = [
+            'CONTENT_TYPE' => 'application/vnd.api+json',
+            'HTTP_ACCEPT' => 'application/vnd.api+json'
+        ];
+
+        if ($sendAuth)
+        {
+            $headers['HTTP_AUTHORIZATION'] = 'Bearer ' . $this->userToken;
+        }
+
+        $this->client->request(
+            'PATCH',
+            $this->getDefinedUrl('put_shopping-list', ['id' => $id->toString()]),
+            [],
+            [],
+            $headers,
+            json_encode($document)
+        );
+
+    }
+
     #[Test]
     #[DataProvider('validLists')]
     public function it_updates_the_shopping_list(array $listData): void
     {
         $toUpdate = $this->fixtures->testData[0];
-        $this->client->request(
-            'PUT',
-            $this->getDefinedUrl('put_shopping-list', ['id' => $toUpdate->getId()->toString()]),
-            [],
-            [],
-            [
-                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'CONTENT_TYPE' => 'application/json',
-                'HTTP_ACCEPT' => 'application/json'
-            ],
-            json_encode($listData)
-        );
+        $document = [
+            'data' => [
+                'type' => ShoppingListResource::TYPE,
+                'id' => $toUpdate->getId()->toString(),
+                'attributes' => [
+                    'name' => $listData['name'],
+                    'items' => $listData['items'],
+                    'scheduledFor' => $toUpdate->getScheduledFor(),
+                    'createdAt' => $toUpdate->getCreatedAt(),
+                    'updatedAt' => $toUpdate->getUpdatedAt(),
+                ]
+            ]
+        ];
+        $this->patchDocument($toUpdate->getId(), $document);
 
         $updated = $this->repository->findOne($toUpdate->getId());
         $this->assertNotNull($updated);
@@ -57,23 +83,23 @@ class UpdateShoppingListControllerTest extends AppApiTestCase
     #[Test]
     public function fails_when_shopping_list_not_found(): void
     {
-        $id = AggregateRootId::generateId()->toString();
-        $this->client->request(
-            'PUT',
-            $this->getDefinedUrl('put_shopping-list', ['id' => $id]),
-            [],
-            [],
-            [
-                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'CONTENT_TYPE' => 'application/json',
-                'HTTP_ACCEPT' => 'application/json'
-            ],
-            json_encode([
-                'name' => 'sample with no items',
-                'items' => [],
-            ])
-        );
-        $this->assertProblemDetailsResponse(Response::HTTP_NOT_FOUND);
+        $id = AggregateRootId::generateId();
+        $toUpdate = $this->fixtures->testData[0];
+        $document = [
+            'data' => [
+                'type' => ShoppingListResource::TYPE,
+                'id' => $id->toString(),
+                'attributes' => [
+                    'name' => 'some data',
+                    'items' => [],
+                    'scheduledFor' => $toUpdate->getScheduledFor(),
+                    'createdAt' => $toUpdate->getCreatedAt(),
+                    'updatedAt' => $toUpdate->getUpdatedAt(),
+                ]
+            ]
+        ];
+        $this->patchDocument($id, $document);
+        $this->assertJsonApiErrorResponse(Response::HTTP_NOT_FOUND);
     }
 
     /**
@@ -82,22 +108,23 @@ class UpdateShoppingListControllerTest extends AppApiTestCase
     #[Test]
     public function fails_when_not_authorized(): void
     {
-        $id = AggregateRootId::generateId()->toString();
-        $this->client->request(
-            'PUT',
-            $this->getDefinedUrl('put_shopping-list', ['id' => $id]),
-            [],
-            [],
-            [
-                'CONTENT_TYPE' => 'application/json',
-                'HTTP_ACCEPT' => 'application/json'
-            ],
-            json_encode([
-                'name' => 'sample with no items',
-                'items' => [],
-            ])
-        );
-        $this->assertProblemDetailsResponse(Response::HTTP_UNAUTHORIZED);
+        $id = AggregateRootId::generateId();
+        $toUpdate = $this->fixtures->testData[0];
+        $document = [
+            'data' => [
+                'type' => ShoppingListResource::TYPE,
+                'id' => $id->toString(),
+                'attributes' => [
+                    'name' => 'some data',
+                    'items' => [],
+                    'scheduledFor' => $toUpdate->getScheduledFor(),
+                    'createdAt' => $toUpdate->getCreatedAt(),
+                    'updatedAt' => $toUpdate->getUpdatedAt(),
+                ]
+            ]
+        ];
+        $this->patchDocument($id, $document, false);
+        $this->assertJsonApiErrorResponse(Response::HTTP_UNAUTHORIZED);
     }
 
     public static function validLists(): iterable
