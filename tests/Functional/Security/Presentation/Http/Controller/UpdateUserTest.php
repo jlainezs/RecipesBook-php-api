@@ -1,5 +1,5 @@
 <?php
-namespace App\Tests\Functional\Security\Users;
+namespace App\Tests\Functional\Security\Presentation\Http\Controller;
 
 use App\Security\Domain\Model\UserRole;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;

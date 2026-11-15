@@ -1,5 +1,5 @@
 <?php
-namespace App\Tests\Functional\Security\Users;
+namespace App\Tests\Functional\Security\Presentation\Http\Controller;
 
 use App\Security\Presentation\Http\Resource\UserResource;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
