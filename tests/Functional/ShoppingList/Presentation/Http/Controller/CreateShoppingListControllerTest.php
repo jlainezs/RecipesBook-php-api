@@ -49,7 +49,6 @@ class CreateShoppingListControllerTest extends AppApiTestCase
         $this->assertResponseHeaderSame('Content-Type', 'application/vnd.api+json');
         $this->assertResponseHeaderSame('Cache-Control', 'must-revalidate, no-cache, no-store, private');
         $response = json_decode($this->client->getResponse()->getContent());
-        var_dump($response);
         $this->assertNotNull($response);
         $this->assertObjectHasProperty('data', $response);
         $this->assertObjectHasProperty('id', $response->data);

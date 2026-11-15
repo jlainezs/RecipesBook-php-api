@@ -3,6 +3,7 @@ namespace App\Tests\Functional\ShoppingList\Presentation\Http\Controller;
 
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
+use App\ShoppingList\Presentation\Http\Resource\ShoppingListResource;
 use App\Tests\DataFixtures\Security\LoginFixtures;
 use App\Tests\DataFixtures\ShoppingList\ShoppingListFixtures;
 use App\Tests\Functional\AppApiTestCase;
@@ -23,26 +24,43 @@ class GetShoppingListControllerTest extends AppApiTestCase
         $this->loadFixture($this->fixtures);
     }
 
+    private function getDocument(AggregateRootId $id, bool $sendAuth = true): void
+    {
+        $headers = [
+            'CONTENT_TYPE' => 'application/vnd.api+json',
+            'HTTP_ACCEPT' => 'application/vnd.api+json'
+        ];
+
+        if ($sendAuth)
+        {
+            $headers['HTTP_AUTHORIZATION'] = 'Bearer ' . $this->userToken;
+        }
+
+        $this->client->request(
+            'GET',
+            $this->getDefinedUrl('get_shopping-list', ['id' => $id->toString()]),
+            [],
+            [],
+            $headers
+        );
+
+    }
+
     #[Test]
     public function it_returns_the_required_shopping_list(): void
     {
-        $this->client->request(
-            'GET',
-            $this->getDefinedUrl('get_shopping-list', ['id' => $this->fixtures->testData[0]->getId()->toString()]),
-            [],
-            [],
-            [
-                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'CONTENT_TYPE' => 'application/json',
-                'HTTP_ACCEPT' => 'application/json'
-            ]
-        );
+        $this->getDocument($this->fixtures->testData[0]->getId());
         $this->assertResponseIsSuccessful();
         $response = json_decode($this->client->getResponse()->getContent());
         $this->assertNotNull($response);
-        $this->assertObjectHasProperty('shoppingListDto', $response);
-        $this->assertEquals($this->fixtures->testData[0]->getId()->toString(), $response->shoppingListDto->id);
-        $this->assertSameSize($this->fixtures->testData[0]->getItems(), $response->shoppingListDto->items);
+        $this->assertIsObject($response);
+        $this->assertSame('1.1', $response->jsonapi->version);
+        $this->assertObjectHasProperty('data', $response);
+        $this->assertIsObject($response->data);
+        $this->assertObjectHasProperty('id', $response->data);
+        $this->assertObjectHasProperty('type', $response->data);
+        $this->assertSame(ShoppingListResource::TYPE, $response->data->type);
+        $this->assertObjectHasProperty('attributes', $response->data);
     }
 
     /**
@@ -51,19 +69,9 @@ class GetShoppingListControllerTest extends AppApiTestCase
     #[Test]
     public function it_fails_when_shopping_list_does_not_exist(): void
     {
-        $id = AggregateRootId::generateId()->toString();
-        $this->client->request(
-            'GET',
-            $this->getDefinedUrl('get_shopping-list', ['id' => $id]),
-            [],
-            [],
-            [
-                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'CONTENT_TYPE' => 'application/json',
-                'HTTP_ACCEPT' => 'application/json'
-            ]
-        );
-        $this->assertProblemDetailsResponse(Response::HTTP_NOT_FOUND);
+        $id = AggregateRootId::generateId();
+        $this->getDocument($id);
+        $this->assertJsonApiErrorResponse(Response::HTTP_NOT_FOUND);
     }
 
     /**
@@ -72,17 +80,8 @@ class GetShoppingListControllerTest extends AppApiTestCase
     #[Test]
     public function it_fails_when_not_authorized(): void
     {
-        $id = AggregateRootId::generateId()->toString();
-        $this->client->request(
-            'GET',
-            $this->getDefinedUrl('get_shopping-list', ['id' => $id]),
-            [],
-            [],
-            [
-                'CONTENT_TYPE' => 'application/json',
-                'HTTP_ACCEPT' => 'application/json'
-            ]
-        );
-        $this->assertProblemDetailsResponse(Response::HTTP_UNAUTHORIZED);
+        $id = AggregateRootId::generateId();
+        $this->getDocument($id, false);
+        $this->assertJsonApiErrorResponse(Response::HTTP_UNAUTHORIZED);
     }
 }

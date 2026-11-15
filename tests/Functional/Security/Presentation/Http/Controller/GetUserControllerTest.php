@@ -50,7 +50,6 @@ class GetUserControllerTest extends AppApiTestCase
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
         $this->assertResponseHeaderSame('Content-Type', 'application/vnd.api+json');
         $response = json_decode($this->client->getResponse()->getContent());
-        var_dump($response);
         $this->assertIsObject($response);
         $this->assertSame('1.1', $response->jsonapi->version);
         $this->assertObjectHasProperty('data', $response);
