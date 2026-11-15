@@ -21,40 +21,42 @@ class GetShoppingListsControllerTest extends AppApiTestCase
         $this->loadFixture($this->fixtures);
     }
 
-    #[Test]
-    public function it_returns_a_list_of_shopping_lists():void
+    public function getDocument(bool $sendAuth = true): void
     {
+        $headers = [
+            'HTTP_ACCEPT' => 'application/vnd.api+json'
+        ];
+
+        if ($sendAuth) {
+            $headers['HTTP_AUTHORIZATION'] = 'Bearer ' . $this->userToken;
+        }
+
         $this->client->request(
             'GET',
             $this->getDefinedUrl('get_shopping-lists_list'),
             [],
             [],
-            [
-                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'CONTENT_TYPE' => 'application/json',
-                'HTTP_ACCEPT' => 'application/json'
-            ],
+            $headers
         );
-        $this->assertResponseIsSuccessful();
+
+    }
+
+    #[Test]
+    public function it_returns_a_list_of_shopping_lists():void
+    {
+        $this->getDocument();
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+        $this->assertResponseHeaderSame('Content-Type', 'application/vnd.api+json');
         $response = json_decode($this->client->getResponse()->getContent());
         $this->assertNotEmpty($response);
-        $this->assertObjectHasProperty('items', $response);
-        $this->assertSameSize($this->fixtures->testData, $response->items);
+        $this->assertObjectHasProperty('data', $response);
+        $this->assertSameSize($this->fixtures->testData, $response->data);
     }
 
     #[Test]
     public function fails_when_not_authorized(): void
     {
-        $this->client->request(
-            'GET',
-            $this->getDefinedUrl('get_shopping-lists_list'),
-            [],
-            [],
-            [
-                'CONTENT_TYPE' => 'application/json',
-                'HTTP_ACCEPT' => 'application/json'
-            ],
-        );
-        $this->assertProblemDetailsResponse(Response::HTTP_UNAUTHORIZED);
+        $this->getDocument(false);
+        $this->assertJsonApiErrorResponse(Response::HTTP_UNAUTHORIZED);
     }
 }

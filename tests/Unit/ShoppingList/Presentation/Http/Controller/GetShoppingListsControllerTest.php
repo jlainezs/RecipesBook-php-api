@@ -2,14 +2,17 @@
 namespace App\Tests\Unit\ShoppingList\Presentation\Http\Controller;
 
 use App\Shared\Application\Bus\QueryBus;
+use App\Shared\Application\Query\PaginatedList\PageDto;
 use App\ShoppingList\Application\Query\GetSoppingLists\GetShoppingListsQueryDto;
 use App\ShoppingList\Application\Query\GetSoppingLists\GetShoppingListsQuery;
 use App\ShoppingList\Application\Query\GetSoppingLists\GetShoppingListsQueryFactory;
 use App\ShoppingList\Application\Query\GetSoppingLists\GetShoppingListsQueryResponse;
 use App\ShoppingList\Presentation\Http\Controller\GetShoppingListsController;
+use App\ShoppingList\Presentation\Http\Resource\ShoppingListResource;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class GetShoppingListsControllerTest extends TestCase
 {
@@ -18,9 +21,13 @@ class GetShoppingListsControllerTest extends TestCase
     {
         $queryBus = $this->createMock(QueryBus::class);
         $queryFactory = $this->createMock(GetShoppingListsQueryFactory::class);
+        $resource = new ShoppingListResource($this->createStub(UrlGeneratorInterface::class));
+
         $request = new GetShoppingListsQueryDto(
-            offset: 0,
-            limit: 10
+            new PageDto(
+                offset: 0,
+                limit: 10
+            )
         );
 
         $queryBus
@@ -36,10 +43,10 @@ class GetShoppingListsControllerTest extends TestCase
             ->method('createFromDto')
             ->withAnyParameters()
             ->willReturn(new GetShoppingListsQuery(
-                $request->offset, $request->limit
+                $request->page->offset, $request->page->limit
             ));
 
-        $controller = new GetShoppingListsController($queryBus, $queryFactory);
+        $controller = new GetShoppingListsController($queryBus, $queryFactory, $resource);
 
         $response = $controller($request);
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());

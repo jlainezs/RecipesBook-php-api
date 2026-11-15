@@ -6,7 +6,7 @@ class GetShoppingListsQueryFactory
     public function createFromDto(GetShoppingListsQueryDto $dto): GetShoppingListsQuery
     {
         return new GetShoppingListsQuery(
-            $dto->offset, $dto->limit
+            $dto->page->offset, $dto->page->limit
         );
     }
 }
