@@ -8,6 +8,7 @@ use App\ShoppingList\Application\Query\GetShoppingList\GetShoppingListQuery;
 use App\ShoppingList\Application\Query\GetShoppingList\GetShoppingListQueryFactory;
 use App\ShoppingList\Application\Query\GetShoppingList\GetShoppingListQueryRouteDto;
 use App\ShoppingList\Application\Query\GetShoppingList\ShoppingListDto;
+use App\ShoppingList\Application\Query\GetShoppingList\ShoppingListResponse;
 use App\ShoppingList\Application\Query\GetSoppingLists\GetShoppingListsQueryResponse;
 use App\ShoppingList\Domain\Model\ShoppingList;
 use App\ShoppingList\Presentation\Http\Controller\GetShoppingListController;
@@ -39,14 +40,14 @@ class GetShoppingListTest extends TestCase
         $queryBus->expects($this->once())
             ->method('ask')
             ->with($query)
-            ->willReturn(new ShoppingListDto(
+            ->willReturn(new ShoppingListResponse(new ShoppingListDto(
                 $shoppingList->getId()->toString(),
                 $shoppingList->getName()->value(),
                 (array)$shoppingList->getItems(),
                 $shoppingList->getScheduledFor(),
                 $shoppingList->getCreatedAt(),
                 $shoppingList->getUpdatedAt()
-            ));
+            )));
         $controller = new GetShoppingListController($queryBus, $queryFactory, $resource);
         $response = $controller($request);
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
