@@ -27,11 +27,11 @@ final class UpdateRecipeController extends AbstractController
         UpdateRecipeRouteDto $routeId,
         #[MapJsonApiPayload(RecipeResource::TYPE)]
         UpdateRecipeDto $request
-    ): JsonApiResponse
+    ): Response
     {
         $cmd = $this->commandFactory->createFromRequestDto($routeId, $request);
         $this->commandBus->dispatch($cmd);
 
-        return new JsonApiResponse([], Response::HTTP_NO_CONTENT);
+        return new Response(status:Response::HTTP_NO_CONTENT);
     }
 }

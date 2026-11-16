@@ -2,6 +2,7 @@
 namespace App\Tests\Functional\Security\Presentation\Http\Controller;
 
 use App\Security\Domain\Model\UserRole;
+use App\Security\Presentation\Http\Resource\UserResource;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\Tests\DataFixtures\Security\AdditionalUsersFixtures;
@@ -25,55 +26,68 @@ class UpdateUserTest extends AppApiTestCase
         $this->loginWithUser(LoginFixtures::USER_NAME, LoginFixtures::PASSWORD);
     }
 
+    private function patchDocument(AggregateRootId $id, array $document, bool $sendAuth = true): void
+    {
+        $headers = [
+            'CONTENT_TYPE' => 'application/vnd.api+json',
+            'HTTP_ACCEPT' => 'application/vnd.api+json',
+        ];
+
+        if ($sendAuth)
+        {
+            $headers['HTTP_AUTHORIZATION'] = 'Bearer ' . $this->userToken;
+        }
+
+        $this->client->request(
+            method: 'PATCH',
+            uri: '/api/v1/users/' . $id->toString(),
+            server: $headers,
+            content: json_encode($document)
+        );
+
+    }
+
     #[Test]
     public function Update_user_with_valid_data()
     {
-        $userToUpdate = $this->userRepository->findOneByEmail($this->additionalUsersFixtures->testUsers[0]->getEmail())->getId()->toString();
-        $userToUpdateDto = [
-            'email' => 'newemail@example.com',
-            'password' => 'newpassword',
-            'firstName' => 'John',
-            'lastName' => 'Doe',
-            'roles' => [UserRole::USER],
+        $userToUpdate = $this->userRepository->findOneByEmail($this->additionalUsersFixtures->testUsers[0]->getEmail())->getId();
+        $document = [
+            'data' => [
+                'type' => UserResource::TYPE,
+                'id' => $userToUpdate->toString(),
+                'attributes' => [
+                    'email' => 'newemail@example.com',
+                    'password' => 'newpassword',
+                    'firstName' => 'John',
+                    'lastName' => 'Doe',
+                    'roles' => [UserRole::USER],
+                ]
+            ]
         ];
-        $content = json_encode($userToUpdateDto);
 
-        // update the user
-        $this->client->request(
-            method: 'PUT', uri: '/api/v1/users/' . $userToUpdate,
-            server: [
-                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'CONTENT_TYPE' => 'application/json',
-                'HTTP_ACCEPT' => 'application/json',
-            ],
-            content: $content
-        );
+        $this->patchDocument($userToUpdate, $document);
         $this->assertResponseStatusCodeSame(Response::HTTP_NO_CONTENT);
     }
 
     #[Test]
     public function Update_user_with_invalid_role()
     {
-        $userToUpdate = $this->userRepository->findOneByEmail($this->additionalUsersFixtures->testUsers[0]->getEmail())->getId()->toString();
-        $userToUpdateDto = [
-            'email' => 'newemail@example.com',
-            'password' => 'newpassword',
-            'firstName' => 'John',
-            'lastName' => 'Doe',
-            'roles' => "wrong_role",
+        $userToUpdate = $this->userRepository->findOneByEmail($this->additionalUsersFixtures->testUsers[0]->getEmail())->getId();
+        $document = [
+            'data' => [
+                'type' => UserResource::TYPE,
+                'id' => $userToUpdate->toString(),
+                'attributes' => [
+                    'email' => 'newemail@example.com',
+                    'password' => 'newpassword',
+                    'firstName' => 'John',
+                    'lastName' => 'Doe',
+                    'roles' => ['Wrong role'],
+                ]
+            ]
         ];
-        $content = json_encode($userToUpdateDto);
 
-        // update the user
-        $this->client->request(
-            method: 'PUT', uri: '/api/v1/users/' . $userToUpdate,
-            server: [
-                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'CONTENT_TYPE' => 'application/json',
-                'HTTP_ACCEPT' => 'application/json',
-            ],
-            content: $content
-        );
+        $this->patchDocument($userToUpdate, $document);
         $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
     }
 
@@ -83,26 +97,22 @@ class UpdateUserTest extends AppApiTestCase
     #[Test]
     public function Update_user_with_invalid_id()
     {
-        $userToUpdate = AggregateRootId::generateId()->toString();
-        $userToUpdateDto = [
-            'email' => 'newemail@example.com',
-            'password' => 'newpassword',
-            'firstName' => 'John',
-            'lastName' => 'Doe',
-            'roles' => [UserRole::USER],
+        $userToUpdate = AggregateRootId::generateId();
+        $document = [
+            'data' => [
+                'type' => UserResource::TYPE,
+                'id' => $userToUpdate->toString(),
+                'attributes' => [
+                    'email' => 'newemail@example.com',
+                    'password' => 'newpassword',
+                    'firstName' => 'John',
+                    'lastName' => 'Doe',
+                    'roles' => [UserRole::USER],
+                ]
+            ]
         ];
-        $content = json_encode($userToUpdateDto);
 
-        // update the user
-        $this->client->request(
-            method: 'PUT', uri: '/api/v1/users/' . $userToUpdate,
-            server: [
-                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'CONTENT_TYPE' => 'application/json',
-                'HTTP_ACCEPT' => 'application/json',
-            ],
-            content: $content
-        );
-        $this->assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
+        $this->patchDocument($userToUpdate, $document, false);
+        $this->assertResponseStatusCodeSame(Response::HTTP_UNAUTHORIZED);
     }
 }

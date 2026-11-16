@@ -3,6 +3,7 @@
 namespace App\Security\Application\Command\User\UpdateUser;
 
 use App\Security\Domain\Model\UserRole;
+use InvalidArgumentException;
 
 class UpdateUserCommandFactory
 {
@@ -14,7 +15,10 @@ class UpdateUserCommandFactory
             $dto->password,
             $dto->firstName,
             $dto->lastName,
-            array_map(fn(string $role): UserRole => UserRole::tryFrom($role), $dto->roles),
+            array_map(
+                fn(string $role): UserRole => UserRole::tryFrom($role) ?? throw new InvalidArgumentException("Invalid role specified: {$role}"),
+                $dto->roles
+            ),
         );
     }
 }

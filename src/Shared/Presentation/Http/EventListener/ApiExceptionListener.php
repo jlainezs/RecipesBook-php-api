@@ -9,6 +9,7 @@ use App\Shared\Presentation\Http\JsonApi\JsonApi;
 use App\Shared\Presentation\Http\JsonApi\JsonApiErrorsException;
 use App\Shared\Presentation\Http\JsonApi\JsonApiResponse;
 use App\Shared\Presentation\Http\Response\JsonErrorResponse;
+use InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\Exception\RequestExceptionInterface;
@@ -44,7 +45,8 @@ final class ApiExceptionListener
             $exception instanceof InvalidParameterException,
             $exception instanceof EmptyRequiredNameException,
             $exception instanceof EmptyIdNotAllowedException,
-            $exception instanceof RequestExceptionInterface
+            $exception instanceof RequestExceptionInterface,
+            $exception instanceof InvalidArgumentException
             =>
                 Response::HTTP_BAD_REQUEST,
 
