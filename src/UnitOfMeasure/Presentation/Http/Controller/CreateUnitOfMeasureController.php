@@ -19,7 +19,6 @@ final class CreateUnitOfMeasureController extends AbstractController
 {
     public function __construct(
         private readonly CommandBus $commandBus,
-        private readonly QueryBus $queryBus,
         private readonly CreateUnitOfMeasureCommandFactory $commandFactory,
         private readonly UnitOfMeasureResource $resource,
     ){}
@@ -35,10 +34,9 @@ final class CreateUnitOfMeasureController extends AbstractController
     {
         $cmd = $this->commandFactory->createFromDto($request);
         $this->commandBus->dispatch($cmd);
-        $response = $this->queryBus->ask(new GetUnitOfMeasureQuery($cmd->id));
 
         return new JsonApiResponse(
-            document:$this->resource->item($response->unitOfMeasure),
+            document:$this->resource->itemReference($cmd->id),
             status:Response::HTTP_CREATED,
             headers:[
                 'Location' => $this->resource->selfUrl($cmd->id),

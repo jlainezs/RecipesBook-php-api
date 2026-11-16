@@ -64,4 +64,19 @@ final readonly class UnitOfMeasureResource
             UrlGeneratorInterface::ABSOLUTE_URL
         );
     }
+
+    public function itemReference(string $id): array
+    {
+        return [
+            'links' => ['self' => $this->selfUrl($id)],
+            'data' => [
+                'type' => self::TYPE,
+                'id' => $id,
+                'links' => ['self' => $this->selfUrl($id)],
+                'attributes' => [
+                    'id' => $id,
+                ]
+            ],
+        ];
+    }
 }

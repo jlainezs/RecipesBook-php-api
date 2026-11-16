@@ -39,9 +39,6 @@ class CreateUnitOfMeasureControllerTest extends AppApiTestCase
         $this->assertSame('units-of-measure', $response->data->type);
         $this->assertIsString($response->data->id);
         $this->assertNotEmpty($response->data->id);
-        $this->assertSame('test', $response->data->attributes->name);
-        $this->assertSame('t', $response->data->attributes->symbol);
-        $this->assertSame(UnitOfMeasureEnum::Units->value, $response->data->attributes->unitOfMeasureType);
         $this->assertResponseHeaderSame('Content-Type', 'application/vnd.api+json');
         $this->assertResponseHeaderSame('Cache-Control', 'must-revalidate, no-cache, no-store, private');
         $expectedGetUrl = $this->getDefinedUrl('unit_of_measure_get_instance', ['id' => $response->data->id]);

@@ -22,7 +22,6 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class CreateUnitOfMeasureControllerTest extends TestCase
 {
     public CommandBus $commandBus;
-    public QueryBus $queryBus;
     public CreateUnitOfMeasureCommandFactory $commandFactory;
     public UrlGeneratorInterface $urlGenerator;
     public ApplicationDataValidator $validator;
@@ -31,7 +30,6 @@ class CreateUnitOfMeasureControllerTest extends TestCase
     protected function setUp(): void
     {
         $this->commandBus = $this->createMock(CommandBus::class);
-        $this->queryBus = $this->createMock(QueryBus::class);
         $this->validator = $this->createMock(ApplicationDataValidator::class);
         $this->commandFactory = new CreateUnitOfMeasureCommandFactory($this->validator);
         $this->urlGenerator = $this->createStub(UrlGeneratorInterface::class);
@@ -61,25 +59,22 @@ class CreateUnitOfMeasureControllerTest extends TestCase
             ->with($this->callback(
                 fn (CreateUnitOfMeasureCommand $cmd) => $dto->name === $cmd->name
             ));
-        $this->queryBus
-            ->expects($this->once())
-            ->method('ask')
-            ->with($this->isInstanceOf(GetUnitOfMeasureQuery::class))
-            ->willReturnCallback(fn (GetUnitOfMeasureQuery $query) => new GetUnitOfMeasureResponse(
-                new UnitOfMeasureDto($query->id, $dto->name, $dto->symbol, $dto->unitOfMeasureType, new DateTimeImmutable(), new DateTimeImmutable())
-            ));
 
         $controller = new CreateUnitOfMeasureController(
             $this->commandBus,
-            $this->queryBus,
             $this->commandFactory,
             new UnitOfMeasureResource($this->urlGenerator)
         );
         $response = $controller($dto);
         $this->assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
         $this->assertSame('application/vnd.api+json', $response->headers->get('Content-Type'));
-        $document = json_decode($response->getContent(), true);
-        $this->assertSame(UnitOfMeasureResource::TYPE, $document['data']['type']);
-        $this->assertSame('test', $document['data']['attributes']['name']);
+        $document = json_decode($response->getContent());
+        $this->assertIsObject($response);
+        $this->assertObjectHasProperty('data', $document);
+        $this->assertObjectHasProperty('id', $document->data);
+        $this->assertIsString($document->data->id);
+        $this->assertNotEmpty($document->data->id);
+        $this->assertObjectHasProperty('type', $document->data);
+        $this->assertSame(UnitOfMeasureResource::TYPE, $document->data->type);
     }
 }
