@@ -1,7 +1,6 @@
 <?php
 namespace App\Recipe\Presentation\Http\Controller;
 
-use App\Recipe\Application\Command\CreateRecipe\CreateRecipeResponse;
 use App\Recipe\Application\Command\CreateRecipe\CreateRecipeCommandFactory;
 use App\Recipe\Application\Command\CreateRecipe\CreateRecipeDto;
 use App\Recipe\Presentation\Http\Resource\RecipeResource;
@@ -11,11 +10,8 @@ use App\Shared\Presentation\Http\JsonApi\JsonApi;
 use App\Shared\Presentation\Http\JsonApi\JsonApiResponse;
 use App\Shared\Presentation\Http\ValueResolver\MapJsonApiPayload;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final class CreateRecipeController extends AbstractController
 {

@@ -131,7 +131,7 @@ class CreateRecipeControllerTest extends AppApiTestCase
     public function it_fails_when_ingredient_not_found(): void
     {
         $newRecipe = $this->testRecipe();
-        // add a non existent ingredient to force an error
+        // add a non-existent ingredient to force an error
         $newRecipe['ingredients'][0]['ingredientId'] = AggregateRootId::generateId()->toString();
         $this->postDocument($newRecipe);
         $this->assertJsonApiErrorResponse(Response::HTTP_NOT_FOUND);

@@ -14,6 +14,7 @@ final readonly class LocalMediaStorage implements MediaStorageInterface
     public function download(string $path): string
     {
         // TODO: Implement download() method.
+        return '';
     }
 
     public function delete(string $path): void

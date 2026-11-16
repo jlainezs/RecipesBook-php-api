@@ -80,4 +80,11 @@ class DeleteIngredientTypeControllerTest extends AppApiTestCase
         $this->deleteDocument('wrong id');
         $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
     }
+
+    #[Test]
+    public function it_fails_when_user_not_authenticated(): void
+    {
+        $this->deleteDocument('wrong id', false);
+        $this->assertResponseStatusCodeSame(Response::HTTP_UNAUTHORIZED);
+    }
 }

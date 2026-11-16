@@ -10,9 +10,7 @@ use App\Shared\Presentation\Http\JsonApi\JsonApi;
 use App\Shared\Presentation\Http\ValueResolver\MapJsonApiPayload;
 use App\Shared\Presentation\Http\ValueResolver\MapRouteParameter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class UpdateMealCourseController extends AbstractController

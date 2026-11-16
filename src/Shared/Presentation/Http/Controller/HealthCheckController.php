@@ -7,9 +7,7 @@ use App\Shared\Application\Query\HealthCheck\HealthCheckQuery;
 use App\Shared\Presentation\Http\JsonApi\JsonApi;
 use App\Shared\Presentation\Http\JsonApi\JsonApiResponse;
 use App\Shared\Presentation\Http\Resource\HealthCheckResource;
-use App\Shared\Presentation\Http\Response\HealthCheckJsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/api/v1')]

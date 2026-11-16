@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 final readonly class DeleteUnitOfMeasureRouteDto
 {
     public function __construct(
-        #[Assert\NotBlank()]
+        #[Assert\NotBlank]
         #[Assert\Uuid]
         public string $id
     ){}

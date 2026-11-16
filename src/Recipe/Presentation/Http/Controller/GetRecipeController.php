@@ -9,7 +9,6 @@ use App\Shared\Presentation\Http\JsonApi\JsonApi;
 use App\Shared\Presentation\Http\JsonApi\JsonApiResponse;
 use App\Shared\Presentation\Http\ValueResolver\MapRouteParameter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class GetRecipeController extends AbstractController

@@ -9,7 +9,6 @@ use App\ShoppingList\Application\Query\GetShoppingList\GetShoppingListQueryFacto
 use App\ShoppingList\Application\Query\GetShoppingList\GetShoppingListQueryRouteDto;
 use App\ShoppingList\Presentation\Http\Resource\ShoppingListResource;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class GetShoppingListController extends AbstractController

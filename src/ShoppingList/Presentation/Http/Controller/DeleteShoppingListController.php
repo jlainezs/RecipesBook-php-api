@@ -7,7 +7,6 @@ use App\Shared\Presentation\Http\ValueResolver\MapRouteParameter;
 use App\ShoppingList\Application\Command\ShoppingListDelete\DeleteShoppingListCommandFactory;
 use App\ShoppingList\Application\Command\ShoppingListDelete\DeleteShoppingListRouteDto;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
