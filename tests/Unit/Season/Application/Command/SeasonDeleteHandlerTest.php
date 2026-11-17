@@ -6,6 +6,7 @@ use App\Season\Application\Command\Season\DeleteSeason\DeleteSeasonCommandHandle
 use App\Season\Domain\Exceptions\SeasonNotFoundException;
 use App\Season\Domain\Model\Season;
 use App\Season\Domain\Repository\SeasonRepositoryInterface;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -24,7 +25,7 @@ class SeasonDeleteHandlerTest extends TestCase
     #[Test]
     public function it_deletes_when_season_is_found(): void
     {
-        $season = Season::create('Summer');
+        $season = Season::create(AggregateRootId::generateId()->toString(),'Summer');
         $id = $season->getId()->toString();
 
         $this->repository

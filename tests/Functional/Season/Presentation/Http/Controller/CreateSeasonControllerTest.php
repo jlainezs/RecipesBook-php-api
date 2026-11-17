@@ -73,6 +73,11 @@ class CreateSeasonControllerTest extends AppApiTestCase
         $this->assertObjectHasProperty('type', $response->data);
         $expectedGetUrl = $this->getDefinedUrl('seasons_get_instance', ['id' => $response->data->id]);
         $this->assertResponseHeaderSame('Location', $expectedGetUrl);
+
+        // ensure created
+        $season = $this->seasonRepository->findOne(new AggregateRootId($response->data->id));
+        $this->assertNotNull($season);
+        $this->assertSame($response->data->id, $season->getId()->toString());
     }
 
     #[Test]

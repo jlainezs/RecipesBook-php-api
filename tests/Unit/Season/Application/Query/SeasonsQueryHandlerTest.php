@@ -7,6 +7,8 @@ use App\Season\Application\Query\Season\GetSeasons\GetSeasonsQueryHandler;
 use App\Season\Application\Query\Season\GetSeasons\GetSeasonsQueryResponse;
 use App\Season\Application\Service\SeasonItemsPager;
 use App\Season\Domain\Model\Season;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\Stub;
@@ -24,11 +26,14 @@ class SeasonsQueryHandlerTest extends TestCase
         $this->handler = new GetSeasonsQueryHandler($this->pager);
     }
 
+    /**
+     * @throws EmptyIdNotAllowedException
+     */
     #[Test]
     public function it_returns_a_response_with_mapped_dtos(): void
     {
-        $summer = Season::create('Summer');
-        $winter = Season::create('Winter');
+        $summer = Season::create(AggregateRootId::generateId()->toString(),'Summer');
+        $winter = Season::create(AggregateRootId::generateId()->toString(),'Winter');
 
         $this->pager
             ->expects($this->once())

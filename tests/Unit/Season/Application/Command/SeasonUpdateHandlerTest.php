@@ -7,7 +7,9 @@ use App\Season\Application\Command\Season\UpdateSeason\UpdateSeasonCommandHandle
 use App\Season\Domain\Exceptions\SeasonNotFoundException;
 use App\Season\Domain\Model\Season;
 use App\Season\Domain\Repository\SeasonRepositoryInterface;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\Exceptions\EmptyRequiredNameException;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -23,10 +25,14 @@ class SeasonUpdateHandlerTest extends TestCase
         $this->handler = new UpdateSeasonCommandHandler($this->repository);
     }
 
+    /**
+     * @throws EmptyIdNotAllowedException
+     * @throws SeasonNotFoundException
+     */
     #[Test]
     public function it_renames_and_saves_when_season_is_found(): void
     {
-        $season = Season::create('Summer');
+        $season = Season::create(AggregateRootId::generateId()->toString(),'Summer');
         $id = $season->getId()->toString();
 
         $this->repository
@@ -65,10 +71,14 @@ class SeasonUpdateHandlerTest extends TestCase
         ($this->handler)(new UpdateSeasonCommand($id, 'Summer'));
     }
 
+    /**
+     * @throws EmptyIdNotAllowedException
+     * @throws SeasonNotFoundException
+     */
     #[Test]
     public function it_throws_and_does_not_save_when_new_name_is_empty(): void
     {
-        $ingredientType = Season::create('Summer');
+        $ingredientType = Season::create(AggregateRootId::generateId()->toString(),'Summer');
         $id = $ingredientType->getId()->toString();
 
         $this->repository

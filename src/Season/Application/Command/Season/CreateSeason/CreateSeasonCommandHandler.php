@@ -19,7 +19,7 @@ final readonly class CreateSeasonCommandHandler
      */
     public function __invoke(CreateSeasonCommand $command): void
     {
-        $season = Season::create($command->name);
+        $season = Season::create($command->id,$command->name);
         $this->repository->save($season);
     }
 }

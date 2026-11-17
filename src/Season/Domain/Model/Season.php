@@ -23,10 +23,10 @@ final class Season extends AggregateRoot
      * @throws EmptyRequiredNameException
      * @throws EmptyIdNotAllowedException
      */
-    public static function create(string $name): self
+    public static function create(string $id, string $name): self
     {
         return new self(
-            AggregateRootId::generateId(),
+            new AggregateRootId($id),
             new RequiredName($name),
             new DateTimeImmutable(),
             new DateTimeImmutable()

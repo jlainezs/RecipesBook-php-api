@@ -11,6 +11,7 @@ use App\Season\Presentation\Http\Controller\GetSeasonController;
 use App\Season\Presentation\Http\Resource\SeasonResource;
 use App\Shared\Application\Bus\QueryBus;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -25,7 +26,7 @@ class GetSeasonControllerTest extends TestCase
     {
         $queryBus = $this->createMock(QueryBus::class);
         $queryFactory = $this->createMock(GetSeasonQueryFactory::class);
-        $season = Season::create('test');
+        $season = Season::create(AggregateRootId::generateId()->toString(), 'test');
 
         $queryBus->expects($this->once())
             ->method('ask')

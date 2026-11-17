@@ -9,6 +9,7 @@ use App\Season\Domain\Model\Season;
 use App\Season\Presentation\Http\Controller\UpdateSeasonController;
 use App\Shared\Application\Bus\CommandBus;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,7 +24,7 @@ class UpdateSeasonControllerTest extends TestCase
     {
         $commandBus = $this->createMock(CommandBus::class);
         $cmdFactory = $this->createMock(UpdateSeasonCommandFactory::class);
-        $season = Season::create('test');
+        $season = Season::create(AggregateRootId::generateId()->toString(), 'test');
         $requestId = new UpdateSeasonRouteDto($season->getId()->toString());
         $requestData = new UpdateSeasonDto($season->getName());
 

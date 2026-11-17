@@ -8,6 +8,8 @@ use App\Season\Application\Query\Season\GetSeason\GetSeasonQueryResponse;
 use App\Season\Domain\Exceptions\SeasonNotFoundException;
 use App\Season\Domain\Model\Season;
 use App\Season\Domain\Repository\SeasonRepositoryInterface;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
+use App\Shared\Domain\ValueObjects\AggregateRootId;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -23,10 +25,14 @@ class SeasonInstanceHandlerTest extends TestCase
         $this->handler = new GetSeasonQueryHandler($this->repository);
     }
 
+    /**
+     * @throws EmptyIdNotAllowedException
+     * @throws SeasonNotFoundException
+     */
     #[Test]
     public function it_returns_a_response_with_dto_when_found(): void
     {
-        $season = Season::create('Summer');
+        $season = Season::create(AggregateRootId::generateId()->toString(),'Summer');
         $id = $season->getId()->toString();
 
         $this->repository
