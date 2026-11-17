@@ -1,6 +1,7 @@
 <?php
 namespace App\Tests\Functional\Ingredient\Presentation\Http\Controller;
 
+use App\Ingredient\Presentation\Http\Resource\IngredientResource;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\Tests\DataFixtures\Ingredient\IngredientFixtures;
@@ -40,14 +41,8 @@ class GetIngredientControllerTest extends AppApiTestCase
                 'HTTP_ACCEPT' => 'application/json'
             ]
         );
-        $this->assertResponseIsSuccessful();
+        $this->assertJsonApiGetResponse(Response::HTTP_OK, IngredientResource::TYPE);
         $response = json_decode($this->client->getResponse()->getContent());
-        $this->assertNotNull($response);
-        $this->assertIsObject($response);
-        $this->assertSame('1.1', $response->jsonapi->version);
-        $this->assertObjectHasProperty('data', $response);
-        $this->assertIsObject($response->data);
-        $this->assertSame('ingredient', $response->data->type);
         $this->assertEquals($this->ingredientFixtures->testData[0]->getId()->toString(), $response->data->id);
         $this->assertEquals($this->ingredientFixtures->testData[0]->getName(), $response->data->attributes->name);
         $this->assertObjectHasProperty('ingredientTypeId', $response->data->attributes);

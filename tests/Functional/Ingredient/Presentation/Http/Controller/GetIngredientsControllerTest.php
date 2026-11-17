@@ -52,27 +52,23 @@ class GetIngredientsControllerTest extends AppApiTestCase
     public function it_returns_a_list_of_ingredients(): void
     {
         $this->getDocument();
-        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
-        $this->assertResponseHeaderSame('Content-Type', 'application/vnd.api+json');
-        $response = json_decode($this->client->getResponse()->getContent());
-        $this->assertNotEmpty($response);
-        $this->assertObjectHasProperty('data', $response);
-        $this->assertSameSize($this->fixtures->testData, $response->data);
+        $document = $this->assertJsonApiGetCollectionResponse(
+            Response::HTTP_OK,
+            IngredientResource::TYPE,
+            [
+                'self' => $this->getDefinedUrl('ingredient_list', ['page' => ['offset' => 0, 'limit' => 10]]),
+                'first' => $this->getDefinedUrl('ingredient_list', ['page' => ['offset' => 0, 'limit' => 10]]),
+                'prev' => null,
+                'next' => null,
+            ]
+        );
+        $this->assertSameSize($this->fixtures->testData, $document->data);
 
-        foreach($response->data as $resource)
+        foreach($document->data as $resource)
         {
-            $this->assertSame(IngredientResource::TYPE, $resource->type);
-            $this->assertObjectHasProperty('id', $resource);
             $this->assertObjectHasProperty('name', $resource->attributes);
             $this->assertObjectHasProperty('description', $resource->attributes);
         }
-
-        $this->assertSame(
-            $this->getDefinedUrl('ingredient_list', ['page' => ['offset' => 0, 'limit' => 10]]),
-            $response->links->first
-        );
-        $this->assertNull($response->links->prev);
-        $this->assertNull($response->links->next);
     }
 
     #[Test]

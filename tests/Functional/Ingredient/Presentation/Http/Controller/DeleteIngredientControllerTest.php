@@ -12,7 +12,6 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class DeleteIngredientControllerTest extends AppApiTestCase
 {
-    private IngredientTypeFixtures $additionalIngredientTypeFixtures;
     private IngredientFixtures $ingredientFixtures;
 
     /**
@@ -23,9 +22,9 @@ class DeleteIngredientControllerTest extends AppApiTestCase
         parent::setUp();
         $this->loadFixture(new LoginFixtures($this->container->get(UserPasswordHasherInterface::class)));
         $this->loginWithUser(LoginFixtures::USER_NAME, LoginFixtures::PASSWORD);
-        $this->additionalIngredientTypeFixtures = new IngredientTypeFixtures();
+        $additionalIngredientTypeFixtures = new IngredientTypeFixtures();
         $this->ingredientFixtures = new IngredientFixtures();
-        $this->loadFixture($this->additionalIngredientTypeFixtures);
+        $this->loadFixture($additionalIngredientTypeFixtures);
         $this->loadFixture($this->ingredientFixtures);
     }
 
@@ -40,11 +39,11 @@ class DeleteIngredientControllerTest extends AppApiTestCase
             [],
             [
                 'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'CONTENT_TYPE' => 'application/json',
-                'HTTP_ACCEPT' => 'application/json'
+                'CONTENT_TYPE' => 'application/vnd.api+json',
+                'HTTP_ACCEPT' => 'application/vnd.api+json'
             ]
         );
-        $this->assertResponseStatusCodeSame(204);
+        $this->assertResponseStatusCodeSame(Response::HTTP_NO_CONTENT);
 
         $this->client->request(
             'GET',
@@ -53,8 +52,8 @@ class DeleteIngredientControllerTest extends AppApiTestCase
             [],
             [
                 'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'CONTENT_TYPE' => 'application/json',
-                'HTTP_ACCEPT' => 'application/json'
+                'CONTENT_TYPE' => 'application/vnd.api+json',
+                'HTTP_ACCEPT' => 'application/vnd.api+json'
             ]
         );
         $this->assertJsonApiErrorResponse(Response::HTTP_NOT_FOUND);

@@ -66,15 +66,7 @@ class CreateIngredientControllerTest extends  AppApiTestCase
             ]
         ];
         $this->postDocument($ingredientToCreateData);
-        $this->assertResponseStatusCodeSame(Response::HTTP_CREATED);
-        $response = json_decode($this->client->getResponse()->getContent());
-
-        $this->assertIsObject($response);
-        $this->assertObjectHasProperty('data', $response);
-        $this->assertObjectHasProperty('id', $response->data);
-        $this->assertIsString($response->data->id);
-        $this->assertNotEmpty($response->data->id);
-        $this->assertObjectHasProperty('type', $response->data);
+        $this->assertJsonApiCreateResponse(Response::HTTP_CREATED, IngredientResource::TYPE);
     }
 
     #[Test]
