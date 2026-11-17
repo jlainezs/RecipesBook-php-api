@@ -23,6 +23,6 @@ final class DeleteUserController extends AbstractController
         $cmd = $this->commandFactory->createFromDto($request);
         $this->commandBus->dispatch($cmd);
 
-        return new Response(null, 204);
+        return new Response(null, Response::HTTP_NO_CONTENT);
     }
 }

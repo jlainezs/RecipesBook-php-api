@@ -23,6 +23,6 @@ final class DeleteSeasonController extends AbstractController
         $cmd = $this->cmdFactory->createFromDto($dto);
         $this->commandBus->dispatch($cmd);
 
-        return new Response(null, 204);
+        return new Response(null, Response::HTTP_NO_CONTENT);
     }
 }
