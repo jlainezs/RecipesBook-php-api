@@ -1,5 +1,3 @@
-TODO: GetIngredientType does not follows JsonAPI
-TODO: Ensure that the signatures of the controllers' responses are consistent with each other.
 TODO: add mappers for entity -> Dto conversion on Application level.
 TODO: Pagination lacks of last and meta.total: need a count() in the pager. next is computed supposing there are more pages when current page is full.
 TODO: Add roles to check access.
