@@ -1,2 +1,0 @@
-DELETE http://localhost:8000/api/v1/ingredient-types/f92364a4-cac6-438e-a41d-410064f0f69d
-Accept: application/json
