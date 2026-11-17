@@ -40,14 +40,9 @@ class UpdateUnitOfMeasureControllerTest extends AppApiTestCase
                 'attributes' => $newData
             ]
         ]);
-        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
-        $this->assertResponseHeaderSame('Content-Type', 'application/vnd.api+json');
-        $response = json_decode($this->client->getResponse()->getContent());
-        $this->assertSame($id->toString(), $response->data->id);
-        $this->assertSame($newData['name'], $response->data->attributes->name);
-
-        $unit = $this->repository->findOne($id);
-        $this->assertEquals($newData['name'], $unit->getName());
+        $this->assertResponseStatusCodeSame(Response::HTTP_NO_CONTENT);
+        $updated = $this->repository->findOne($id);
+        $this->assertSame($newData['name'], $updated->getName());
     }
 
     #[Test]
@@ -64,7 +59,7 @@ class UpdateUnitOfMeasureControllerTest extends AppApiTestCase
                 'attributes' => ['name' => 'only the name changes']
             ]
         ]);
-        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+        $this->assertResponseStatusCodeSame(Response::HTTP_NO_CONTENT);
 
         $unit = $this->repository->findOne($id);
         $this->assertSame('only the name changes', $unit->getName());
@@ -83,7 +78,7 @@ class UpdateUnitOfMeasureControllerTest extends AppApiTestCase
                 'attributes' => ['unitOfMeasureType' => UnitOfMeasureEnum::Weight->value]
             ]
         ]);
-        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+        $this->assertResponseStatusCodeSame(Response::HTTP_NO_CONTENT);
 
         $unit = $this->repository->findOne($id);
         $this->assertSame(UnitOfMeasureEnum::Weight, $unit->getUomType());

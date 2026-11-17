@@ -30,7 +30,6 @@ class UpdateUnitOfMeasureControllerTest extends TestCase
     public function setUp(): void
     {
         $this->commandBus = $this->createMock(CommandBus::class);
-        $this->queryBus = $this->createMock(QueryBus::class);
         $this->commandFactory = $this->createMock(UpdateUnitOfMeasureCommandFactory::class);
     }
 
@@ -60,24 +59,16 @@ class UpdateUnitOfMeasureControllerTest extends TestCase
             ->willReturn(
                 new UpdateUnitOfMeasureCommand($id, $request->name, $request->symbol, UnitOfMeasureEnum::from($request->unitOfMeasureType))
             );
-        $this->queryBus
-            ->expects($this->once())
-            ->method('ask')
-            ->with(new GetUnitOfMeasureQuery($id))
-            ->willReturn(new GetUnitOfMeasureResponse(
-                new UnitOfMeasureDto($id, 'name', 'symbol', 1, new DateTimeImmutable(), new DateTimeImmutable())
-            ));
         $controller = new UpdateUnitOfMeasureController(
             $this->commandBus,
-            $this->queryBus,
             $this->commandFactory,
             new UnitOfMeasureResource($this->createStub(UrlGeneratorInterface::class))
         );
 
         $response = $controller($routeDto, $request);
 
-        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
-        $document = json_decode($response->getContent(), true);
-        $this->assertSame('name', $document['data']['attributes']['name']);
+        $this->assertEquals(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+        $document = json_decode($response->getContent());
+        $this->assertNull($document);
     }
 }

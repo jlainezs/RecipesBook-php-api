@@ -20,27 +20,20 @@ final class UpdateUnitOfMeasureController extends AbstractController
 {
     public function __construct(
         private readonly CommandBus $commandBus,
-        private readonly QueryBus $queryBus,
         private readonly UpdateUnitOfMeasureCommandFactory $commandFactory,
-        private readonly UnitOfMeasureResource $resource,
     ){}
 
-    /**
-     * Returns 200 with the resource instead of 204: updatedAt is changed by the server.
-     */
     #[Route('/api/v1/units-of-measure/{id}', name: 'unit_of_measure_update', defaults: [JsonApi::ROUTE_FLAG => true], methods: ['PATCH'])]
     public function __invoke(
         #[MapRouteParameter]
         UpdateUnitOfMeasureRouteDto $routeDto,
         #[MapJsonApiPayload(UnitOfMeasureResource::TYPE)]
         UpdateUnitOfMeasureDto      $request
-    ): JsonApiResponse
+    ): Response
     {
         $cmd = $this->commandFactory->createFromRequest($routeDto, $request);
         $this->commandBus->dispatch($cmd);
-        $response = $this->queryBus->ask(new GetUnitOfMeasureQuery($cmd->id));
 
-        return new JsonApiResponse($this->resource->item($response->unitOfMeasure));
+        return new Response(status: Response::HTTP_NO_CONTENT);
     }
-
 }
