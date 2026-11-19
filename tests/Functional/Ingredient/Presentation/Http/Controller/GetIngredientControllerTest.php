@@ -27,26 +27,37 @@ class GetIngredientControllerTest extends AppApiTestCase
         $this->loadFixture($this->ingredientFixtures);
     }
 
+    private function getDocument(AggregateRootId $id, bool $sendAuth = true): void
+    {
+        $headers = [
+            'HTTP_ACCEPT' => self::ACCEPT_HEADER_JSON_API,
+        ];
+
+        if ($sendAuth)
+        {
+            $headers['HTTP_AUTHORIZATION'] = 'Bearer ' . $this->userToken;
+        }
+
+        $this->client->request(
+            'GET',
+            $this->getDefinedUrl('ingredient_get_instance', ['id' => $id->toString()]),
+            [],
+            [],
+            $headers
+        );
+    }
+
     #[Test]
     public function get_ingredient():void
     {
-        $id = $this->ingredientFixtures->testData[0]->getId()->toString();
-        $this->client->request(
-            'GET',
-            $this->getDefinedUrl('ingredient_get_instance', ['id' => $id]),
-            [],
-            [],
-            [
-                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'HTTP_ACCEPT' => 'application/json'
-            ]
-        );
-        $this->assertJsonApiGetResponse(Response::HTTP_OK, IngredientResource::TYPE);
-        $response = json_decode($this->client->getResponse()->getContent());
-        $this->assertEquals($this->ingredientFixtures->testData[0]->getId()->toString(), $response->data->id);
-        $this->assertEquals($this->ingredientFixtures->testData[0]->getName(), $response->data->attributes->name);
-        $this->assertObjectHasProperty('ingredientTypeId', $response->data->attributes);
-        $this->assertObjectHasProperty('description', $response->data->attributes);
+        $id = $this->ingredientFixtures->testData[0]->getId();
+        $this->getDocument($id);
+
+        $document = $this->assertJsonApiGetResponse(Response::HTTP_OK, IngredientResource::TYPE);
+        $this->assertEquals($this->ingredientFixtures->testData[0]->getId()->toString(), $document->data->id);
+        $this->assertEquals($this->ingredientFixtures->testData[0]->getName(), $document->data->attributes->name);
+        $this->assertObjectHasProperty('ingredientTypeId', $document->data->attributes);
+        $this->assertObjectHasProperty('description', $document->data->attributes);
     }
 
     /**
@@ -55,33 +66,16 @@ class GetIngredientControllerTest extends AppApiTestCase
     #[Test]
     public function get_ingredient_fails_when_id_is_not_found():void
     {
-        $id = AggregateRootId::generateId()->toString();
-        $this->client->request(
-            'GET',
-            $this->getDefinedUrl('ingredient_get_instance', ['id' => $id]),
-            [],
-            [],
-            [
-                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'HTTP_ACCEPT' => 'application/json'
-            ]
-        );
+        $id = AggregateRootId::generateId();
+        $this->getDocument($id);
         $this->assertJsonApiErrorResponse(Response::HTTP_NOT_FOUND);
     }
 
     #[Test]
     public function get_ingredient_fails_when_no_token_present():void
     {
-        $id = $this->ingredientFixtures->testData[0]->getId()->toString();
-        $this->client->request(
-            'GET',
-            $this->getDefinedUrl('ingredient_get_instance', ['id' => $id]),
-            [],
-            [],
-            [
-                'HTTP_ACCEPT' => 'application/json'
-            ]
-        );
+        $id = $this->ingredientFixtures->testData[0]->getId();
+        $this->getDocument($id, false);
         $this->assertJsonApiErrorResponse(Response::HTTP_UNAUTHORIZED);
     }
 }

@@ -117,8 +117,8 @@ class UpdateIngredientControllerTest extends AppApiTestCase
 
     private function patchDocument(AggregateRootId $id, array $document, bool $sendAuth = true): void
     {
-        $contentType = 'application/vnd.api+json';
-        $accept = 'application/vnd.api+json';
+        $contentType = self::CONTENT_TYPE_HEADER_JSON_API;
+        $accept = self::ACCEPT_HEADER_JSON_API;
         $route =$this->getDefinedUrl('ingredient_update_instance', ['id' => $id->toString()]);
 
         $headers = [

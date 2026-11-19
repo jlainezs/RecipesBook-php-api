@@ -27,6 +27,9 @@ abstract class AppApiTestCase extends WebTestCase
     protected AdditionalUsersFixtures $additionalUsersFixtures;
     protected UrlGeneratorInterface $urlGenerator;
 
+    protected const string CONTENT_TYPE_HEADER_JSON_API = 'application/vnd.api+json';
+    protected const string ACCEPT_HEADER_JSON_API = 'application/vnd.api+json';
+
     public function setUp(): void
     {
         parent::setUp();

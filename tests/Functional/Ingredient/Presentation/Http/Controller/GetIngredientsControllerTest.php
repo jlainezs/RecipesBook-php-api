@@ -25,7 +25,7 @@ class GetIngredientsControllerTest extends AppApiTestCase
     private function getDocument(int $offset = 0, int $limit = 10, bool $sendAuth = true): void
     {
         $headers = [
-            'HTTP_ACCEPT' => 'application/vnd.api+json'
+            'HTTP_ACCEPT' => self::ACCEPT_HEADER_JSON_API
         ];
         $params = [
             'page' => [
