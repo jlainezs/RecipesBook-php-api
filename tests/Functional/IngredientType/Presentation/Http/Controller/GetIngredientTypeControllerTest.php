@@ -1,6 +1,7 @@
 <?php
 namespace App\Tests\Functional\IngredientType\Presentation\Http\Controller;
 
+use App\IngredientType\Presentation\Http\Resource\IngredientTypeResource;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\Tests\DataFixtures\Ingredient\IngredientTypeFixtures;
@@ -33,17 +34,14 @@ class GetIngredientTypeControllerTest extends AppApiTestCase
             [],
             [
                 'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'HTTP_ACCEPT' => 'application/json'
+                'HTTP_ACCEPT' => self::ACCEPT_HEADER_JSON_API
             ]
         );
-        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
-        $response = json_decode($this->client->getResponse()->getContent());
-        $this->assertNotNull($response->data);
-        $this->assertIsObject($response->data);
+        $document = $this->assertJsonApiGetResponse(Response::HTTP_OK, IngredientTypeResource::TYPE);
 
         $this->assertEquals(
             $this->additionalIngredientTypeFixtures->testData[0]->getId()->toString(),
-            $response->data->id
+            $document->data->id
         );
     }
 
@@ -60,10 +58,10 @@ class GetIngredientTypeControllerTest extends AppApiTestCase
             [],
             [
                 'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'HTTP_ACCEPT' => 'application/json'
+                'HTTP_ACCEPT' => self::ACCEPT_HEADER_JSON_API
             ]
         );
-        $this->assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
+        $this->assertJsonApiErrorResponse(Response::HTTP_NOT_FOUND);
     }
 
     #[Test]
@@ -75,10 +73,10 @@ class GetIngredientTypeControllerTest extends AppApiTestCase
             [],
             [],
             [
-                'HTTP_ACCEPT' => 'application/json'
+                'HTTP_ACCEPT' => self::ACCEPT_HEADER_JSON_API
             ]
         );
-        $this->assertResponseStatusCodeSame(Response::HTTP_UNAUTHORIZED);
+        $this->assertJsonApiErrorResponse(Response::HTTP_UNAUTHORIZED);
     }
 
     #[DataProvider('wrongIds')]
@@ -94,7 +92,7 @@ class GetIngredientTypeControllerTest extends AppApiTestCase
                 'HTTP_ACCEPT' => 'application/json'
             ]
         );
-        $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
+        $this->assertJsonApiErrorResponse(Response::HTTP_BAD_REQUEST);
     }
 
     public static function wrongIds(): iterable

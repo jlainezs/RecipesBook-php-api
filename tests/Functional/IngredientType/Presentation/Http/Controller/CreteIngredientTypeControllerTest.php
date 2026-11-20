@@ -19,12 +19,9 @@ class CreteIngredientTypeControllerTest extends AppApiTestCase
 
     private function postDocument(array $document, bool $sendAuth = true, bool $expiredToken = false): void
     {
-        $contentType = 'application/vnd.api+json';
-        $accept = 'application/vnd.api+json';
-
         $headers = [
-            'CONTENT_TYPE' => $contentType,
-            'HTTP_ACCEPT' => $accept
+            'CONTENT_TYPE' => self::CONTENT_TYPE_HEADER_JSON_API,
+            'HTTP_ACCEPT' => self::ACCEPT_HEADER_JSON_API
         ];
 
         if ($sendAuth) {
@@ -56,15 +53,7 @@ class CreteIngredientTypeControllerTest extends AppApiTestCase
             ]
         ];
         $this->postDocument($ingredientType);
-        $this->assertResponseStatusCodeSame(Response::HTTP_CREATED);
-        $response = json_decode($this->client->getResponse()->getContent());
-
-        $this->assertIsObject($response);
-        $this->assertObjectHasProperty('data', $response);
-        $this->assertObjectHasProperty('id', $response->data);
-        $this->assertIsString($response->data->id);
-        $this->assertNotEmpty($response->data->id);
-        $this->assertObjectHasProperty('type', $response->data);
+        $document = $this->assertJsonApiCreateResponse(Response::HTTP_CREATED, IngredientTypeResource::TYPE);
     }
 
     #[Test]

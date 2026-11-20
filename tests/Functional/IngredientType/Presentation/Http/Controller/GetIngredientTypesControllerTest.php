@@ -1,7 +1,6 @@
 <?php
 namespace App\Tests\Functional\IngredientType\Presentation\Http\Controller;
 
-use App\Ingredient\Presentation\Http\Resource\IngredientResource;
 use App\IngredientType\Presentation\Http\Resource\IngredientTypeResource;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Tests\DataFixtures\Ingredient\IngredientTypeFixtures;
@@ -36,24 +35,27 @@ class GetIngredientTypesControllerTest extends AppApiTestCase
             [],
             [
                 'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'HTTP_ACCEPT' => 'application/json'
+                'HTTP_ACCEPT' => self::ACCEPT_HEADER_JSON_API
             ],
         );
-        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
-        $this->assertResponseHeaderSame('Content-Type', 'application/vnd.api+json');
-        $response = json_decode($this->client->getResponse()->getContent());
-        $this->assertNotEmpty($response);
-        $this->assertObjectHasProperty('data', $response);
-        $this->assertSameSize($this->fixtures->testData, $response->data);
-        $this->assertSameSize($this->fixtures->testData, $response->data);
+        $document = $this->assertJsonApiGetCollectionResponse(
+            Response::HTTP_OK,
+            IngredientTypeResource::TYPE,
+            [
+                'self' => $this->getDefinedUrl('ingredient_types_list', ['page' => ['offset' => 0, 'limit' => 20]]),
+                'first' => $this->getDefinedUrl('ingredient_types_list', ['page' => ['offset' => 0, 'limit' => 20]]),
+                'prev' => null,
+                'next' => null,
+            ]
+        );
 
-        for ($i = 0; $i < count($response->data); $i++)
+        for ($i = 0; $i < count($document->data); $i++)
         {
-            $this->assertSame(IngredientTypeResource::TYPE, $response->data[$i]->type);
-            $this->assertObjectHasProperty('id', $response->data[$i]);
-            $this->assertObjectHasProperty('name', $response->data[$i]->attributes);
-            $this->assertEquals($this->fixtures->testData[$i]->getId()->toString(), $response->data[$i]->id);
-            $this->assertEquals($this->fixtures->testData[$i]->getName()->value(), $response->data[$i]->attributes->name);
+            $this->assertSame(IngredientTypeResource::TYPE, $document->data[$i]->type);
+            $this->assertObjectHasProperty('id', $document->data[$i]);
+            $this->assertObjectHasProperty('name', $document->data[$i]->attributes);
+            $this->assertEquals($this->fixtures->testData[$i]->getId()->toString(), $document->data[$i]->id);
+            $this->assertEquals($this->fixtures->testData[$i]->getName()->value(), $document->data[$i]->attributes->name);
         }
     }
 
@@ -65,7 +67,7 @@ class GetIngredientTypesControllerTest extends AppApiTestCase
             [],
             [],
             [
-                'HTTP_ACCEPT' => 'application/json'
+                'HTTP_ACCEPT' => self::ACCEPT_HEADER_JSON_API
             ],
         );
         $this->assertJsonApiErrorResponse(Response::HTTP_UNAUTHORIZED, ['header' => 'Authorization']);

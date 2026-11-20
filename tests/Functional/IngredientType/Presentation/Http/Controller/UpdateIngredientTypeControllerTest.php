@@ -32,11 +32,9 @@ class UpdateIngredientTypeControllerTest extends AppApiTestCase
 
     private function patchDocument(AggregateRootId $id, array $document, bool $sendAuth = true)
     {
-        $contentType = 'application/vnd.api+json';
-        $accept = 'application/vnd.api+json';
         $headers = [
-            'CONTENT_TYPE' => $contentType,
-            'HTTP_ACCEPT' => $accept,
+            'CONTENT_TYPE' => self::CONTENT_TYPE_HEADER_JSON_API,
+            'HTTP_ACCEPT' => self::ACCEPT_HEADER_JSON_API,
         ];
 
         if ($sendAuth)

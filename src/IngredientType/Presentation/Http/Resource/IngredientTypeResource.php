@@ -18,8 +18,8 @@ final readonly class IngredientTypeResource
     public function listUrl(int $offset, int $limit): string
     {
         return $this->urlGenerator->generate(
-            name: 'ingredient_list',
-            parameters: ['offset' => $offset, 'limit' => $limit],
+            name: 'ingredient_types_list',
+            parameters: ['page' => ['offset' => $offset, 'limit' => $limit]],
             referenceType: UrlGeneratorInterface::ABSOLUTE_URL);
     }
 
