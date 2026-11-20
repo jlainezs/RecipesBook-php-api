@@ -32,17 +32,22 @@ class GetMealCoursesControllerTest extends AppApiTestCase
             [],
             [
                 'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'HTTP_ACCEPT' => 'application/vnd.api+json'
+                'HTTP_ACCEPT' => self::ACCEPT_HEADER_JSON_API
             ]
         );
-        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
-        $this->assertResponseHeaderSame('Content-Type', 'application/vnd.api+json');
-        $response = json_decode($this->client->getResponse()->getContent());
-        $this->assertNotEmpty($response);
-        $this->assertObjectHasProperty('data', $response);
-        $this->assertSameSize($this->fixtures->testData, $response->data);
+        $this->assertJsonApiGetCollectionResponse(
+            Response::HTTP_OK, MealCourseResource::TYPE,
+            [
+                'self' => $this->getDefinedUrl('meal_courses_list', ['page' => ['offset' => 0, 'limit' => 20]]),
+                'first' => $this->getDefinedUrl('meal_courses_list', ['page' => ['offset' => 0, 'limit' => 20]]),
+                'prev' => null,
+                'next' => null,
+            ]
+        );
+        $document = json_decode($this->client->getResponse()->getContent());
+        $this->assertSameSize($this->fixtures->testData, $document->data);
 
-        foreach ($response->data as $resource)
+        foreach ($document->data as $resource)
         {
             $this->assertSame(MealCourseResource::TYPE, $resource->type);
             $this->assertObjectHasProperty('id', $resource);
@@ -60,7 +65,7 @@ class GetMealCoursesControllerTest extends AppApiTestCase
             [],
             [],
             [
-                'HTTP_ACCEPT' => 'application/vnd.api+json'
+                'HTTP_ACCEPT' => self::ACCEPT_HEADER_JSON_API
             ]
         );
         $this->assertJsonApiErrorResponse(Response::HTTP_UNAUTHORIZED, ['header' => 'Authorization']);

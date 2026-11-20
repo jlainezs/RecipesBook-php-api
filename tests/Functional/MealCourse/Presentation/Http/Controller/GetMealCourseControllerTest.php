@@ -23,10 +23,10 @@ class GetMealCourseControllerTest extends AppApiTestCase
         $this->loadFixture($this->fixtures);
     }
 
-    private function getDocument(AggregateRootId $id, bool $sendAuth = true): void
+    private function getDocument(mixed $id, bool $sendAuth = true): void
     {
         $headers = [
-            'HTTP_ACCEPT' => 'application/vnd.api+json'
+            'HTTP_ACCEPT' => self::ACCEPT_HEADER_JSON_API,
         ];
 
         if ($sendAuth)
@@ -36,7 +36,7 @@ class GetMealCourseControllerTest extends AppApiTestCase
 
         $this->client->request(
             'GET',
-            $this->getDefinedUrl('meal_courses_get_instance', ["id" => $id->toString()]),
+            $this->getDefinedUrl('meal_courses_get_instance', ["id" => $id]),
             [],
             [],
             $headers
@@ -48,20 +48,9 @@ class GetMealCourseControllerTest extends AppApiTestCase
     public function it_should_return_the_required_meal_course()
     {
         $this->getDocument($this->fixtures->testData[0]->getId());
-        $this->assertResponseHeaderSame('Content-Type', 'application/vnd.api+json');
-        $response = json_decode($this->client->getResponse()->getContent());
-        $this->assertNotNull($response);
-        $this->assertIsObject($response);
-        $this->assertSame('1.1', $response->jsonapi->version);
-
-        $this->assertObjectHasProperty('data', $response);
-        $this->assertIsObject($response->data);
-        $this->assertSame(MealCourseResource::TYPE, $response->data->type);
-        $this->assertObjectHasProperty('id', $response->data);
-        $this->assertObjectHasProperty('attributes', $response->data);
-        $this->assertObjectHasProperty('name', $response->data->attributes);
-        $this->assertEquals($response->data->id, $this->fixtures->testData[0]->getId()->toString());
-        $this->assertEquals($response->data->attributes->name, $this->fixtures->testData[0]->getName());
+        $document = $this->assertJsonApiGetResponse(Response::HTTP_OK, MealCourseResource::TYPE);
+        $this->assertEquals($document->data->id, $this->fixtures->testData[0]->getId()->toString());
+        $this->assertEquals($document->data->attributes->name, $this->fixtures->testData[0]->getName());
     }
 
     /**
@@ -73,6 +62,17 @@ class GetMealCourseControllerTest extends AppApiTestCase
         $this->getDocument(AggregateRootId::generateId());
         $this->assertJsonApiErrorResponse(Response::HTTP_NOT_FOUND);
     }
+
+    /**
+     * @throws EmptyIdNotAllowedException
+     */
+    #[Test]
+    public function it_should_fail_if_meal_course_id_is_wrong()
+    {
+        $this->getDocument('wrong_id');
+        $this->assertJsonApiErrorResponse(Response::HTTP_BAD_REQUEST);
+    }
+
     #[Test]
     public function it_should_fail_if_not_authorized()
     {

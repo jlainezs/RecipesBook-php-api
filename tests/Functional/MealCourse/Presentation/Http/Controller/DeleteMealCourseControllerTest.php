@@ -2,6 +2,7 @@
 namespace App\Tests\Functional\MealCourse\Presentation\Http\Controller;
 
 use App\MealCourse\Domain\Repository\MealCourseRepositoryInterface;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\Tests\DataFixtures\MealCourse\MealCourseFixtures;
 use App\Tests\DataFixtures\Security\LoginFixtures;
@@ -13,7 +14,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 class DeleteMealCourseControllerTest extends AppApiTestCase
 {
     private MealCourseFixtures $fixtures;
-    private MealCourseRepositoryInterface $respository;
+    private MealCourseRepositoryInterface $repository;
 
     public function setUp(): void
     {
@@ -22,13 +23,13 @@ class DeleteMealCourseControllerTest extends AppApiTestCase
         $this->loginWithUser(LoginFixtures::USER_NAME, LoginFixtures::PASSWORD);
         $this->fixtures = new MealCourseFixtures();
         $this->loadFixture($this->fixtures);
-        $this->respository = $this->container->get(MealCourseRepositoryInterface::class);
+        $this->repository = $this->container->get(MealCourseRepositoryInterface::class);
     }
 
     private function deleteDocument(string $id, bool $useAuth = true): void
     {
         $headers = [
-            'HTTP_ACCEPT' => 'application/vnd.api+json'
+            'HTTP_ACCEPT' => self::ACCEPT_HEADER_JSON_API,
         ];
         if ($useAuth) {
             $headers['HTTP_AUTHORIZATION'] = 'Bearer ' . $this->userToken;
@@ -50,21 +51,24 @@ class DeleteMealCourseControllerTest extends AppApiTestCase
         $this->assertResponseStatusCodeSame(Response::HTTP_NO_CONTENT);
 
         // ensure the meal course was deleted
-        $mealCourse = $this->respository->findOne($this->fixtures->testData[0]->getId());
+        $mealCourse = $this->repository->findOne($this->fixtures->testData[0]->getId());
         $this->assertNull($mealCourse);
     }
 
+    /**
+     * @throws EmptyIdNotAllowedException
+     */
     #[Test]
     public function it_should_fail_when_meal_course_does_not_exists(): void
     {
         $this->deleteDocument(AggregateRootId::generateId()->toString());
-        $this->assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
+        $this->assertJsonApiErrorResponse(Response::HTTP_NOT_FOUND);
     }
 
     #[Test]
     public function it_should_fail_when_not_authorized(): void
     {
         $this->deleteDocument($this->fixtures->testData[0]->getId()->toString(), false);
-        $this->assertResponseStatusCodeSame(Response::HTTP_UNAUTHORIZED);
+        $this->assertJsonApiErrorResponse(Response::HTTP_UNAUTHORIZED);
     }
 }

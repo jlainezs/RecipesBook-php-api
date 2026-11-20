@@ -20,8 +20,8 @@ class CreateMealCourseControllerTest extends AppApiTestCase
     private function postDocument(array $document, bool $sendAuth = true): void
     {
         $headers = [
-            'CONTENT_TYPE' => 'application/vnd.api+json',
-            'HTTP_ACCEPT' => 'application/vnd.api+json'
+            'CONTENT_TYPE' => self::CONTENT_TYPE_HEADER_JSON_API,
+            'HTTP_ACCEPT' => self::ACCEPT_HEADER_JSON_API
         ];
 
         if ($sendAuth) {
@@ -48,16 +48,7 @@ class CreateMealCourseControllerTest extends AppApiTestCase
             ]
         ];
         $this->postDocument($mealCourse);
-        $this->assertResponseStatusCodeSame(Response::HTTP_CREATED);
-        $response = json_decode($this->client->getResponse()->getContent());
-        $this->assertResponseStatusCodeSame(Response::HTTP_CREATED);
-
-        $this->assertIsObject($response);
-        $this->assertObjectHasProperty('data', $response);
-        $this->assertObjectHasProperty('id', $response->data);
-        $this->assertIsString($response->data->id);
-        $this->assertNotEmpty($response->data->id);
-        $this->assertObjectHasProperty('type', $response->data);
+        $document = $this->assertJsonApiCreateResponse(Response::HTTP_CREATED, MealCourseResource::TYPE);
     }
 
     #[Test]

@@ -20,7 +20,7 @@ final readonly class MealCourseResource
     {
         return $this->urlGenerator->generate(
             'meal_courses_list',
-            ['offset' => $offset, 'limit' => $limit],
+            ['page' => ['offset' => $offset, 'limit' => $limit]],
             UrlGeneratorInterface::ABSOLUTE_URL
         );
     }
