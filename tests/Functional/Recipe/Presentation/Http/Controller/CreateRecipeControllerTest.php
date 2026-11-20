@@ -59,8 +59,8 @@ class CreateRecipeControllerTest extends AppApiTestCase
     private function postDocument(array $document, bool $sendAuth = true): void
     {
         $headers = [
-            'CONTENT_TYPE' => 'application/vnd.api+json',
-            'HTTP_ACCEPT' => 'application/vnd.api+json'
+            'CONTENT_TYPE' => self::CONTENT_TYPE_HEADER_JSON_API,
+            'HTTP_ACCEPT' => self::ACCEPT_HEADER_JSON_API
         ];
 
         if ($sendAuth)
@@ -94,24 +94,12 @@ class CreateRecipeControllerTest extends AppApiTestCase
         $newRecipe = $this->testRecipe();
         $this->postDocument($newRecipe);
 
-        $this->assertResponseStatusCodeSame(Response::HTTP_CREATED);
-        $response = json_decode($this->client->getResponse()->getContent());
-        $this->assertNotNull($response);
-        $this->assertIsObject($response);
-        $this->assertObjectHasProperty('data', $response);
-        $this->assertSame(RecipeResource::TYPE, $response->data->type);
-
-        $this->assertObjectHasProperty('id', $response->data);
-        $this->assertIsString($response->data->id);
-        $this->assertNotEmpty($response->data->id);
-
-        $this->assertResponseHeaderSame('Content-Type', 'application/vnd.api+json');
-        $this->assertResponseHeaderSame('Cache-Control', 'must-revalidate, no-cache, no-store, private');
-        $expectedGetUrl = $this->getDefinedUrl('get_recipe', ['id' => $response->data->id]);
+        $document = $this->assertJsonApiCreateResponse(Response::HTTP_CREATED, RecipeResource::TYPE);
+        $expectedGetUrl = $this->getDefinedUrl('get_recipe', ['id' => $document->data->id]);
         $this->assertResponseHeaderSame('Location', $expectedGetUrl);
 
         // ensure created recipe exists
-        $recipe = $this->repository->findOne(new AggregateRootId($response->data->id));
+        $recipe = $this->repository->findOne(new AggregateRootId($document->data->id));
         $this->assertNotNull($recipe);
         $this->assertEquals($newRecipe['name'], $recipe->getName());
     }

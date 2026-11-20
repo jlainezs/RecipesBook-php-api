@@ -28,7 +28,7 @@ class GetRecipesControllerTest extends AppApiTestCase
 
     private function getDocument(int $offset = 0, int $limit = 10, bool $sendAuth = true): void
     {
-        $headers = ['Accept' => 'application/vnd.api+json'];
+        $headers = ['Accept' => self::ACCEPT_HEADER_JSON_API];
         $params = [
             'page' => [
                 'offset' => $offset,
@@ -53,13 +53,17 @@ class GetRecipesControllerTest extends AppApiTestCase
     public function it_should_return_a_list_of_recipes():void
     {
         $this->getDocument();
-        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
-        $this->assertResponseHeaderSame('Content-Type', 'application/vnd.api+json');
-        $response = json_decode($this->client->getResponse()->getContent());
-        $this->assertNotEmpty($response);
-        $this->assertObjectHasProperty('data', $response);
+        $response = $this->assertJsonApiGetCollectionResponse(
+            Response::HTTP_OK,
+            RecipeResource::TYPE,
+            [
+                'self' => $this->getDefinedUrl('get_recipes_list', ['page' => ['offset' => 0, 'limit' => 10]]),
+                'first' => $this->getDefinedUrl('get_recipes_list', ['page' => ['offset' => 0, 'limit' => 10]]),
+                'prev' => null,
+                'next' => null,
+            ]
+        );
         $this->assertSameSize($this->fixtures->testData, $response->data);
-
     }
 
     #[Test]

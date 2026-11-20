@@ -30,8 +30,8 @@ class DeleteRecipeControllerTest extends AppApiTestCase
     private function deleteDocument(AggregateRootId $id, bool $sendAuth = true): void
     {
         $headers = [
-            'CONTENT_TYPE' => 'application/vnd.api+json',
-            'HTTP_ACCEPT' => 'application/vnd.api+json'
+            'CONTENT_TYPE' => self::CONTENT_TYPE_HEADER_JSON_API,
+            'HTTP_ACCEPT' => self::ACCEPT_HEADER_JSON_API
         ];
 
         if ($sendAuth)
@@ -68,17 +68,7 @@ class DeleteRecipeControllerTest extends AppApiTestCase
     public function it_fails_if_recipe_is_not_found(): void
     {
         $idToDelete = AggregateRootId::generateId();
-        $this->client->request(
-            "DELETE",
-            $this->getDefinedUrl('delete_recipe', ['id' => $idToDelete->toString()]),
-            [],
-            [],
-            [
-                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'CONTENT_TYPE' => 'application/json',
-                'HTTP_ACCEPT' => 'application/json'
-            ]
-        );
+        $this->deleteDocument($idToDelete);
         $this->assertJsonApiErrorResponse(Response::HTTP_NOT_FOUND);
     }
 
@@ -89,16 +79,7 @@ class DeleteRecipeControllerTest extends AppApiTestCase
     public function it_fails_if_not_authorized(): void
     {
         $idToDelete = AggregateRootId::generateId();
-        $this->client->request(
-            "DELETE",
-            $this->getDefinedUrl('delete_recipe', ['id' => $idToDelete->toString()]),
-            [],
-            [],
-            [
-                'CONTENT_TYPE' => 'application/json',
-                'HTTP_ACCEPT' => 'application/json'
-            ]
-        );
+        $this->deleteDocument($idToDelete, false);
         $this->assertJsonApiErrorResponse(Response::HTTP_UNAUTHORIZED);
     }
 }

@@ -63,8 +63,8 @@ class UpdateRecipeControllerTest extends AppApiTestCase
     public function patchDocument(AggregateRootId $id, array $document, bool $sendAuth = true): void
     {
         $headers = [
-            'CONTENT_TYPE' => 'application/vnd.api+json',
-            'HTTP_ACCEPT' => 'application/vnd.api+json',
+            'CONTENT_TYPE' => self::CONTENT_TYPE_HEADER_JSON_API,
+            'HTTP_ACCEPT' => self::ACCEPT_HEADER_JSON_API,
         ];
 
         if ($sendAuth)

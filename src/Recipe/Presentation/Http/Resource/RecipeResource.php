@@ -63,7 +63,7 @@ final readonly class RecipeResource
     {
         return $this->urlGenerator->generate(
             'get_recipes_list',
-            ['offset' => $offset, 'limit' => $limit],
+            ['page' => ['offset' => $offset, 'limit' => $limit]],
             UrlGeneratorInterface::ABSOLUTE_URL
         );
     }

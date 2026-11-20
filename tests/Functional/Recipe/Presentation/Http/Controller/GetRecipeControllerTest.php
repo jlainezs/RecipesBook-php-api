@@ -30,7 +30,7 @@ class GetRecipeControllerTest extends AppApiTestCase
 
     private function getDocument(AggregateRootId $id, bool $sendAuth = true): void
     {
-        $headers = ['HTTP_ACCEPT' => 'application/vnd.api+json'];
+        $headers = ['HTTP_ACCEPT' => self::ACCEPT_HEADER_JSON_API];
 
         if ($sendAuth)
         {
@@ -52,22 +52,8 @@ class GetRecipeControllerTest extends AppApiTestCase
         $id = $this->recipeFixtures->testData[0]->getId();
         $this->getDocument($id);
 
-        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
-        $this->assertResponseHeaderSame('Content-Type', 'application/vnd.api+json');
-        $response = json_decode($this->client->getResponse()->getContent());
-        $this->assertNotNull($response);
-        $this->assertIsObject($response);
-        $this->assertSame('1.1', $response->jsonapi->version);
-        $this->assertObjectHasProperty('data', $response);
-        $this->assertIsObject($response->data);
-        $this->assertObjectHasProperty('type', $response->data);
-        $this->assertSame(RecipeResource::TYPE, $response->data->type);
-        $this->assertObjectHasProperty('id', $response->data);
-        $this->assertEquals($id, $response->data->id);
-        $this->assertObjectHasProperty('attributes', $response->data);
-        $recipeResponse = $response->data->attributes;
-        $this->assertIsObject($recipeResponse);
-        $this->assertObjectHasProperty('self', $response->links);
+        $document = $this->assertJsonApiGetResponse(Response::HTTP_OK, RecipeResource::TYPE);
+        $this->assertEquals($id, $document->data->id);
     }
 
     /**
