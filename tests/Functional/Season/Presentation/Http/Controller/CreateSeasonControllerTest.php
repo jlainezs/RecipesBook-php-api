@@ -62,22 +62,14 @@ class CreateSeasonControllerTest extends AppApiTestCase
         ];
         $this->postDocument($rawData);
 
-        $this->assertResponseStatusCodeSame(Response::HTTP_CREATED);
-        $response = json_decode($this->client->getResponse()->getContent());
-
-        $this->assertIsObject($response);
-        $this->assertObjectHasProperty('data', $response);
-        $this->assertObjectHasProperty('id', $response->data);
-        $this->assertIsString($response->data->id);
-        $this->assertNotEmpty($response->data->id);
-        $this->assertObjectHasProperty('type', $response->data);
-        $expectedGetUrl = $this->getDefinedUrl('seasons_get_instance', ['id' => $response->data->id]);
+        $document = $this->assertJsonApiCreateResponse(Response::HTTP_CREATED, SeasonResource::TYPE);
+        $expectedGetUrl = $this->getDefinedUrl('seasons_get_instance', ['id' => $document->data->id]);
         $this->assertResponseHeaderSame('Location', $expectedGetUrl);
 
         // ensure created
-        $season = $this->seasonRepository->findOne(new AggregateRootId($response->data->id));
+        $season = $this->seasonRepository->findOne(new AggregateRootId($document->data->id));
         $this->assertNotNull($season);
-        $this->assertSame($response->data->id, $season->getId()->toString());
+        $this->assertSame($document->data->id, $season->getId()->toString());
     }
 
     #[Test]

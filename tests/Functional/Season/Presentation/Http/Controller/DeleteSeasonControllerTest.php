@@ -1,6 +1,7 @@
 <?php
 namespace App\Tests\Functional\Season\Presentation\Http\Controller;
 
+use App\Season\Domain\Repository\SeasonRepositoryInterface;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\Tests\DataFixtures\Season\SeasonFixtures;
@@ -13,6 +14,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 class DeleteSeasonControllerTest extends AppApiTestCase
 {
     private SeasonFixtures $seasonFixtures;
+    private SeasonRepositoryInterface $repository;
 
     public function setUp(): void
     {
@@ -21,11 +23,12 @@ class DeleteSeasonControllerTest extends AppApiTestCase
         $this->loginWithUser(LoginFixtures::USER_NAME, LoginFixtures::PASSWORD);
         $this->seasonFixtures = new SeasonFixtures();
         $this->loadFixture($this->seasonFixtures);
+        $this->repository = $this->container->get(SeasonRepositoryInterface::class);
     }
 
-    private function deleteDocument(AggregateRootId $id, bool $sendAuth = true): void
+    private function deleteDocument(mixed $id, bool $sendAuth = true): void
     {
-        $headers = ['HTTP_ACCEPT' => 'application/json'];
+        $headers = ['HTTP_ACCEPT' => self::ACCEPT_HEADER_JSON_API];
 
         if ($sendAuth)
         {
@@ -34,7 +37,7 @@ class DeleteSeasonControllerTest extends AppApiTestCase
 
         $this->client->request(
             'DELETE',
-            $this->getDefinedUrl('seasons_delete_instance', ['id' => $id->toString()]),
+            $this->getDefinedUrl('seasons_delete_instance', ['id' => $id]),
             [],
             [],
             $headers
@@ -48,17 +51,8 @@ class DeleteSeasonControllerTest extends AppApiTestCase
         $this->assertResponseStatusCodeSame(Response::HTTP_NO_CONTENT);
 
         // ensure is deleted
-        $this->client->request(
-            'GET',
-            $this->getDefinedUrl('seasons_get_instance', ['id' => $this->seasonFixtures->testData[0]->getId()->toString()]),
-            [],
-            [],
-            [
-                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'HTTP_ACCEPT' => 'application/json'
-            ]
-        );
-        $this->assertJsonApiErrorResponse(Response::HTTP_NOT_FOUND);
+        $season = $this->repository->findOne($this->seasonFixtures->testData[0]->getId());
+        $this->assertNull($season);
     }
 
     /**
@@ -70,6 +64,17 @@ class DeleteSeasonControllerTest extends AppApiTestCase
         $id = AggregateRootId::generateId();
         $this->deleteDocument($id);
         $this->assertJsonApiErrorResponse(Response::HTTP_NOT_FOUND);
+    }
+
+    /**
+     * @throws EmptyIdNotAllowedException
+     */
+    #[Test]
+    public function it_fails_when_asking_for_wrong_id(): void
+    {
+        $id = 'wrong-id';
+        $this->deleteDocument($id);
+        $this->assertJsonApiErrorResponse(Response::HTTP_BAD_REQUEST);
     }
 
     /**

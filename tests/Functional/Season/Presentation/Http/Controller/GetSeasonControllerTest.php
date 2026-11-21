@@ -35,19 +35,12 @@ class GetSeasonControllerTest extends AppApiTestCase
             [],
             [
                 'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'HTTP_ACCEPT' => 'application/json'
+                'HTTP_ACCEPT' => self::ACCEPT_HEADER_JSON_API
             ]
         );
-        $this->assertResponseIsSuccessful();
-        $response = json_decode($this->client->getResponse()->getContent());
-        $this->assertNotEmpty($response);
-        $this->assertIsObject($response);
-        $this->assertSame('1.1', $response->jsonapi->version);
-        $this->assertObjectHasProperty('data', $response);
-        $this->assertIsObject($response->data);
-        $this->assertSame(SeasonResource::TYPE, $response->data->type);
-        $this->assertEquals($this->seasonFixtures->testData[0]->getId()->toString(), $response->data->id);
-        $this->assertEquals($this->seasonFixtures->testData[0]->getName(), $response->data->attributes->name);
+        $document = $this->assertJsonApiGetResponse(Response::HTTP_OK, SeasonResource::TYPE);
+        $this->assertEquals($this->seasonFixtures->testData[0]->getId()->toString(), $document->data->id);
+        $this->assertEquals($this->seasonFixtures->testData[0]->getName(), $document->data->attributes->name);
     }
 
     /**
@@ -64,10 +57,27 @@ class GetSeasonControllerTest extends AppApiTestCase
             [],
             [
                 'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'HTTP_ACCEPT' => 'application/json'
+                'HTTP_ACCEPT' => self::ACCEPT_HEADER_JSON_API
             ]
         );
         $this->assertJsonApiErrorResponse(Response::HTTP_NOT_FOUND);
+    }
+
+    #[Test]
+    public function it_fails_when_ask_for_wrong_id():void
+    {
+        $id = AggregateRootId::generateId();
+        $this->client->request(
+            'GET',
+            $this->getDefinedUrl('seasons_get_instance', ['id' => 'wrong-id']),
+            [],
+            [],
+            [
+                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
+                'HTTP_ACCEPT' => self::ACCEPT_HEADER_JSON_API
+            ]
+        );
+        $this->assertJsonApiErrorResponse(Response::HTTP_BAD_REQUEST);
     }
 
     /**
@@ -83,7 +93,7 @@ class GetSeasonControllerTest extends AppApiTestCase
             [],
             [],
             [
-                'HTTP_ACCEPT' => 'application/json'
+                'HTTP_ACCEPT' => self::ACCEPT_HEADER_JSON_API
             ]
         );
         $this->assertJsonApiErrorResponse(Response::HTTP_UNAUTHORIZED);

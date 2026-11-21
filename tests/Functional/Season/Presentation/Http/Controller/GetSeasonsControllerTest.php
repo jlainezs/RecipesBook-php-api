@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Tests\Functional\Season\Presentation\Http\Controller;
 
 use App\Season\Presentation\Http\Resource\SeasonResource;
@@ -26,7 +25,7 @@ class GetSeasonsControllerTest extends AppApiTestCase
     public function getDocument(int $offset = 0, int $limit = 10, bool $sendAuth = true): void
     {
         $headers = [
-            'HTTP_ACCEPT' => 'application/vnd.api+json'
+            'HTTP_ACCEPT' => self::ACCEPT_HEADER_JSON_API
         ];
         if ($sendAuth)
         {
@@ -51,26 +50,25 @@ class GetSeasonsControllerTest extends AppApiTestCase
     public function it_gets_a_list_of_seasons(): void
     {
         $this->getDocument();
-        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
-        $this->assertResponseHeaderSame('Content-Type', 'application/vnd.api+json');
-        $response = json_decode($this->client->getResponse()->getContent());
-        $this->assertNotEmpty($response);
-        $this->assertObjectHasProperty('data', $response);
-        $this->assertSameSize($this->fixtures->testData, $response->data);
+        $document = $this->assertJsonApiGetCollectionResponse(
+            Response::HTTP_OK,
+            SeasonResource::TYPE,
+            [
+                'self' => $this->getDefinedUrl('seasons_list', ['page' => ['offset' => 0, 'limit' => 10]]),
+                'first' => $this->getDefinedUrl('seasons_list', ['page' => ['offset' => 0, 'limit' => 10]]),
+                'prev' => null,
+                'next' => null,
+            ]
+        );
+        $this->assertNotEmpty($document);
+        $this->assertSameSize($this->fixtures->testData, $document->data);
 
-        foreach($response->data as $item)
+        foreach($document->data as $item)
         {
             $this->assertSame(SeasonResource::TYPE, $item->type);
             $this->assertObjectHasProperty('id', $item);
             $this->assertObjectHasProperty('name', $item->attributes);
         }
-
-        $this->assertSame(
-            $this->getDefinedUrl('seasons_list', ['page' => ['offset' => 0, 'limit' => 10]]),
-            $response->links->first
-        );
-        $this->assertNull($response->links->prev);
-        $this->assertNull($response->links->next);
     }
 
     #[Test]

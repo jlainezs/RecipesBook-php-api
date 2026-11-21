@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Tests\Functional\Season\Presentation\Http\Controller;
 
 use App\Season\Domain\Repository\SeasonRepositoryInterface;
@@ -29,11 +28,11 @@ class UpdateSeasonControllerTest extends AppApiTestCase
         $this->seasonRepository = $this->container->get(SeasonRepositoryInterface::class);
     }
 
-    private function patchDocument(AggregateRootId $id, array $document, bool $sendAuth = true): void
+    private function patchDocument(mixed $id, array $document, bool $sendAuth = true): void
     {
         $headers = [
-            'CONTENT_TYPE' => 'application/vnd.api+json',
-            'HTTP_ACCEPT' => 'application/vnd.api+json',
+            'CONTENT_TYPE' => self::CONTENT_TYPE_HEADER_JSON_API,
+            'HTTP_ACCEPT' => self::ACCEPT_HEADER_JSON_API,
         ];
 
         if ($sendAuth)
@@ -43,7 +42,7 @@ class UpdateSeasonControllerTest extends AppApiTestCase
 
         $this->client->request(
             'PATCH',
-            $this->getDefinedUrl('seasons_update_instance', ['id' => $id->getId()]),
+            $this->getDefinedUrl('seasons_update_instance', ['id' => $id]),
             [],
             [],
             $headers,
@@ -98,6 +97,25 @@ class UpdateSeasonControllerTest extends AppApiTestCase
                     ? Response::HTTP_UNPROCESSABLE_ENTITY
                     : Response::HTTP_BAD_REQUEST
         );
+    }
+
+    #[Test]
+    public function it_fails_when_using_invalid_id(): void
+    {
+        $wrongId = 'wrong-id';
+        $updatedData = [
+            'data' => [
+                'type' => SeasonResource::TYPE,
+                'id' => $wrongId,
+                'attributes' => [
+                    'name' => "a season",
+                ]
+            ]
+        ];
+
+        $this->patchDocument($wrongId, $updatedData);
+
+        $this->assertJsonApiErrorResponse(Response::HTTP_BAD_REQUEST);
     }
 
     /**
