@@ -21,8 +21,8 @@ class CreateShoppingListControllerTest extends AppApiTestCase
     public function postDocument(array $document, bool $sendAuth = true): void
     {
         $headers = [
-            'CONTENT_TYPE' => 'application/vnd.api+json',
-            'HTTP_ACCEPT' => 'application/vnd.api+json'
+            'CONTENT_TYPE' => self::CONTENT_TYPE_HEADER_JSON_API,
+            'HTTP_ACCEPT' => self::ACCEPT_HEADER_JSON_API,
         ];
 
         if ($sendAuth) {
@@ -44,16 +44,8 @@ class CreateShoppingListControllerTest extends AppApiTestCase
     public function it_creates_a_shopping_list(array $testData): void
     {
         $this->postDocument($testData);
-
-        $this->assertResponseStatusCodeSame(Response::HTTP_CREATED);
-        $this->assertResponseHeaderSame('Content-Type', 'application/vnd.api+json');
-        $this->assertResponseHeaderSame('Cache-Control', 'must-revalidate, no-cache, no-store, private');
-        $response = json_decode($this->client->getResponse()->getContent());
-        $this->assertNotNull($response);
-        $this->assertObjectHasProperty('data', $response);
-        $this->assertObjectHasProperty('id', $response->data);
-        $this->assertNotEmpty($response->data->id);
-        $expectedGetUrl = $this->getDefinedUrl('get_shopping-list', ['id' => $response->data->id]);
+        $document = $this->assertJsonApiCreateResponse(Response::HTTP_CREATED, ShoppingListResource::TYPE);
+        $expectedGetUrl = $this->getDefinedUrl('get_shopping-list', ['id' => $document->data->id]);
         $this->assertResponseHeaderSame('Location', $expectedGetUrl);
     }
 

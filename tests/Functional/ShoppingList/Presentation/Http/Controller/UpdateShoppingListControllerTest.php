@@ -31,8 +31,8 @@ class UpdateShoppingListControllerTest extends AppApiTestCase
     public function patchDocument(AggregateRootId $id, array $document, bool $sendAuth = true): void
     {
         $headers = [
-            'CONTENT_TYPE' => 'application/vnd.api+json',
-            'HTTP_ACCEPT' => 'application/vnd.api+json'
+            'CONTENT_TYPE' => self::CONTENT_TYPE_HEADER_JSON_API,
+            'HTTP_ACCEPT' => self::ACCEPT_HEADER_JSON_API
         ];
 
         if ($sendAuth)
@@ -70,6 +70,7 @@ class UpdateShoppingListControllerTest extends AppApiTestCase
             ]
         ];
         $this->patchDocument($toUpdate->getId(), $document);
+        $this->assertResponseStatusCodeSame(Response::HTTP_NO_CONTENT);
 
         $updated = $this->repository->findOne($toUpdate->getId());
         $this->assertNotNull($updated);

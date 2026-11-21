@@ -1,6 +1,7 @@
 <?php
 namespace App\Tests\Functional\ShoppingList\Presentation\Http\Controller;
 
+use App\ShoppingList\Presentation\Http\Resource\ShoppingListResource;
 use App\Tests\DataFixtures\Security\LoginFixtures;
 use App\Tests\DataFixtures\ShoppingList\ShoppingListFixtures;
 use App\Tests\Functional\AppApiTestCase;
@@ -24,7 +25,7 @@ class GetShoppingListsControllerTest extends AppApiTestCase
     public function getDocument(bool $sendAuth = true): void
     {
         $headers = [
-            'HTTP_ACCEPT' => 'application/vnd.api+json'
+            'HTTP_ACCEPT' => self::ACCEPT_HEADER_JSON_API
         ];
 
         if ($sendAuth) {
@@ -45,12 +46,16 @@ class GetShoppingListsControllerTest extends AppApiTestCase
     public function it_returns_a_list_of_shopping_lists():void
     {
         $this->getDocument();
-        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
-        $this->assertResponseHeaderSame('Content-Type', 'application/vnd.api+json');
-        $response = json_decode($this->client->getResponse()->getContent());
-        $this->assertNotEmpty($response);
-        $this->assertObjectHasProperty('data', $response);
-        $this->assertSameSize($this->fixtures->testData, $response->data);
+        $response = $this->assertJsonApiGetCollectionResponse(
+            Response::HTTP_OK,
+            ShoppingListResource::TYPE,
+            [
+                'self' => $this->getDefinedUrl('get_shopping-lists_list', ['page' => ['offset' => 0, 'limit' => 20]]),
+                'first' => $this->getDefinedUrl('get_shopping-lists_list', ['page' => ['offset' => 0, 'limit' => 20]]),
+                'prev' => null,
+                'next' => null,
+            ]
+        );
     }
 
     #[Test]

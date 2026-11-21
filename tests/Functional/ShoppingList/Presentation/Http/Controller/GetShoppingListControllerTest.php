@@ -24,11 +24,10 @@ class GetShoppingListControllerTest extends AppApiTestCase
         $this->loadFixture($this->fixtures);
     }
 
-    private function getDocument(AggregateRootId $id, bool $sendAuth = true): void
+    private function getDocument(mixed $id, bool $sendAuth = true): void
     {
         $headers = [
-            'CONTENT_TYPE' => 'application/vnd.api+json',
-            'HTTP_ACCEPT' => 'application/vnd.api+json'
+            'HTTP_ACCEPT' => self::ACCEPT_HEADER_JSON_API
         ];
 
         if ($sendAuth)
@@ -38,7 +37,7 @@ class GetShoppingListControllerTest extends AppApiTestCase
 
         $this->client->request(
             'GET',
-            $this->getDefinedUrl('get_shopping-list', ['id' => $id->toString()]),
+            $this->getDefinedUrl('get_shopping-list', ['id' => $id]),
             [],
             [],
             $headers
@@ -50,17 +49,7 @@ class GetShoppingListControllerTest extends AppApiTestCase
     public function it_returns_the_required_shopping_list(): void
     {
         $this->getDocument($this->fixtures->testData[0]->getId());
-        $this->assertResponseIsSuccessful();
-        $response = json_decode($this->client->getResponse()->getContent());
-        $this->assertNotNull($response);
-        $this->assertIsObject($response);
-        $this->assertSame('1.1', $response->jsonapi->version);
-        $this->assertObjectHasProperty('data', $response);
-        $this->assertIsObject($response->data);
-        $this->assertObjectHasProperty('id', $response->data);
-        $this->assertObjectHasProperty('type', $response->data);
-        $this->assertSame(ShoppingListResource::TYPE, $response->data->type);
-        $this->assertObjectHasProperty('attributes', $response->data);
+        $response = $this->assertJsonApiGetResponse(Response::HTTP_OK, ShoppingListResource::TYPE);
     }
 
     /**
@@ -72,6 +61,14 @@ class GetShoppingListControllerTest extends AppApiTestCase
         $id = AggregateRootId::generateId();
         $this->getDocument($id);
         $this->assertJsonApiErrorResponse(Response::HTTP_NOT_FOUND);
+    }
+
+    #[Test]
+    public function it_fails_when_using_wrong_id(): void
+    {
+        $id = "wrong_id";
+        $this->getDocument($id);
+        $this->assertJsonApiErrorResponse(Response::HTTP_BAD_REQUEST);
     }
 
     /**
