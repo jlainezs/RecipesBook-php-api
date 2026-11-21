@@ -25,14 +25,7 @@ final readonly class GetIngredientQueryHandler
 
         if ($ingredient)
         {
-            return new GetIngredientResponse(new IngredientDto(
-                id: $ingredient->getId()->toString(),
-                name: $ingredient->getName(),
-                description: $ingredient->getDescription(),
-                ingredientTypeId: $ingredient->getIngredientType()->value()->toString(),
-                createdAt: $ingredient->getCreatedAt(),
-                updatedAt: $ingredient->getUpdatedAt()
-            ));
+            return new GetIngredientResponse(IngredientDto::fromDomain($ingredient));
         }
 
         throw new IngredientNotFoundException($query->id);

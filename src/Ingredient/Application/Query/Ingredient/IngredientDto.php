@@ -1,6 +1,7 @@
 <?php
 namespace App\Ingredient\Application\Query\Ingredient;
 
+use App\Ingredient\Domain\Model\Ingredient;
 use DateTimeImmutable;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -19,4 +20,16 @@ readonly final class IngredientDto
         public  DateTimeImmutable $createdAt,
         public  DateTimeImmutable $updatedAt
     ){}
+
+    public static function fromDomain(Ingredient $ingredient): self
+    {
+        return new self(
+            $ingredient->getId()->toString(),
+            $ingredient->getName(),
+            $ingredient->getDescription() ?? '',
+            $ingredient->getIngredientType()?->value()->toString() ?? '',
+            $ingredient->getCreatedAt(),
+            $ingredient->getUpdatedAt()
+        );
+    }
 }

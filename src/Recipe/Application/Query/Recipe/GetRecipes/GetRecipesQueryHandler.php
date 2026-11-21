@@ -15,18 +15,7 @@ final readonly class GetRecipesQueryHandler
     public function __invoke(GetRecipesQuery $query): GetRecipesQueryResponse
     {
         $itemsDto = array_map(
-            fn(Recipe $recipe) => new RecipeDto(
-                id: $recipe->getId()->toString(),
-                name: $recipe->getName(),
-                servings: $recipe->getServings()->value(),
-                rating: $recipe->getRating()->value(),
-                description: $recipe->getDescription(),
-                source: $recipe->getSource(),
-                steps: $recipe->getSteps(),
-                ingredients: $recipe->getIngredients(),
-                createdAt: $recipe->getCreatedAt(),
-                updatedAt: $recipe->getUpdatedAt()
-            ),
+            fn(Recipe $recipe) => RecipeDto::fromDomain($recipe),
             $this->list->items($query->offset, $query->limit)
         );
 

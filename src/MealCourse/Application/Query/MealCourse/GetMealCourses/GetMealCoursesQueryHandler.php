@@ -15,12 +15,7 @@ final readonly class GetMealCoursesQueryHandler
     public function __invoke(GetMealCoursesQuery $query): GetMealCoursesQueryResponse
     {
         $itemsDto = array_map(
-            fn(MealCourse $t) => new MealCourseDto(
-                $t->getId()->toString(),
-                $t->getName(),
-                $t->getCreatedAt(),
-                $t->getUpdatedAt()
-            ),
+            fn(MealCourse $t) => MealCourseDto::fromDomain($t),
             $this->list->items($query->offset, $query->limit)
         );
         return new GetMealCoursesQueryResponse($itemsDto);

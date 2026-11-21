@@ -26,28 +26,13 @@ final readonly class GetRecipeQueryHandler
 
             foreach ($recipe->getSteps() as $step)
             {
-                $mapped_steps[] = new RecipeStepDto(
-                    id: $step->getId()->toString(),
-                    description: $step->getDescription(),
-                    ordering: $step->getOrdering()->value(),
-                    createdAt: $step->getCreatedAt(),
-                    updatedAt: $step->getUpdatedAt(),
-                );
+                $mapped_steps[] = RecipeStepDto::fromDomain($step);
             }
 
             $mapped_ingredients = [];
             foreach ($recipe->getIngredients() as $ingredient)
             {
-                $mapped_ingredients[] = new RecipeIngredientDto(
-                    id: $ingredient->getId()->toString(),
-                    recipeId: $recipe->getId()->toString(),
-                    ingredientId: $ingredient->getIngredient()->value()->toString(),
-                    unitOfMeasureId: $ingredient->getUnitOfMeasure()->value()->toString(),
-                    ordering: $ingredient->getOrdering()->value(),
-                    quantity: $ingredient->getQuantity()->value(),
-                    createdAt: $ingredient->getCreatedAt(),
-                    updatedAt: $ingredient->getUpdatedAt()
-                );
+                $mapped_ingredients[] = RecipeIngredientDto::fromDomain($ingredient);
             }
 
             return new GetRecipeQueryResponse(new RecipeDto(

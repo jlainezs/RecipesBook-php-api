@@ -24,12 +24,7 @@ final readonly class GetMealCourseQueryHandler
         if ($mealCourse = $this->repository->findOne(new AggregateRootId($query->id)))
         {
             return new GetMealCourseResponse(
-                new MealCourseDto(
-                    $mealCourse->getId()->toString(),
-                    $mealCourse->getName(),
-                    $mealCourse->getCreatedAt(),
-                    $mealCourse->getUpdatedAt()
-                )
+                MealCourseDto::fromDomain($mealCourse)
             );
         }
 

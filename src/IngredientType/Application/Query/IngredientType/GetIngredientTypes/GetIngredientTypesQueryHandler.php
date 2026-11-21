@@ -16,12 +16,7 @@ final readonly class GetIngredientTypesQueryHandler
     public function __invoke(GetIngredientTypesQuery $query): GetIngredientTypesQueryResponse
     {
         $itemsDto = array_map(
-         fn(IngredientType $t) => new IngredientTypeDto(
-                $t->getId()->toString(),
-                $t->getName()->value(),
-                $t->getCreatedAt(),
-                $t->getUpdatedAt()
-            ),
+         fn(IngredientType $t) => IngredientTypeDto::fromDomain($t),
             $this->list->items($query->offset, $query->limit)
         );
         return new GetIngredientTypesQueryResponse($itemsDto);
