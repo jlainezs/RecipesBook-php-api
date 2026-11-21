@@ -2,6 +2,7 @@
 namespace App\Tests\Functional\Security\Presentation\Http\Controller;
 
 use App\Security\Presentation\Http\Resource\UserResource;
+use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\Tests\DataFixtures\Security\LoginFixtures;
 use App\Tests\Functional\AppApiTestCase;
@@ -26,7 +27,7 @@ class GetUserControllerTest extends AppApiTestCase
     private function getDocument(string $id, bool $sendAuth = true): void
     {
         $headers = [
-            'HTTP_ACCEPT' => 'application/vnd.api+json'
+            'HTTP_ACCEPT' => self::ACCEPT_HEADER_JSON_API
         ];
 
         if ($sendAuth)
@@ -47,37 +48,34 @@ class GetUserControllerTest extends AppApiTestCase
     public function get_the_required_user():void
     {
         $this->getDocument($this->fixtures->user->getId()->toString());
-        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
-        $this->assertResponseHeaderSame('Content-Type', 'application/vnd.api+json');
-        $response = json_decode($this->client->getResponse()->getContent());
-        $this->assertIsObject($response);
-        $this->assertSame('1.1', $response->jsonapi->version);
-        $this->assertObjectHasProperty('data', $response);
-        $this->assertIsObject($response->data);
-        $this->assertObjectHasProperty('id', $response->data);
-        $this->assertObjectHasProperty('type', $response->data);
-        $this->assertSame(UserResource::TYPE, $response->data->type);
-        $this->assertObjectHasProperty('attributes', $response->data);
-        $this->assertIsObject($response->data->attributes);
-        $this->assertObjectHasProperty('email', $response->data->attributes);
+        $document = $this->assertJsonApiGetResponse(Response::HTTP_OK, UserResource::TYPE);
+        $this->assertObjectHasProperty('email', $document->data->attributes);
 
-        $this->assertObjectHasProperty('attributes', $response->data);
-        $this->assertIsObject($response->data->attributes);
-
-        $this->assertObjectHasProperty('email', $response->data->attributes);
-        $this->assertEquals(LoginFixtures::USER_NAME,  $response->data->attributes->email);
-        $this->assertObjectHasProperty('firstName',  $response->data->attributes);
-        $this->assertEquals(LoginFixtures::FIRST_NAME, $response->data->attributes->firstName);
-        $this->assertObjectHasProperty('lastName',  $response->data->attributes);
-        $this->assertEquals(LoginFixtures::LAST_NAME, $response->data->attributes->lastName);
-        $this->assertObjectHasProperty('roles',  $response->data->attributes);
+        $this->assertObjectHasProperty('email', $document->data->attributes);
+        $this->assertEquals(LoginFixtures::USER_NAME,  $document->data->attributes->email);
+        $this->assertObjectHasProperty('firstName',  $document->data->attributes);
+        $this->assertEquals(LoginFixtures::FIRST_NAME, $document->data->attributes->firstName);
+        $this->assertObjectHasProperty('lastName',  $document->data->attributes);
+        $this->assertEquals(LoginFixtures::LAST_NAME, $document->data->attributes->lastName);
+        $this->assertObjectHasProperty('roles',  $document->data->attributes);
     }
 
     #[Test]
-    public function when_requesting_wrong_user_it_fails():void
+    public function it_fails_when_not_authorized():void
     {
         $userId = AggregateRootId::generateId()->toString();
         $this->getDocument($userId, false);
         $this->assertJsonApiErrorResponse(Response::HTTP_UNAUTHORIZED);
+    }
+
+    /**
+     * @throws EmptyIdNotAllowedException
+     */
+    #[Test]
+    public function it_fails_when_not_found():void
+    {
+        $userId = AggregateRootId::generateId()->toString();
+        $this->getDocument($userId);
+        $this->assertJsonApiErrorResponse(Response::HTTP_NOT_FOUND);
     }
 }

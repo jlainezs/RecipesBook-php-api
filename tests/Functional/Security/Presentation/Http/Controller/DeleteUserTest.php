@@ -1,6 +1,7 @@
 <?php
 namespace App\Tests\Functional\Security\Presentation\Http\Controller;
 
+use App\Security\Domain\Repository\UserRepositoryInterface;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
 use App\Tests\DataFixtures\Security\AdditionalUsersFixtures;
@@ -14,6 +15,7 @@ class DeleteUserTest extends AppApiTestCase
 {
     protected string $userToken;
     protected string $userId;
+    protected UserRepositoryInterface $repository;
     protected AdditionalUsersFixtures $additionalUsersFixtures;
 
     /**
@@ -26,12 +28,13 @@ class DeleteUserTest extends AppApiTestCase
         $this->loadFixture(new LoginFixtures($this->container->get(UserPasswordHasherInterface::class)));
         $this->loadFixture($this->additionalUsersFixtures);
         $this->loginWithUser(LoginFixtures::USER_NAME, LoginFixtures::PASSWORD);
+        $this->repository = $this->container->get(UserRepositoryInterface::class);
     }
 
     private function deleteDocument(string $id, bool $useAuth = true): void
     {
         $headers = [
-            'HTTP_ACCEPT' => 'application/vnd.api+json'
+            'HTTP_ACCEPT' => self::ACCEPT_HEADER_JSON_API
         ];
         if ($useAuth) {
             $headers['HTTP_AUTHORIZATION'] = 'Bearer ' . $this->userToken;
@@ -57,18 +60,12 @@ class DeleteUserTest extends AppApiTestCase
         $this->assertResponseStatusCodeSame(Response::HTTP_NO_CONTENT);
 
         // check the required user is deleted
-        $this->client->request(
-            method: 'GET', uri: '/api/v1/users/' . $this->additionalUsersFixtures->testUsers[0]->getId()->toString(),
-            server: ['HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken],
-        );
-        $this->assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
+        $user = $this->repository->findOneByEmail($this->additionalUsersFixtures->testUsers[0]->getEmail());
+        $this->assertNull($user);
 
         // check another user is still there
-        $this->client->request(
-            method: 'GET', uri: '/api/v1/users/' . $userToKeep,
-            server: ['HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken],
-        );
-        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+        $otherUser = $this->repository->findOneByEmail($this->additionalUsersFixtures->testUsers[1]->getEmail());
+        $this->assertNotNull($otherUser);
     }
 
     #[Test]
@@ -87,5 +84,16 @@ class DeleteUserTest extends AppApiTestCase
         $id = AggregateRootId::generateId()->toString();
         $this->deleteDocument($id);
         $this->assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
+    }
+
+    /**
+     * @throws EmptyIdNotAllowedException
+     */
+    #[Test]
+    public function it_fails_with_wrong_id(): void
+    {
+        $id = 'wrong-id';
+        $this->deleteDocument($id);
+        $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
     }
 }

@@ -29,8 +29,8 @@ class UpdateUserTest extends AppApiTestCase
     private function patchDocument(AggregateRootId $id, array $document, bool $sendAuth = true): void
     {
         $headers = [
-            'CONTENT_TYPE' => 'application/vnd.api+json',
-            'HTTP_ACCEPT' => 'application/vnd.api+json',
+            'CONTENT_TYPE' => self::CONTENT_TYPE_HEADER_JSON_API,
+            'HTTP_ACCEPT' => self::ACCEPT_HEADER_JSON_API,
         ];
 
         if ($sendAuth)
@@ -88,14 +88,14 @@ class UpdateUserTest extends AppApiTestCase
         ];
 
         $this->patchDocument($userToUpdate, $document);
-        $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
+        $this->assertJsonApiErrorResponse(Response::HTTP_BAD_REQUEST);
     }
 
     /**
      * @throws EmptyIdNotAllowedException
      */
     #[Test]
-    public function Update_user_with_invalid_id()
+    public function it_fails_when_not_authorized()
     {
         $userToUpdate = AggregateRootId::generateId();
         $document = [
@@ -113,6 +113,6 @@ class UpdateUserTest extends AppApiTestCase
         ];
 
         $this->patchDocument($userToUpdate, $document, false);
-        $this->assertResponseStatusCodeSame(Response::HTTP_UNAUTHORIZED);
+        $this->assertJsonApiErrorResponse(Response::HTTP_UNAUTHORIZED);
     }
 }
