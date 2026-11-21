@@ -25,20 +25,31 @@ class DeleteUnitOfMeasureControllerTest extends AppApiTestCase
         $this->repository = $this->container->get(UnitOfMeasureRepositoryInterface::class);
     }
 
+    private function deleteDocument(mixed $id, bool $sendAuth = true): void
+    {
+        $headers = [
+            'HTTP_ACCEPT' => self::ACCEPT_HEADER_JSON_API
+        ];
+
+        if ($sendAuth) {
+            $headers['HTTP_AUTHORIZATION'] = 'Bearer ' . $this->userToken;
+        }
+
+        $this->client->request(
+            'DELETE',
+            $this->getDefinedUrl('unit_of_measure_delete', ['id' => $id]),
+            [],
+            [],
+            $headers
+        );
+
+    }
+
     #[Test]
     public function it_should_delete_an_unit_of_measure(): void
     {
         $toDelete = $this->unitOfMeasureFixture->testData[0]->getId();
-        $this->client->request(
-            'DELETE',
-            $this->getDefinedUrl('unit_of_measure_delete', ['id' => $toDelete->toString()]),
-            [],
-            [],
-            [
-                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'HTTP_ACCEPT' => 'application/vnd.api+json'
-            ],
-        );
+        $this->deleteDocument($toDelete);
         $this->assertResponseStatusCodeSame(Response::HTTP_NO_CONTENT);
 
         //ensure deleted
@@ -53,16 +64,7 @@ class DeleteUnitOfMeasureControllerTest extends AppApiTestCase
     public function it_fails_when_unit_of_measure_does_not_exist(): void
     {
         $toDelete = AggregateRootId::generateId();
-        $this->client->request(
-            'DELETE',
-            $this->getDefinedUrl('unit_of_measure_delete', ['id' => $toDelete->toString()]),
-            [],
-            [],
-            [
-                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'HTTP_ACCEPT' => 'application/vnd.api+json'
-            ],
-        );
+        $this->deleteDocument($toDelete);
         $this->assertJsonApiErrorResponse(Response::HTTP_NOT_FOUND);
     }
 
@@ -73,15 +75,7 @@ class DeleteUnitOfMeasureControllerTest extends AppApiTestCase
     public function it_fails_when_not_authorized(): void
     {
         $toDelete = AggregateRootId::generateId();
-        $this->client->request(
-            'DELETE',
-            $this->getDefinedUrl('unit_of_measure_delete', ['id' => $toDelete->toString()]),
-            [],
-            [],
-            [
-                'HTTP_ACCEPT' => 'application/vnd.api+json'
-            ],
-        );
+        $this->deleteDocument($toDelete, false);
         $this->assertJsonApiErrorResponse(Response::HTTP_UNAUTHORIZED, ['header' => 'Authorization']);
     }
 }

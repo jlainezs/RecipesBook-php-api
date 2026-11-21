@@ -193,8 +193,8 @@ class UpdateUnitOfMeasureControllerTest extends AppApiTestCase
             [],
             [
                 'HTTP_AUTHORIZATION' => 'Bearer ' . $this->userToken,
-                'CONTENT_TYPE' => 'application/vnd.api+json',
-                'HTTP_ACCEPT' => 'application/vnd.api+json'
+                'CONTENT_TYPE' => self::CONTENT_TYPE_HEADER_JSON_API,
+                'HTTP_ACCEPT' => self::ACCEPT_HEADER_JSON_API
             ],
             json_encode($document)
         );

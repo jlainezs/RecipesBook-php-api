@@ -5,6 +5,7 @@ namespace App\Tests\Functional\UnitOfMeasure\Presentation\Http\Controller;
 use App\Tests\DataFixtures\Security\LoginFixtures;
 use App\Tests\Functional\AppApiTestCase;
 use App\UnitOfMeasure\Domain\Model\UnitOfMeasureEnum;
+use App\UnitOfMeasure\Presentation\Http\Resource\UnitOfMeasureResource;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -31,16 +32,7 @@ class CreateUnitOfMeasureControllerTest extends AppApiTestCase
                 ]
             ]
         ]);
-        $this->assertResponseStatusCodeSame(Response::HTTP_CREATED);
-        $response = json_decode($this->client->getResponse()->getContent());
-        $this->assertNotNull($response);
-        $this->assertIsObject($response);
-        $this->assertObjectHasProperty('data', $response);
-        $this->assertSame('units-of-measure', $response->data->type);
-        $this->assertIsString($response->data->id);
-        $this->assertNotEmpty($response->data->id);
-        $this->assertResponseHeaderSame('Content-Type', 'application/vnd.api+json');
-        $this->assertResponseHeaderSame('Cache-Control', 'must-revalidate, no-cache, no-store, private');
+        $response = $this->assertJsonApiCreateResponse(Response::HTTP_CREATED, UnitOfMeasureResource::TYPE);
         $expectedGetUrl = $this->getDefinedUrl('unit_of_measure_get_instance', ['id' => $response->data->id]);
         $this->assertResponseHeaderSame('Location', $expectedGetUrl);
         $this->assertSame($expectedGetUrl, $response->data->links->self);

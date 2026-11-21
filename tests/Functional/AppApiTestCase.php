@@ -156,10 +156,10 @@ abstract class AppApiTestCase extends WebTestCase
 
     private function assertJsonApiResponse(int $expectedStatusCode, string $version = '1.1'): stdClass
     {
-        $this->assertResponseStatusCodeSame($expectedStatusCode);
-        $this->assertResponseHeaderSame('Content-Type', 'application/vnd.api+json');
+        $this->assertResponseStatusCodeSame($expectedStatusCode, 'Wrong status code');
+        $this->assertResponseHeaderSame('Content-Type', 'application/vnd.api+json', 'Wrong Content-Type value');
         $document = json_decode($this->client->getResponse()->getContent());
-        $this->assertIsObject($document);
+        $this->assertIsObject($document, 'Response is not a JSON object');
         $this->assertObjectHasProperty('jsonapi', $document, 'JSON:API: "jsonapi" is required here.');
         $this->assertObjectHasProperty('version', $document->jsonapi, 'JSON:API: "version" is required here.');
         $this->assertEquals($version, $document->jsonapi->version);
@@ -173,18 +173,18 @@ abstract class AppApiTestCase extends WebTestCase
 
     protected function assertJsonApiCreateResponse(int $expectedStatusCode, string $type, string $version = '1.1'): stdClass
     {
-        $this->assertResponseHasHeader('Location');
-        $this->assertResponseHeaderSame('Cache-Control','must-revalidate, no-cache, no-store, private');
+        $this->assertResponseHasHeader('Location', 'JSON:API: Location header not present');
+        $this->assertResponseHeaderSame('Cache-Control','must-revalidate, no-cache, no-store, private', 'JSON:API: Wrong Cache-Control value');
         $document = $this->assertJsonApiResponse($expectedStatusCode, $version);
-        $this->assertObjectHasProperty('id', $document->data);
-        $this->assertIsString($document->data->id);
-        $this->assertNotEmpty($document->data->id);
-        $this->assertObjectHasProperty('type', $document->data);
-        $this->assertEquals($type, $document->data->type);
-        $this->assertObjectHasProperty('links', $document->data);
-        $this->assertObjectHasProperty('self', $document->data->links);
-        $this->assertObjectHasProperty('attributes', $document->data);
-        $this->assertObjectHasProperty('id', $document->data->attributes);
+        $this->assertObjectHasProperty('id', $document->data, 'JSON:API: Data has no id property');
+        $this->assertIsString($document->data->id, 'JSON:API: Property id is not a string');
+        $this->assertNotEmpty($document->data->id, 'JSON:API: Property id is empty');
+        $this->assertObjectHasProperty('type', $document->data, 'JSON:API: Data has no type property');
+        $this->assertEquals($type, $document->data->type, 'JSON:API: Wrong type value');
+        $this->assertObjectHasProperty('links', $document->data, 'JSON:API: Data has no links property');
+        $this->assertObjectHasProperty('self', $document->data->links, 'JSON:API: Data->links has no self property');
+        $this->assertObjectHasProperty('attributes', $document->data, 'JSON:API: Data has no attributes property');
+        $this->assertObjectHasProperty('id', $document->data->attributes, 'JSON:API: Data->attributes has no id property');
 
         return $document;
     }
@@ -211,15 +211,16 @@ abstract class AppApiTestCase extends WebTestCase
     protected function assertJsonApiGetCollectionResponse(int $expectedStatusCode, string $type, array $links, string $version = '1.1'): stdClass
     {
         $document = $this->assertJsonApiResponse($expectedStatusCode, $version);
-        $this->assertObjectHasProperty('self', $document->links);
-        $this->assertEquals($links['self'], $document->links->self);
-        $this->assertObjectHasProperty('first', $document->links);
-        $this->assertEquals($links['first'], $document->links->first);
-        $this->assertObjectHasProperty('prev', $document->links);
-        $this->assertEquals($links['prev'], $document->links->prev);
-        $this->assertObjectHasProperty('next', $document->links);
-        $this->assertEquals($links['next'], $document->links->next);
-        $this->assertIsArray($document->data);
+        $this->assertObjectHasProperty('self', $document->links, 'Missing links->self link');
+        $this->assertEquals($links['self'], $document->links->self, 'Wrong SELF link');
+        $this->assertObjectHasProperty('first', $document->links, 'Missing links->first link');
+        $this->assertEquals($links['first'], $document->links->first, 'Wrong FIRST link');
+        $this->assertObjectHasProperty('prev', $document->links, 'Missing links->prev link');
+        $this->assertEquals($links['prev'], $document->links->prev, 'Wrong PREV link');
+        $this->assertObjectHasProperty('next', $document->links, 'Missing links->next link');
+        $this->assertEquals($links['next'], $document->links->next, 'Wrong NEXT link');
+        $this->assertObjectHasProperty('data', $document, 'Missing DATA property');
+        $this->assertIsArray($document->data, 'Property data is not an array');
 
         foreach ($document->data as $item)
         {

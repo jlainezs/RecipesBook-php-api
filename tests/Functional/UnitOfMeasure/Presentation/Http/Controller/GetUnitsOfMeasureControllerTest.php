@@ -4,6 +4,7 @@ namespace App\Tests\Functional\UnitOfMeasure\Presentation\Http\Controller;
 use App\Tests\DataFixtures\Security\LoginFixtures;
 use App\Tests\DataFixtures\UnitOfMeasure\UnitOfMeasureFixture;
 use App\Tests\Functional\AppApiTestCase;
+use App\UnitOfMeasure\Presentation\Http\Resource\UnitOfMeasureResource;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -34,23 +35,28 @@ class GetUnitsOfMeasureControllerTest extends AppApiTestCase
                 'HTTP_ACCEPT' => 'application/vnd.api+json'
             ]
         );
-        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
-        $this->assertResponseHeaderSame('Content-Type', 'application/vnd.api+json');
-        $response = json_decode($this->client->getResponse()->getContent());
-        $this->assertNotEmpty($response);
-        $this->assertObjectHasProperty('data', $response);
-        $this->assertSameSize($this->fixtures->testData, $response->data);
-        foreach ($response->data as $resource) {
+        $document = $this->assertJsonApiGetCollectionResponse(
+            Response::HTTP_OK,
+            UnitOfMeasureResource::TYPE,
+            [
+                'self' => $this->getDefinedUrl('unit_of_measure_list', ['page' => ['offset' => 0, 'limit' => 20]]),
+                'first' => $this->getDefinedUrl('unit_of_measure_list', ['page' => ['offset' => 0, 'limit' => 20]]),
+                'prev' => null,
+                'next' => null,
+            ]
+        );
+        $this->assertSameSize($this->fixtures->testData, $document->data);
+        foreach ($document->data as $resource) {
             $this->assertSame('units-of-measure', $resource->type);
             $this->assertObjectHasProperty('id', $resource);
             $this->assertObjectHasProperty('attributes', $resource);
         }
         $this->assertSame(
             $this->getDefinedUrl('unit_of_measure_list', ['page' => ['offset' => 0, 'limit' => 20]]),
-            $response->links->first
+            $document->links->first
         );
-        $this->assertNull($response->links->prev);
-        $this->assertNull($response->links->next);
+        $this->assertNull($document->links->prev);
+        $this->assertNull($document->links->next);
     }
 
     #[Test]
@@ -66,16 +72,24 @@ class GetUnitsOfMeasureControllerTest extends AppApiTestCase
                 'HTTP_ACCEPT' => 'application/vnd.api+json'
             ]
         );
-        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
-        $response = json_decode($this->client->getResponse()->getContent());
-        $this->assertCount(1, $response->data);
+        $document = $this->assertJsonApiGetCollectionResponse(
+            Response::HTTP_OK,
+            UnitOfMeasureResource::TYPE,
+            [
+                'self' => $this->getDefinedUrl('unit_of_measure_list', ['page' => ['offset' => 1, 'limit' => 1]]),
+                'first' => $this->getDefinedUrl('unit_of_measure_list', ['page' => ['offset' => 0, 'limit' => 1]]),
+                'prev' => $this->getDefinedUrl('unit_of_measure_list', ['page' => ['offset' => 0, 'limit' => 1]]),
+                'next' => $this->getDefinedUrl('unit_of_measure_list', ['page' => ['offset' => 2, 'limit' => 1]]),
+            ]
+        );
+        $this->assertCount(1, $document->data);
         $this->assertSame(
             $this->getDefinedUrl('unit_of_measure_list', ['page' => ['offset' => 0, 'limit' => 1]]),
-            $response->links->prev
+            $document->links->prev
         );
         $this->assertSame(
             $this->getDefinedUrl('unit_of_measure_list', ['page' => ['offset' => 2, 'limit' => 1]]),
-            $response->links->next
+            $document->links->next
         );
     }
 
