@@ -1,7 +1,7 @@
 <?php
 namespace App\ShoppingList\Application\Query\GetSoppingLists;
 
-use App\ShoppingList\Application\Query\GetShoppingList\ShoppingListDto;
+use App\ShoppingList\Application\Query\ShoppingListDto;
 use App\ShoppingList\Application\Service\ShoppingListItemsPager;
 use App\ShoppingList\Domain\Model\ShoppingList;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -15,14 +15,7 @@ final readonly class GetShoppingListsQueryHandler
     public function __invoke(GetShoppingListsQuery $query): GetShoppingListsQueryResponse
     {
         $itemsDto = array_map(
-            fn(ShoppingList $item) => new ShoppingListDto(
-                id: $item->getId()->toString(),
-                name: $item->getName()->value(),
-                items: $item->itemsAsArray(),
-                scheduledFor: $item->getScheduledFor(),
-                createdAt: $item->getCreatedAt(),
-                updatedAt: $item->getUpdatedAt(),
-            ),
+            fn(ShoppingList $item) => ShoppingListDto::fromDomain($item),
             $this->list->items($query->offset, $query->limit)
         );
 

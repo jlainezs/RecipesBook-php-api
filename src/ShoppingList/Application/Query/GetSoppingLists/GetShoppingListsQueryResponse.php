@@ -1,7 +1,7 @@
 <?php
 namespace App\ShoppingList\Application\Query\GetSoppingLists;
 
-use App\ShoppingList\Application\Query\GetShoppingList\ShoppingListDto;
+use App\ShoppingList\Application\Query\ShoppingListDto;
 
 final readonly class GetShoppingListsQueryResponse
 {

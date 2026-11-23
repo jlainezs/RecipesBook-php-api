@@ -17,17 +17,7 @@ final readonly class GetUserQueryHandler
     {
         if ($user = $this->repository->findOne(new AggregateRootId($query->id)))
         {
-            return new GetUserQueryResponse(
-                new UserDto(
-                    id: $user->getId()->toString(),
-                    email: $user->getEmail(),
-                    firstName: $user->getFirstName()->value(),
-                    lastName: $user->getLastName()->value(),
-                    roles:$user->getRoles(),
-                    createdAt: $user->getCreatedAt(),
-                    updatedAt: $user->getUpdatedAt()
-                )
-            );
+            return new GetUserQueryResponse(UserDto::fromDomain($user) );
         }
 
         throw new UserNotFoundException($query->id);

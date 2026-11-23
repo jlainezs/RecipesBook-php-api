@@ -1,7 +1,7 @@
 <?php
 namespace App\ShoppingList\Presentation\Http\Resource;
 
-use App\ShoppingList\Application\Query\GetShoppingList\ShoppingListDto;
+use App\ShoppingList\Application\Query\ShoppingListDto;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final readonly class ShoppingListResource

@@ -23,14 +23,7 @@ final readonly class GetUnitOfMeasureQueryHandler
         if ($uom = $this->repository->findOne(new AggregateRootId($query->id)))
         {
             return new GetUnitOfMeasureResponse(
-                new UnitOfMeasureDto(
-                    id: $uom->getId()->toString(),
-                    name: $uom->getName(),
-                    symbol: $uom->getSymbol()->value(),
-                    uomType: $uom->getUomType()->value,
-                    createdAt: $uom->getCreatedAt(),
-                    updatedAt: $uom->getUpdatedAt(),
-                )
+                UnitOfMeasureDto::fromDomain($uom)
             );
         }
 

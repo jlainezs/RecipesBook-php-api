@@ -15,15 +15,7 @@ final readonly class GetUsersQueryHandler
     public function __invoke(GetUsersQuery $query): GetUsersQueryResponse
     {
         $itemsDto = array_map(
-            fn(User $user) => new UserDto(
-                $user->getId()->toString(),
-                $user->getEmail(),
-                $user->getFirstName()->value(),
-                $user->getLastName()->value(),
-                $user->getRoles(),
-                $user->getCreatedAt(),
-                $user->getUpdatedAt(),
-            ),
+            fn(User $user) => UserDto::fromDomain($user),
             $this->list->items($query->offset, $query->limit)
         );
 

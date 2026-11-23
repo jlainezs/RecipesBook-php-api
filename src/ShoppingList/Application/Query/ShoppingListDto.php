@@ -1,6 +1,7 @@
 <?php
-namespace App\ShoppingList\Application\Query\GetShoppingList;
+namespace App\ShoppingList\Application\Query;
 
+use App\ShoppingList\Domain\Model\ShoppingList;
 use DateTimeImmutable;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -25,4 +26,22 @@ readonly final class ShoppingListDto
         public DateTimeImmutable $createdAt,
         public DateTimeImmutable $updatedAt
     ){}
+
+    public static function fromDomain(ShoppingList $shoppingList): self
+    {
+        $items = [];
+        foreach ($shoppingList->items() as $item)
+        {
+            $items[] = ShoppingListItemDto::fromDomain($item);
+        }
+
+        return new self(
+            $shoppingList->getId()->toString(),
+            $shoppingList->getName()->value(),
+            $items,
+            $shoppingList->getScheduledFor(),
+            $shoppingList->getCreatedAt(),
+            $shoppingList->getUpdatedAt()
+        );
+    }
 }

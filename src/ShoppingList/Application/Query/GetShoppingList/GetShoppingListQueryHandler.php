@@ -3,6 +3,8 @@ namespace App\ShoppingList\Application\Query\GetShoppingList;
 
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\ValueObjects\AggregateRootId;
+use App\ShoppingList\Application\Query\ShoppingListDto;
+use App\ShoppingList\Application\Query\ShoppingListItemDto;
 use App\ShoppingList\Domain\Exceptions\ShoppingListNotFoundException;
 use App\ShoppingList\Domain\Repository\ShoppingListRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -29,26 +31,8 @@ final readonly class GetShoppingListQueryHandler
         $id = new AggregateRootId($query->id);
         if ($shoppingList = $this->repository->findOne($id))
         {
-            $items = [];
-            foreach ($shoppingList->items() as $item)
-            {
-                $items[] = new ShoppingListItemDto(
-                    id: $item->getId()->toString(),
-                    ingredientId: $item->getIngredientReference()->value()->toString(),
-                    unitOfMeasureId: $item->getUnitOfMeasure()->value()->toString(),
-                    quantity: $item->getQuantity()->value(),
-                    createdAt: $item->getCreatedAt(),
-                    updatedAt: $item->getUpdatedAt(),
-                );
-            }
-            return new ShoppingListResponse(new ShoppingListDto(
-                id: $shoppingList->getId()->toString(),
-                name: $shoppingList->getName()->value(),
-                items: $items,
-                scheduledFor: $shoppingList->getScheduledFor(),
-                createdAt: $shoppingList->getCreatedAt(),
-                updatedAt: $shoppingList->getUpdatedAt(),
-            ));
+
+            return new ShoppingListResponse(ShoppingListDto::fromDomain($shoppingList));
         }
         else
         {

@@ -15,14 +15,7 @@ final readonly class GetUnitsOfMeasureQueryHandler
     public function __invoke(GetUnitsOfMeasureQuery $query): GetUnitsOfMeasureQueryResponse
     {
         $itemsDto = array_map(
-            fn(UnitOfMeasure $uom) => new UnitOfMeasureDto(
-                id: $uom->getId()->toString(),
-                name: $uom->getName(),
-                symbol: $uom->getSymbol()->value(),
-                uomType: $uom->getUomType()->value,
-                createdAt: $uom->getCreatedAt(),
-                updatedAt: $uom->getUpdatedAt(),
-            ),
+            fn(UnitOfMeasure $uom) => UnitOfMeasureDto::fromDomain($uom),
             $this->list->items($query->offset, $query->limit)
         );
         return new GetUnitsOfMeasureQueryResponse($itemsDto);
