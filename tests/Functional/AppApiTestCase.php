@@ -173,9 +173,9 @@ abstract class AppApiTestCase extends WebTestCase
 
     protected function assertJsonApiCreateResponse(int $expectedStatusCode, string $type, string $version = '1.1'): stdClass
     {
+        $document = $this->assertJsonApiResponse($expectedStatusCode, $version);
         $this->assertResponseHasHeader('Location', 'JSON:API: Location header not present');
         $this->assertResponseHeaderSame('Cache-Control','must-revalidate, no-cache, no-store, private', 'JSON:API: Wrong Cache-Control value');
-        $document = $this->assertJsonApiResponse($expectedStatusCode, $version);
         $this->assertObjectHasProperty('id', $document->data, 'JSON:API: Data has no id property');
         $this->assertIsString($document->data->id, 'JSON:API: Property id is not a string');
         $this->assertNotEmpty($document->data->id, 'JSON:API: Property id is empty');

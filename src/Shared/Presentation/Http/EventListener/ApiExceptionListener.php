@@ -5,6 +5,7 @@ use App\Shared\Domain\Exceptions\ConflictException;
 use App\Shared\Domain\Exceptions\EmptyIdNotAllowedException;
 use App\Shared\Domain\Exceptions\EmptyRequiredNameException;
 use App\Shared\Domain\Exceptions\EntityNotFoundException;
+use App\Shared\Domain\Exceptions\NoAccessPolicyException;
 use App\Shared\Presentation\Http\JsonApi\JsonApi;
 use App\Shared\Presentation\Http\JsonApi\JsonApiErrorsException;
 use App\Shared\Presentation\Http\JsonApi\JsonApiResponse;
@@ -20,6 +21,7 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
 use Symfony\Component\Routing\Exception\InvalidParameterException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Validator\Exception\ValidationFailedException;
 use Throwable;
 
@@ -61,6 +63,10 @@ final class ApiExceptionListener
             $exception instanceof HttpExceptionInterface
             =>
                 $exception->getStatusCode(),
+
+            $exception instanceof AccessDeniedException
+            =>
+                Response::HTTP_FORBIDDEN,
 
             default
             =>
