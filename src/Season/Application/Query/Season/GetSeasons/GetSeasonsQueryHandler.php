@@ -15,12 +15,7 @@ final readonly class GetSeasonsQueryHandler
     public function __invoke(GetSeasonsQuery $query): GetSeasonsQueryResponse
     {
         $itemsDto = array_map(
-         fn(Season $t) => new SeasonDto(
-                $t->getId()->toString(),
-                $t->getName(),
-                $t->getCreatedAt(),
-                $t->getUpdatedAt()
-            ),
+         fn(Season $t) => SeasonDto::fromDomain($t),
             $this->list->items($query->offset, $query->limit)
         );
         return new GetSeasonsQueryResponse($itemsDto);

@@ -35,6 +35,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" packagePrefix="App\" />
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" packagePrefix="App\" />
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" packagePrefix="App\" />
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" packagePrefix="App\" />
       <sourceFolder url="file://$MODULE_DIR$/tools" isTestSource="true" packagePrefix="Tools\" />
       <sourceFolder url="file://$MODULE_DIR$/tools" isTestSource="true" packagePrefix="Tools\" />
       <sourceFolder url="file://$MODULE_DIR$/tools" isTestSource="true" packagePrefix="Tools\" />
@@ -58,6 +59,8 @@
       <sourceFolder url="file://$MODULE_DIR$/tools" isTestSource="true" packagePrefix="Tools\" />
       <sourceFolder url="file://$MODULE_DIR$/tools" isTestSource="true" packagePrefix="Tools\" />
       <sourceFolder url="file://$MODULE_DIR$/tools" isTestSource="true" packagePrefix="Tools\" />
+      <sourceFolder url="file://$MODULE_DIR$/tools" isTestSource="true" packagePrefix="Tools\" />
+      <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" packagePrefix="App\Tests\" />
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" packagePrefix="App\Tests\" />
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" packagePrefix="App\Tests\" />
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" packagePrefix="App\Tests\" />

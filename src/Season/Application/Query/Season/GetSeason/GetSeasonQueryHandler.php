@@ -22,14 +22,7 @@ final readonly class GetSeasonQueryHandler
     {
         if ($season = $this->repository->findOne(new AggregateRootId($query->id)))
         {
-            return new GetSeasonQueryResponse(
-                new SeasonDto(
-                    id: $season->getId()->toString(),
-                    name: $season->getName(),
-                    createdAt: $season->getCreatedAt(),
-                    updatedAt: $season->getUpdatedAt(),
-                )
-            );
+            return new GetSeasonQueryResponse(SeasonDto::fromDomain($season));
         }
 
         throw new SeasonNotFoundException($query->id);
