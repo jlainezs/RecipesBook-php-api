@@ -1,7 +1,9 @@
 <?php
 namespace App\Recipe\Application\Command\RecipeUpdate;
 
+use App\Shared\Application\Security\IsPublicOperation;
 
+#[IsPublicOperation]
 final readonly class UpdateRecipeCommand
 {
     public function __construct(

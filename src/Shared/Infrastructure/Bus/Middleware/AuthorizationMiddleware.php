@@ -43,9 +43,11 @@ final readonly class AuthorizationMiddleware implements MiddlewareInterface
             );
 
             $hasAnyRole = false;
-            foreach ($roles as $role) {
+            foreach ($roles as $role)
+            {
                 $hasAnyRole = $this->security->isGranted($role);
-                if ($hasAnyRole) {
+                if ($hasAnyRole)
+                {
                     break;
                 }
             }

@@ -1,6 +1,9 @@
 <?php
 namespace App\Ingredient\Application\Command\Ingredient\CreateIngredient;
 
+use App\Shared\Application\Security\IsPublicOperation;
+
+#[IsPublicOperation]
 readonly final class CreateIngredientCommand
 {
     public function __construct(
