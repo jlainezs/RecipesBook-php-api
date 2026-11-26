@@ -1,15 +1,15 @@
 <?php
 namespace App\Shared\Application\Security;
 
-use App\Security\Domain\Model\UserRole;
 use Attribute;
+use BackedEnum;
 
 #[Attribute(Attribute::TARGET_CLASS)]
 final readonly class IsAuthorized
 {
     public array $roles;
 
-    public function __construct(UserRole|string ...$roles)
+    public function __construct(BackedEnum|string ...$roles)
     {
         $this->roles = $roles;
     }
