@@ -1,12 +1,14 @@
 <?php
 namespace App\Security\Domain\Model;
 
+use App\Shared\Application\Security\SecurityRoles;
+
 enum UserRole: string
 {
-    case USER = "ROLE_USER";
-    case ADMIN = "ROLE_ADMIN";
-    case MANAGER = "ROLE_MANAGER";
-    case SUPER_ADMIN = "ROLE_SUPER_ADMIN";
+    case USER = SecurityRoles::USER;
+    case ADMIN = SecurityRoles::ADMIN;
+    case MANAGER = SecurityRoles::MANAGER;
+    case SUPER_ADMIN = SecurityRoles::SUPER_ADMIN;
 
     public static function values(): array
     {
