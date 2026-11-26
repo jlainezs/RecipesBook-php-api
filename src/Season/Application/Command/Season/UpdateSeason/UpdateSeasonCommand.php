@@ -1,9 +1,10 @@
 <?php
 namespace App\Season\Application\Command\Season\UpdateSeason;
 
-use App\Shared\Application\Security\IsPublicOperation;
+use App\Shared\Application\Security\IsAuthorized;
+use App\Shared\Application\Security\SecurityRole;
 
-#[IsPublicOperation]
+#[IsAuthorized(SecurityRole::USER)]
 final readonly class UpdateSeasonCommand
 {
     public function __construct(

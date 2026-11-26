@@ -1,10 +1,11 @@
 <?php
 namespace App\Season\Application\Command\Season\CreateSeason;
 
-use App\Shared\Application\Security\IsPublicOperation;
+use App\Shared\Application\Security\IsAuthorized;
+use App\Shared\Application\Security\SecurityRole;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[IsPublicOperation]
+#[IsAuthorized(SecurityRole::USER)]
 readonly final class CreateSeasonCommand
 {
     public function __construct(

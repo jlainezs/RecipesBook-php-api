@@ -1,4 +1,3 @@
 TODO: Pagination lacks of last and meta.total: need a count() in the pager. next is computed supposing there are more pages when current page is full.
-TODO: Add roles to check access.
 TODO: Add account management. Need to bind users with accounts.
 TODO: Add an owner for entities: each entity will be bound to an account.

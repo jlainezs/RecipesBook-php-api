@@ -1,10 +1,11 @@
 <?php
 namespace App\IngredientType\Application\Command\IngredientType\CreateIngredientType;
 
-use App\Shared\Application\Security\IsPublicOperation;
+use App\Shared\Application\Security\IsAuthorized;
+use App\Shared\Application\Security\SecurityRole;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[IsPublicOperation]
+#[IsAuthorized(SecurityRole::USER)]
 readonly final class CreateIngredientTypeCommand
 {
     public function __construct(

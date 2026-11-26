@@ -1,9 +1,10 @@
 <?php
 namespace App\MealCourse\Application\Command\MealCourse\DeleteMealCourse;
 
-use App\Shared\Application\Security\IsPublicOperation;
+use App\Shared\Application\Security\IsAuthorized;
+use App\Shared\Application\Security\SecurityRole;
 
-#[IsPublicOperation]
+#[IsAuthorized(SecurityRole::USER)]
 readonly final class DeleteMealCourseCommand
 {
     public function __construct(

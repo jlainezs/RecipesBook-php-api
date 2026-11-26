@@ -1,10 +1,11 @@
 <?php
 namespace App\Recipe\Application\Command\CreateRecipe;
 
-use App\Shared\Application\Security\IsPublicOperation;
+use App\Shared\Application\Security\IsAuthorized;
+use App\Shared\Application\Security\SecurityRole;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[IsPublicOperation]
+#[IsAuthorized(SecurityRole::USER)]
 final readonly class CreateRecipeCommand
 {
     public function __construct(

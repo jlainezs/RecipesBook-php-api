@@ -1,10 +1,11 @@
 <?php
 namespace App\UnitOfMeasure\Application\Command\UnitOfMeasure\UpdateUnitOfMeasure;
 
-use App\Shared\Application\Security\IsPublicOperation;
+use App\Shared\Application\Security\IsAuthorized;
+use App\Shared\Application\Security\SecurityRole;
 use App\UnitOfMeasure\Domain\Model\UnitOfMeasureEnum;
 
-#[IsPublicOperation]
+#[IsAuthorized(SecurityRole::USER)]
 final readonly class UpdateUnitOfMeasureCommand
 {
     public function __construct(

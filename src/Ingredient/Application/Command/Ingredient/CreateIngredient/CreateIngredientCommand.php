@@ -1,9 +1,10 @@
 <?php
 namespace App\Ingredient\Application\Command\Ingredient\CreateIngredient;
 
-use App\Shared\Application\Security\IsPublicOperation;
+use App\Shared\Application\Security\IsAuthorized;
+use App\Shared\Application\Security\SecurityRole;
 
-#[IsPublicOperation]
+#[IsAuthorized(SecurityRole::USER)]
 readonly final class CreateIngredientCommand
 {
     public function __construct(

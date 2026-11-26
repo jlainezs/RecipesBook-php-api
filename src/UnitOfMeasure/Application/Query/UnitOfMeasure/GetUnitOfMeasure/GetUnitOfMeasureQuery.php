@@ -1,9 +1,10 @@
 <?php
 namespace App\UnitOfMeasure\Application\Query\UnitOfMeasure\GetUnitOfMeasure;
 
-use App\Shared\Application\Security\IsPublicOperation;
+use App\Shared\Application\Security\IsAuthorized;
+use App\Shared\Application\Security\SecurityRole;
 
-#[IsPublicOperation]
+#[IsAuthorized(SecurityRole::USER)]
 final readonly class GetUnitOfMeasureQuery
 {
     public function __construct(public string $id)
