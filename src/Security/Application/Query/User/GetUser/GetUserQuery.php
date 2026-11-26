@@ -1,9 +1,10 @@
 <?php
 namespace App\Security\Application\Query\User\GetUser;
 
-use App\Shared\Application\Security\IsPublicOperation;
+use App\Shared\Application\Security\IsAuthorized;
+use App\Shared\Application\Security\SecurityRole;
 
-#[IsPublicOperation]
+#[IsAuthorized(SecurityRole::USER)]
 final readonly class GetUserQuery
 {
     public function __construct(

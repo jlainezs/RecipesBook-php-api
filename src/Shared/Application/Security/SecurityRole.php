@@ -1,6 +1,6 @@
 <?php
 namespace App\Shared\Application\Security;
-final readonly class SecurityRoles
+final readonly class SecurityRole
 {
     public const string USER = 'ROLE_USER';
     public const string ADMIN = 'ROLE_ADMIN';
